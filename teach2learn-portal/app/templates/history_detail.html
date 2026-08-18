@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Conversation · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page page-default">
+  <header class="page-header">
+    <a class="back-link" href="/history"><span aria-hidden="true">←</span> All sessions</a>
+    <span class="tag">{{ session.subject|replace('_', ' ')|upper }}</span>
+    <h1>{{ session.subtopic|default(session.topic) }}</h1>
+    <p class="subtle">{{ session.topic }} · {{ session.model_name|default(session.model) }} · {{ session.created_label|default(session.created_at) }} · {{ session.turn }} turn{{ '' if session.turn == 1 else 's' }}</p>
+    {% if session.status == 'active' %}
+    <p class="button-row"><a class="button button-secondary" href="/sessions/{{ session.id }}">Resume this session</a></p>
+    {% endif %}
+  </header>
+  {% if teaching_feedback %}
+  <section class="panel teaching-feedback" aria-labelledby="teaching-feedback-title">
+    <div class="stack-tight">
+      <span class="tag">Teaching feedback</span>
+      <h2 id="teaching-feedback-title">How you taught the AI learner</h2>
+    </div>
+    <div class="feedback-columns">
+      <div><h3><span class="feedback-icon feedback-icon-positive" aria-hidden="true">✓</span> Strengths</h3><ul>{% for item in teaching_feedback.strengths %}<li>{{ item }}</li>{% endfor %}</ul></div>
+      <div><h3><span class="feedback-icon" aria-hidden="true">↑</span> Improvements</h3><ul>{% for item in teaching_feedback.improvements %}<li>{{ item }}</li>{% endfor %}</ul></div>
+    </div>
+    <div class="feedback-summary"><h3><span class="feedback-icon" aria-hidden="true">≡</span> Summary</h3><p>{{ teaching_feedback.summary }}</p></div>
+  </section>
+  {% endif %}
+  <div class="transcript">
+    {% for message in messages %}
+    <article class="message message-{{ message.role }}">
+      <p class="message-author">
+        <span class="message-role">{{ 'You · teacher' if message.role == 'user' else 'AI student' }}</span>
+        <span class="message-turn">{% if message.turn %}Turn {{ message.turn }}{% else %}Opening question{% endif %}</span>
+      </p>
+      <div class="message-body">{{ message.content }}</div>
+    </article>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

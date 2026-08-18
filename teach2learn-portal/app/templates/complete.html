@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Session complete · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page page-default">
+  <header class="page-header">
+    <span class="step-label">Step 3 of 3</span>
+    <h1>Your session is complete</h1>
+    <p>Review the strengths of your teaching and where you can improve.</p>
+  </header>
+  <dl class="recap">
+    <div><dt>Subject</dt><dd>{{ session.subject|replace('_', ' ')|upper }}</dd></div>
+    <div><dt>Topic</dt><dd>{{ session.subtopic|default(session.topic) }}</dd></div>
+    <div><dt>Turns</dt><dd>{{ session.turn }} completed{% if session.completion_reason == 'knowledge_threshold' %} · ended adaptively{% endif %}</dd></div>
+  </dl>
+  {% if teaching_feedback %}
+  <section class="panel teaching-feedback" aria-labelledby="teaching-feedback-title">
+    <div class="stack-tight">
+      <span class="tag">Your teaching feedback</span>
+      <h2 id="teaching-feedback-title">How you taught the AI learner</h2>
+    </div>
+    <div class="feedback-columns">
+      <div>
+        <h3><span class="feedback-icon feedback-icon-positive" aria-hidden="true">✓</span> Strengths</h3>
+        <ul>
+          {% for item in teaching_feedback.strengths %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h3><span class="feedback-icon" aria-hidden="true">↑</span> Improvements</h3>
+        <ul>
+          {% for item in teaching_feedback.improvements %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="feedback-summary">
+      <h3><span class="feedback-icon" aria-hidden="true">≡</span> Summary</h3>
+      <p>{{ teaching_feedback.summary }}</p>
+    </div>
+  </section>
+  {% endif %}
+  {% if student_questionnaire_enabled %}
+  <form class="panel survey-form" method="post" action="/sessions/{{ session.id }}/survey" data-busy-form>
+    <div class="stack-tight">
+      <span class="tag">Student questionnaire</span>
+      <h2>Evaluation of EquitableT2L</h2>
+      <p class="subtle">First rate 12 statements, then answer six written reflection questions. Your answers are saved with this session.</p>
+    </div>
+    {% if survey_error %}<p class="form-error" role="alert">{{ survey_error }}</p>{% endif %}
+    {% for section_title, questions in quantitative_sections %}
+    <section class="survey-section" aria-labelledby="quant-section-{{ loop.index }}">
+      <div class="stack-tight">
+        <p class="survey-kicker">Agreement scale</p>
+        <h3 id="quant-section-{{ loop.index }}">{{ section_title }}</h3>
+      </div>
+      {% for key, statement in questions %}
+    <fieldset class="rating">
+      <legend><span class="question-number">{{ key|replace('q', '') }}</span>{{ statement }}</legend>
+      <div class="rating-options">
+        {% for n, scale_label in likert_scale.items() %}
+        <label class="rating-option">
+          <input type="radio" name="quant_{{ key }}" value="{{ n }}" required{% if form_values and form_values.get('quant_' ~ key) == n|string %} checked{% endif %}>
+          <span>{{ n }}</span>
+          <small>{{ scale_label }}</small>
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+      {% endfor %}
+    </section>
+    {% endfor %}
+
+    <section class="survey-section" aria-labelledby="written-reflection-title">
+      <div class="stack-tight">
+        <p class="survey-kicker">Written reflection</p>
+        <h3 id="written-reflection-title">Tell us about your experience</h3>
+        <p class="subtle">Please be as specific as you can. There are no right or wrong answers.</p>
+      </div>
+    <div class="field">
+        <label for="background">{{ background_prompt }} <span class="optional">Optional</span></label>
+        <textarea id="background" name="background" rows="4" maxlength="2000" placeholder="Share only what you are comfortable providing.">{{ form_values.get('background', '') if form_values else '' }}</textarea>
+    </div>
+      {% for key, question in qualitative_questions %}
+      <div class="field">
+        <label for="qual_{{ key }}"><span class="question-number">{{ loop.index }}</span>{{ question }}</label>
+        <textarea id="qual_{{ key }}" name="qual_{{ key }}" rows="4" maxlength="2000" required placeholder="Write your response…">{{ form_values.get('qual_' ~ key, '') if form_values else '' }}</textarea>
+      </div>
+      {% endfor %}
+    </section>
+    <button class="button button-primary button-full" type="submit">Submit HCI feedback</button>
+  </form>
+  {% else %}
+  <div class="completion-actions">
+    <a class="button button-primary" href="/history/{{ session.id }}">Review conversation</a>
+    <a class="button button-secondary" href="/study">Start another session</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

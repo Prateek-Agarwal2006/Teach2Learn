@@ -1,0 +1,22 @@
+[Unit]
+Description=EquitableT2L vLLM engine supervisor
+Documentation=file:///data/scratch/sanyam_jain_2022/teach2learn-portal/README.md
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+WorkingDirectory=/data/scratch/sanyam_jain_2022/teach2learn-portal
+ExecStart=/data/scratch/sanyam_jain_2022/teach2learn-portal/scripts/supervise-vllm.sh
+Restart=always
+RestartSec=5
+TimeoutStopSec=180
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Begin study · {{ app_name }}{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="intro-copy">
+    <span class="eyebrow">Research study</span>
+    <h1>Learn by teaching an AI student</h1>
+    <p class="lead">Pick a topic, explain it in your own words, and answer the student’s follow-up questions. A session takes about 10–15 minutes.</p>
+    <div class="study-facts" aria-label="Study details">
+      <span><strong>10–15 min</strong> per session</span>
+      <span><strong>3–6 turns</strong> with the learner</span>
+      <span><strong>Progress saved</strong> automatically</span>
+    </div>
+    <ol class="steps" aria-label="What happens in a session">
+      <li>Choose a subject, topic, and subtopic.</li>
+      <li>Teach the AI student for three to six turns, based on your explanations.</li>
+      <li>Answer four short questions about the experience.</li>
+    </ol>
+    <p class="intro-note">There are no right or wrong teaching styles—explain the topic naturally, as you would to another student.</p>
+  </div>
+  <div class="panel stack">
+    <div class="stack-tight">
+      <span class="step-label">Step 1 of 3</span>
+      <h2>Continue with your BITS account</h2>
+      <p class="subtle">Only verified <strong>@pilani.bits-pilani.ac.in</strong> Google accounts can take part.</p>
+    </div>
+    {% if google_oauth_enabled %}
+    <a class="button button-google button-full" href="/auth/google">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#4285f4" d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.91h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.4Z"/><path fill="#34a853" d="M12 22c2.7 0 4.97-.9 6.62-2.37l-3.24-2.54c-.9.6-2.05.96-3.38.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.62A10 10 0 0 0 12 22Z"/><path fill="#fbbc05" d="M6.4 13.92A6.02 6.02 0 0 1 6.08 12c0-.67.12-1.32.32-1.92V7.46H3.06A10 10 0 0 0 2 12c0 1.61.39 3.14 1.06 4.54l3.34-2.62Z"/><path fill="#ea4335" d="M12 5.95c1.47 0 2.8.51 3.84 1.5l2.88-2.88A9.66 9.66 0 0 0 12 2a10 10 0 0 0-8.94 5.46l3.34 2.62C7.19 7.71 9.4 5.95 12 5.95Z"/></svg>
+      <span>Continue with Google</span>
+    </a>
+    <p class="auth-note">No separate account or password is created.</p>
+    {% else %}
+    <p class="notice notice-error">Google sign-in is temporarily unavailable.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

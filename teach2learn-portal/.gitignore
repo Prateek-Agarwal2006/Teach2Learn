@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Deployment state and secrets
+.env
+.env.*
+!.env.example
+logs/
+*.pid
+.*.pid
+
+# Credentials. secrets/ holds a live SSH private key and the Google OAuth
+# client secret; deploy/oauth.env holds backup-relay hostnames and key paths.
+secrets/
+deploy/oauth.env
+*.pem
+*id_rsa*
+*id_ed25519*
+
+# Human-subjects research data: participant emails, transcripts, and the
+# replica backup. Never publish any of this.
+data/
+data-local/

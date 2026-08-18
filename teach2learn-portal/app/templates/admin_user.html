@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}User · Admin · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page admin-page">
+  <header class="page-header">
+    <a class="back-link" href="/admin"><span aria-hidden="true">←</span> All users</a>
+    <span class="eyebrow">Participant</span>
+    <h1>{{ user.metadata.name|default(user.external_id) }}</h1>
+    <p>{{ user.metadata.email|default('No email') }} · Joined {{ user.created_at }}</p>
+  </header>
+  <section class="admin-stats admin-stats-compact" aria-label="Participant totals">
+    <div><strong>{{ summary.sessions }}</strong><span>Sessions</span></div>
+    <div><strong>{{ summary.turns }}</strong><span>Teaching turns</span></div>
+    <div><strong>{{ summary.completed }}</strong><span>Completed</span></div>
+  </section>
+  <details class="admin-json admin-user-metadata"><summary>User metadata</summary><pre>{{ user.metadata|tojson(indent=2) }}</pre></details>
+  <h2 class="admin-section-title">Sessions</h2>
+  {% if sessions %}
+  <ul class="history-list">
+    {% for item in sessions %}
+    <li><a class="history-link" href="/admin/sessions/{{ item.id }}">
+      <span class="history-body"><span class="tag">{{ item.subject|replace('_', ' ')|upper }}</span><span class="history-title">{{ item.subtopic|default(item.topic) }}</span><span class="history-sub">{{ item.topic }} · {{ item.model_name|default(item.model) }}</span></span>
+      <span class="history-meta"><span class="status status-{{ item.status }}">{{ item.status|title }}</span><span>{{ item.turn }} turn{{ '' if item.turn == 1 else 's' }}</span><time datetime="{{ item.created_at }}">{{ item.created_label }}</time><span class="history-arrow" aria-hidden="true">→</span></span>
+    </a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state"><h2>No sessions</h2><p>This user has not started a session.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

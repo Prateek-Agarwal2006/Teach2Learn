@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Admin · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page admin-page">
+  <header class="page-header page-header-row">
+    <div class="page-header-text">
+      <span class="eyebrow">Restricted administration</span>
+      <h1>Study activity</h1>
+      <p>Browse participants, conversations, and turn-by-turn teaching evaluations.</p>
+    </div>
+  </header>
+  <section class="admin-stats" aria-label="Study totals">
+    <div><strong>{{ totals.users }}</strong><span>Users</span></div>
+    <div><strong>{{ totals.sessions }}</strong><span>Sessions</span></div>
+    <div><strong>{{ totals.turns }}</strong><span>Teaching turns</span></div>
+    <div><strong>{{ totals.active }}</strong><span>Active sessions</span></div>
+  </section>
+  <form class="admin-search" method="get" action="/admin" role="search">
+    <label for="admin-user-search">Find a participant</label>
+    <div><input id="admin-user-search" type="search" name="q" value="{{ query }}" placeholder="Search by name or email"><button class="button button-secondary" type="submit">Search</button>{% if query %}<a class="button button-quiet" href="/admin">Clear</a>{% endif %}</div>
+  </form>
+  {% if users %}
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead><tr><th>User</th><th>Sessions</th><th>Turns</th><th>Last session</th><th></th></tr></thead>
+      <tbody>
+      {% for user in users %}
+        <tr>
+          <td><strong>{{ user.metadata.name|default(user.external_id) }}</strong><span>{{ user.metadata.email|default('No email') }}</span></td>
+          <td>{{ user.session_count }}</td>
+          <td>{{ user.turn_count or 0 }}</td>
+          <td>{{ user.last_session_at|default('—', true) }}</td>
+          <td><a href="/admin/users/{{ user.id }}">Browse <span aria-hidden="true">→</span></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><h2>{{ 'No matching users' if query else 'No users yet' }}</h2><p>{{ 'Try a different name or email.' if query else 'Participant activity will appear here.' }}</p>{% if query %}<a class="button button-secondary" href="/admin">Clear search</a>{% endif %}</div>
+  {% endif %}
+</div>
+{% endblock %}

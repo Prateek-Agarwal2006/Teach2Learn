@@ -1,0 +1,22 @@
+[Unit]
+Description=EquitableT2L FastAPI portal
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sanyam_jain_2022
+Group=sanyam_jain_2022
+WorkingDirectory=/data/scratch/sanyam_jain_2022/teach2learn-portal
+EnvironmentFile=/data/scratch/sanyam_jain_2022/teach2learn-portal/.env
+Environment=PATH=/home/sanyam_jain_2022/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+ExecStart=/data/scratch/sanyam_jain_2022/teach2learn-portal/scripts/run.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

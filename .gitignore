@@ -1,0 +1,39 @@
+# Root-level guard. The nested teach2learn-portal/.gitignore repeats these
+# rules; both are kept so neither file alone is load-bearing for secrets.
+
+# Credentials. teach2learn-portal/secrets/ holds a live OpenSSH private key
+# and the Google OAuth client secret.
+teach2learn-portal/secrets/
+teach2learn-portal/deploy/oauth.env
+secrets/
+*.pem
+*id_rsa*
+*id_ed25519*
+
+# Environment files. .env.local holds live Sarvam and OpenRouter API keys.
+.env
+.env.*
+!.env.example
+
+# Human-subjects research data: 21 participants, 50 sessions, 440 messages,
+# plus the replica backup archive. Never publish any of this.
+teach2learn-portal/data/
+teach2learn-portal/data-local/
+data/
+data-local/
+
+# Runtime state
+logs/
+*.pid
+.*.pid
+
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.venv/
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Study session · {{ app_name }}{% endblock %}
+{% block body_class %}chat-page{% endblock %}
+{% block header_actions %}
+<div class="session-status" data-connection-status data-state="online" role="status" aria-live="polite">
+  <span class="status-dot" aria-hidden="true"></span>
+  <span data-connection-label>Session in progress</span>
+</div>
+{% endblock %}
+{% block content %}
+{% set current_turn = turn|default(0) %}
+{% set is_complete = session.status == 'completed' %}
+<section class="chat" data-chat data-session-id="{{ session.id }}" data-ws-url="{{ websocket_url|default('/ws/chat/' ~ session.id) }}" data-max-turns="{{ max_turns }}" data-turn="{{ current_turn }}" data-complete="{{ 'true' if is_complete else 'false' }}">
+  <header class="chat-header">
+    <div class="chat-heading">
+      <a class="back-link" href="/history"><span aria-hidden="true">←</span> Session history</a>
+      <h1>{{ session.subtopic|default(session.topic) }}</h1>
+      <p class="chat-meta">{{ session.subject|replace('_', ' ')|upper }} · {{ session.topic }} · {{ session.model_name|default(session.model) }}{% if session.lang and session.lang != 'en' %} · {{ supported_languages.get(session.lang, session.lang) }}{% endif %}</p>
+    </div>
+    <div class="turn-progress">
+      <p class="turn-progress-label"><strong data-turn-current>{{ current_turn }}</strong> turns taught · up to {{ max_turns }}</p>
+      <div class="progress-track" data-progress-track role="progressbar" aria-valuemin="0" aria-valuemax="{{ max_turns }}" aria-valuenow="{{ current_turn }}" aria-label="Teaching turns completed">
+        <span data-progress-bar style="width: {{ (current_turn / max_turns * 100)|round }}%"></span>
+      </div>
+    </div>
+  </header>
+  <div class="messages" data-messages aria-live="polite" aria-label="Conversation">
+    {% for message in messages %}
+    <article class="message message-{{ message.role }}">
+      <p class="message-author">
+        <span class="message-role">{{ 'You · teacher' if message.role == 'user' else 'AI student' }}</span>
+        <span class="message-turn">{% if message.turn %}Turn {{ message.turn }} · up to {{ max_turns }}{% else %}Opening question{% endif %}</span>
+      </p>
+      <div class="message-body">{{ message.content }}</div>
+    </article>
+    {% endfor %}
+    <div class="typing" data-typing hidden>
+      <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+      <span class="typing-label">AI learner is thinking</span>
+    </div>
+  </div>
+  <form class="composer" data-chat-form {% if is_complete %}hidden{% endif %}>
+    <p class="chat-error" data-chat-error role="alert" hidden></p>
+    <div class="composer-row">
+      <label class="sr-only" for="message">Your explanation</label>
+      <textarea id="message" name="message" rows="1" maxlength="2000" required placeholder="Explain {{ session.subtopic|default(session.topic) }} in your own words…" data-chat-input></textarea>
+      <button class="send-button" type="submit"><span>Send</span><span aria-hidden="true">↑</span></button>
+    </div>
+    <p class="composer-hint">
+      <span class="hint-keyboard">Enter to send · Shift + Enter for a new line</span>
+      <span class="hint-touch">Tap Send when your explanation is ready.</span>
+      <span class="character-count" data-character-count>0 / 2,000</span>
+    </p>
+  </form>
+  <div class="chat-complete" data-chat-complete role="status" {% if not is_complete %}hidden{% endif %}>
+    <p class="chat-complete-title"><span class="check-mark" aria-hidden="true">✓</span> Teaching session complete</p>
+    <p>Thanks for teaching. Your personalized feedback is ready.</p>
+    <a class="button button-primary" href="/sessions/{{ session.id }}/complete" data-complete-link>View teaching feedback</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Session history · {{ app_name }}{% endblock %}
+{% block content %}
+<div class="page page-default">
+  <header class="page-header page-header-row">
+    <div class="page-header-text">
+      <span class="eyebrow">Your learning</span>
+      <h1>Session history</h1>
+      <p>Review a previous conversation, or start a new topic.</p>
+    </div>
+    <a class="button button-primary" href="/study">New session</a>
+  </header>
+  {% if sessions %}
+  <ul class="history-list">
+    {% for item in sessions %}
+    <li>
+      <a class="history-link" href="/history/{{ item.id }}">
+        <span class="history-body">
+          <span class="tag">{{ item.subject|replace('_', ' ')|upper }}</span>
+          <span class="history-title">{{ item.subtopic|default(item.topic) }}</span>
+          <span class="history-sub">{{ item.topic }} · {{ item.model_name|default(item.model) }}</span>
+        </span>
+        <span class="history-meta">
+          <span class="status status-{{ item.status }}">{{ item.status|title }}</span>
+          <span>{{ item.turn }} turn{{ '' if item.turn == 1 else 's' }}</span>
+          <time datetime="{{ item.created_at }}">{{ item.created_label|default(item.created_at) }}</time>
+          <span class="history-arrow" aria-hidden="true">→</span>
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state">
+    <h2>No sessions yet</h2>
+    <p>Once you finish teaching a topic, the conversation is saved here.</p>
+    <a class="button button-primary" href="/study">Choose a topic</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
