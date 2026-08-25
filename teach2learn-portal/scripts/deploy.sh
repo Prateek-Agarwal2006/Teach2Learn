@@ -20,9 +20,11 @@ rsync -azv --itemize-changes \
   --exclude '.git/' \
   --exclude '.venv/' \
   --exclude '.env' \
+  --exclude '.env.local' \
   --exclude 'deploy/oauth.env' \
   --exclude 'secrets/' \
   --exclude 'data/' \
+  --exclude 'data-local/' \
   --exclude 'logs/' \
   --exclude '__pycache__/' \
   --exclude '.pytest_cache/' \
