@@ -12,6 +12,7 @@ from app.main import app, database, transcripts
 from app.services.translation import (
     SUPPORTED_LANGUAGES,
     TranslationService,
+    _SARVAM_CODES,
     _split_for_limit,
     normalize_language,
 )
@@ -39,6 +40,16 @@ def test_normalize_language_rejects_unknown_codes():
     assert normalize_language("HI") == "hi"
     assert normalize_language("klingon") == "en"
     assert normalize_language(None) == "en"
+
+
+def test_every_supported_language_has_a_sarvam_code():
+    """A language in the picker with no code raises KeyError inside _translate_chunk,
+    which the caller swallows into a silent untranslated passthrough."""
+    assert SUPPORTED_LANGUAGES.keys() == _SARVAM_CODES.keys()
+    # Sarvam spells Odia "od-IN"; the ISO 639-1 "or-IN" is rejected with a 400.
+    assert _SARVAM_CODES["or"] == "od-IN"
+    for code in SUPPORTED_LANGUAGES:
+        assert normalize_language(code) == code
 
 
 def test_passthrough_when_no_api_key(monkeypatch):
