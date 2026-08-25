@@ -3,6 +3,39 @@
 All notable changes to the EquitableT2L portal, kept in this folder alongside `multilingual_plan.md`.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-08-25
+
+### Added
+
+- Fourteen more teaching languages, taking the picker to all 22 Indic languages
+  `sarvam-translate:v1` accepts plus English: Gujarati, Odia, Urdu, Assamese, Bodo, Dogri,
+  Konkani, Kashmiri, Maithili, Manipuri, Nepali, Sanskrit, Santali, Sindhi.
+  Only `SUPPORTED_LANGUAGES` and `_SARVAM_CODES` in `app/services/translation.py` changed —
+  the picker, session metadata, and every render path read from those maps, so no route,
+  template, or test needed modification.
+- `tests/test_translation.py::test_every_supported_language_has_a_sarvam_code` — locks the two
+  maps to the same key set. A language offered in the picker with no entry in `_SARVAM_CODES`
+  raises `KeyError` inside `_translate_chunk`, which `translate()` catches and turns into a
+  silent untranslated passthrough, so map drift is invisible at runtime.
+
+### Notes
+
+- The earlier eight-language set was a scope choice in `multilingual_plan.md`, not a Sarvam
+  limitation; the plan's description of it as "Sarvam AI's supported Indic languages" was wrong.
+- Sarvam spells Odia **`od-IN`**, not the ISO 639-1 `or-IN`, which is rejected with a 400.
+  Codes are therefore kept as an explicit map rather than derived as `f"{key}-IN"`.
+- Sindhi (`sd-IN`) comes back in Devanagari rather than Perso-Arabic script.
+- Translation quality for the lower-resource additions is unverified beyond round-tripping one
+  sentence. Because the judge reads the translated-to-English answer, poor inbound translation
+  degrades evaluation and therefore Bloom completion. Worth a quality check per language before
+  enrolling participants in one.
+
+### Verification
+
+- Full suite: **61 passed** (60 before, +1 new test).
+- Live call to `sarvam-translate:v1` for all 22 non-English codes: every one returned translated
+  text in the expected script, **zero** silent passthroughs.
+
 ## [Unreleased] — 2026-08-18
 
 Multilingual expansion, implementing `multilingual_plan.md`. Participants can now teach in

@@ -28,8 +28,26 @@ SUPPORTED_LANGUAGES: dict[str, str] = {
     "ml": "Malayalam",
     "mr": "Marathi",
     "pa": "Punjabi",
+    "gu": "Gujarati",
+    "or": "Odia",
+    "ur": "Urdu",
+    "as": "Assamese",
+    "brx": "Bodo",
+    "doi": "Dogri",
+    "kok": "Konkani",
+    "ks": "Kashmiri",
+    "mai": "Maithili",
+    "mni": "Manipuri",
+    "ne": "Nepali",
+    "sa": "Sanskrit",
+    "sat": "Santali",
+    "sd": "Sindhi",
 }
 
+# Sarvam's own code for a language is not always the ISO 639-1 one: Odia is
+# "od-IN", not "or-IN". Sending the ISO code is rejected with a 400, which the
+# service would swallow into an untranslated passthrough, so keep this mapping
+# authoritative rather than deriving codes as f"{key}-IN".
 _SARVAM_CODES = {
     "en": "en-IN",
     "hi": "hi-IN",
@@ -40,6 +58,20 @@ _SARVAM_CODES = {
     "ml": "ml-IN",
     "mr": "mr-IN",
     "pa": "pa-IN",
+    "gu": "gu-IN",
+    "or": "od-IN",
+    "ur": "ur-IN",
+    "as": "as-IN",
+    "brx": "brx-IN",
+    "doi": "doi-IN",
+    "kok": "kok-IN",
+    "ks": "ks-IN",
+    "mai": "mai-IN",
+    "mni": "mni-IN",
+    "ne": "ne-IN",
+    "sa": "sa-IN",
+    "sat": "sat-IN",
+    "sd": "sd-IN",
 }
 
 # sarvam-translate:v1 accepts 2000 input characters, mayura:v1 only 1000.
