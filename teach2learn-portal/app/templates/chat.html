@@ -44,13 +44,20 @@
     <div class="composer-row">
       <label class="sr-only" for="message">Your explanation</label>
       <textarea id="message" name="message" rows="1" maxlength="2000" required placeholder="Explain {{ session.subtopic|default(session.topic) }} in your own words…" data-chat-input></textarea>
+      {% if voice_input_enabled %}
+      <button class="mic-button" type="button" data-mic-button aria-pressed="false" title="Dictate your explanation">
+        <span class="mic-icon" aria-hidden="true"></span>
+        <span class="sr-only">Dictate your explanation</span>
+      </button>
+      {% endif %}
       <button class="send-button" type="submit"><span>Send</span><span aria-hidden="true">↑</span></button>
     </div>
     <p class="composer-hint">
-      <span class="hint-keyboard">Enter to send · Shift + Enter for a new line</span>
+      <span class="hint-keyboard">Enter to send · Shift + Enter for a new line{% if voice_input_enabled %} · Mic to dictate{% endif %}</span>
       <span class="hint-touch">Tap Send when your explanation is ready.</span>
       <span class="character-count" data-character-count>0 / 2,000</span>
     </p>
+    {% if voice_input_enabled %}<p class="mic-status" data-mic-status role="status" aria-live="polite" hidden></p>{% endif %}
   </form>
   <div class="chat-complete" data-chat-complete role="status" {% if not is_complete %}hidden{% endif %}>
     <p class="chat-complete-title"><span class="check-mark" aria-hidden="true">✓</span> Teaching session complete</p>

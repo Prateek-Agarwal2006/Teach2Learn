@@ -1244,6 +1244,69 @@ body.chat-page {
   font-weight: 600;
 }
 
+.mic-button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tap);
+  height: var(--tap);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mic-button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.mic-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mic-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px 8px 4px 4px;
+  background: currentColor;
+  position: relative;
+}
+
+.mic-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 4px;
+  border: 2px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  transform: translateX(-50%);
+}
+
+.mic-button[data-state="recording"] {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--surface);
+  animation: mic-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--danger) 35%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--danger) 0%, transparent); }
+}
+
+.mic-status {
+  margin: 0;
+  color: var(--ink-subtle);
+  font-size: var(--step--2);
+}
+
 /* Enter only sends where there is a real keyboard, so the hint matches the
    behaviour the participant actually gets. */
 .hint-keyboard {

@@ -24,6 +24,17 @@ The OpenRouter judge runs inside the English zone: it reads the translated-to-En
 
 Set `SARVAM_API_KEY` to enable it. With no key, or when the API errors or times out, every call falls back to the original text and the session continues in English. `T2L_TRANSLATION_BACKEND=echo` prefixes text with the target language code, which exercises the boundary locally without a key. Keep `SARVAM_MODEL=sarvam-translate:v1`: it accepts 2000 input characters, matching the portal's input cap, while `mayura:v1` accepts only 1000.
 
+## Voice input
+
+The chat composer has an optional mic button (`app/services/transcription.py`) that records with the browser's `MediaRecorder`, re-encodes the clip to WAV client-side (`app/static/js/app.js`), and uploads it to `POST /api/transcribe`, which forwards it to a speech-to-text provider and inserts the returned text into the message box. The audio itself is never written to disk or the database — only the resulting text is kept, exactly like a typed answer.
+
+Two backends are available via `T2L_TRANSCRIPTION_BACKEND`:
+
+- `sarvam` (default) calls Sarvam's own speech-to-text model (`SARVAM_STT_MODEL=saaras:v3`, same `SARVAM_API_KEY` as translation) and has real training data for all 22 teaching languages, including the low-resource ones.
+- `openrouter` calls Whisper large-v3 through OpenRouter (`WHISPER_MODEL`, same `OPENROUTER_API_KEY` as the feedback judge). Whisper only has meaningful training data for about 15 of the 22 languages — Odia, Bodo, Dogri, Konkani, Kashmiri, Maithili, Manipuri, and Santali transcribe poorly regardless of the language hint sent.
+
+`echo` returns a placeholder for local testing without a key; `off` hides the mic button entirely. The client-side WAV re-encode exists because Sarvam's API rejects the `audio/webm;codecs=opus` container Chrome's `MediaRecorder` produces by default, despite documentation listing WebM as supported — WAV sidesteps that and every other provider's format quirks.
+
 ## Configuration
 
 Copy `.env.example` to `.env` and change values there. Keep `.env` private; it may contain deployment-specific paths and secrets. `T2L_LOG_LEVEL` controls verbosity and `T2L_LOGGING_ENABLED=false` disables application logging. Leave `T2L_LOG_FILE` empty to use the systemd journal, or set it to a writable path for an additional file log.

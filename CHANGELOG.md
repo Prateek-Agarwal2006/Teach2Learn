@@ -3,6 +3,58 @@
 All notable changes to the EquitableT2L portal, kept in this folder alongside `multilingual_plan.md`.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-09-02
+
+Voice dictation for the chat composer: a mic button that transcribes speech to text server-side,
+so participants can talk instead of type. No audio is ever persisted — only the resulting text.
+
+### Added
+
+- `app/services/transcription.py` — `TranscriptionService` with two backends: `sarvam` (default,
+  Sarvam's Saaras speech-to-text model, same `SARVAM_API_KEY` as translation) and `openrouter`
+  (Whisper large-v3 via OpenRouter, same `OPENROUTER_API_KEY` as the feedback judge). Mirrors
+  `translation.py`'s backend/echo/off pattern, but raises on failure rather than passing through,
+  since there is no safe fallback text for audio.
+- `POST /api/transcribe` (`app/main.py`) — session-owned, active-session-only, 15 MB cap, exempted
+  from the general 256 KB request-size middleware limit. Reads the upload into memory, forwards it,
+  and discards it; nothing is written to disk or the database.
+- Mic button in the chat composer (`app/templates/chat.html`, `app/static/js/app.js`,
+  `app/static/css/app.css`), shown only when `voice_input_enabled` (i.e. a backend is actually
+  configured). Records with `MediaRecorder`, re-encodes to WAV client-side via the Web Audio API,
+  uploads on stop, and appends the transcribed text into the textbox — dictated text then flows
+  through the existing translation/inference pipeline exactly like typed text.
+- `Permissions-Policy` raised from `microphone=()` to `microphone=(self)` so the mic can be used at
+  all; the general request-size middleware check now special-cases `/api/transcribe`'s larger cap.
+- `tests/test_transcription.py` — 12 test functions covering both backends, the language-hint
+  behavior, echo mode, endpoint auth, and mic-button visibility.
+
+### Fixed
+
+- Sarvam's `/speech-to-text` endpoint returns 400 `Invalid file type` for the exact
+  `audio/webm;codecs=opus` container Chrome's `MediaRecorder` produces by default — despite Sarvam's
+  own documentation listing WebM as a supported format. Fixed by decoding the recorded clip and
+  re-encoding it to WAV in the browser before upload (`audioBlobToWav` in `app.js`), which is
+  accepted by both backends and avoids further provider-specific container/codec surprises.
+
+### Notes
+
+- Language coverage differs sharply by backend: Sarvam (Saaras v3) has real training data for all
+  22 teaching languages; OpenRouter's Whisper large-v3 only for about 15 — Odia, Bodo, Dogri,
+  Konkani, Kashmiri, Maithili, Manipuri, and Santali transcribe poorly on Whisper regardless of the
+  language hint sent, because Whisper wasn't meaningfully trained on them. `sarvam` is the default
+  specifically because this app's teaching-language picker includes all of those.
+- The mic button transcribes speech to text in whatever language was spoken; it does not translate.
+  Translation to English (for inference/the judge) happens afterward through the existing
+  `translation.py` boundary, same as a typed answer.
+- No new Python dependency; both backends are called over the existing `httpx`.
+
+### Verification
+
+- Full suite: **78 passed** (69 before, +9 net new).
+- Live calls against the running app with real `SARVAM_API_KEY` and `OPENROUTER_API_KEY`: confirmed
+  auth, multipart upload, and response parsing for both backends end-to-end via the browser. Found
+  and fixed the Sarvam WebM rejection through a real microphone recording, not just synthetic audio.
+
 ## [Unreleased] — 2026-08-25
 
 ### Added

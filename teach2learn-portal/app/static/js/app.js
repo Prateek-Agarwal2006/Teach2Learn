@@ -120,6 +120,8 @@
     const connection = $('[data-connection-status]');
     const connectionLabel = $('[data-connection-label]');
     const characterCount = $('[data-character-count]', chat);
+    const micButton = $('[data-mic-button]', chat);
+    const micStatus = $('[data-mic-status]', chat);
     const draftKey = `teach2learn-draft-${sessionId}`;
 
     let turn = Number(chat.dataset.turn) || 0;
@@ -297,6 +299,137 @@
       autosize();
       try { sessionStorage.setItem(draftKey, input.value); } catch (_) { /* Storage can be disabled. */ }
     });
+
+    /* Voice dictation: record with MediaRecorder, upload the clip once the
+       participant stops it, and append whatever the server transcribes. */
+    if (micButton) {
+      const canRecord = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+      if (!canRecord) {
+        micButton.hidden = true;
+      } else {
+        let recorder = null;
+        let chunks = [];
+        let recording = false;
+
+        const setMicStatus = (text) => {
+          if (!micStatus) return;
+          micStatus.textContent = text;
+          micStatus.hidden = !text;
+        };
+
+        const setMicState = (state) => {
+          micButton.dataset.state = state;
+          micButton.setAttribute('aria-pressed', String(state === 'recording'));
+          micButton.disabled = state === 'transcribing';
+        };
+
+        const stopTracks = () => {
+          recorder?.stream?.getTracks().forEach((track) => track.stop());
+        };
+
+        /* Transcription providers disagree on which recorded container/codec
+           they accept (Sarvam rejects the webm/opus MediaRecorder produces).
+           WAV is the one format every provider takes, so re-encode to it
+           client-side rather than gambling on codec support server-side. */
+        const audioBlobToWav = async (blob) => {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          const context = new AudioCtx();
+          try {
+            const buffer = await context.decodeAudioData(await blob.arrayBuffer());
+            const channels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const frameCount = buffer.length;
+            const interleaved = new Float32Array(frameCount * channels);
+            for (let channel = 0; channel < channels; channel++) {
+              const data = buffer.getChannelData(channel);
+              for (let i = 0; i < frameCount; i++) interleaved[i * channels + channel] = data[i];
+            }
+            const bytesPerSample = 2;
+            const blockAlign = channels * bytesPerSample;
+            const dataSize = interleaved.length * bytesPerSample;
+            const view = new DataView(new ArrayBuffer(44 + dataSize));
+            const writeString = (offset, text) => {
+              for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+            };
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + dataSize, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, channels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * blockAlign, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, dataSize, true);
+            let offset = 44;
+            for (let i = 0; i < interleaved.length; i++, offset += 2) {
+              const sample = Math.max(-1, Math.min(1, interleaved[i]));
+              view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+            }
+            return new Blob([view], { type: 'audio/wav' });
+          } finally {
+            context.close();
+          }
+        };
+
+        const uploadRecording = async (recordedBlob) => {
+          setMicState('transcribing');
+          setMicStatus('Transcribing…');
+          try {
+            const blob = await audioBlobToWav(recordedBlob);
+            const body = new FormData();
+            body.append('session_id', sessionId);
+            body.append('audio', blob, 'recording.wav');
+            const response = await fetch('/api/transcribe', { method: 'POST', body });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(payload.detail || 'Could not transcribe that recording.');
+            const text = String(payload.text || '').trim();
+            if (text) {
+              const prefix = input.value && !/\s$/.test(input.value) ? ' ' : '';
+              input.value += prefix + text;
+              input.dispatchEvent(new Event('input'));
+            }
+            setMicStatus('');
+          } catch (error) {
+            setMicStatus(error.message || 'Could not transcribe that recording.');
+          } finally {
+            setMicState('idle');
+          }
+        };
+
+        micButton.addEventListener('click', async () => {
+          if (recording) {
+            recording = false;
+            recorder?.stop();
+            return;
+          }
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            chunks = [];
+            recorder = new MediaRecorder(stream);
+            recorder.addEventListener('dataavailable', (event) => {
+              if (event.data.size > 0) chunks.push(event.data);
+            });
+            recorder.addEventListener('stop', () => {
+              stopTracks();
+              const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+              if (blob.size > 0) uploadRecording(blob);
+              else setMicState('idle');
+            });
+            recorder.start();
+            recording = true;
+            setMicState('recording');
+            setMicStatus('Recording… tap the mic again to stop.');
+          } catch (_) {
+            setMicState('idle');
+            setMicStatus('Microphone access was blocked. Allow it in your browser to dictate.');
+          }
+        });
+      }
+    }
 
     try {
       const draft = sessionStorage.getItem(draftKey);

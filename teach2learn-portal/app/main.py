@@ -12,7 +12,7 @@ from typing import Any
 import uvicorn
 import httpx
 from authlib.integrations.base_client.errors import OAuthError
-from fastapi import FastAPI, Form, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, Form, Request, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -31,6 +31,7 @@ from app.services.inference import (
 )
 from app.services.study_evaluator import evaluate_conversation
 from app.services.teaching_feedback import build_teaching_feedback, parse_final_teaching_feedback
+from app.services.transcription import TranscriptionUnavailableError, get_transcription_service
 from app.services.transcripts import TranscriptStore
 from app.services.translation import (
     SUPPORTED_LANGUAGES,
@@ -82,6 +83,9 @@ final_feedback_tasks: dict[str, asyncio.Task] = {}
 IS_PRODUCTION = os.getenv("APP_ENV", "development") == "production"
 PUBLIC_ORIGIN = os.getenv("PUBLIC_ORIGIN", "https://learnbyteaching.sasanktumpati.com").rstrip("/")
 MAX_REQUEST_BYTES = max(1024, int(os.getenv("MAX_REQUEST_BYTES", str(256 * 1024))))
+# Voice recordings are audio, not JSON/form bodies, so they get their own much
+# larger ceiling; ~2 minutes of compressed webm/opus comfortably fits in 15 MB.
+MAX_AUDIO_BYTES = max(MAX_REQUEST_BYTES, int(os.getenv("MAX_AUDIO_BYTES", str(15 * 1024 * 1024))))
 APP_NAME = os.getenv("APP_NAME", "EquitableT2L").strip() or "EquitableT2L"
 ADMIN_EMAILS = tuple(
     item.strip().lower()
@@ -182,9 +186,10 @@ templates = Jinja2Templates(directory="app/templates")
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     content_length = request.headers.get("content-length")
+    size_limit = MAX_AUDIO_BYTES if request.url.path == "/api/transcribe" else MAX_REQUEST_BYTES
     if content_length:
         try:
-            too_large = int(content_length) > MAX_REQUEST_BYTES
+            too_large = int(content_length) > size_limit
         except ValueError:
             too_large = True
     else:
@@ -210,7 +215,7 @@ async def security_headers(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(self), geolocation=()"
     return response
 
 
@@ -743,7 +748,42 @@ async def session_page(request: Request, session_id: str):
         session=view,
         messages=await localized_messages(transcripts.read(session_id), view["lang"]),
         turn=view["turn"],
+        voice_input_enabled=get_transcription_service().is_enabled(),
     )
+
+
+@app.post("/api/transcribe")
+async def transcribe_audio(
+    request: Request,
+    session_id: str = Form(...),
+    audio: UploadFile = File(...),
+):
+    session = owned_session(participant_for(request), session_id)
+    if not session:
+        return JSONResponse({"detail": "This session is unavailable."}, status_code=404)
+    if session["status"] != "active":
+        return JSONResponse({"detail": "This session is already complete."}, status_code=400)
+
+    audio_bytes = await audio.read()
+    if not audio_bytes:
+        return JSONResponse({"detail": "No audio received."}, status_code=400)
+    if len(audio_bytes) > MAX_AUDIO_BYTES:
+        return JSONResponse({"detail": "That recording is too long."}, status_code=413)
+
+    transcriber = get_transcription_service()
+    try:
+        text = await transcriber.transcribe(
+            audio_bytes,
+            audio.filename or "recording.webm",
+            audio.content_type or "audio/webm",
+            language_for(session),
+        )
+    except TranscriptionUnavailableError:
+        return JSONResponse({"detail": "Voice input is not available right now."}, status_code=503)
+    except Exception:
+        logger.exception("transcription_failed session_id=%s", session_id)
+        return JSONResponse({"detail": "Could not transcribe that recording. Try again."}, status_code=502)
+    return JSONResponse({"text": text})
 
 
 @app.websocket("/ws/chat/{session_id}")

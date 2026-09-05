@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "teach2learn-portal",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd teach2learn-portal && set -a && source .env.local && set +a && exec .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8010"
+      ],
+      "port": 8010
+    }
+  ]
+}
