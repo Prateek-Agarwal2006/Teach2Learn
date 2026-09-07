@@ -30,6 +30,31 @@ def test_fake_generation_is_deterministic_and_injects_topic():
     assert result == "I think I follow your explanation of Graph traversal. Could you give me a concrete example and explain why it works?"
 
 
+def test_scripted_subtopic_walks_a_different_question_each_turn():
+    service = InferenceService(InferenceConfig(backend="fake"))
+    history: list[dict[str, str]] = [
+        {"role": "user", "content": "The lesson is starting. Ask your first question only."}
+    ]
+    asked = []
+    # Walk the whole bank, not just the four turns a knowledge_threshold session uses,
+    # so every entry is exercised through clean_output and the "?" fallback guard.
+    for turn in range(7):
+        question = asyncio.run(service.generate("OS", "CPU scheduling", messages=history))
+        asked.append(question)
+        history.append({"role": "assistant", "content": question})
+        history.append({"role": "user", "content": f"Teacher answer {turn}."})
+
+    assert len(set(asked)) == len(asked)
+    assert all(question.endswith("?") for question in asked)
+    assert "CPU scheduling" in asked[0]
+
+
+def test_unscripted_subtopic_keeps_the_generic_follow_up():
+    service = InferenceService(InferenceConfig(backend="fake"))
+    result = asyncio.run(service.generate("OS", "Page replacement", "How does LRU work?"))
+    assert result == "I think I follow your explanation of Page replacement. Could you give me a concrete example and explain why it works?"
+
+
 def test_subject_aliases_and_topics():
     assert normalize_subject("OOP and Java") == "oop_java"
     assert "Virtual memory" in topics_for("Operating Systems")

@@ -190,6 +190,32 @@ class Backend(Protocol):
     def unload(self, loaded: Any) -> None: ...
 
 
+# Scripted learner questions for local development, keyed on the selected subtopic
+# exactly as it reaches the model in "Selected topic:". Only Operating Systems ->
+# Threads and scheduling -> CPU scheduling is covered; every other subtopic keeps the
+# single generic follow-up below. Index 0 opens the lesson, the rest are follow-ups
+# walked by turn. Every entry must end in "?" or generate_detailed replaces it with the
+# generic fallback question.
+_FAKE_LEARNER_SCRIPTS: dict[str, tuple[str, ...]] = {
+    "cpu scheduling": (
+        "Hi! I’m ready to learn about CPU scheduling. Why does the operating system need to "
+        "choose which process runs next at all?",
+        "That makes sense so far. If two processes are both ready at the same moment, how does "
+        "the scheduler actually decide between them?",
+        "Could you walk me through a small example with three processes and show what order "
+        "round-robin would run them in?",
+        "You mentioned the time quantum. What goes wrong if it is set far too small, and what "
+        "goes wrong if it is set far too large?",
+        "How is a scheduler that has to meet a real-time deadline different from one that is "
+        "just trying to keep the CPU busy?",
+        "If I told you a scheduler was fair, how would you test that claim? What would you "
+        "actually measure?",
+        "Where does the cost of a context switch show up in all of this, and does it change "
+        "which algorithm you would pick?",
+    ),
+}
+
+
 class FakeBackend:
     """Deterministic backend used by development, CI, and API tests."""
 
@@ -223,8 +249,16 @@ class FakeBackend:
         question = next((m["content"] for m in reversed(messages) if m["role"] == "user"), "")
         topic_match = re.search(r"Selected topic:\s*(.+)", messages[0]["content"] if messages else "")
         topic = topic_match.group(1).strip() if topic_match else "the selected topic"
+        script = _FAKE_LEARNER_SCRIPTS.get(topic.strip().lower())
         if "lesson is starting" in question.lower() or "[system trigger]" in question.lower():
+            if script:
+                return script[0]
             return f"Hi! I’m ready to learn about {topic}. What problem does this idea help us solve?"
+        if script:
+            # One question already asked per assistant turn in the history; clamp so a
+            # session that runs long repeats the last question rather than raising.
+            asked = sum(1 for message in messages if message.get("role") == "assistant")
+            return script[min(max(asked, 1), len(script) - 1)]
         return f"I think I follow your explanation of {topic}. Could you give me a concrete example and explain why it works?"
 
     def unload(self, loaded: Any) -> None:
