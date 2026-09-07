@@ -37,3 +37,6 @@ wheels/
 .venv/
 .pytest_cache/
 .ruff_cache/
+
+# Generated from the matching .md via Chrome headless; not tracked.
+*.pdf

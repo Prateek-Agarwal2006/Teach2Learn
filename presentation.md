@@ -53,8 +53,7 @@ Built in phases, each verified before moving on:
 | 3 | Language picker on the topic form; language shown in the chat header |
 | 4 | Tests |
 | 5 | Documentation |
-| 6 | End-to-end Hindi session, first offline, then against live API keys |
-| 7 | Expanded from 8 languages to all 22 |
+| 6 | Expanded from 8 languages to all 22 |
 
 ---
 

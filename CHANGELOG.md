@@ -3,6 +3,56 @@
 All notable changes to the EquitableT2L portal, kept in this folder alongside `multilingual_plan.md`.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-09-07
+
+### Added
+
+- `scripts/check_languages.py` — exercises every supported teaching language against the real
+  fine-tuned adapters. `--baseline` checks English-only question variety; `--sweep` runs a
+  three-turn lesson per language and records both boundary crossings. `--subject` selects
+  `cp`/`dsa`/`oop_java`/`os`, which also selects the base model and LoRA.
+- `scripts/pack_for_server.py` — emits one self-contained program on stdout for piping into
+  ssh, injecting a base64 copy of `translation.py` into `sys.modules` because the deployed
+  tree predates the multilingual work. `--with-key` embeds `SARVAM_API_KEY` from `.env.local`;
+  it refuses to write to a tty so the key cannot land in scrollback.
+- `LANGUAGE_TEST_RESULTS.md` — the full 22-language × 4-subject results. The PDF is
+  generated from it and is not tracked.
+
+### Verification
+
+- 22 languages × 4 subjects × 3 turns on the GPU host: **261 turns, 87 of 88 cells,
+  0 untranslated passthroughs, 0 script leaks into the English zone.** Nothing was written to
+  the host — no file created, no config edited, database and transcripts untouched.
+- 13 languages ready (fidelity and fluency both ≥ 4.0 on every subject); 7 need a native
+  reader; 2 blocked.
+
+### Known limitations — translation layer
+
+- **Sindhi is unusable.** Sarvam returns Devanagari, while Perso-Arabic is the dominant
+  script. Fidelity 1.0–1.3 on all four base models, so the fault is the translation layer,
+  not any adapter. `sarvam-translate:v1` rejects `output_script` outright (HTTP 400 on
+  `roman`, `fully-native`, `spoken-form-in-native`), so it cannot be fixed from here.
+  Remove Sindhi from the language picker.
+- **Sarvam can return non-translation payloads.** One English sentence translated to `pa-IN`
+  reproducibly comes back as a fragment of Sarvam's own OpenAPI schema. Because
+  `translation.py` returns its input on failure and this is not a failure, that JSON would
+  reach the participant and the transcript as their own answer.
+- `SARVAM_TIMEOUT_SECONDS` defaults to 5, which dropped roughly one crossing in sixty under
+  load. 20 seconds plus retries cleared all of them.
+- The schema-payload check and the retry currently live only in the sweep harness. Both
+  belong on the `translation.py` path before participants run.
+
+### Fixed — test harness
+
+- The leak detector omitted Meetei Mayek (`U+ABC0–ABFF`), the script Sarvam returns for
+  Manipuri, so a Manipuri leak would have scored zero — an absent alarm, not a passing test.
+- The opening question crossed the boundary unchecked, sitting outside the turn loop.
+- A dead Sarvam key produced six clean-looking rows, because `translation.py` returns its
+  input on failure and the records carried no error field.
+- The first fix for that was too aggressive and killed three sweeps over single transient
+  timeouts. Now: retry three times with backoff, fail that one language, abort only after
+  three consecutive failures.
+
 ## [Unreleased] — 2026-09-02
 
 Voice dictation for the chat composer: a mic button that transcribes speech to text server-side,
@@ -25,8 +75,17 @@ so participants can talk instead of type. No audio is ever persisted — only th
   through the existing translation/inference pipeline exactly like typed text.
 - `Permissions-Policy` raised from `microphone=()` to `microphone=(self)` so the mic can be used at
   all; the general request-size middleware check now special-cases `/api/transcribe`'s larger cap.
-- `tests/test_transcription.py` — 12 test functions covering both backends, the language-hint
+- `tests/test_transcription.py` — 10 test functions covering both backends, the language-hint
   behavior, echo mode, endpoint auth, and mic-button visibility.
+- Scripted learner questions for one subtopic under `INFERENCE_BACKEND=fake`:
+  `_FAKE_LEARNER_SCRIPTS` in `app/services/inference.py` gives Operating Systems →
+  Threads and scheduling → **CPU scheduling** an opening question plus six follow-ups,
+  walked by the number of learner turns already in the history. Local sessions on that
+  subtopic now read as a progressing lesson instead of repeating one line. A normal session
+  shows four of them: `knowledge_threshold` completion fires at turn 4, so the last two are
+  reached only if a session runs to `max_turns`.
+- `tests/test_inference.py` — `test_scripted_subtopic_walks_a_different_question_each_turn`
+  and `test_unscripted_subtopic_keeps_the_generic_follow_up`.
 
 ### Fixed
 
@@ -47,13 +106,25 @@ so participants can talk instead of type. No audio is ever persisted — only th
   Translation to English (for inference/the judge) happens afterward through the existing
   `translation.py` boundary, same as a typed answer.
 - No new Python dependency; both backends are called over the existing `httpx`.
+- This is a stub, not a model or a dataset. `FakeBackend` never loaded weights or training
+  data; it returned one hardcoded sentence for every non-opening turn, which is why every
+  local follow-up asked for an example. The scripted questions cycle by turn number and
+  still do not react to what the participant actually typed.
+- Every scripted entry must end in `?`. `generate_detailed` treats a question-mark-free
+  generation as a failed one and substitutes "Could you give me one concrete example that
+  shows how this works?" — the exact repetition this replaces.
+- The two evaluator branches of `FakeBackend` are deliberately untouched. Their fixed
+  `Score: Medium` is what drives `knowledge_threshold` completion at turn 4; varying it
+  would change session length and break the documented local baseline.
 
 ### Verification
 
-- Full suite: **78 passed** (69 before, +9 net new).
+- Full suite: **73 passed** — 61 before, +10 voice-input tests, +2 scripted-learner tests.
 - Live calls against the running app with real `SARVAM_API_KEY` and `OPENROUTER_API_KEY`: confirmed
   auth, multipart upload, and response parsing for both backends end-to-end via the browser. Found
   and fixed the Sarvam WebM rejection through a real microphone recording, not just synthetic audio.
+- Full local session on CPU scheduling: four distinct learner questions, then completion at
+  turn 4 on `knowledge_threshold` and 9 transcript rows — matching the existing baseline.
 
 ## [Unreleased] — 2026-08-25
 
