@@ -5,10 +5,15 @@ app/services/ has inference.py but no translation.py. Everything else
 check_languages.py needs is there and API-identical -- training_contract_messages,
 generate_detailed, GenerationResult, DEFAULT_SUBJECT_MODELS, topics.py.
 
-So rather than splitting the run across two machines, this packs the one missing
-module into the piped bytes. The emitted program registers an embedded copy of
+So rather than splitting the run across two machines, this packs what is missing
+into the piped bytes. The emitted program registers an embedded copy of
 translation.py as `app.services.translation` in sys.modules before
-check_languages.py imports it, then runs check_languages.py verbatim.
+check_languages.py imports it, then runs check_languages.py.
+
+lessons.json is embedded the same way and for the same reason: the harness reads
+its teacher scripts from the repo root, and nothing of ours exists on the host's
+filesystem. The stderr line reports the bank version and how many of its lessons
+nobody has reviewed yet, so an unreviewed run cannot be started by accident.
 
 Nothing is written on the server: the program arrives on stdin, and the module
 only ever exists in that process's memory.
@@ -36,6 +41,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import json
 import os
 import re
 import sys
@@ -44,6 +50,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TRANSLATION = ROOT / "app" / "services" / "translation.py"
 HARNESS = ROOT / "scripts" / "check_languages.py"
+# The lesson bank sits at the repo root, one level above the portal, because the RAG
+# tool's harness reads the same file.
+LESSONS = ROOT.parent / "lessons.json"
 
 # check_languages.py opens with `from __future__ import annotations`, which the
 # compiler requires to be the first statement in the file. The prelude has to run
@@ -119,9 +128,40 @@ def main() -> None:
         env_lines = '_pack_os.environ.setdefault("T2L_TRANSLATION_BACKEND", "off")'
         print("packed without a Sarvam key (--baseline only)", file=sys.stderr)
 
+    if not LESSONS.exists():
+        sys.exit(f"{LESSONS} not found; the harness has no teacher scripts without it")
+    bank = json.loads(LESSONS.read_text())
+    lessons = bank.get("lessons") or []
+    unreviewed = [item["id"] for item in lessons if not item.get("reviewed")]
+    print(
+        f"packed lesson bank v{bank.get('version')}: {len(lessons)} lessons, "
+        f"{len(unreviewed)} unreviewed",
+        file=sys.stderr,
+    )
+    if unreviewed:
+        print(
+            "  the run will need --allow-unreviewed and its results are stamped unreviewed",
+            file=sys.stderr,
+        )
+
     encoded = base64.b64encode(TRANSLATION.read_bytes()).decode()
     sys.stdout.write(PRELUDE.format(translation=encoded, env=env_lines))
     harness = HARNESS.read_text().replace("from __future__ import annotations\n", "", 1)
+
+    # The harness declares this at module level, so setting it from the prelude would
+    # be overwritten a moment later. Replacing the declaration is ordering-proof; the
+    # assert stops the pack silently shipping a lessonless harness if it is renamed.
+    declaration = "PACKED_LESSONS: dict[str, Any] | None = None"
+    if harness.count(declaration) != 1:
+        sys.exit(f"check_languages.py no longer declares {declaration!r}; update this packer")
+    packed_bank = base64.b64encode(LESSONS.read_bytes()).decode()
+    harness = harness.replace(
+        declaration,
+        "PACKED_LESSONS: dict[str, Any] | None = __import__('json').loads(\n"
+        f'    __import__("base64").b64decode("{packed_bank}").decode("utf-8")\n'
+        ")",
+        1,
+    )
     sys.stdout.write(harness)
 
 
