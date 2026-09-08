@@ -1,0 +1,168 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T13:23:27+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "oop_java/oop-design/polymorphism"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 1,
+    "languages": [
+      "brx"
+    ],
+    "judge_model": "openai/gpt-5.6-luna",
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Polymorphism",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T13:23:27+00:00",
+      "sweep": [
+        {
+          "code": "brx",
+          "language": "Bodo",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "A superclass reference can point at any subclass object, so one variable can hold different concrete types over the life of the program.",
+              "teacher_local": "मोनसे सुपारक्लास रेफारेन्सआ जायखिजाया साबक्लास अबजेक्टखौ दिन्थिनो हायो, बेनिखायनो मोनसे भेरियेबोलआ प्रग्रामनि जिउआव गुबुन गुबुन कंक्रीट रोखोमफोरखौ लाखिनो हायो।",
+              "teacher_back_en": "A superclass reference can refer to any subclass object, so a variable can hold different concrete types throughout the program.",
+              "question_en": "Okay, I'm following you. Can you give me an example of how this works with different types of animals?",
+              "question_local": "थार, आं नोंखौ उनसंगासिनो दं। नोंथाङा गुबुन गुबुन रोखोमनि जुनारफोरजों बेयो माबोरै खामानि मावो बेनि मोनसे बिदिन्थि होनो हागोन नामा?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed. It introduces the concept of polymorphism but lacks depth.\nImprovement: Provide more examples or clarifications to enhance understanding.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The explanation is correct but could be more detailed. It introduces the concept of polymorphism but lacks depth.",
+                "improvement": "Provide more examples or clarifications to enhance understanding."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "पूर्ण तकनीकी अर्थ सही बिदिन्थिनो।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "Natural and fluent Bodo in the correct script."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Which overriding method runs is decided at run time from the object's actual class, not at compile time from the type of the reference.",
+              "teacher_local": "मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्थियाव मावखान्",
+              "teacher_back_en": "In the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in the process of implementation, in theIn the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process, in the process,",
+              "question_en": "That makes perfect sense! How would this work with a real-world example, like a software project managing different types of employees?",
+              "question_local": "बेयो थार ओंथि होयो! बेयो गुबुन गुबुन रोखोमनि मावसाफोरखौ सामलायग्रा मोनसे सफ्टवेयार प्रजेक्ट बायदि मोनसे नंगुबै मुलुगनि बिदिन्थिनि थाखाय माबोरै खामानि मावगोन?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: High\nStrength: The teacher provided a clear and detailed explanation of polymorphism, using an animal hierarchy example to illustrate the concept effectively.\nImprovement: The teacher could have included more examples or scenarios to further solidify the student's understanding.",
+                "level": "Apply",
+                "score": "High",
+                "strength": "The teacher provided a clear and detailed explanation of polymorphism, using an animal hierarchy example to illustrate the concept effectively.",
+                "improvement": "The teacher could have included more examples or scenarios to further solidify the student's understanding."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "The translation does not convey the source meaning."
+              },
+              "fluency": {
+                "score": 3,
+                "note": "बुझिनो हायो, नाथाय बाक्यराव खस्थो आरो स्वाभाविक नङा।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "That is what lets a single loop over a list of shapes call draw on each one without knowing or caring which shape it is holding.",
+              "teacher_local": "बेयो मोनसे फारिलाइ महरफोरनि सायाव मोनसे लुपखौ मोनफ्रोमबो महरखौ मिथिनाय एबा जोथोन लायालासेनो बोनो होयो।",
+              "teacher_back_en": "This allows a loop on array patterns without having to know or maintain each pattern.",
+              "question_en": "Hmm, that doesn't quite sound right to me. Can you explain how polymorphism would help in a situation where we have different types of employees with similar attributes?",
+              "question_local": "हम्म, बेयो आंनो थार बादि खोनाया। नोंथाङा फोरमायनो हागोन नामादि माबोरै पलिमरफिज्मआ मोनसे थासारियाव मदद खालामगोन जेराव जोंहा एखे आखुथाय गोनां गुबुन गुबुन रोखोमनि मावसाफोर दं?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The explanation is incorrect and doesn't relate to the concept of polymorphism.\nImprovement: The teacher should have clarified how polymorphism can be applied in a real-world scenario, such as using a base class to handle different types of employees.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The explanation is incorrect and doesn't relate to the concept of polymorphism.",
+                "improvement": "The teacher should have clarified how polymorphism can be applied in a real-world scenario, such as using a base class to handle different types of employees."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "मुख्य अर्थ सुरक्षित है, लेकिन “draw” का तकनीकी आह्वान थोड़ा अस्पष्ट है."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "स्पष्ट आ जायगायाव स्वाभाविक, नाथाय “नामादि” आरो बाक्य-संरचना खम सुधारनो हागोन।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what's this polymorphism thing all about?",
+          "opening_local": "हाय! आं सोलोंनो थाखाय थियारि। जागायनो थाखाय, बे पोलिमारफिज्मआ मा?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 86.0
+        }
+      ],
+      "elapsed_seconds": 86.0
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 86.5,
+    "turns": 3,
+    "generation": {
+      "calls": 4,
+      "seconds": 29.2,
+      "seconds_per_call": 7.3,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 10,
+      "seconds": 32.1,
+      "seconds_per_call": 3.21,
+      "calls_per_turn": 3.33
+    },
+    "judge": {
+      "calls": 6,
+      "seconds": 24.7,
+      "seconds_per_call": 4.11,
+      "calls_per_turn": 2.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 1.7,
+        "judge_calls": 432
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 38.1,
+        "judge_calls": 9504
+      }
+    }
+  }
+}

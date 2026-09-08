@@ -98,6 +98,7 @@ from app.topics import normalize_subject, topic_selection  # noqa: E402
 from app.services.translation import (  # noqa: E402
     SUPPORTED_LANGUAGES,
     TranslationService,
+    looks_like_schema,
 )
 
 # The teacher scripts live in lessons.json at the repo root rather than here, shared
@@ -301,23 +302,13 @@ def resolve_lessons(bank: dict[str, Any], subject: str | None, lesson_id: str | 
     return resolved
 
 
-# Sarvam has returned fragments of its own OpenAPI schema in translated_text --
-# reproducibly, for particular (sentence, language) pairs. That payload would be
-# handed to the adapter as the participant's answer and shown back to them, so it
-# has to be caught as a failed crossing rather than accepted as text.
-#
-# The opening bracket must be followed by a quoted key for this to fire. Matching a
-# bare leading bracket also matched ordinary prose that happens to open with one --
-# including every line the echo translation backend produces, which prefixes "[hi] "
-# and so failed each language before it was ever translated. The observed payloads
-# all open "{'description':", which this still catches.
-_SCHEMA_LEAK = re.compile(
-    r"^\s*[\{\[]\s*['\"]|['\"](?:type|title|description|properties|\$ref)['\"]\s*:", re.I
-)
+# The schema-leak detector now lives in translation.py, so the live path rejects these
+# payloads too rather than only the sweep noticing them. Imported above.
 
 
 def _looks_like_schema(text: str) -> bool:
-    return bool(_SCHEMA_LEAK.search(text or ""))
+    # Kept as a name the rest of this file and its tests already use.
+    return looks_like_schema(text)
 
 
 async def translate_or_fail(

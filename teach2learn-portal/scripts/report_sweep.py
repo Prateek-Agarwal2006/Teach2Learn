@@ -193,12 +193,24 @@ def report_languages(runs: list[dict[str, Any]]) -> None:
     failures: dict[str, list[str]] = defaultdict(list)
     mechanical = {"seed": 0, "outbound": 0, "leak": 0, "turns": 0, "retries": 0}
 
+    # A cell that failed in one file and succeeded in a later re-run file is recovered,
+    # not missing. Tracking (lesson, language) pairs rather than languages is what lets
+    # the correction runs clear their own flags; keying on language alone left Bengali,
+    # Kannada, Malayalam and Bodo marked as incomplete after they had been re-run.
+    recovered: set[tuple[str, str]] = {
+        (run["lesson_id"], record["code"])
+        for run in with_sweep
+        for record in run["sweep"]
+        if not record.get("error") and record.get("turns")
+    }
+
     for run in with_sweep:
         for record in run["sweep"]:
             code = record["code"]
             names[code] = record["language"]
             if record.get("error"):
-                failures[code].append(f"{run['lesson_id']}: {record['error'][:60]}")
+                if (run["lesson_id"], code) not in recovered:
+                    failures[code].append(f"{run['lesson_id']}: {record['error'][:60]}")
                 continue
             for turn in record["turns"]:
                 mechanical["turns"] += 1
@@ -280,9 +292,10 @@ def report_languages(runs: list[dict[str, Any]]) -> None:
         print()
         incomplete = sorted(code for code in names if failures[code])
         if incomplete:
-            print(f"† {len(incomplete)} language(s) have a cell that did not run: "
+            print(f"† {len(incomplete)} language(s) have a lesson that never produced data: "
                   + ", ".join(names[code] for code in incomplete)
-                  + ". Their scores come from the cells that did; see the failure list below.\n")
+                  + ". Their scores come from the lessons that did; see the failure list below."
+                  + " Failures recovered by a later re-run are not flagged.\n")
 
     print("## Judged quality, by language\n")
     print("Fidelity is whether the meaning survived; fluency is whether a native reader")
