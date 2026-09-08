@@ -3,6 +3,64 @@
 All notable changes to this Teach2Learn RAG implementation.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-09-08
+
+Real course textbooks ingested into the vector store for all four subjects, replacing
+the single small placeholder fixture (`data/os/scheduling.txt`) that every prior test in
+this file ran against. Source: the actual BITS Pilani course materials (course handouts
+name these as the Text Books/Reference Books for CS F111/F211/F213/F372).
+
+### Added
+
+- `vectorstore/` committed to the repo, pre-built — 21,564 chunks across ~7,100 pages:
+
+  | Subject | Source | Pages | Chunks |
+  |---|---|---|---|
+  | `cp` | Hanly & Koffman + 3 reference books | 2,289 | 7,530 |
+  | `dsa` | CLRS + Goodrich/Tamassia/Mount | 2,033 | 5,605 |
+  | `oop_java` | Schildt + Horstmann | 1,788 | 5,148 |
+  | `os` | Silberschatz & Galvin | 983 | 3,281 |
+
+  Committed so a collaborator can `git clone` and start testing immediately, without
+  needing to run embeddings (real OpenRouter API calls) themselves. The raw source PDFs
+  (~150MB, copyrighted textbooks) are **not** committed, only the derived vector store —
+  see `.gitignore`.
+- `vectorstore/catalog.json` topic lists for all four subjects (11/11/10/10 topics),
+  drawn from the real course handout module breakdowns rather than an invented
+  taxonomy — this is the first time `cp`/`dsa`/`oop_java` have had any topics at all;
+  previously only `os` did (the placeholder fixture's one hand-typed entry).
+- `README.md` — didn't exist before this project had any documentation of its own.
+
+### Fixed
+
+- `OpenAIEmbeddings` (used by `ingest.py`, `qa_generator.py`, `student_chain.py`) has no
+  built-in OpenRouter override; pointing `OPENAI_API_KEY`/`OPENAI_BASE_URL` at
+  OpenRouter's endpoint instead of requiring a separate real OpenAI account works
+  (confirmed live) and is now documented in `.env.example`/`README.md`.
+- `ingest.py`'s `DATA_DIR` wasn't wrapped in `Path()` when set via the env var (only the
+  default value was ever a `Path`), so `DATA_DIR.exists()` raised `AttributeError` the
+  moment anyone actually used the documented env var. One-line fix.
+
+### Known gaps
+
+- `CP_r2.pdf` (Forouzan & Gilberg) failed to parse — `EI stream not found`, a malformed
+  PDF stream — and was skipped by `ingest.py`'s per-file error handling. `cp` is grounded
+  in the other 4 of 5 CP sources; a fresh copy of that file would need re-ingesting to
+  close this gap.
+- Requires a real MongoDB instance and OpenRouter/Sarvam keys to actually run — this
+  entry only covers the vector store; see the "2026-09-07" entry below for the
+  multilingual/voice port, and its own verification notes for what was and wasn't tested
+  end-to-end against a live Chainlit process.
+
+### Verification
+
+- Live smoke test: `build_student_chain` + `generate_qa_for_subtopic` against the real
+  `cp` vectorstore for "Dynamic memory allocation" produced five Bloom's-taxonomy-ordered
+  questions with textbook-accurate answers (correctly distinguishing `malloc` or
+  `calloc`'s zero-initialization, discussing memory leaks and linked-list-based dynamic
+  structures) — confirming retrieval is actually grounded in the ingested textbook
+  content, not just the LLM's general knowledge.
+
 ## [Unreleased] — 2026-09-07
 
 Multilingual teaching sessions and voice dictation, ported from the sibling

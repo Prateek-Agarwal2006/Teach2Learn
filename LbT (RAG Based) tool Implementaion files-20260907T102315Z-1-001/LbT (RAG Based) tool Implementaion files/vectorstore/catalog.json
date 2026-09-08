@@ -1,0 +1,68 @@
+{
+    "cp": {
+        "description": "Computer Programming (CS F111) — Hanly & Koffman, Problem Solving and Program Design in C, plus reference books on C and computing fundamentals.",
+        "vectorstore_path": "vectorstore/cp",
+        "topics": [
+            "Overview of computers and computing",
+            "Data types, variables, and expressions",
+            "Conditionals and switch statements",
+            "Loops and iteration",
+            "Functions and program structure",
+            "Arrays, searching, and sorting",
+            "Structures and type definitions",
+            "Pointers and pointer arithmetic",
+            "Dynamic memory allocation",
+            "Linked lists",
+            "File handling"
+        ]
+    },
+    "dsa": {
+        "description": "Data Structures and Algorithms (CS F211) — Cormen/Leiserson/Rivest/Stein (Introduction to Algorithms) and Goodrich/Tamassia/Mount (Data Structures and Algorithms in C++).",
+        "vectorstore_path": "vectorstore/dsa",
+        "topics": [
+            "Algorithm analysis and asymptotic notation",
+            "Linked lists and recursion",
+            "Stacks and queues",
+            "Vectors, sequences, and lists",
+            "Trees and tree traversals",
+            "Priority queues and heaps",
+            "Maps and hash tables",
+            "Binary search trees and balanced trees",
+            "Sorting algorithms",
+            "Graph representations and traversals",
+            "Shortest paths and minimum spanning trees"
+        ]
+    },
+    "oop_java": {
+        "description": "Object Oriented Programming (CS F213) — Schildt (Java: The Complete Reference) and Horstmann (Object-Oriented Design and Patterns).",
+        "vectorstore_path": "vectorstore/oop_java",
+        "topics": [
+            "Object-oriented basics and Java syntax",
+            "Classes, objects, and constructors",
+            "Arrays and strings in Java",
+            "Inheritance and polymorphism",
+            "Abstract classes and interfaces",
+            "Collections framework and generics",
+            "Exception handling",
+            "File input and output in Java",
+            "Multithreading and synchronization",
+            "Object-oriented design patterns"
+        ]
+    },
+    "os": {
+        "description": "Operating Systems (CS F372) — Silberschatz & Galvin, Operating System Concepts.",
+        "vectorstore_path": "vectorstore/os",
+        "topics": [
+            "OS architecture and components",
+            "Process concept and scheduling",
+            "CPU scheduling",
+            "Process synchronization",
+            "Semaphores and monitors",
+            "Deadlocks",
+            "Memory management and allocation",
+            "Paging and segmentation",
+            "Virtual memory and page replacement",
+            "Secondary storage and file systems"
+        ]
+    }
+}
