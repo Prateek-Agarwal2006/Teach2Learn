@@ -158,6 +158,37 @@ _NON_LATIN = re.compile(
 
 JUDGE_MODEL = os.getenv("LANGCHECK_JUDGE_MODEL", "openai/gpt-5.6-luna")
 
+# What a pilot exists to measure. The three costs are paid to different places -- GPU
+# time on a shared host, Sarvam quota, OpenRouter spend -- so a single wall-clock
+# number cannot be extrapolated into any of them. Accumulated globally because the
+# sweep runs one language at a time; concurrency would need this per task.
+COST: dict[str, float] = {
+    "generation_seconds": 0.0,
+    "generation_calls": 0,
+    "translation_seconds": 0.0,
+    "translation_calls": 0,
+    "judge_seconds": 0.0,
+    "judge_calls": 0,
+}
+
+# The two sweeps TEST_BED.md plans, as turn counts, so a pilot extrapolates directly
+# into the decision it exists to inform: 24 lessons x 3 repeats x 3 turns, English
+# only for the first and every non-English language for the second.
+PLANNED_TURNS = {
+    "Sweep A (English, 24 lessons x3)": 24 * 3 * 3,
+    "Sweep B (22 languages, 24 lessons x3)": 24 * 3 * 22 * 3,
+}
+
+
+async def timed(bucket: str, awaitable: Any) -> Any:
+    """Charge one awaited call to a cost bucket, whether it succeeds or raises."""
+    started = time.monotonic()
+    try:
+        return await awaitable
+    finally:
+        COST[f"{bucket}_seconds"] += time.monotonic() - started
+        COST[f"{bucket}_calls"] += 1
+
 FIDELITY_PROMPT = """You compare a source English sentence with its translation into {language}.
 Reply with exactly two lines and nothing else:
 Score: <1-5>
@@ -264,7 +295,7 @@ async def translate_or_fail(
     has failed every attempt.
     """
     for attempt in range(1, attempts + 1):
-        result = await call(text, code)
+        result = await timed("translation", call(text, code))
         leaked = _looks_like_schema(result)
         if result.strip() != text.strip() and not leaked:
             return result, attempt - 1
@@ -285,7 +316,7 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
     if not key:
         return {"score": None, "note": "no OPENROUTER_API_KEY"}
     try:
-        response = await client.post(
+        response = await timed("judge", client.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
@@ -297,7 +328,7 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
                 "max_tokens": int(os.getenv("LANGCHECK_JUDGE_MAX_TOKENS", "600")),
             },
             timeout=float(os.getenv("OPENROUTER_TIMEOUT_SECONDS", "90")),
-        )
+        ))
         response.raise_for_status()
         message = response.json()["choices"][0]["message"]
         # A reasoning model returns content: null and puts its text elsewhere, and
@@ -342,9 +373,9 @@ async def run_baseline(
     """English only, real adapter. Establishes whether the learner varies its questions."""
     log(f"\n=== BASELINE (English, subject={lesson.subject}, model={model}) ===")
     history: list[dict[str, str]] = []
-    opening = await service.generate(
+    opening = await timed("generation", service.generate(
         lesson.subject, lesson.subtopic, "The lesson is starting. Ask your first question.", model=model
-    )
+    ))
     history.append({"role": "assistant", "content": opening})
     log(f"  opening: {opening}")
 
@@ -354,9 +385,9 @@ async def run_baseline(
         answer = lesson.script[index % len(lesson.script)]
         history.append({"role": "user", "content": answer})
         started = time.monotonic()
-        result = await service.generate_detailed(
+        result = await timed("generation", service.generate_detailed(
             lesson.subject, lesson.subtopic, messages=history, model=model
-        )
+        ))
         history.append({"role": "assistant", "content": result.raw_content})
         questions.append(result.content)
         evaluations.append(result.evaluation)
@@ -394,9 +425,9 @@ async def run_language(
     record: dict[str, Any] = {"code": code, "language": name, "turns": []}
 
     history: list[dict[str, str]] = []
-    opening_en = await service.generate(
+    opening_en = await timed("generation", service.generate(
         lesson.subject, lesson.subtopic, "The lesson is starting. Ask your first question.", model=model
-    )
+    ))
     history.append({"role": "assistant", "content": opening_en})
     record["opening_en"] = opening_en
     opening_local, opening_retries = await translate_or_fail(
@@ -421,9 +452,9 @@ async def run_language(
         )
 
         history.append({"role": "user", "content": teacher_back})
-        result = await service.generate_detailed(
+        result = await timed("generation", service.generate_detailed(
             lesson.subject, lesson.subtopic, messages=history, model=model
-        )
+        ))
         history.append({"role": "assistant", "content": result.raw_content})
         # Outbound crossing: what the participant reads.
         question_local, outbound_retries = await translate_or_fail(
@@ -564,9 +595,10 @@ async def run_sweep(
             consecutive += 1
         else:
             consecutive = 0
+            record["elapsed_seconds"] = round(time.monotonic() - started, 1)
             log(
                 f"  [{position}/{len(codes)}] {record['language']:<12} "
-                f"{time.monotonic() - started:.1f}s",
+                f"{record['elapsed_seconds']:.1f}s",
             )
         records.append(record)
     return records, aborted
@@ -630,6 +662,52 @@ def summarise_runs(runs: Sequence[dict[str, Any]]) -> None:
             f"{spread(fidelities):<20}{spread(fluencies):<20}"
         )
     log("=" * 96)
+
+
+def summarise_cost(wall_clock: float, turns_run: int) -> dict[str, Any]:
+    """Print and return what the run cost, and what that implies for the full sweeps."""
+    basis: dict[str, Any] = {"wall_clock_seconds": round(wall_clock, 1), "turns": turns_run}
+    log("\n" + "=" * 78)
+    log(f"cost basis over {turns_run} turns, {wall_clock:.0f}s wall clock")
+    log("=" * 78)
+    for bucket in ("generation", "translation", "judge"):
+        calls = int(COST[f"{bucket}_calls"])
+        seconds = COST[f"{bucket}_seconds"]
+        basis[bucket] = {
+            "calls": calls,
+            "seconds": round(seconds, 1),
+            "seconds_per_call": round(seconds / calls, 2) if calls else None,
+            "calls_per_turn": round(calls / turns_run, 2) if turns_run else None,
+        }
+        log(
+            f"  {bucket:<12}{calls:>6} calls{seconds:>9.1f}s"
+            f"{(seconds / calls if calls else 0):>8.2f}s/call"
+            f"{(calls / turns_run if turns_run else 0):>8.2f}/turn"
+        )
+
+    if not turns_run:
+        log("=" * 78)
+        return basis
+
+    # Projections assume the pilot's per-turn rates hold, which is the assumption the
+    # pilot is there to test. A larger sweep contends for the same GPU, so treat these
+    # as a floor rather than an estimate.
+    per_turn = wall_clock / turns_run
+    judge_per_turn = COST["judge_calls"] / turns_run
+    basis["projected"] = {}
+    log("-" * 78)
+    log("  projected at these rates (a floor: a longer run contends for the same GPU)")
+    for label, turns in PLANNED_TURNS.items():
+        hours = turns * per_turn / 3600
+        judged = int(turns * judge_per_turn)
+        basis["projected"][label] = {
+            "turns": turns,
+            "hours": round(hours, 1),
+            "judge_calls": judged,
+        }
+        log(f"  {label:<40}{turns:>6} turns{hours:>7.1f}h{judged:>8} judge calls")
+    log("=" * 78)
+    return basis
 
 
 def describe_profile(service: InferenceService, lesson: Lesson, model: str | None) -> str:
@@ -798,6 +876,8 @@ async def main() -> None:
         "runs": [],
     }
 
+    run_started = time.monotonic()
+    turns_run = 0
     try:
         for lesson in lessons:
             profile_name = describe_profile(service, lesson, args.model)
@@ -816,6 +896,7 @@ async def main() -> None:
                 started = time.monotonic()
                 if args.baseline:
                     run["baseline"] = await run_baseline(service, lesson, args.model, args.turns)
+                    turns_run += args.turns
                 if args.sweep:
                     records, aborted = await run_sweep(
                         service, translator, client, lesson, codes, args.model, args.turns
@@ -823,6 +904,7 @@ async def main() -> None:
                     run["sweep"] = records
                     if aborted:
                         run["aborted"] = aborted
+                    turns_run += sum(len(record["turns"]) for record in records)
                     summarise(records)
                 run["elapsed_seconds"] = round(time.monotonic() - started, 1)
                 output["runs"].append(run)
@@ -833,6 +915,7 @@ async def main() -> None:
             await client.aclose()
 
     summarise_runs(output["runs"])
+    output["cost_basis"] = summarise_cost(time.monotonic() - run_started, turns_run)
     if config.backend == "fake":
         log("\n  WARNING: INFERENCE_BACKEND=fake -- these numbers describe a canned string.")
     if unreviewed:
