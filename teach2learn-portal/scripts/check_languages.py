@@ -34,10 +34,16 @@ itself: a language it renders consistently wrong in both directions still round
 not quality. The independent OpenRouter judge on the seeded text is what actually
 breaks the loop, so prefer its fidelity score when the two disagree.
 
-Nothing is written to the server
---------------------------------
-No file is created, no config is edited, and the portal's database and transcripts
-are never touched -- this calls InferenceService and TranslationService directly.
+Nothing is written to the server, unless you ask for it
+------------------------------------------------------
+No config is edited and the portal's database and transcripts are never touched --
+this calls InferenceService and TranslationService directly. Results always go to
+stdout, which over a pipe is the only way they leave the host.
+
+--out is the one exception: it writes a file wherever the program is running, which
+over a pipe means on the server. That is deliberate for a run measured in hours,
+because it is rewritten after every repeat and so survives a dropped connection,
+but it does leave a file behind. Delete it once the run is collected.
 It is designed to be piped in over ssh and to emit its results on stdout, so the
 GPU host keeps no trace of the run:
 
@@ -969,13 +975,14 @@ async def main() -> None:
         log(f"\n  WARNING: {len(unreviewed)} lesson(s) had no human review.")
 
     payload = json.dumps(output, ensure_ascii=False, indent=2)
+    # stdout always, --out as well. Piped in over ssh, stdout is the only way results
+    # leave the host, so writing only to --out strands them there -- which is exactly
+    # what happened on the first multi-subject run, where every local file was empty
+    # and the results sat on the server needing an scp nobody had planned.
+    print(payload)
     if args.out:
         Path(args.out).write_text(payload)
-        log(f"\nwrote {args.out}")
-    else:
-        # Default target is stdout: piped in over ssh, this is the only way results
-        # leave the host, and it keeps the server free of new files.
-        print(payload)
+        log(f"\nalso wrote {args.out} on this machine (delete it once the run is collected)")
 
 
 if __name__ == "__main__":
