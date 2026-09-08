@@ -4,7 +4,7 @@ The setup for the expanded Teach2Learn evaluation. This describes what will be r
 under what conditions; it contains no results. Written before the run so the design is
 fixed in advance rather than described afterwards from whatever happened.
 
-**Status: 24 lessons written, none reviewed, nothing run.**
+**Status: 24 lessons written and reviewed (2026-09-08). Nothing run yet.**
 
 ## Why it changed
 
@@ -143,8 +143,20 @@ Both are now refused rather than documented.
 
 ## Next
 
-1. A reader who knows the material accepts or rejects each of the 24 scripts and sets
-   `"reviewed": true`. Nothing else can proceed first.
+1. ~~A reader accepts each of the 24 scripts.~~ Done 2026-09-08; every lesson carries
+   `"reviewed": true`, so the harness will run without `--allow-unreviewed`. A script
+   edited after this date goes back to `false` until it has been read again.
 2. A pilot on one subject, on the server, which is what tells us the time and cost of the
    full run before committing to it.
 3. The full run.
+
+## Known imprecision
+
+`dsa/trees-heaps/heaps` describes the root as holding the smallest element, which is true
+of a min-heap and stated as though it held for every heap. It is one of the four scripts
+carried over unchanged, so correcting it would break the comparison against
+`LANGUAGE_TEST_RESULTS.md` on that cell; it is kept as-is deliberately. The same script
+carries `2i+1` and `2i+2`, the only raw arithmetic symbols in the bank -- everything else
+spells operators out in words, because these sentences are machine-translated into 22
+scripts. If those indices are mangled in some languages, that cell's fidelity may dip for
+reasons unrelated to the language itself.

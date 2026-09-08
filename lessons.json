@@ -23,7 +23,10 @@
     "",
     "reviewed is false until a human who knows the material has read the script and accepted",
     "it. The harness refuses to run unless every selected lesson is reviewed, unless",
-    "--allow-unreviewed is passed, which stamps the results as unreviewed."
+    "--allow-unreviewed is passed, which stamps the results as unreviewed.",
+    "",
+    "All 24 were read and accepted on 2026-09-08; see reviewed_by and reviewed_on. Any",
+    "script edited after that date must go back to false until it has been read again."
   ],
   "lessons": [
     {
@@ -31,7 +34,7 @@
       "subject": "cp",
       "topic_id": "c-basics",
       "subtopic": "Types, variables, and constants",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Every variable in C has a type fixed at compile time, because the compiler has to know how many bytes to reserve and how to interpret the bits it finds there.",
         "An int and a float of the same width store numbers in completely different layouts, so assigning one to the other converts the value rather than reusing the bits.",
@@ -43,7 +46,7 @@
       "subject": "cp",
       "topic_id": "c-basics",
       "subtopic": "Operators and expressions",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Operator precedence decides how an expression without brackets is grouped, so a star binds more tightly than a plus and the multiplication happens first.",
         "Integer division in C throws away the remainder instead of rounding, which is why seven divided by two is three and not three point five.",
@@ -55,7 +58,7 @@
       "subject": "cp",
       "topic_id": "control-flow",
       "subtopic": "Conditions and switch statements",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "An if statement picks one branch by evaluating a condition, and in C any non-zero value counts as true rather than only a dedicated boolean.",
         "A switch compares one value against several constant labels, which reads more clearly than a long chain of else-if tests on the same variable.",
@@ -67,7 +70,7 @@
       "subject": "cp",
       "topic_id": "control-flow",
       "subtopic": "Loops and sentinel values",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A for loop is the right choice when the number of repetitions is known in advance, because the counter, the test, and the update all sit in one header.",
         "A while loop suits the case where the program keeps reading until some condition changes, since the number of iterations is not known before it starts.",
@@ -79,7 +82,7 @@
       "subject": "cp",
       "topic_id": "pointers",
       "subtopic": "Addresses and pointers",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A pointer is a variable whose value is the address of another variable, so it tells you where something lives rather than what it is.",
         "The ampersand operator takes the address of a variable and the star operator goes back the other way to read the value stored at an address.",
@@ -91,7 +94,7 @@
       "subject": "cp",
       "topic_id": "pointers",
       "subtopic": "Dynamic memory allocation",
-      "reviewed": false,
+      "reviewed": true,
       "carried_from": "LANGUAGE_TEST_RESULTS.md",
       "script": [
         "malloc reserves a block of memory on the heap while the program is running and returns a pointer to its first byte, because the size is not known at compile time.",
@@ -104,7 +107,7 @@
       "subject": "dsa",
       "topic_id": "analysis",
       "subtopic": "Asymptotic notation",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Big-O describes how the running time grows as the input grows, which lets two algorithms be compared without measuring them on any particular machine.",
         "Constant factors and lower-order terms are dropped, so three n squared plus five n is simply order n squared once the input is large enough.",
@@ -116,7 +119,7 @@
       "subject": "dsa",
       "topic_id": "analysis",
       "subtopic": "Recurrences",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A recurrence expresses the cost of a recursive algorithm in terms of the cost of the smaller calls it makes, plus the work done to combine them.",
         "Merge sort gives the recurrence T of n equals two T of n over two plus n, because it splits the array in half and then merges in linear time.",
@@ -128,7 +131,7 @@
       "subject": "dsa",
       "topic_id": "linear",
       "subtopic": "Stacks",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A stack only allows access at one end, so the last item pushed is always the first item popped and nothing in the middle can be reached directly.",
         "That restriction is what makes it the natural structure for undo history and for the call stack, where the most recent call must finish first.",
@@ -140,7 +143,7 @@
       "subject": "dsa",
       "topic_id": "linear",
       "subtopic": "Queues and deques",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A queue adds at one end and removes at the other, so items leave in the order they arrived and no item can overtake the ones ahead of it.",
         "Implementing a queue as a circular array avoids shifting every element after each removal, because the front and back indices wrap around instead.",
@@ -152,7 +155,7 @@
       "subject": "dsa",
       "topic_id": "trees-heaps",
       "subtopic": "Tree terminology and traversals",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A tree is a set of nodes where every node except the root has exactly one parent, so there is precisely one path from the root to any node.",
         "The height of a tree is the length of the longest root-to-leaf path, and it bounds the cost of any operation that walks down from the root.",
@@ -164,7 +167,7 @@
       "subject": "dsa",
       "topic_id": "trees-heaps",
       "subtopic": "Heaps",
-      "reviewed": false,
+      "reviewed": true,
       "carried_from": "LANGUAGE_TEST_RESULTS.md",
       "script": [
         "A binary heap is a complete binary tree where every parent is ordered against its children, so the smallest element is always sitting at the root.",
@@ -177,7 +180,7 @@
       "subject": "oop_java",
       "topic_id": "classes",
       "subtopic": "Constructors",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A constructor runs once when an object is created, and its job is to leave the new object in a state where every method can safely be called.",
         "Java supplies a no-argument constructor only when the class declares none, so writing any constructor at all removes that default.",
@@ -189,7 +192,7 @@
       "subject": "oop_java",
       "topic_id": "classes",
       "subtopic": "Access control and object identity",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Declaring a field private stops code outside the class from touching it directly, so the class keeps control over every change to its own state.",
         "The double-equals operator compares references rather than contents, so two distinct objects holding identical values are still not equal by that test.",
@@ -201,7 +204,7 @@
       "subject": "oop_java",
       "topic_id": "oop-design",
       "subtopic": "Inheritance",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Inheritance lets a subclass reuse the fields and methods of its superclass, so shared behaviour is written once and specialised only where it differs.",
         "A subclass constructor always runs its superclass constructor first, because the inherited part of the object has to be initialised before the new part.",
@@ -213,7 +216,7 @@
       "subject": "oop_java",
       "topic_id": "oop-design",
       "subtopic": "Polymorphism",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A superclass reference can point at any subclass object, so one variable can hold different concrete types over the life of the program.",
         "Which overriding method runs is decided at run time from the object's actual class, not at compile time from the type of the reference.",
@@ -225,7 +228,7 @@
       "subject": "oop_java",
       "topic_id": "concurrency",
       "subtopic": "Threads",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A thread is a separate flow of execution inside the same process, so all threads share the heap while each keeps its own stack.",
         "Calling start hands the work to the scheduler and returns immediately, whereas calling run directly just executes the body on the current thread.",
@@ -237,7 +240,7 @@
       "subject": "oop_java",
       "topic_id": "concurrency",
       "subtopic": "Synchronization and locks",
-      "reviewed": false,
+      "reviewed": true,
       "carried_from": "LANGUAGE_TEST_RESULTS.md",
       "script": [
         "When two threads update the same field at once one update can be lost, because reading, changing, and writing back is not a single indivisible step.",
@@ -250,7 +253,7 @@
       "subject": "os",
       "topic_id": "processes",
       "subtopic": "Process lifecycle",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "A process moves between the ready, running, and blocked states, and only the running state is actually holding a CPU at that moment.",
         "A process that asks for input goes from running to blocked rather than staying on the CPU, because otherwise it would waste the processor doing nothing.",
@@ -262,7 +265,7 @@
       "subject": "os",
       "topic_id": "processes",
       "subtopic": "Interprocess communication",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Separate processes have separate address spaces, so one cannot simply read the other's variables and the operating system has to provide a channel.",
         "A pipe carries a stream of bytes from one process to another, and the reader blocks when the pipe is empty rather than seeing partial data.",
@@ -274,7 +277,7 @@
       "subject": "os",
       "topic_id": "threads-scheduling",
       "subtopic": "Multithreading",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Threads within one process share the same address space, so switching between them is cheaper than switching between two separate processes.",
         "That sharing is also the danger, because two threads writing the same variable can interleave in ways neither of them was written to expect.",
@@ -286,7 +289,7 @@
       "subject": "os",
       "topic_id": "threads-scheduling",
       "subtopic": "CPU scheduling",
-      "reviewed": false,
+      "reviewed": true,
       "carried_from": "LANGUAGE_TEST_RESULTS.md",
       "script": [
         "The scheduler decides which ready process runs next on the CPU, because there are usually more runnable processes than cores.",
@@ -299,7 +302,7 @@
       "subject": "os",
       "topic_id": "virtual-memory",
       "subtopic": "Demand paging",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
         "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
@@ -311,12 +314,14 @@
       "subject": "os",
       "topic_id": "virtual-memory",
       "subtopic": "Page replacement",
-      "reviewed": false,
+      "reviewed": true,
       "script": [
         "When memory is full and a new page is needed, the operating system has to choose an existing page to evict to make room for it.",
         "Least-recently-used approximates the ideal choice by assuming a page untouched for a long time is unlikely to be needed soon.",
         "Evicting a page that has been modified costs an extra write back to disk, which is why a clean page is usually the cheaper victim."
       ]
     }
-  ]
+  ],
+  "reviewed_by": "snehDesai10",
+  "reviewed_on": "2026-09-08"
 }
