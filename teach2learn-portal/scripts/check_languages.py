@@ -236,9 +236,18 @@ def resolve_lessons(bank: dict[str, Any], subject: str | None, lesson_id: str | 
     """
     entries = bank["lessons"]
     if lesson_id:
-        entries = [entry for entry in entries if entry["id"] == lesson_id]
-        if not entries:
-            raise SystemExit(f"no lesson with id {lesson_id!r} in {bank['source']}")
+        # Comma-separated, so a run sized to a time budget can name the exact cells it
+        # wants -- two lessons per subject, say -- instead of one invocation each.
+        wanted = [item.strip() for item in lesson_id.split(",") if item.strip()]
+        known = {entry["id"] for entry in entries}
+        missing = [item for item in wanted if item not in known]
+        if missing:
+            raise SystemExit(
+                f"no lesson with id {', '.join(missing)} in {bank['source']}; "
+                "run --list-lessons to see them"
+            )
+        order = {item: position for position, item in enumerate(wanted)}
+        entries = sorted((e for e in entries if e["id"] in order), key=lambda e: order[e["id"]])
     elif subject:
         key = normalize_subject(subject)
         entries = [entry for entry in entries if normalize_subject(entry["subject"]) == key]
@@ -751,7 +760,8 @@ async def main() -> None:
     )
     parser.add_argument(
         "--lesson",
-        help="run one lesson by id, e.g. os/threads-scheduling/cpu-scheduling. "
+        help="run these lessons by id, comma-separated, e.g. "
+             "os/threads-scheduling/cpu-scheduling,dsa/trees-heaps/heaps. "
              "Without this and without --subject, every lesson in the bank runs.",
     )
     parser.add_argument("--list-lessons", action="store_true", help="print the selected lessons and exit")
@@ -908,6 +918,15 @@ async def main() -> None:
                     summarise(records)
                 run["elapsed_seconds"] = round(time.monotonic() - started, 1)
                 output["runs"].append(run)
+                # Written after every repeat, not once at the end. A run measured in
+                # hours will eventually meet a dropped ssh or a killed engine, and
+                # losing every completed lesson to that is not worth the tidiness of a
+                # single final write. Without --out the JSON still goes to stdout at
+                # the end, which is the only way results leave the host over a pipe.
+                if args.out:
+                    Path(args.out).write_text(
+                        json.dumps(output, ensure_ascii=False, indent=2)
+                    )
     finally:
         await service.unload_all()
         await translator.close()
