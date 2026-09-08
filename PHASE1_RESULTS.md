@@ -3,8 +3,8 @@
 The expanded test bed, run against the real fine-tuned adapters on the GPU host,
 8 September 2026. Setup is described in `TEST_BED.md`; this is what came out of it.
 
-**Part 1 (English) is complete. Part 2 (languages) is running — this document will be
-extended, not rewritten.**
+**Both parts complete.** `RAG_TEST_PLAN.md` describes how to reproduce this on the RAG
+implementation so the two can be compared.
 
 ---
 
@@ -79,10 +79,71 @@ limitation to state, not a result to report.
 
 ---
 
-## Part 2 — Languages
+## Part 2 — Languages: does the boundary hold, and for whom?
 
-*Running. 8 lessons (two per subject, one of each pair carried over) across all 22 Indic
-languages, one repeat, ~2 hours. Results to be added here.*
+**8 lessons · 22 languages · 175 language-runs · 525 judged turns**
+
+Two lessons per subject, one of each pair carried over from `LANGUAGE_TEST_RESULTS.md`,
+pushed through every language the translation layer supports. Full tables in
+`teach2learn-portal/results-languages.md`.
+
+### The mechanical checks are clean
+
+| | Count | Over |
+|---|---|---|
+| Untranslated participant text | 0 | 525 turns |
+| Untranslated text shown back | 0 | 525 turns |
+| Native script reaching the English zone | 0 | 525 turns |
+| Crossings needing a retry | 4 | 1,575 crossings |
+
+These carry no opinion and are the figures to quote. The model never saw a non-Latin
+character; the participant never saw an English one.
+
+### Fifteen ready, six for review, one blocked
+
+Judged fidelity and fluency, 1–5, from an independent model. Status comes from scores
+alone: Blocked under 2.0 fidelity, Review under 3.5 fidelity or 4.0 fluency, else Ready.
+
+- **Ready (15)** — Punjabi, Bengali, Telugu, Gujarati, Tamil, Kannada, Malayalam, Marathi,
+  Hindi, Assamese, Nepali, Odia, Urdu, Maithili, Dogri
+- **Review (6)** — Bodo, Manipuri, Kashmiri, Konkani, Santali, Sanskrit. All show the same
+  pattern: fidelity intact, phrasing stilted. Usable, not broken; they need a native reader.
+- **Blocked (1)** — Sindhi, at 1.3 fidelity across all four columns.
+
+Against the earlier report this is 15/6/1 versus 13/7/2, with each cell now backed by
+9–12 judged turns instead of 3.
+
+### Language explains roughly eight times the spread that subject does
+
+| Subject | Judged turns | Fidelity | Fluency | ≥4.0 fluency |
+|---|---|---|---|---|
+| Computer Programming | 129 | 4.38 ± 0.99 | 4.43 ± 0.82 | 18 / 22 |
+| Data Structures and Algorithms | 132 | 4.35 ± 0.91 | 4.15 ± 0.79 | 14 / 22 |
+| OOP with Java | 132 | 4.34 ± 1.17 | 4.10 ± 0.90 | 15 / 22 |
+| Operating Systems | 132 | 4.30 ± 0.98 | 4.22 ± 0.83 | 16 / 22 |
+
+Mean fidelity spans 4.30–4.38 across subjects, a range of 0.08 on a five-point scale.
+Across languages, fluency spans 2.2–4.9, a range of 2.7. **Technical vocabulary is not the
+constraint — the choice of language is.** Pointers and `malloc` translate as well as heaps
+and recurrences.
+
+### Two failures, both understood
+
+- **Sindhi returns the wrong script.** Sarvam renders Devanagari (सिन्धी) where
+  Perso-Arabic (سنڌي) is dominant. Identical across all four models, which places the fault
+  upstream rather than in any adapter, and `sarvam-translate:v1` rejects `output_script`.
+  Remove Sindhi from the picker.
+- **Punjabi leaks Sarvam's OpenAPI schema** on one C-programming sentence, on all three
+  attempts, reproducing the finding from two months earlier. Now rejected in the shipping
+  translation module rather than only in the test harness — the participant reads their own
+  sentence in English instead of raw JSON.
+
+### Reliability
+
+175 of 176 language-runs produced data. Nineteen cells lost to a Sarvam rate-limit abort
+were recovered on a re-run; the harness aborted and labelled the failure rather than
+emitting clean-looking rows. The single unrecovered cell is Punjabi on
+`cp/pointers/dynamic-memory-allocation`, which is the schema leak above.
 
 ---
 
