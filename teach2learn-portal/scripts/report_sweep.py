@@ -100,8 +100,8 @@ def report_english(runs: list[dict[str, Any]]) -> None:
     print("Distinct questions as a fraction of questions asked, and how often a follow-up")
     print("reused an opening phrase. Higher variety is better; repeated openers are the")
     print("formulaic-learner failure the baseline check exists to catch.\n")
-    print("| Subject | Model | Lessons | Runs | Distinct question ratio | Runs with repeated openers |")
-    print("|---|---|---:|---:|---|---:|")
+    print("| Subject | Model | Lessons | Runs | Distinct question ratio | Runs with repeated openers | Most repeated opening |")
+    print("|---|---|---:|---:|---|---:|---|")
 
     by_subject: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for run in with_baseline:
@@ -116,11 +116,20 @@ def report_english(runs: list[dict[str, Any]]) -> None:
         templated = sum(1 for run in subject_runs if run["baseline"].get("templated_openers"))
         lessons = len({run["lesson_id"] for run in subject_runs})
         profile = sorted({run["profile"] for run in subject_runs})
+        repeats = Counter()
+        for run in subject_runs:
+            for item in run["baseline"].get("templated_openers") or []:
+                repeats[item["opener"]] += item["count"]
+        top = repeats.most_common(1)
+        worst = f"{top[0][1]}x \u201c{top[0][0]}\u2026\u201d" if top else "none"
         print(
             f"| {SUBJECT_NAMES.get(subject, subject)} | {', '.join(profile)} | {lessons} | "
-            f"{len(subject_runs)} | {spread(ratios)} | {templated}/{len(subject_runs)} |"
+            f"{len(subject_runs)} | {spread(ratios)} | {templated}/{len(subject_runs)} | {worst} |"
         )
     print()
+    print("The distinct-question ratio counts whole strings, so it reads 1.00 even when every")
+    print("follow-up opens with the same clause. The last column is what that ratio hides: how")
+    print("often one opening phrase recurred, out of roughly four questions per run.\n")
 
     print("### Per lesson\n")
     print("| Lesson | Runs | Distinct question ratio | Bloom level reached | Adapter score |")
