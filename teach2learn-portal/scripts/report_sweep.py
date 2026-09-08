@@ -245,8 +245,11 @@ def report_languages(runs: list[dict[str, Any]]) -> None:
         print("that subject. Subject also selects the model, so a language weak in one column")
         print("and strong in the others is a problem with that pair; weak in every column is")
         print("upstream in the translation layer.\n")
-        print("Status: **Blocked** if any cell failed to run or mean fidelity is under 2.0,")
-        print("**Review** if mean fidelity is under 3.5 or mean fluency under 4.0, else Ready.\n")
+        print("Status is a judgement about the language, so it is computed from scores alone:")
+        print("**Blocked** if mean fidelity is under 2.0, **Review** if mean fidelity is under 3.5")
+        print("or mean fluency under 4.0, else Ready. A dagger marks a language with a cell that")
+        print("did not run; that is missing data needing a re-run, not a verdict about the")
+        print("language, and the scores shown come from its remaining cells.\n")
         header = " | ".join(subjects)
         print(f"| Language | Code | {header} | Mean | Status |")
         print("|---|---|" + "---|" * len(subjects) + "---|---|")
@@ -260,17 +263,26 @@ def report_languages(runs: list[dict[str, Any]]) -> None:
                 )
             fid_mean = sum(fidelity[code]) / len(fidelity[code]) if fidelity[code] else 0.0
             flu_mean = sum(fluency[code]) / len(fluency[code]) if fluency[code] else 0.0
-            if failures[code] or fid_mean < 2.0:
+            # Status describes the language. A run that died because Sarvam rate-limited
+            # says nothing about the language, and folding it in here marked Bengali,
+            # Kannada and Malayalam as Blocked on scores of 4.2/4.8 and better.
+            if fid_mean < 2.0:
                 status = "**Blocked**"
             elif fid_mean < 3.5 or flu_mean < 4.0:
                 status = "Review"
             else:
                 status = "Ready"
+            dagger = " †" if failures[code] else ""
             print(
-                f"| {names[code]} | `{code}` | {' | '.join(row)} | "
+                f"| {names[code]}{dagger} | `{code}` | {' | '.join(row)} | "
                 f"{fid_mean:.1f}/{flu_mean:.1f} | {status} |"
             )
         print()
+        incomplete = sorted(code for code in names if failures[code])
+        if incomplete:
+            print(f"† {len(incomplete)} language(s) have a cell that did not run: "
+                  + ", ".join(names[code] for code in incomplete)
+                  + ". Their scores come from the cells that did; see the failure list below.\n")
 
     print("## Judged quality, by language\n")
     print("Fidelity is whether the meaning survived; fluency is whether a native reader")
