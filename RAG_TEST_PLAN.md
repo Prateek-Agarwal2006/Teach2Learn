@@ -206,6 +206,50 @@ buckets before committing to the full sweep.
 
 ---
 
+## What this costs, and how to stop arguing about it
+
+Two estimates for this run have differed by roughly 200x, so measure rather than argue.
+The portal's side is now measured: **1,060 judge calls cost about $0.30 (₹26)**, at roughly
+$0.0003 per judge call, read from the OpenRouter credits endpoint before and after a
+subject. Sweep A cost nothing on either service, because an English baseline makes no
+translation or judge calls at all.
+
+The RAG side differs in exactly one line item: **its student agent runs through OpenRouter
+rather than a local GPU**, so it pays for generation that costs the portal nothing. Judge
+and Sarvam volumes are identical by construction, since both sides use the same judge and
+the byte-identical `translation.py`.
+
+Three things decide the total, and all three must be stated before any figure means
+anything:
+
+| | The comparison run | An estimate that would be ~36x higher |
+|---|---|---|
+| Grid | 8 lessons x 22 languages x 1 repeat = 528 turns | 24 x 22 x 3 = 4,752 turns |
+| Agents per turn | `student_chain` only | student + evaluator + scorer + summarizer |
+| Model | pinned and recorded | left on the `--model openai/gpt-4o` default |
+
+**The comparison needs the left column.** The evaluator and scorer are the RAG tool's own
+internal grading, and its scale is not comparable to the portal's inline `Score: Medium`
+anyway -- that is the whole reason an external judge exists. Running them costs four times
+as much and produces nothing that can be placed beside a portal number.
+
+Measure it before committing:
+
+```bash
+# before
+curl -s https://openrouter.ai/api/v1/credits -H "Authorization: Bearer $OPENROUTER_API_KEY"
+# one lesson, two languages -- Hindi as a working case, Sindhi as the known failure
+python scripts/check_languages.py --sweep --lesson os/threads-scheduling/cpu-scheduling \
+  --languages hi,sd --repeat 1 --out calib.json
+# after
+curl -s https://openrouter.ai/api/v1/credits -H "Authorization: Bearer $OPENROUTER_API_KEY"
+```
+
+That is 2 language-runs: 6 generations, 12 judge calls, 20 crossings. The credits delta
+divided by those counts gives measured per-call costs, and the full run is then arithmetic
+rather than anyone's estimate. The cost buckets the harness prints give the call counts
+directly.
+
 ## Reporting
 
 `teach2learn-portal/scripts/report_sweep.py` already emits the tables and takes any number
