@@ -1,0 +1,15 @@
+chainlit
+# Pinned below 0.3: this code uses the pre-1.0 LangChain API (LLMChain,
+# langchain.memory, langchain.prompts, langchain.output_parsers,
+# langchain.text_splitter) which LangChain 1.0 removed entirely.
+langchain<0.3
+langchain-openai<0.2
+langchain-community<0.3
+pydantic
+pymongo
+python-dotenv
+tqdm
+pypdf
+chromadb
+httpx
+pytest
