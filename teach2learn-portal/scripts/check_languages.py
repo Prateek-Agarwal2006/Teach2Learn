@@ -180,14 +180,37 @@ PLANNED_TURNS = {
 }
 
 
+# A generation slower than this means something is wrong with the configuration
+# rather than with the model. On the vLLM path a turn is seconds; the one run that
+# took 794s per language was loading its own copy of the base model onto a GPU that
+# was already full, and silently offloading half of it to the CPU. Nothing in the
+# output said so -- the numbers came out correct, just a hundred times too slowly.
+SLOW_GENERATION_SECONDS = float(os.getenv("LANGCHECK_SLOW_GENERATION_SECONDS", "30"))
+_warned_slow = False
+
+
 async def timed(bucket: str, awaitable: Any) -> Any:
     """Charge one awaited call to a cost bucket, whether it succeeds or raises."""
+    global _warned_slow
     started = time.monotonic()
     try:
         return await awaitable
     finally:
-        COST[f"{bucket}_seconds"] += time.monotonic() - started
+        elapsed = time.monotonic() - started
+        COST[f"{bucket}_seconds"] += elapsed
         COST[f"{bucket}_calls"] += 1
+        if bucket == "generation" and elapsed > SLOW_GENERATION_SECONDS and not _warned_slow:
+            _warned_slow = True
+            log(
+                f"\n  WARNING: first generation took {elapsed:.0f}s, over the {SLOW_GENERATION_SECONDS:.0f}s\n"
+                "  threshold. At this rate a full sweep runs for days. Usual causes, in order:\n"
+                "    - INFERENCE_BACKEND=transformers while the host serves vLLM. run.sh sources\n"
+                "      .env AND deploy/oauth.env; sourcing only .env leaves the backend on\n"
+                "      transformers, which loads a second copy of the base model.\n"
+                "    - CUDA_VISIBLE_DEVICES pinning the model to a GPU that is already full,\n"
+                "      which offloads layers to the CPU ('parameters are on the meta device').\n"
+                "  Stop now rather than at the end -- the results will be correct and worthless."
+            )
 
 FIDELITY_PROMPT = """You compare a source English sentence with its translation into {language}.
 Reply with exactly two lines and nothing else:
@@ -844,6 +867,11 @@ async def main() -> None:
         )
 
     log(f"backend={config.backend}  lessons={len(lessons)}  repeats={args.repeat}  from={bank['source']}")
+    # The deployed portal reads .env and deploy/oauth.env, and only the second sets
+    # vllm. A run that sourced just .env looks identical here apart from this line.
+    if config.backend == "transformers":
+        log("  NOTE: backend is transformers, so this loads its own copy of the base model.")
+        log("  If the host serves vLLM, source deploy/oauth.env as scripts/run.sh does.")
     log(f"  translation={translator.backend}  sarvam_key={'set' if translator.api_key else 'MISSING'}")
     log(f"  judge={'off' if args.no_judge else JUDGE_MODEL}")
 

@@ -1,0 +1,261 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T09:35:56+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "os/threads-scheduling/cpu-scheduling"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 1,
+    "languages": [
+      "hi",
+      "sd"
+    ],
+    "judge_model": "openai/gpt-5.6-luna",
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-08T09:35:56+00:00",
+      "sweep": [
+        {
+          "code": "hi",
+          "language": "Hindi",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "The scheduler decides which ready process runs next on the CPU, because there are usually more runnable processes than cores.",
+              "teacher_local": "शेड्यूलर यह तय करता है कि सीपीयू पर अगली कौन सी तैयार प्रक्रिया चलेगी, क्योंकि आमतौर पर कोर से अधिक चलाने योग्य प्रक्रियाएँ होती हैं।",
+              "teacher_back_en": "The scheduler chooses which ready process to run next, because there are usually more processes than cores.",
+              "question_en": "Wait, I'm a bit lost. Why do we need to manage processes like that?",
+              "question_local": "रुको, मैं थोड़ी खो गई हूँ। हमें इस तरह की प्रक्रियाओं को प्रबंधित करने की क्या ज़रूरत है?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too brief and lacks depth.\nImprovement: The teacher should provide a more detailed explanation of CPU scheduling, including its role in managing processes and system performance.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The explanation is too brief and lacks depth.",
+                "improvement": "The teacher should provide a more detailed explanation of CPU scheduling, including its role in managing processes and system performance."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तकनीकी अर्थ सही और स्पष्ट हिंदी में संरक्षित है."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक और स्पष्ट हिंदी प्रश्न."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Round-robin gives each process a fixed time quantum in turn, so no single process can starve the others while it holds the CPU.",
+              "teacher_local": "राउंड-रॉबिन प्रत्येक प्रक्रिया को बारी-बारी से एक निश्चित समय क्वांटम देता है, इसलिए कोई भी प्रक्रिया सीपीयू को अपने कब्जे में रखते हुए दूसरों को भूखा नहीं रख सकती।",
+              "teacher_back_en": "Since each process in a round-robin scheduler executes for a fixed amount of time, no process can preempt another while holding the CPU.",
+              "question_en": "I'm still really confused. What happens if a process needs more time than usual?",
+              "question_local": "मैं अभी भी बहुत भ्रमित हूँ। अगर किसी प्रक्रिया को सामान्य से अधिक समय चाहिए तो क्या होता है?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The explanation is still too simplistic and doesn't address the broader importance of process management.\nImprovement: The teacher should explain the importance of process management in terms of system efficiency and resource allocation.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The explanation is still too simplistic and doesn't address the broader importance of process management.",
+                "improvement": "The teacher should explain the importance of process management in terms of system efficiency and resource allocation."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तकनीकी अर्थ और हिंदी अभिव्यक्ति पूरी तरह सही हैं."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "यह स्वाभाविक और स्पष्ट हिंदी प्रश्न है।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "A very small quantum wastes time on context switches, while a very large one makes the scheduler behave like plain first-come first-served.",
+              "teacher_local": "एक बहुत छोटा क्वांटम संदर्भ स्विच पर समय बर्बाद करता है, जबकि एक बहुत बड़ा शेड्यूलर को सादे पहले आओ पहले पाओ की तरह व्यवहार कराता है।",
+              "teacher_back_en": "A smaller quantum context switch wastes time, while a larger one makes the scheduler behave like a simple first-come-first-served.",
+              "question_en": "I'm still really confused. Is there a way to balance these needs without affecting performance?",
+              "question_local": "मैं अभी भी बहुत भ्रमित हूँ। क्या प्रदर्शन को प्रभावित किए बिना इन ज़रूरतों को संतुलित करने का कोई तरीका है?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nStrength: The explanation is vague and doesn't clearly address how the system handles processes needing more time.\nImprovement: The teacher should clarify how the system adjusts to accommodate processes that require more time without compromising efficiency.",
+                "level": "Apply",
+                "score": "Low",
+                "strength": "The explanation is vague and doesn't clearly address how the system handles processes needing more time.",
+                "improvement": "The teacher should clarify how the system adjusts to accommodate processes that require more time without compromising efficiency."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ सही है, हालांकि हिंदी वाक्य-विन्यास थोड़ा अस्वाभाविक है।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "प्रश्न स्वाभाविक, स्पष्ट और व्याकरण की दृष्टि से सही है।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is CPU scheduling?",
+          "opening_local": "नमस्ते! मैं सीखने के लिए तैयार हूँ। शुरू करने के लिए, तो, सीपीयू शेड्यूलिंग वास्तव में क्या है?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 54.2
+        },
+        {
+          "code": "sd",
+          "language": "Sindhi",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "The scheduler decides which ready process runs next on the CPU, because there are usually more runnable processes than cores.",
+              "teacher_local": "शेड्यूलर तअय्युन करे थो त केहड़ो रेडी प्रोसेस सीपीयू ते अॻियां हले थो, छाकाणि त कोरनि खां वधीक आम तौर ते वधीक रेडी प्रोसेस हूंदा आहिनि।",
+              "teacher_back_en": "The scheduler chooses which ready process to execute because there are usually more ready processes than cores.",
+              "question_en": "Hmm, that doesn't quite sound right to me. Wait, why do we need to choose between processes?",
+              "question_local": "हम्म, इहो मूंखे सही नथो लॻे। रुको, असां खे अमलनि मां हिक खे चूंडिण जी ज़रूरत छो आहे?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too brief and lacks depth.\nImprovement: The teacher should provide more context and detail about CPU scheduling, including its importance and different types.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The explanation is too brief and lacks depth.",
+                "improvement": "The teacher should provide more context and detail about CPU scheduling, including its importance and different types."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "Meaning is mostly preserved, but the translation uses Devanagari instead of Sindhi script."
+              },
+              "fluency": {
+                "score": 3,
+                "note": "سنڌي ٻولي فصيح آهي، پر رسم الخط درست ناهي."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Round-robin gives each process a fixed time quantum in turn, so no single process can starve the others while it holds the CPU.",
+              "teacher_local": "राउंड-रॉबिन हर हिकु प्रोसेस खे हिकु मुक़रर वक़्ति क्वांटम ॾींदो आहे, इन करे को बि हिकु प्रोसेस ॿियनि खे भुखारी न सघंदो आहे जॾहिं त हू सी.पी.यू. खे रोके थी।",
+              "teacher_back_en": "Round-robin scheduling assigns each process a fixed time slice, so no process can overtake another while both are executing.",
+              "question_en": "I'm still really confused. Okay, but what happens if a process takes longer than its time slice?",
+              "question_local": "मां अञा बि सचुपचु उलझन में आहियां। ठीक आहे, पर छा थींदो जेकॾहिं को अमल पंहिंजे वक़्ति जे स्लाइस खां वधीक वक़्ति वठे?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The explanation is still too brief and doesn't fully clarify why scheduling is necessary.\nImprovement: The teacher should explain the concept of context switching and how scheduling ensures efficient CPU utilization.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The explanation is still too brief and doesn't fully clarify why scheduling is necessary.",
+                "improvement": "The teacher should explain the concept of context switching and how scheduling ensures efficient CPU utilization."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "Meaning is mostly preserved, but the translation uses Devanagari rather than Sindhi script."
+              },
+              "fluency": {
+                "score": 2,
+                "note": "سوال سمجهه ۾ اچي ٿو، پر رسم الخط ۽ جملن جي بناوت غير فطري آهي۔"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "A very small quantum wastes time on context switches, while a very large one makes the scheduler behave like plain first-come first-served.",
+              "teacher_local": "हिकु तमाम नंढो क्वांटम संदर्भो स्विच ते वक़्ति ज़ाइअ कंदो आहे, जॾहिं त हिकु तमाम वॾो शेड्यूलर खे सादे पहिरियों-अचे-पहिरियों-वरतीअ वांगुर रवैयो कंदो आहे।",
+              "teacher_back_en": "A very short quantum context wastes time switching, while a very large scheduler behaves like a simple first-come-first-served routine.",
+              "question_en": "I'm still really confused. Could you give an example of how quantum size affects system performance?",
+              "question_local": "मां अञा बि सचुपचु उलझन में आहियां। छा तव्हां क्वांटम साईज़ सिस्टम जी कारगुज़ारीअ ते किअं असरअंदाज़ थींदी आहे, इन जो हिकु मिसाल ॾेई सघंदा आहियो?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nStrength: The explanation is vague and doesn't address the question directly.\nImprovement: The teacher should clarify how quantum size affects system performance and provide examples of its impact.",
+                "level": "Apply",
+                "score": "Low",
+                "strength": "The explanation is vague and doesn't address the question directly.",
+                "improvement": "The teacher should clarify how quantum size affects system performance and provide examples of its impact."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "The meaning is mostly conveyed, but the translation uses Devanagari rather than Sindhi script."
+              },
+              "fluency": {
+                "score": 2,
+                "note": "سوال سمجهه ۾ اچي ٿو، پر رسم الخط ۽ ڪجهه لفظن جي بناوت غيرفطري آهي۔"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what's the deal with CPU scheduling?",
+          "opening_local": "नमस्ते! मां सिखणु लाइ तैयार आहियां। शुरू करण लाइ, त पोइ, सीपीयू शेड्यूलिंग जो छा मसइलो आहे?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 43.5
+        }
+      ],
+      "elapsed_seconds": 97.7
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 98.1,
+    "turns": 6,
+    "generation": {
+      "calls": 8,
+      "seconds": 44.2,
+      "seconds_per_call": 5.52,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 20,
+      "seconds": 19.2,
+      "seconds_per_call": 0.96,
+      "calls_per_turn": 3.33
+    },
+    "judge": {
+      "calls": 12,
+      "seconds": 34.2,
+      "seconds_per_call": 2.85,
+      "calls_per_turn": 2.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 1.0,
+        "judge_calls": 432
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 21.6,
+        "judge_calls": 9504
+      }
+    }
+  }
+}
