@@ -221,6 +221,57 @@ def report_languages(runs: list[dict[str, Any]]) -> None:
     print(f"| Crossings needing a retry | {mechanical['retries']} | {mechanical['turns'] * 3} crossings |")
     print()
 
+    # language -> subject -> scores, which is the shape LANGUAGE_TEST_RESULTS.md used and
+    # the shape a reader wants: a language failing everywhere is an upstream translation
+    # problem, a language failing on one subject is a problem with that pair.
+    cells: dict[str, dict[str, tuple[list[float], list[float]]]] = defaultdict(
+        lambda: defaultdict(lambda: ([], []))
+    )
+    for run in with_sweep:
+        for record in run["sweep"]:
+            if record.get("error"):
+                continue
+            for turn in record["turns"]:
+                fid, flu = cells[record["code"]][run["subject"]]
+                if (turn.get("fidelity") or {}).get("score"):
+                    fid.append(float(turn["fidelity"]["score"]))
+                if (turn.get("fluency") or {}).get("score"):
+                    flu.append(float(turn["fluency"]["score"]))
+
+    subjects = sorted({run["subject"] for run in with_sweep})
+    if len(subjects) > 1:
+        print("## Language by subject\n")
+        print("Each cell is fidelity/fluency, averaged over that language's judged turns for")
+        print("that subject. Subject also selects the model, so a language weak in one column")
+        print("and strong in the others is a problem with that pair; weak in every column is")
+        print("upstream in the translation layer.\n")
+        print("Status: **Blocked** if any cell failed to run or mean fidelity is under 2.0,")
+        print("**Review** if mean fidelity is under 3.5 or mean fluency under 4.0, else Ready.\n")
+        header = " | ".join(subjects)
+        print(f"| Language | Code | {header} | Mean | Status |")
+        print("|---|---|" + "---|" * len(subjects) + "---|---|")
+        for code in sorted(names, key=lambda c: -(sum(fluency[c]) / len(fluency[c]) if fluency[c] else 0)):
+            row = []
+            for subject in subjects:
+                fid, flu = cells[code][subject]
+                row.append(
+                    f"{sum(fid) / len(fid):.1f}/{sum(flu) / len(flu):.1f}"
+                    if fid and flu else "**fail**"
+                )
+            fid_mean = sum(fidelity[code]) / len(fidelity[code]) if fidelity[code] else 0.0
+            flu_mean = sum(fluency[code]) / len(fluency[code]) if fluency[code] else 0.0
+            if failures[code] or fid_mean < 2.0:
+                status = "**Blocked**"
+            elif fid_mean < 3.5 or flu_mean < 4.0:
+                status = "Review"
+            else:
+                status = "Ready"
+            print(
+                f"| {names[code]} | `{code}` | {' | '.join(row)} | "
+                f"{fid_mean:.1f}/{flu_mean:.1f} | {status} |"
+            )
+        print()
+
     print("## Judged quality, by language\n")
     print("Fidelity is whether the meaning survived; fluency is whether a native reader")
     print("would accept the sentence. Both are an independent model's opinion, 1-5, and")
