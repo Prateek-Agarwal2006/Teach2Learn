@@ -1,24 +1,16 @@
-# Phase 1 Results — Fine-tuned Teach2Learn
-
-Run against the real fine-tuned adapters on the GPU host, 8 September 2026.
-Setup: `TEST_BED.md` · Full tables: `teach2learn-portal/results-*.md` · Reproduce on the
-RAG tool: `RAG_TEST_PLAN.md`
+# Fine-tuned Teach2Learn
 
 ## Run profile
 
 | | |
 |---|---|
 | Lesson scripts | 24 (4 subjects × 3 topics × 2 subtopics) |
-| Models exercised | 4 of 5 available |
 | Languages | 22 Indic + English |
 | English runs / questions | 72 / 288 |
 | Language-runs / judged turns | 175 of 176 / 525 |
 | Boundary crossings | 1,575 |
 | Model generations | 998 |
 | Sarvam calls / judge calls | 1,787 / 1,056 |
-| GPU wall clock | 164 min |
-| Judge spend | ~$0.30 (₹26) |
-| Decoding | temp 0.2, top-p 0.9, sampled, no fixed seed |
 
 ---
 
@@ -27,27 +19,27 @@ RAG tool: `RAG_TEST_PLAN.md`
 English only, no translation, no judge. Each model saw the identical 3-sentence
 explanation for its paired subject, 6 lessons × 3 repeats.
 
-| Model | Subject | Q | Distinct | Unique openers | Repeated openings | Words/Q | Remember | Understand | Apply | Self-score | Rated Low | s/gen |
-|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|
-| Granite 3.3 8B | os | 72 | 1.00 | **33** | **6 · 8%** | 19.5 ± 5.4 | 17 | 29 | **8** | **0.11** | **89%** | 4.18 |
-| Mistral 7B | oop_java | 72 | 1.00 | 19 | 11 · 15% | 20.4 ± 5.4 | 14 | 40 | 0 | 0.74 | 26% | **3.53** |
-| Gemma 2 9B | dsa | 72 | 1.00 | 15 | 24 · 33% | 20.8 ± 4.4 | 11 | 41 | 2 | 0.72 | 28% | 4.88 |
-| Qwen3 8B | cp | 72 | 1.00 | **7** | **61 · 85%** | 23.3 ± 3.9 | 8 | 46 | 0 | 0.83 | 17% | 4.70 |
+| Model | Q | Unique openers | Repeated openings | Words/Q | Remember | Understand | Apply | Self-score | Rated Low | s/gen |
+|---|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|
+| Granite 3.3 8B | 72 | **33** | **6 · 8%** | 19.5 ± 5.4 | 17 | 29 | **8** | **0.11** | **89%** | 4.18 |
+| Mistral 7B | 72 | 19 | 11 · 15% | 20.4 ± 5.4 | 14 | 40 | 0 | 0.74 | 26% | **3.53** |
+| Gemma 2 9B | 72 | 15 | 24 · 33% | 20.8 ± 4.4 | 11 | 41 | 2 | 0.72 | 28% | 4.88 |
+| Qwen3 8B | 72 | **7** | **61 · 85%** | 23.3 ± 3.9 | 8 | 46 | 0 | 0.83 | 17% | 4.70 |
 
-- **Distinct** — whole-string uniqueness. 1.00 everywhere and near-useless alone.
-- **Unique openers** — distinct first-six-word phrases across 72 questions. This is what
-  the distinctness score hides: Qwen3 wrote 72 different questions from 7 openings.
+- **Unique openers** — distinct first-six-word phrases across 72 questions. Whole-string
+  uniqueness was 1.00 for every model, which hides this: Qwen3 wrote 72 different questions
+  from 7 openings, Granite from 33.
 - **Self-score** — the learner's own verdict on the teacher, 0 = Low, 1 = Medium, 2 = High.
 - **Remember / Understand / Apply** — Bloom level reached, 54 evaluated turns per model.
   Nothing reached *Analyse* or above.
+- Each model ran only its default subject (Granite→os, Mistral→oop_java, Gemma 2→dsa,
+  Qwen3→cp), so a row difference is a model *and* a subject difference.
 
-Qwen 2.5 7B is the fifth available model; no subject defaults to it, so it was never run.
 
 ---
 
 ## 2. Translation boundary
 
-Mechanical string checks. No judgement involved — these are the figures to quote.
 
 | Check | Count | Over |
 |---|---:|---:|
@@ -61,8 +53,7 @@ Mechanical string checks. No judgement involved — these are the figures to quo
 
 ## 3. Subject performance
 
-Each subject's 2 lessons × 22 languages. Fidelity = did the meaning survive; fluency =
-would a native reader accept the sentence. Both 1–5, independent judge.
+
 
 | Subject | Model | Turns | Fidelity | Fluency | ≥4.0 fluency | Retries | Leaks | Unrecovered |
 |---|---|---:|---|---|---:|---:|---:|---|
@@ -133,16 +124,45 @@ Each cell is now backed by 9–12 judged turns against 3 in the prior report.
 | Punjabi leaks Sarvam's OpenAPI schema | 1 sentence, `cp` | Failed 3/3 attempts, reproducing a finding from 2 months earlier | **Fixed** — rejected in the shipping translation module |
 | Sarvam rate limiting returns text unchanged | 3 languages, mid-sweep | Harness aborted and labelled it rather than emitting clean rows | **Recovered** — 19 cells re-run |
 
----
+### What is actually wrong with Sindhi
 
-## 6. Limits
+**Sindhi is written in two different alphabets.** Most Sindhi speakers read it in a
+Perso-Arabic script — سنڌي. Some write it in Devanagari — सिन्धी, the same alphabet Hindi
+uses. Sarvam always returns the Devanagari one.
 
-- **Model and subject move together in this run** — the system allows any of 5 models for
-  any subject (20 adapters); this sweep left `--model` unset and took the per-subject
-  default. Deconfounding = one subject × 5 models ≈ 25 min, not yet spent.
-- **The self-score is each model grading itself**, not a measure of teaching quality.
-- **Fidelity and fluency are directional** — Sarvam both produces and is measured on these
-  translations. The 6 Review languages need a native reader.
-- **Nothing reached Bloom's *Analyse***, because the scripted teacher never answers the
-  learner. That ceiling is the test bed's, not the models'.
-- **Voice input is unevaluated** — implemented and unit-tested, never run on real speech.
+So a participant picks Sindhi and gets back text in an alphabet many of them cannot read.
+The *words* are often right; the *script* is wrong. It is like asking for Serbian and
+receiving it in Latin letters when you only read Cyrillic — technically the language, but
+not readable.
+
+- **Not our bug.** The same failure appears in all four subject columns at 1.0–1.5 fidelity.
+  A problem in one model would not show up identically in the other three.
+- **Not fixable from our side.** The Sarvam API has no working setting for output script;
+  `output_script` with `roman`, `fully-native` and `spoken-form-in-native` all return an
+  HTTP 400 error. There is no request we can send that changes it.
+- **What to do.** Remove Sindhi from the language picker until Sarvam supports the script.
+
+### What is actually wrong with Punjabi
+
+**The translation API returned a piece of its own documentation instead of a translation.**
+
+Sarvam has a feature for gendered translations — it can give you a "female" version of a
+sentence. For one particular sentence in the C-programming lesson, translated to Punjabi,
+the API sent back the *description of that feature* rather than doing the translation:
+
+```
+{'description': 'The translation of the source sentence assuming the subject is female.',
+ 'title': 'Female', 'type': 'string'}
+```
+
+- **Why it got through.** Our code asked "is the reply a non-empty piece of text?" That blob
+  is a non-empty piece of text, so it passed. It would then have been handed to the AI
+  student as the participant's own explanation, written into the transcript, and shown back
+  on screen in the middle of the lesson.
+- **It is reproducible, and narrow.** Same sentence, same language, failed 3 of 3 attempts,
+  and it failed the same way two months ago. The same sentence into Hindi, Gujarati and
+  Bengali is fine, and a different sentence into Punjabi is fine. It is that one
+  sentence-and-language pair.
+- **Fixed.** The shipping translation module now checks whether a reply looks like
+  documentation rather than a translation, and falls back to showing the original English —
+  the same behaviour as when the network fails, and far better than a wall of JSON.
