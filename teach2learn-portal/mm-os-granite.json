@@ -1,0 +1,889 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-09T04:53:32+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "os/processes/process-lifecycle",
+      "os/processes/interprocess-communication",
+      "os/threads-scheduling/multithreading",
+      "os/threads-scheduling/cpu-scheduling",
+      "os/virtual-memory/demand-paging",
+      "os/virtual-memory/page-replacement"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": "granite",
+    "turns": 3,
+    "repeats": 3,
+    "languages": [],
+    "judge_model": null,
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:53:32+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly happens when a process is created in an operating system?",
+          "Wait, I'm a bit lost. Could you explain what happens when a process is created in more detail?",
+          "I'm still really confused. Why does a process go to the blocked state when it needs input?",
+          "I'm still really confused. What exactly is a control block, and how does it help in managing processes?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's response is vague and doesn't address the creation of a process. It lacks clarity and detail.",
+            "level": "Remember",
+            "score": "Low",
+            "feedback": "The teacher's response is vague and doesn't address the creation of a process. It lacks clarity and detail."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The explanation is still incomplete and doesn't cover the full lifecycle of a process. It focuses on one aspect without context.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The explanation is still incomplete and doesn't cover the full lifecycle of a process. It focuses on one aspect without context."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is correct but lacks depth and context. It doesn't explain why the control block is necessary or how it functions.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is correct but lacks depth and context. It doesn't explain why the control block is necessary or how it functions."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 27.3
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:53:59+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly happens when a process is created in an operating system?",
+          "I'm still really confused. Okay, but how does the process actually start running on the CPU?",
+          "I'm still really confused. So, is the CPU scheduler responsible for deciding when a process should start running?",
+          "I'm still really confused. Can you explain how the control block and CPU scheduler work together?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's answer is vague and doesn't address the creation of a process. It focuses on the states without explaining the lifecycle.\nStrength: The teacher's response lacks depth and clarity.\nImprovement: The teacher should provide a detailed explanation of the process creation and its initial state.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response lacks depth and clarity.",
+            "improvement": "The teacher should provide a detailed explanation of the process creation and its initial state.",
+            "feedback": "The teacher's answer is vague and doesn't address the creation of a process. It focuses on the states without explaining the lifecycle."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still vague and doesn't clarify how a process starts running. It incorrectly describes the transition from running to blocked.\nStrength: The teacher's response lacks depth and clarity.\nImprovement: The teacher should explain the role of the CPU scheduler in transitioning processes between states.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response lacks depth and clarity.",
+            "improvement": "The teacher should explain the role of the CPU scheduler in transitioning processes between states.",
+            "feedback": "The teacher's explanation is still vague and doesn't clarify how a process starts running. It incorrectly describes the transition from running to blocked."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's answer is only partially correct and doesn't explain the CPU scheduler's role in managing process states.\nStrength: The teacher's response lacks depth and clarity.\nImprovement: The teacher should clarify how the control block and CPU scheduler work together to manage process states.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response lacks depth and clarity.",
+            "improvement": "The teacher should clarify how the control block and CPU scheduler work together to manage process states.",
+            "feedback": "The teacher's answer is only partially correct and doesn't explain the CPU scheduler's role in managing process states."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 18.1
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:54:17+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly happens when a process is created in an operating system?",
+          "I'm still really confused. Can you explain the different states a process goes through during its lifecycle?",
+          "I'm still really confused. What are the correct states that a process goes through during its lifecycle?",
+          "I'm still really confused. How does the operating system manage these control blocks for each process?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's answer is vague and doesn't address the question about process creation.\nStrength: The teacher's response lacks clarity and depth.\nImprovement: The teacher should provide a detailed explanation of the process lifecycle, including creation, termination, and states.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response lacks clarity and depth.",
+            "improvement": "The teacher should provide a detailed explanation of the process lifecycle, including creation, termination, and states.",
+            "feedback": "The teacher's answer is vague and doesn't address the question about process creation."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is incorrect and misleading, focusing on an unrelated concept.\nStrength: The teacher's response is inaccurate and does not address the question about process lifecycle states.\nImprovement: The teacher should clarify the correct states of a process lifecycle, including creation, termination, and transitions between states.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response is inaccurate and does not address the question about process lifecycle states.",
+            "improvement": "The teacher should clarify the correct states of a process lifecycle, including creation, termination, and transitions between states.",
+            "feedback": "The teacher's explanation is incorrect and misleading, focusing on an unrelated concept."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is vague and doesn't clarify the process lifecycle states.\nStrength: The teacher's response lacks clarity and depth, failing to address the question about process lifecycle states.\nImprovement: The teacher should provide a detailed explanation of the process lifecycle, including creation, termination, and states.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response lacks clarity and depth, failing to address the question about process lifecycle states.",
+            "improvement": "The teacher should provide a detailed explanation of the process lifecycle, including creation, termination, and states.",
+            "feedback": "The teacher's explanation is vague and doesn't clarify the process lifecycle states."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 17.9
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:54:35+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?",
+          "Wait, I'm a bit lost. Can you explain what interprocess communication is in simpler terms?",
+          "I'm still really confused. Okay, but how does this pipe thing actually work between processes?",
+          "I'm still really confused. What do you mean by 'the kernel handles the synchronisation'?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too brief and lacks depth, failing to clarify what interprocess communication actually is.\nImprovement: The teacher should provide a more detailed explanation of interprocess communication, including examples or analogies to help clarify the concept.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is too brief and lacks depth, failing to clarify what interprocess communication actually is.",
+            "improvement": "The teacher should provide a more detailed explanation of interprocess communication, including examples or analogies to help clarify the concept."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation is still too technical and doesn't clarify the concept of interprocess communication.\nImprovement: The teacher should explain the concept of interprocess communication using a more relatable analogy or example, such as comparing it to a postal service where messages are sent and received.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation is still too technical and doesn't clarify the concept of interprocess communication.",
+            "improvement": "The teacher should explain the concept of interprocess communication using a more relatable analogy or example, such as comparing it to a postal service where messages are sent and received."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation is too technical and doesn't clarify how message passing works.\nImprovement: The teacher should provide a clearer explanation of message passing, possibly using a simple analogy like sending a letter, which involves the postal service handling the delivery and ensuring the letter is delivered correctly.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation is too technical and doesn't clarify how message passing works.",
+            "improvement": "The teacher should provide a clearer explanation of message passing, possibly using a simple analogy like sending a letter, which involves the postal service handling the delivery and ensuring the letter is delivered correctly."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 16.4
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:54:51+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?",
+          "I'm still really confused. Can you explain what interprocess communication is in more detail?",
+          "I'm still really confused. What are some other methods for interprocess communication besides pipes?",
+          "I'm still really confused. How does message passing compare to shared memory in terms of performance and complexity?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too brief and lacks depth, failing to clarify what interprocess communication is.\nImprovement: The teacher should provide a more detailed explanation of interprocess communication, including its purpose and methods.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is too brief and lacks depth, failing to clarify what interprocess communication is.",
+            "improvement": "The teacher should provide a more detailed explanation of interprocess communication, including its purpose and methods."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation is still too focused on a specific method (pipe) and doesn't provide a broader understanding of interprocess communication.\nImprovement: The teacher should explain interprocess communication as a broader concept, including different methods like pipes, message queues, and shared memory.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation is still too focused on a specific method (pipe) and doesn't provide a broader understanding of interprocess communication.",
+            "improvement": "The teacher should explain interprocess communication as a broader concept, including different methods like pipes, message queues, and shared memory."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation introduces message passing but doesn't fully explain how it compares to shared memory or other methods.\nImprovement: The teacher should compare message passing and shared memory, explaining their advantages and disadvantages.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation introduces message passing but doesn't fully explain how it compares to shared memory or other methods.",
+            "improvement": "The teacher should compare message passing and shared memory, explaining their advantages and disadvantages."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 15.3
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:55:07+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication, and why is it important in operating systems?",
+          "Wait, I'm a bit lost. Can you explain what interprocess communication is and why it's necessary?",
+          "I'm still really confused. What are some common methods for interprocess communication, and how do they work?",
+          "I'm still really confused. What are the advantages and disadvantages of using message passing compared to shared memory?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's response is too brief and lacks depth. It doesn't explain what interprocess communication is or why it's important.\nStrength: Weak\nImprovement: The teacher should provide a more detailed explanation of interprocess communication and its significance.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The teacher should provide a more detailed explanation of interprocess communication and its significance.",
+            "feedback": "The teacher's response is too brief and lacks depth. It doesn't explain what interprocess communication is or why it's important."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is still too focused on a specific mechanism (pipe) and doesn't provide a broader understanding of interprocess communication.\nStrength: Weak\nImprovement: The teacher should explain interprocess communication in general terms before discussing specific mechanisms like pipes.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The teacher should explain interprocess communication in general terms before discussing specific mechanisms like pipes.",
+            "feedback": "The teacher's response is still too focused on a specific mechanism (pipe) and doesn't provide a broader understanding of interprocess communication."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's response is too focused on one method (message passing) and doesn't provide a comprehensive overview of interprocess communication methods.\nStrength: Weak\nImprovement: The teacher should provide a broader overview of different interprocess communication methods and their use cases.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The teacher should provide a broader overview of different interprocess communication methods and their use cases.",
+            "feedback": "The teacher's response is too focused on one method (message passing) and doesn't provide a comprehensive overview of interprocess communication methods."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i'm still really confused. what are",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 17.2
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:55:24+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say a thread can have its own local data, does that mean it can save information specific to itself?",
+          "Wait, I'm a bit lost. I'm a bit confused. Can you explain what you mean by 'address space' in this context?",
+          "I'm still really confused. I'm a bit confused. What exactly is interleaving, and why is it a problem?",
+          "I'm still really confused. I'm a bit confused. How does multithreading help with programs that are waiting for something?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's response is incorrect and doesn't address the question about local data.",
+            "level": "Remember",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect and doesn't address the question about local data."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is incorrect and doesn't address the question about local data or address space.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect and doesn't address the question about local data or address space."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is incorrect and doesn't address the question about local data, address space, or interleaving.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect and doesn't address the question about local data, address space, or interleaving."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i'm still really confused. i'm a",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 13.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:55:37+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say a thread can have its own local data, does that mean each thread can have its own set of variables?",
+          "Wait, I'm a bit lost. Could you clarify how threads manage their own data without affecting others?",
+          "I'm still really confused. What exactly happens if two threads try to write to the same variable?",
+          "I'm still really confused. How does multithreading help in a program that's mostly waiting for I/O?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's response is incorrect as it does not address the question about local data for threads.",
+            "level": "Remember",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect as it does not address the question about local data for threads."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is incorrect as it does not clarify how threads manage local data.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect as it does not clarify how threads manage local data."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is incorrect as it does not address the question about writing to the same variable.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is incorrect as it does not address the question about writing to the same variable."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 12.1
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:55:49+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, multithreading is like having multiple people working on different tasks at the same time in a single computer?",
+          "Wait, I'm a bit lost. Could you explain how switching between threads is cheaper than switching between processes?",
+          "I'm still really confused. I'm still trying to understand why switching between threads is cheaper. Can you clarify that?",
+          "I'm still really confused. How does multithreading help with programs that spend a lot of time waiting for input?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's response is too technical and doesn't clarify the analogy of multithreading to multiple tasks.",
+            "level": "Remember",
+            "score": "Low",
+            "feedback": "The teacher's response is too technical and doesn't clarify the analogy of multithreading to multiple tasks."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's response is off-topic and doesn't address the question about the cost of switching between threads and processes.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's response is off-topic and doesn't address the question about the cost of switching between threads and processes."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's response introduces a new concept (I/O-bound programs) without fully explaining why thread switching is cost-effective.",
+            "level": "Apply",
+            "score": "Low",
+            "feedback": "The teacher's response introduces a new concept (I/O-bound programs) without fully explaining why thread switching is cost-effective."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.3
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:56:02+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say CPU utilization is high, does that mean the CPU is always busy doing something?",
+          "I'm still really confused. Wait, if the CPU is busy all the time, why isn't that always a good thing?",
+          "I'm still really confused. I see. But how does the system decide which process gets the CPU first if they all need it at the same time?",
+          "I'm still really confused. So, is there a way to find the perfect quantum size that makes everything efficient?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is too brief and doesn't fully address the student's question about CPU utilization.\nImprovement: The teacher should clarify the relationship between CPU utilization and CPU busyness, explaining that high CPU utilization means the CPU is mostly occupied with processes, but not necessarily doing anything useful all the time.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response is too brief and doesn't fully address the student's question about CPU utilization.",
+            "improvement": "The teacher should clarify the relationship between CPU utilization and CPU busyness, explaining that high CPU utilization means the CPU is mostly occupied with processes, but not necessarily doing anything useful all the time."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response is off-topic and doesn't address the student's question about CPU utilization.\nImprovement: The teacher should explain why high CPU utilization isn't always good, focusing on potential inefficiencies and the importance of balancing CPU usage with process priorities.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response is off-topic and doesn't address the student's question about CPU utilization.",
+            "improvement": "The teacher should explain why high CPU utilization isn't always good, focusing on potential inefficiencies and the importance of balancing CPU usage with process priorities."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher's response is off-topic and doesn't address the student's question about CPU utilization.\nImprovement: The teacher should explain how the system prioritizes processes for CPU time, focusing on the trade-offs between quantum size and scheduling efficiency.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher's response is off-topic and doesn't address the student's question about CPU utilization.",
+            "improvement": "The teacher should explain how the system prioritizes processes for CPU time, focusing on the trade-offs between quantum size and scheduling efficiency."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 19.1
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:56:21+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the deal with CPU scheduling?",
+          "I think I understand most of that. Why is it important for the scheduler to make the right choices?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if a process doesn't finish within its time quantum in round-robin scheduling?",
+          "I think I understand most of that. Can you give an example of how changing the quantum size affects system performance?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provides a basic explanation of CPU scheduling but lacks depth.\nImprovement: The teacher could elaborate on the importance of CPU scheduling and its impact on system performance.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provides a basic explanation of CPU scheduling but lacks depth.",
+            "improvement": "The teacher could elaborate on the importance of CPU scheduling and its impact on system performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explains the concept of round-robin scheduling and how it prevents starvation.\nImprovement: The teacher could provide more examples or scenarios where this scheduling method is beneficial.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explains the concept of round-robin scheduling and how it prevents starvation.",
+            "improvement": "The teacher could provide more examples or scenarios where this scheduling method is beneficial."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher explains the trade-offs of time quantum size in round-robin scheduling.\nImprovement: The teacher could provide calculations or examples to illustrate the impact of quantum size on system performance.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher explains the trade-offs of time quantum size in round-robin scheduling.",
+            "improvement": "The teacher could provide calculations or examples to illustrate the impact of quantum size on system performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 14.9
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:56:36+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say CPU utilization is high, does that mean the CPU is working really hard and not idle much of the time?",
+          "Hmm, that doesn't quite sound right to me. Wait, I'm a bit lost. Can you explain what a ready process is in this context?",
+          "Hmm, that doesn't quite sound right to me. I'm still really confused. Okay, but how does round-robin scheduling actually prevent starvation?",
+          "Hmm, that doesn't quite sound right to me. I'm still really confused. So, if the quantum is too small, does that mean the CPU spends more time switching between processes than executing them?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's answer is too brief and doesn't fully explain CPU utilization.",
+            "level": "Remember",
+            "score": "Low",
+            "feedback": "The teacher's answer is too brief and doesn't fully explain CPU utilization."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's answer is incorrect and doesn't address the question about ready processes.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's answer is incorrect and doesn't address the question about ready processes."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's answer is incorrect and doesn't address the question about ready processes.",
+            "level": "Understand",
+            "score": "Low",
+            "feedback": "The teacher's answer is incorrect and doesn't address the question about ready processes."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "hmm, that doesn't quite sound right",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 13.9
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:56:50+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say demand paging, does that mean the system only loads a page into memory when it's actually needed?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does this affect the system's performance, like in terms of speed or memory usage?",
+          "I'm still really confused. What happens if a page fault occurs frequently?",
+          "Okay, I'm getting it. What is thrashing, and how does the system handle it?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly explains the concept of demand paging but could elaborate on how it affects system performance.\nImprovement: The teacher could provide more details on the implications of demand paging on system performance and efficiency.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly explains the concept of demand paging but could elaborate on how it affects system performance.",
+            "improvement": "The teacher could provide more details on the implications of demand paging on system performance and efficiency."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is incomplete and does not address the impact on system performance.\nImprovement: The teacher should explain how page faults affect system performance, including potential slowdowns and memory management strategies.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response is incomplete and does not address the impact on system performance.",
+            "improvement": "The teacher should explain how page faults affect system performance, including potential slowdowns and memory management strategies."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic explanation of how demand paging allows for larger programs than physical memory, but lacks depth on performance implications.\nImprovement: The teacher could discuss how frequent page faults can lead to thrashing and how systems manage this issue.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a basic explanation of how demand paging allows for larger programs than physical memory, but lacks depth on performance implications.",
+            "improvement": "The teacher could discuss how frequent page faults can lead to thrashing and how systems manage this issue."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 16.4
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:57:07+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "Wait, I'm a bit lost. Why is it beneficial to start running a program before loading all its pages?",
+          "I'm still really confused. Does this mean demand paging can slow down a program if it keeps hitting page faults?",
+          "I'm still really confused. How does the system decide which pages to keep in memory and which to swap out?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is too brief and lacks depth. It doesn't clarify the concept of demand paging or its significance.\nImprovement: The teacher should provide a more detailed explanation, including how demand paging differs from other paging strategies and its benefits.",
+            "level": "Remember",
+            "score": "Low",
+            "improvement": "The teacher should provide a more detailed explanation, including how demand paging differs from other paging strategies and its benefits.",
+            "feedback": "The teacher's explanation is too brief and lacks depth. It doesn't clarify the concept of demand paging or its significance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still too brief and doesn't fully address the benefits of demand paging.\nImprovement: The teacher should explain how demand paging optimizes memory usage and performance by reducing unnecessary loading of pages.",
+            "level": "Understand",
+            "score": "Low",
+            "improvement": "The teacher should explain how demand paging optimizes memory usage and performance by reducing unnecessary loading of pages.",
+            "feedback": "The teacher's explanation is still too brief and doesn't fully address the benefits of demand paging."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's explanation is still too brief and doesn't fully address the benefits of demand paging.\nImprovement: The teacher should explain how demand paging optimizes memory usage and performance by reducing unnecessary loading of pages, and address potential slowdowns due to page faults.",
+            "level": "Apply",
+            "score": "Low",
+            "improvement": "The teacher should explain how demand paging optimizes memory usage and performance by reducing unnecessary loading of pages, and address potential slowdowns due to page faults.",
+            "feedback": "The teacher's explanation is still too brief and doesn't fully address the benefits of demand paging."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 16.4
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:57:23+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "I think I understand most of that. Why is it beneficial to start running a program before loading all its pages?",
+          "I'm still really confused. Can you explain how the operating system handles a page fault when a page isn't loaded yet?",
+          "I'm still really confused. What happens when the operating system needs to swap out a page to make room for a new one?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could elaborate on how demand paging optimizes memory usage and performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth.",
+            "improvement": "The teacher could elaborate on how demand paging optimizes memory usage and performance."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect. Demand paging allows a program to start running before all pages are loaded, reducing initial load time.\nImprovement: The teacher should clarify that demand paging allows for quicker program execution by only loading necessary pages as needed.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is incorrect. Demand paging allows a program to start running before all pages are loaded, reducing initial load time.",
+            "improvement": "The teacher should clarify that demand paging allows for quicker program execution by only loading necessary pages as needed."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation is incorrect and doesn't address how page faults are handled.\nImprovement: The teacher should explain that the operating system uses a page-replacement algorithm to handle page faults, swapping out less used pages to make room for new ones.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation is incorrect and doesn't address how page faults are handled.",
+            "improvement": "The teacher should explain that the operating system uses a page-replacement algorithm to handle page faults, swapping out less used pages to make room for new ones."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 15.6
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-09T04:57:39+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if a page is no longer in the set of recently used pages, does that mean it's definitely going to be replaced?",
+          "I'm still really confused. Can you explain how the set of recently used pages helps in deciding which page to replace?",
+          "I'm still really confused. Wait, I'm a bit lost. So, does the set of recently used pages actually keep track of all pages, or just a few?",
+          "I'm still really confused. Okay, I'm a bit lost. What happens if the set of recently used pages is too small?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's answer is too brief and doesn't address the student's question about the relationship between page replacement and the set of recently used pages.\nImprovement: The teacher should clarify that the set of recently used pages is just one factor in deciding which page to replace, and other strategies might be used.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's answer is too brief and doesn't address the student's question about the relationship between page replacement and the set of recently used pages.",
+            "improvement": "The teacher should clarify that the set of recently used pages is just one factor in deciding which page to replace, and other strategies might be used."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's answer is incorrect and doesn't explain the role of the set of recently used pages in the least-recently-used strategy.\nImprovement: The teacher should clarify that the set of recently used pages is used to track the order of page usage, and least-recently-used selects the page that hasn't been used for the longest time as the replacement candidate.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's answer is incorrect and doesn't explain the role of the set of recently used pages in the least-recently-used strategy.",
+            "improvement": "The teacher should clarify that the set of recently used pages is used to track the order of page usage, and least-recently-used selects the page that hasn't been used for the longest time as the replacement candidate."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's answer is incorrect and doesn't address the student's question about the size or purpose of the set of recently used pages.\nImprovement: The teacher should clarify that the set of recently used pages is typically a fixed-size set that tracks the order of page usage, and the size is determined by the system's configuration.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's answer is incorrect and doesn't address the student's question about the size or purpose of the set of recently used pages.",
+            "improvement": "The teacher should clarify that the set of recently used pages is typically a fixed-size set that tracks the order of page usage, and the size is determined by the system's configuration."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 21.4
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 2,
+      "started_utc": "2026-09-09T04:58:00+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the deal with page replacement?",
+          "Okay, I'm following you. What happens if the system picks the wrong page to replace?",
+          "Okay, I'm following you. Can you give an example of when least-recently-used might not work well?",
+          "I think I understand most of that. How does the system decide if a page is clean or modified?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provides a basic explanation of page replacement but lacks depth.\nImprovement: The teacher could expand on the consequences of choosing the wrong page for replacement.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provides a basic explanation of page replacement but lacks depth.",
+            "improvement": "The teacher could expand on the consequences of choosing the wrong page for replacement."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explains the rationale behind least-recently-used but doesn't fully explore the implications of errors.\nImprovement: The teacher could provide examples of scenarios where least-recently-used might fail.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explains the rationale behind least-recently-used but doesn't fully explore the implications of errors.",
+            "improvement": "The teacher could provide examples of scenarios where least-recently-used might fail."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher introduces the concept of modified pages but doesn't fully explain the cost implications.\nImprovement: The teacher could elaborate on how the cost of writing back a modified page affects system performance.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher introduces the concept of modified pages but doesn't fully explain the cost implications.",
+            "improvement": "The teacher could elaborate on how the cost of writing back a modified page affects system performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 14.7
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 3,
+      "started_utc": "2026-09-09T04:58:15+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the deal with page replacement?",
+          "Okay, I'm following you. What happens if the system picks the wrong page to replace?",
+          "Okay, I'm following you. Can you give an example of when least-recently-used might not work well?",
+          "Okay, I'm following you. Why is it better to evict a clean page than a modified one?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provides a basic explanation of page replacement but lacks depth.\nImprovement: The teacher could expand on the consequences of choosing the wrong page for replacement.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provides a basic explanation of page replacement but lacks depth.",
+            "improvement": "The teacher could expand on the consequences of choosing the wrong page for replacement."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explains the rationale behind least-recently-used but doesn't fully explore the implications of errors.\nImprovement: The teacher could provide examples or scenarios where least-recently-used might fail.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explains the rationale behind least-recently-used but doesn't fully explore the implications of errors.",
+            "improvement": "The teacher could provide examples or scenarios where least-recently-used might fail."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher introduces the concept of modified pages but doesn't fully explain the cost implications.\nImprovement: The teacher could explain why a clean page is preferred and the impact on system performance.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher introduces the concept of modified pages but doesn't fully explain the cost implications.",
+            "improvement": "The teacher could explain why a clean page is preferred and the impact on system performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 14.6
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 298.2,
+    "turns": 54,
+    "generation": {
+      "calls": 72,
+      "seconds": 297.7,
+      "seconds_per_call": 4.14,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 0.3,
+        "judge_calls": 0
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 7.3,
+        "judge_calls": 0
+      }
+    }
+  }
+}

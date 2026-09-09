@@ -1,0 +1,875 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-09T05:12:58+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "os/processes/process-lifecycle",
+      "os/processes/interprocess-communication",
+      "os/threads-scheduling/multithreading",
+      "os/threads-scheduling/cpu-scheduling",
+      "os/virtual-memory/demand-paging",
+      "os/virtual-memory/page-replacement"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": "qwen2.5",
+    "turns": 3,
+    "repeats": 3,
+    "languages": [],
+    "judge_model": null,
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:12:58+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a process in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you explain what happens when a process transitions from the ready state to the running state?",
+          "I'm still really confused. Why does the operating system allow multiple processes to run simultaneously?",
+          "Okay, I'm following you. What happens if all the control blocks are used up?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic overview of process states but could have included more detail about each state.\nImprovement: Expand on the characteristics of each state for better understanding.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic overview of process states but could have included more detail about each state.",
+            "improvement": "Expand on the characteristics of each state for better understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's explanation was incorrect; processes don't stay on the CPU when waiting for input.\nImprovement: Correctly describe how processes transition based on their needs and system resources.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's explanation was incorrect; processes don't stay on the CPU when waiting for input.",
+            "improvement": "Correctly describe how processes transition based on their needs and system resources."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher correctly explained the role of control blocks in managing processes, though the explanation could be more detailed.\nImprovement: Provide examples or scenarios where allowing multiple processes benefits system performance.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher correctly explained the role of control blocks in managing processes, though the explanation could be more detailed.",
+            "improvement": "Provide examples or scenarios where allowing multiple processes benefits system performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 21.5
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:13:20+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a process in an operating system?",
+          "Okay, I'm following you. Can you explain how a process transitions from the ready state to the running state?",
+          "I'm still really confused. Why does a process transition to the blocked state instead of just waiting for input?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does the operating system manage to switch between processes so quickly?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic overview of the process states but could have included more detail about their functions.\nImprovement: Explain the transition between these states in more depth.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic overview of the process states but could have included more detail about their functions.",
+            "improvement": "Explain the transition between these states in more depth."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's explanation was somewhat confusing and lacked clarity on the transition mechanism.\nImprovement: Provide a clear explanation of the conditions under which a process transitions from running to blocked.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's explanation was somewhat confusing and lacked clarity on the transition mechanism.",
+            "improvement": "Provide a clear explanation of the conditions under which a process transitions from running to blocked."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher explained the role of the control block but could have elaborated on why this method is efficient.\nImprovement: Discuss the efficiency or benefits of using control blocks over other methods.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher explained the role of the control block but could have elaborated on why this method is efficient.",
+            "improvement": "Discuss the efficiency or benefits of using control blocks over other methods."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.0
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Process lifecycle",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:13:30+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a process in an operating system?",
+          "Okay, I'm following you. Okay, so how does a process move from the ready state to the running state?",
+          "Wait, I'm a bit lost. Wait, so if a process is waiting for input, why doesn't it just stay in the running state instead of going to blocked?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give me an example of how the control block helps manage processes?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic overview of process states but could have included more detail about each state.\nImprovement: Expand on the characteristics of each state for better understanding.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic overview of process states but could have included more detail about each state.",
+            "improvement": "Expand on the characteristics of each state for better understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's explanation was unclear and contained a misconception about process transitions.\nImprovement: Correctly explain the transition from running to blocked when waiting for input.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's explanation was unclear and contained a misconception about process transitions.",
+            "improvement": "Correctly explain the transition from running to blocked when waiting for input."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher correctly explained the role of the control block but could have elaborated on its importance in resuming processes.\nImprovement: Provide examples or scenarios where the control block is crucial for process management.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher correctly explained the role of the control block but could have elaborated on its importance in resuming processes.",
+            "improvement": "Provide examples or scenarios where the control block is crucial for process management."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.5
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:13:40+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?",
+          "I'm still really confused. Can you explain how this channel works in practice?",
+          "Okay, I'm following you. What happens if both ends of a pipe try to write at the same time?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you give an example of a situation where message passing would be better than shared memory?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation was too brief and lacked depth, failing to clarify the concept adequately.\nImprovement: Provide a more detailed explanation of what interprocess communication entails, including examples or scenarios.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation was too brief and lacked depth, failing to clarify the concept adequately.",
+            "improvement": "Provide a more detailed explanation of what interprocess communication entails, including examples or scenarios."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic understanding of pipes but could have included more detail about their operation.\nImprovement: Explain the different types of pipes (e.g., FIFOs) and how they function differently.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic understanding of pipes but could have included more detail about their operation.",
+            "improvement": "Explain the different types of pipes (e.g., FIFOs) and how they function differently."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher explained the benefits of message passing over shared memory, highlighting the role of the kernel in handling synchronization.\nImprovement: Provide examples of situations where message passing might be preferred over shared memory.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher explained the benefits of message passing over shared memory, highlighting the role of the kernel in handling synchronization.",
+            "improvement": "Provide examples of situations where message passing might be preferred over shared memory."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.3
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:13:51+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?",
+          "I'm still really confused. Can you explain how this channel works between processes?",
+          "Okay, I'm following you. What happens if both processes try to write at the same time?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you give an example of a situation where message passing would be more beneficial than shared memory?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation was too brief and lacked depth, failing to clarify the concept adequately.\nImprovement: Provide a more detailed explanation of what interprocess communication entails, including examples or scenarios where it is used.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation was too brief and lacked depth, failing to clarify the concept adequately.",
+            "improvement": "Provide a more detailed explanation of what interprocess communication entails, including examples or scenarios where it is used."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic understanding of pipes but could have included more details about their operation and use cases.\nImprovement: Explain the different types of pipes (e.g., FIFOs) and how they differ in terms of functionality and use cases.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic understanding of pipes but could have included more details about their operation and use cases.",
+            "improvement": "Explain the different types of pipes (e.g., FIFOs) and how they differ in terms of functionality and use cases."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher correctly identified the benefits of message passing over shared memory, highlighting the role of the kernel in handling synchronization.\nImprovement: Provide specific examples or scenarios where message passing might be preferred over shared memory for better reasoning and synchronization.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher correctly identified the benefits of message passing over shared memory, highlighting the role of the kernel in handling synchronization.",
+            "improvement": "Provide specific examples or scenarios where message passing might be preferred over shared memory for better reasoning and synchronization."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.0
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "topic": "Processes and communication",
+      "subtopic": "Interprocess communication",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:14:02+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?",
+          "I'm still really confused. Okay, I get that they can't share memory directly. But how do they actually send messages to each other?",
+          "Okay, I'm following you. What happens if the writer tries to put more data into the pipe than it can hold?",
+          "That makes sense, but I'm still slightly unsure about one thing. If message passing is easier to understand, why would someone choose shared memory over it?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher provided a basic definition but lacked depth in explaining IPC.\nImprovement: The teacher should elaborate on how IPC allows processes to communicate despite having separate address spaces.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher provided a basic definition but lacked depth in explaining IPC.",
+            "improvement": "The teacher should elaborate on how IPC allows processes to communicate despite having separate address spaces."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the concept of pipes as a method of IPC, clarifying how they function.\nImprovement: The teacher could provide more examples or scenarios where pipes are used effectively.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the concept of pipes as a method of IPC, clarifying how they function.",
+            "improvement": "The teacher could provide more examples or scenarios where pipes are used effectively."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher compared message passing with shared memory, highlighting the benefits of message passing.\nImprovement: The teacher could explain the trade-offs between performance and ease of reasoning when using message passing.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher compared message passing with shared memory, highlighting the benefits of message passing.",
+            "improvement": "The teacher could explain the trade-offs between performance and ease of reasoning when using message passing."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.4
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:14:12+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is multithreading in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why would it be cheaper to switch between threads compared to processes?",
+          "I'm still really confused. Can you clarify what you mean by 'cheaper' when switching between threads?",
+          "Okay, I'm following you. How do developers typically implement multithreading in their programs?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic definition of multithreading but could have elaborated more on its benefits and applications.\nImprovement: Provide examples or scenarios where thread switching is advantageous over process switching.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition of multithreading but could have elaborated more on its benefits and applications.",
+            "improvement": "Provide examples or scenarios where thread switching is advantageous over process switching."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response was somewhat confusing, as it didn't clearly explain why thread switching is cheaper, instead focusing on potential dangers.\nImprovement: Clarify the concept of context switching costs and how they differ between threads and processes.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response was somewhat confusing, as it didn't clearly explain why thread switching is cheaper, instead focusing on potential dangers.",
+            "improvement": "Clarify the concept of context switching costs and how they differ between threads and processes."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher provided a practical application of multithreading, explaining how it can be beneficial for programs with I/O operations.\nImprovement: Expand on how this concept applies to real-world software development.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher provided a practical application of multithreading, explaining how it can be beneficial for programs with I/O operations.",
+            "improvement": "Expand on how this concept applies to real-world software development."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:14:23+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is multithreading in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is it considered cheaper to switch between threads compared to processes?",
+          "I'm still really confused. Can you explain more about the dangers of shared memory when using threads?",
+          "Okay, I'm following you. How do real-world applications take advantage of this threading model for better performance?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The explanation was clear but lacked depth on how multithreading benefits performance.\nImprovement: Provide more detail about the advantages of shared address space and context switching.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The explanation was clear but lacked depth on how multithreading benefits performance.",
+            "improvement": "Provide more detail about the advantages of shared address space and context switching."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The response incorrectly conflated thread management with data consistency issues.\nImprovement: Clarify the concept of context switching costs and potential hazards of shared memory.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The response incorrectly conflated thread management with data consistency issues.",
+            "improvement": "Clarify the concept of context switching costs and potential hazards of shared memory."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The explanation correctly identifies scenarios where threads can be beneficial.\nImprovement: Provide examples or further elaboration on how this applies in real-world applications.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The explanation correctly identifies scenarios where threads can be beneficial.",
+            "improvement": "Provide examples or further elaboration on how this applies in real-world applications."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 9.3
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "Multithreading",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:14:32+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is multithreading in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is switching between threads cheaper compared to processes?",
+          "I'm still really confused. Can you explain more about how context switching works between threads and processes?",
+          "Okay, I'm following you. What kind of programs would benefit the most from using multithreading?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic explanation of multithreading but could have elaborated more on its benefits or differences from other threading models.\nImprovement: The teacher should provide more context about why thread switching is cheaper and how it impacts performance.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of multithreading but could have elaborated more on its benefits or differences from other threading models.",
+            "improvement": "The teacher should provide more context about why thread switching is cheaper and how it impacts performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response was somewhat confusing, as it didn't clearly explain why thread switching is cheaper. Instead, it introduced a potential issue without context.\nImprovement: The teacher should clarify the concept of context switching costs and how they differ between threads and processes.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response was somewhat confusing, as it didn't clearly explain why thread switching is cheaper. Instead, it introduced a potential issue without context.",
+            "improvement": "The teacher should clarify the concept of context switching costs and how they differ between threads and processes."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher provided a practical example of when multithreading can be beneficial, which helps in understanding the application of multithreading concepts.\nImprovement: The teacher could expand on scenarios where multithreading is particularly advantageous, such as in GUI applications.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher provided a practical example of when multithreading can be beneficial, which helps in understanding the application of multithreading concepts.",
+            "improvement": "The teacher could expand on scenarios where multithreading is particularly advantageous, such as in GUI applications."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:14:43+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is CPU scheduling?",
+          "Okay, I'm following you. Why is it important that there are more runnable processes than cores?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does round-robin ensure that no process starves the others?",
+          "I think I understand most of that. What factors should be considered when choosing the right quantum size?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic definition of CPU scheduling but could have expanded on its importance or mechanisms.\nImprovement: Include examples or scenarios where CPU scheduling is crucial for system performance.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition of CPU scheduling but could have expanded on its importance or mechanisms.",
+            "improvement": "Include examples or scenarios where CPU scheduling is crucial for system performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the concept of round-robin scheduling but could have elaborated on how it prevents starvation.\nImprovement: Provide more detail on how round-robin ensures fairness among processes.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the concept of round-robin scheduling but could have elaborated on how it prevents starvation.",
+            "improvement": "Provide more detail on how round-robin ensures fairness among processes."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher discussed the trade-offs of quantum size in round-robin scheduling, showing understanding of practical implications.\nImprovement: Offer guidance on how to choose an optimal quantum size for different workloads.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher discussed the trade-offs of quantum size in round-robin scheduling, showing understanding of practical implications.",
+            "improvement": "Offer guidance on how to choose an optimal quantum size for different workloads."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 9.9
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:14:53+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is CPU scheduling?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why do we need multiple scheduling algorithms if they all seem to do the same thing?",
+          "I'm still really confused. Can you explain how round-robin scheduling might affect system performance compared to other methods?",
+          "Okay, I'm following you. What happens if the quantum size is too small or too large in a real-time system?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic definition of CPU scheduling but could have elaborated on its importance or mechanisms.\nImprovement: Explain why multiple processes can be ready at the same time and how this affects system performance.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition of CPU scheduling but could have elaborated on its importance or mechanisms.",
+            "improvement": "Explain why multiple processes can be ready at the same time and how this affects system performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response was too simplistic and didn't address the broader purpose or differences between scheduling algorithms.\nImprovement: Provide a comprehensive comparison of different scheduling algorithms, highlighting their unique benefits and use cases.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The teacher's response was too simplistic and didn't address the broader purpose or differences between scheduling algorithms.",
+            "improvement": "Provide a comprehensive comparison of different scheduling algorithms, highlighting their unique benefits and use cases."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher's answer lacked depth and failed to connect the concept to real-world implications.\nImprovement: Discuss specific scenarios where different quantum sizes would impact system efficiency and user experience.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher's answer lacked depth and failed to connect the concept to real-world implications.",
+            "improvement": "Discuss specific scenarios where different quantum sizes would impact system efficiency and user experience."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "topic": "Threads and scheduling",
+      "subtopic": "CPU scheduling",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:15:04+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is CPU scheduling?",
+          "Okay, I'm following you. Why is it important that there are more runnable processes than cores?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does round-robin scheduling prevent starvation among processes?",
+          "I'm still really confused. What happens if the time quantum is too small or too large in a round-robin system?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The explanation is correct but lacks depth and detail about the importance of CPU scheduling.\nImprovement: Provide more context or examples to illustrate why CPU scheduling is crucial for system performance.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and detail about the importance of CPU scheduling.",
+            "improvement": "Provide more context or examples to illustrate why CPU scheduling is crucial for system performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The answer correctly identifies the role of round-robin scheduling but could benefit from additional details on its benefits.\nImprovement: Explain how round-robin scheduling prevents starvation and maintains fairness among processes.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The answer correctly identifies the role of round-robin scheduling but could benefit from additional details on its benefits.",
+            "improvement": "Explain how round-robin scheduling prevents starvation and maintains fairness among processes."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The response contains some accurate information but lacks clarity and fails to fully explain the trade-offs involved.\nImprovement: Clarify the implications of choosing an inappropriate time quantum and how it affects system performance.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The response contains some accurate information but lacks clarity and fails to fully explain the trade-offs involved.",
+            "improvement": "Clarify the implications of choosing an inappropriate time quantum and how it affects system performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:15:14+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why would we want to load a page into memory only when it's needed?",
+          "I'm still really confused. What happens if a page isn't loaded into memory when it's needed?",
+          "Got it! Thanks for explaining. Are there situations where demand paging might not be the best choice?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation was clear but could have included more detail about how demand paging works.\nImprovement: Provide examples or scenarios where demand paging is beneficial.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation was clear but could have included more detail about how demand paging works.",
+            "improvement": "Provide examples or scenarios where demand paging is beneficial."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The answer was too brief and lacked depth in explaining why demand paging is advantageous.\nImprovement: Explain the benefits of demand paging, such as reduced initial memory usage and improved efficiency.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The answer was too brief and lacked depth in explaining why demand paging is advantageous.",
+            "improvement": "Explain the benefits of demand paging, such as reduced initial memory usage and improved efficiency."
+          },
+          {
+            "raw": "Level: Apply\nScore: High\nStrength: The response clearly explained the practical advantage of demand paging, linking it to resource management.\nImprovement: Discuss potential downsides or limitations of demand paging.",
+            "level": "Apply",
+            "score": "High",
+            "strength": "The response clearly explained the practical advantage of demand paging, linking it to resource management.",
+            "improvement": "Discuss potential downsides or limitations of demand paging."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 9.4
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:15:23+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, demand paging is when the system only loads pages into memory when they're needed, right?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, but what happens if a page isn't loaded yet and the program needs it?",
+          "Okay, I'm following you. What would happen if the system keeps having page faults because pages aren't loaded quickly enough?",
+          "I'm still really confused. Can you explain how external fragmentation affects the system when using demand paging?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of demand paging but could have included more detail about its benefits and limitations.\nImprovement: The teacher should elaborate on how demand paging works in practice and its impact on system performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of demand paging but could have included more detail about its benefits and limitations.",
+            "improvement": "The teacher should elaborate on how demand paging works in practice and its impact on system performance."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The teacher explained the process of handling a page fault effectively, allowing the student to apply this understanding to scenarios involving page faults.\nImprovement: The teacher could provide examples or scenarios where demand paging might be particularly beneficial or problematic.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The teacher explained the process of handling a page fault effectively, allowing the student to apply this understanding to scenarios involving page faults.",
+            "improvement": "The teacher could provide examples or scenarios where demand paging might be particularly beneficial or problematic."
+          },
+          {
+            "raw": "Level: Analyze\nScore: Low\nStrength: The teacher's response was somewhat confusing and lacked clarity on the implications of continuous page faults.\nImprovement: The teacher should clarify the concept of external fragmentation and its role in managing memory with demand paging.",
+            "level": "Analyze",
+            "score": "Low",
+            "strength": "The teacher's response was somewhat confusing and lacked clarity on the implications of continuous page faults.",
+            "improvement": "The teacher should clarify the concept of external fragmentation and its role in managing memory with demand paging."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.6
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:15:35+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "Okay, I'm following you. Okay, but why would we want to load pages only when they're needed?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if a page isn't loaded when it's needed?",
+          "Ah, I completely get it now. Can you give me an example of a situation where demand paging really makes a difference?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher provided a basic definition but could have included more detail about how demand paging works.\nImprovement: Explain the concept with an example or scenario to enhance understanding.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition but could have included more detail about how demand paging works.",
+            "improvement": "Explain the concept with an example or scenario to enhance understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher clarified the process of handling page faults but could have explained the benefits of this approach in more depth.\nImprovement: Discuss the advantages of demand paging over other methods, such as reduced initial memory usage.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher clarified the process of handling page faults but could have explained the benefits of this approach in more depth.",
+            "improvement": "Discuss the advantages of demand paging over other methods, such as reduced initial memory usage."
+          },
+          {
+            "raw": "Level: Apply\nScore: High\nStrength: The teacher effectively explained the practical application of demand paging, highlighting its benefit in managing memory usage.\nImprovement: Provide examples of scenarios where demand paging significantly improves performance.",
+            "level": "Apply",
+            "score": "High",
+            "strength": "The teacher effectively explained the practical application of demand paging, highlighting its benefit in managing memory usage.",
+            "improvement": "Provide examples of scenarios where demand paging significantly improves performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.1
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:15:45+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is page replacement in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why do we need to replace pages if they're already in memory?",
+          "Okay, I'm following you. Can you give an example of when the least-recently-used heuristic might not work well?",
+          "I think I understand most of that. What happens if we don't consider the cost of writing back a modified page?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation was clear but could have included more detail about the process of page replacement.\nImprovement: Provide examples or scenarios where page replacement occurs to enhance understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation was clear but could have included more detail about the process of page replacement.",
+            "improvement": "Provide examples or scenarios where page replacement occurs to enhance understanding."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: The answer correctly identifies the rationale behind using least-recently-used as a heuristic.\nImprovement: Explain how this heuristic might fail in certain situations to deepen understanding.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "The answer correctly identifies the rationale behind using least-recently-used as a heuristic.",
+            "improvement": "Explain how this heuristic might fail in certain situations to deepen understanding."
+          },
+          {
+            "raw": "Level: Analyze\nScore: Medium\nStrength: The explanation provides insight into the cost implications of page replacement.\nImprovement: Discuss the trade-offs between choosing a clean versus a modified page to further analyze the strategy.",
+            "level": "Analyze",
+            "score": "Medium",
+            "strength": "The explanation provides insight into the cost implications of page replacement.",
+            "improvement": "Discuss the trade-offs between choosing a clean versus a modified page to further analyze the strategy."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:15:55+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is page replacement in an operating system?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is it important for the operating system to replace pages efficiently?",
+          "I'm still really confused. Can you explain how the least-recently-used strategy actually works in practice?",
+          "Okay, I'm following you. What factors might influence the decision between using a global or local replacement algorithm?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of page replacement but could have elaborated on why it's necessary.\nImprovement: The teacher should explain the importance of page replacement and its impact on system performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of page replacement but could have elaborated on why it's necessary.",
+            "improvement": "The teacher should explain the importance of page replacement and its impact on system performance."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher mentioned the least-recently-used strategy but didn't explain how it approximates the ideal choice or its benefits.\nImprovement: The teacher should clarify how the least-recently-used strategy works and why it's considered efficient.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher mentioned the least-recently-used strategy but didn't explain how it approximates the ideal choice or its benefits.",
+            "improvement": "The teacher should clarify how the least-recently-used strategy works and why it's considered efficient."
+          },
+          {
+            "raw": "Level: Analyze\nScore: Medium\nStrength: The teacher explained the cost implications of choosing a modified page, providing insight into practical considerations.\nImprovement: The teacher could further analyze the trade-offs involved in choosing between clean and modified pages.",
+            "level": "Analyze",
+            "score": "Medium",
+            "strength": "The teacher explained the cost implications of choosing a modified page, providing insight into practical considerations.",
+            "improvement": "The teacher could further analyze the trade-offs involved in choosing between clean and modified pages."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 10.8
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Page replacement",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "qwen2.5",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:16:06+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the deal with page replacement?",
+          "Okay, I'm following you. Why do we need to replace pages instead of just adding more memory?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does the clock algorithm work compared to LRU?",
+          "I think I understand most of that. What happens if all pages are modified when deciding on a victim?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation was clear but could have included more detail about why page replacement is necessary.\nImprovement: Explain the importance of page replacement in maintaining system performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation was clear but could have included more detail about why page replacement is necessary.",
+            "improvement": "Explain the importance of page replacement in maintaining system performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation was clear but could have included more detail about how LRU works.\nImprovement: Provide a more detailed explanation of how LRU selects pages for replacement.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation was clear but could have included more detail about how LRU works.",
+            "improvement": "Provide a more detailed explanation of how LRU selects pages for replacement."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation was clear but could have included more detail about the cost implications of modifying pages.\nImprovement: Explain the trade-offs involved in choosing between modified and clean pages for replacement.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation was clear but could have included more detail about the cost implications of modifying pages.",
+            "improvement": "Explain the trade-offs involved in choosing between modified and clean pages for replacement."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 9.5
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 197.0,
+    "turns": 54,
+    "generation": {
+      "calls": 72,
+      "seconds": 196.5,
+      "seconds_per_call": 2.73,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 0.2,
+        "judge_calls": 0
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 4.8,
+        "judge_calls": 0
+      }
+    }
+  }
+}

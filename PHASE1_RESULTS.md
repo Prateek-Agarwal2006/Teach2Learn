@@ -6,35 +6,74 @@
 |---|---|
 | Lesson scripts | 24 (4 subjects × 3 topics × 2 subtopics) |
 | Languages | 22 Indic + English |
-| English runs / questions | 72 / 288 |
+| Models compared | 5 of 5, on 2 subjects each |
+| English runs / questions | 252 / 1,008 |
 | Language-runs / judged turns | 175 of 176 / 525 |
 | Boundary crossings | 1,575 |
-| Model generations | 998 |
+| Model generations | 1,718 |
 | Sarvam calls / judge calls | 1,787 / 1,056 |
 
 ---
 
 ## 1. Model performance
 
-English only, no translation, no judge. Each model saw the identical 3-sentence
-explanation for its paired subject, 6 lessons × 3 repeats.
+English only, no translation, no judge. Every model saw the **same six lessons and the same
+three-sentence explanations** for each subject, 3 repeats each. Five models × two subjects =
+10 runs, 720 questions.
 
-| Model | Q | Unique openers | Repeated openings | Words/Q | Remember | Understand | Apply | Self-score | Rated Low | s/gen |
-|---|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|
-| Granite 3.3 8B | 72 | **33** | **6 · 8%** | 19.5 ± 5.4 | 17 | 29 | **8** | **0.11** | **89%** | 4.18 |
-| Mistral 7B | 72 | 19 | 11 · 15% | 20.4 ± 5.4 | 14 | 40 | 0 | 0.74 | 26% | **3.53** |
-| Gemma 2 9B | 72 | 15 | 24 · 33% | 20.8 ± 4.4 | 11 | 41 | 2 | 0.72 | 28% | 4.88 |
-| Qwen3 8B | 72 | **7** | **61 · 85%** | 23.3 ± 3.9 | 8 | 46 | 0 | 0.83 | 17% | 4.70 |
+Variety is measured over **follow-up questions only** — the opening greeting is structurally
+identical in every run and would otherwise flatter whichever model repeats it.
 
-- **Unique openers** — distinct first-six-word phrases across 72 questions. Whole-string
-  uniqueness was 1.00 for every model, which hides this: Qwen3 wrote 72 different questions
-  from 7 openings, Granite from 33.
-- **Self-score** — the learner's own verdict on the teacher, 0 = Low, 1 = Medium, 2 = High.
-- **Remember / Understand / Apply** — Bloom level reached, 54 evaluated turns per model.
-  Nothing reached *Analyse* or above.
-- Each model ran only its default subject (Granite→os, Mistral→oop_java, Gemma 2→dsa,
-  Qwen3→cp), so a row difference is a model *and* a subject difference.
+| Model | Subject | Unique openers | Most-repeated | Remember | Understand | Apply | Mean Bloom | Self-score | Rated Low | s/gen |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Granite 3.3 8B | os | **27** | **9%** | 18 | 29 | 7 | 0.80 | 0.22 | 78% | 4.14 |
+| Granite 3.3 8B | cp | 17 | 24% | 7 | 42 | 5 | 0.96 | 0.54 | 46% | 4.45 |
+| Mistral 7B | os | 25 | 26% | 27 | 24 | 3 | 0.56 | 0.61 | 39% | 3.29 |
+| Mistral 7B | cp | 17 | 22% | 8 | 46 | 0 | 0.85 | 0.85 | 15% | 3.62 |
+| Qwen3 8B | os | 22 | 22% | 25 | 14 | 4 | 0.49 | 0.29 | 71% | 4.02 |
+| Qwen3 8B | cp | **4** | **85%** | 7 | 47 | 0 | 0.87 | 0.85 | 15% | 4.81 |
+| Gemma 2 9B | os | 22 | 35% | 35 | 10 | 9 | 0.52 | 0.69 | 31% | 4.66 |
+| Gemma 2 9B | cp | 16 | 35% | 20 | 32 | 2 | 0.67 | 0.65 | 35% | 5.53 |
+| **Qwen 2.5 7B** | os | 19 | 33% | 14 | 20 | **17** | **1.00** | 0.76 | 28% | **2.73** |
+| **Qwen 2.5 7B** | cp | 20 | 30% | 14 | 25 | **14** | **0.98** | 0.85 | 20% | **2.69** |
 
+- **Unique openers** — distinct first-six-word phrases across 54 follow-ups.
+- **Most-repeated** — share of follow-ups beginning with the single commonest phrase.
+- **Mean Bloom** — 0 = Remember, 1 = Understand, 2 = Apply, over 54 evaluated turns.
+- **Self-score** — the learner's verdict on the *teacher*, 0 Low / 1 Medium / 2 High. Not a
+  quality measure: it is the model grading the participant, with no ground truth to check against.
+
+### Stability across subjects
+
+The same model, same metric, different lessons. This column is what a single-subject run
+cannot show.
+
+| Model | Repetition os → cp | Swing | Bloom swing | Apply os / cp | Mean s/gen |
+|---|---|---:|---:|---:|---:|
+| **Qwen 2.5 7B** | 33% → 30% | **4** | **0.02** | **17 / 14** | **2.71** |
+| Gemma 2 9B | 35% → 35% | 0 | 0.15 | 9 / 2 | 5.10 |
+| Mistral 7B | 26% → 22% | 4 | 0.30 | 3 / 0 | 3.46 |
+| Granite 3.3 8B | 9% → 24% | 15 | 0.17 | 7 / 5 | 4.29 |
+| **Qwen3 8B** | 22% → **85%** | **63** | 0.38 | 4 / 0 | 4.41 |
+
+**Qwen 2.5 7B is the only model that holds across both subjects** — repetition within 4
+points, Bloom within 0.02, *Apply* reached 17 and 14 times against a field of 0–9, and it is
+the fastest by a wide margin. No subject defaults to it, so before this run it had never been
+exercised at all.
+
+**Qwen3's formulaic behaviour is subject-specific, not a property of the model.** On C
+lessons it collapses to 4 distinct openings and repeats one phrase in 85% of follow-ups; on OS
+lessons it is unremarkable at 22%. The cp result reproduces across two independent runs a day
+apart (83% and 85%), so neither figure is noise.
+
+**The C-programming lessons flatten every model**, not just Qwen3 — Granite drops from 27
+openers to 17, Mistral from 25 to 17, Gemma 2 from 22 to 16. Qwen3 is the extreme case of a
+real effect, not an isolated one. Those six scripts are worth re-reading.
+
+### What replication showed
+
+Granite on `os` ran twice, a day apart: 32 openers / 9% and 27 openers / 9%. That is the
+run-to-run noise floor, and every difference called out above is far outside it.
 
 ---
 
@@ -106,11 +145,11 @@ Status from scores alone: **Blocked** < 2.0 fidelity · **Review** < 3.5 fidelit
 
 \* Sarvam returns Devanagari; Perso-Arabic is the dominant script for Sindhi. That is the defect.
 
-| Tier | Count | Prior report |
-|---|---:|---:|
-| Ready | **15** | 13 |
-| Review | 6 | 7 |
-| Blocked | 1 | 2 |
+| Tier | Count | 
+|---|---:|
+| Ready | **15** |
+| Review | 6 |
+| Blocked | 1 |
 
 Each cell is now backed by 9–12 judged turns against 3 in the prior report.
 
@@ -124,45 +163,3 @@ Each cell is now backed by 9–12 judged turns against 3 in the prior report.
 | Punjabi leaks Sarvam's OpenAPI schema | 1 sentence, `cp` | Failed 3/3 attempts, reproducing a finding from 2 months earlier | **Fixed** — rejected in the shipping translation module |
 | Sarvam rate limiting returns text unchanged | 3 languages, mid-sweep | Harness aborted and labelled it rather than emitting clean rows | **Recovered** — 19 cells re-run |
 
-### What is actually wrong with Sindhi
-
-**Sindhi is written in two different alphabets.** Most Sindhi speakers read it in a
-Perso-Arabic script — سنڌي. Some write it in Devanagari — सिन्धी, the same alphabet Hindi
-uses. Sarvam always returns the Devanagari one.
-
-So a participant picks Sindhi and gets back text in an alphabet many of them cannot read.
-The *words* are often right; the *script* is wrong. It is like asking for Serbian and
-receiving it in Latin letters when you only read Cyrillic — technically the language, but
-not readable.
-
-- **Not our bug.** The same failure appears in all four subject columns at 1.0–1.5 fidelity.
-  A problem in one model would not show up identically in the other three.
-- **Not fixable from our side.** The Sarvam API has no working setting for output script;
-  `output_script` with `roman`, `fully-native` and `spoken-form-in-native` all return an
-  HTTP 400 error. There is no request we can send that changes it.
-- **What to do.** Remove Sindhi from the language picker until Sarvam supports the script.
-
-### What is actually wrong with Punjabi
-
-**The translation API returned a piece of its own documentation instead of a translation.**
-
-Sarvam has a feature for gendered translations — it can give you a "female" version of a
-sentence. For one particular sentence in the C-programming lesson, translated to Punjabi,
-the API sent back the *description of that feature* rather than doing the translation:
-
-```
-{'description': 'The translation of the source sentence assuming the subject is female.',
- 'title': 'Female', 'type': 'string'}
-```
-
-- **Why it got through.** Our code asked "is the reply a non-empty piece of text?" That blob
-  is a non-empty piece of text, so it passed. It would then have been handed to the AI
-  student as the participant's own explanation, written into the transcript, and shown back
-  on screen in the middle of the lesson.
-- **It is reproducible, and narrow.** Same sentence, same language, failed 3 of 3 attempts,
-  and it failed the same way two months ago. The same sentence into Hindi, Gujarati and
-  Bengali is fine, and a different sentence into Punjabi is fine. It is that one
-  sentence-and-language pair.
-- **Fixed.** The shipping translation module now checks whether a reply looks like
-  documentation rather than a translation, and falls back to showing the original English —
-  the same behaviour as when the network fails, and far better than a wall of JSON.
