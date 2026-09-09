@@ -1,164 +1,148 @@
-# Phase 1 Results
+# Phase 1 Results — Fine-tuned Teach2Learn
 
-The expanded test bed, run against the real fine-tuned adapters on the GPU host,
-8 September 2026. Setup is described in `TEST_BED.md`; this is what came out of it.
+Run against the real fine-tuned adapters on the GPU host, 8 September 2026.
+Setup: `TEST_BED.md` · Full tables: `teach2learn-portal/results-*.md` · Reproduce on the
+RAG tool: `RAG_TEST_PLAN.md`
 
-**Both parts complete.** `RAG_TEST_PLAN.md` describes how to reproduce this on the RAG
-implementation so the two can be compared.
+## Run profile
 
----
-
-## Part 1 — English: does the learner behave like a learner?
-
-**24 lessons · 4 subjects · 3 topics per subject · 3 repeats · 72 runs · 288 questions**
-
-This is the run the expanded test bed was built for. Each subject routes to a different
-fine-tuned model, so four subjects means four models receiving byte-identical teacher
-input from the shared lesson bank. No translation and no judge are involved: this asks
-only whether the learner varies, probes, and assesses sensibly in English.
-
-Every figure below rests on six lessons per subject run three times each, rather than
-one script run once as in `LANGUAGE_TEST_RESULTS.md`.
-
-### The four models behave measurably differently
-
-| Subject | Model | Repeated openings (of 72 questions) | Mean self-score (of 2) | Rated Low | Reached Apply |
-|---|---|---:|---:|---:|---:|
-| Operating Systems | Granite 3.3 8B | **6 (8%)** | **0.11** | **89%** | **8** |
-| OOP with Java | Mistral 7B | 11 (15%) | 0.74 | 26% | 0 |
-| Data Structures | Gemma 2 9B | 24 (33%) | 0.72 | 28% | 2 |
-| Computer Programming | Qwen3 8B | **61 (85%)** | **0.83** | 17% | 0 |
-
-Read across a row and each model has a consistent character. **Granite behaves like a
-demanding learner**: it almost never reuses a phrasing, it rates the same three-sentence
-explanation Low nine times out of ten, and it is the only model that reaches Bloom's
-*Apply* with any regularity. **Qwen3 is its opposite**: it opens 85% of its questions the
-same way, accepts the explanation as adequate, and never gets past *Understand*.
-
-Since all four received the identical teacher text, this is a property of the fine-tuning,
-not of the lesson.
-
-### Textual distinctness hides all of this
-
-The distinct-question ratio is **1.00 for every subject, every lesson, every repeat**. No
-model ever asked the literally same question twice.
-
-That number is nearly worthless on its own. Qwen3's questions are all distinct *and* 85%
-of them begin `"That makes sense, but I'm still..."`. Whole-string comparison scores four
-questions that share an opening clause and diverge afterwards as four different questions.
-The harness's opener check was written for exactly this, and the two measures have to be
-reported together or the formulaic case reads as a perfect score.
-
-### Why this matters for the language results
-
-The harness argues that translation cannot rescue a repetitive learner, so a poor English
-baseline would make the whole language sweep meaningless. That has been an assumption
-until now. It is now measured: no model is repetitive by the strict measure, and the
-weakest — Qwen3 — is formulaic in its openings but still on-topic and varied in substance.
-
-The language results therefore rest on a learner that genuinely varies. That is a claim
-the paper can now support with evidence rather than assert.
-
-### Where the learner stayed shallow
-
-Bloom level reached, pooled across all 216 evaluated turns: *Understand* dominates with
-156, *Remember* accounts for 50, and *Apply* for just 10 — eight of those from Granite.
-Nothing reached *Analyse* or above.
-
-This is expected and is a property of the test bed rather than of the models: the scripted
-teacher says three sentences and never responds to what the learner asks. A real
-participant answers the follow-up, which is what would push the exchange higher. It is a
-limitation to state, not a result to report.
-
-### Reliability
-
-- 72 of 72 runs completed. No aborts, no failed generations, no unparsed evaluations.
-- Every lesson was human-reviewed before the run; no result carries the unreviewed stamp.
-- Four of the 24 lessons are carried verbatim from `LANGUAGE_TEST_RESULTS.md`, so those
-  cells remain directly comparable to the earlier report.
+| | |
+|---|---|
+| Lesson scripts | 24 (4 subjects × 3 topics × 2 subtopics) |
+| Models exercised | 4 of 5 available |
+| Languages | 22 Indic + English |
+| English runs / questions | 72 / 288 |
+| Language-runs / judged turns | 175 of 176 / 525 |
+| Boundary crossings | 1,575 |
+| Model generations | 998 |
+| Sarvam calls / judge calls | 1,787 / 1,056 |
+| GPU wall clock | 164 min |
+| Judge spend | ~$0.30 (₹26) |
+| Decoding | temp 0.2, top-p 0.9, sampled, no fixed seed |
 
 ---
 
-## Part 2 — Languages: does the boundary hold, and for whom?
+## 1. Model performance
 
-**8 lessons · 22 languages · 175 language-runs · 525 judged turns**
+English only, no translation, no judge. Each model saw the identical 3-sentence
+explanation for its paired subject, 6 lessons × 3 repeats.
 
-Two lessons per subject, one of each pair carried over from `LANGUAGE_TEST_RESULTS.md`,
-pushed through every language the translation layer supports. Full tables in
-`teach2learn-portal/results-languages.md`.
+| Model | Subject | Q | Distinct | Unique openers | Repeated openings | Words/Q | Remember | Understand | Apply | Self-score | Rated Low | s/gen |
+|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|
+| Granite 3.3 8B | os | 72 | 1.00 | **33** | **6 · 8%** | 19.5 ± 5.4 | 17 | 29 | **8** | **0.11** | **89%** | 4.18 |
+| Mistral 7B | oop_java | 72 | 1.00 | 19 | 11 · 15% | 20.4 ± 5.4 | 14 | 40 | 0 | 0.74 | 26% | **3.53** |
+| Gemma 2 9B | dsa | 72 | 1.00 | 15 | 24 · 33% | 20.8 ± 4.4 | 11 | 41 | 2 | 0.72 | 28% | 4.88 |
+| Qwen3 8B | cp | 72 | 1.00 | **7** | **61 · 85%** | 23.3 ± 3.9 | 8 | 46 | 0 | 0.83 | 17% | 4.70 |
 
-### The mechanical checks are clean
+- **Distinct** — whole-string uniqueness. 1.00 everywhere and near-useless alone.
+- **Unique openers** — distinct first-six-word phrases across 72 questions. This is what
+  the distinctness score hides: Qwen3 wrote 72 different questions from 7 openings.
+- **Self-score** — the learner's own verdict on the teacher, 0 = Low, 1 = Medium, 2 = High.
+- **Remember / Understand / Apply** — Bloom level reached, 54 evaluated turns per model.
+  Nothing reached *Analyse* or above.
 
-| | Count | Over |
-|---|---|---|
-| Untranslated participant text | 0 | 525 turns |
-| Untranslated text shown back | 0 | 525 turns |
-| Native script reaching the English zone | 0 | 525 turns |
+Qwen 2.5 7B is the fifth available model; no subject defaults to it, so it was never run.
+
+---
+
+## 2. Translation boundary
+
+Mechanical string checks. No judgement involved — these are the figures to quote.
+
+| Check | Count | Over |
+|---|---:|---:|
+| Untranslated participant text | **0** | 525 turns |
+| Untranslated text shown back | **0** | 525 turns |
+| Native script reaching the English zone | **0** | 525 turns |
 | Crossings needing a retry | 4 | 1,575 crossings |
-
-These carry no opinion and are the figures to quote. The model never saw a non-Latin
-character; the participant never saw an English one.
-
-### Fifteen ready, six for review, one blocked
-
-Judged fidelity and fluency, 1–5, from an independent model. Status comes from scores
-alone: Blocked under 2.0 fidelity, Review under 3.5 fidelity or 4.0 fluency, else Ready.
-
-- **Ready (15)** — Punjabi, Bengali, Telugu, Gujarati, Tamil, Kannada, Malayalam, Marathi,
-  Hindi, Assamese, Nepali, Odia, Urdu, Maithili, Dogri
-- **Review (6)** — Bodo, Manipuri, Kashmiri, Konkani, Santali, Sanskrit. All show the same
-  pattern: fidelity intact, phrasing stilted. Usable, not broken; they need a native reader.
-- **Blocked (1)** — Sindhi, at 1.3 fidelity across all four columns.
-
-Against the earlier report this is 15/6/1 versus 13/7/2, with each cell now backed by
-9–12 judged turns instead of 3.
-
-### Language explains roughly eight times the spread that subject does
-
-| Subject | Judged turns | Fidelity | Fluency | ≥4.0 fluency |
-|---|---|---|---|---|
-| Computer Programming | 129 | 4.38 ± 0.99 | 4.43 ± 0.82 | 18 / 22 |
-| Data Structures and Algorithms | 132 | 4.35 ± 0.91 | 4.15 ± 0.79 | 14 / 22 |
-| OOP with Java | 132 | 4.34 ± 1.17 | 4.10 ± 0.90 | 15 / 22 |
-| Operating Systems | 132 | 4.30 ± 0.98 | 4.22 ± 0.83 | 16 / 22 |
-
-Mean fidelity spans 4.30–4.38 across subjects, a range of 0.08 on a five-point scale.
-Across languages, fluency spans 2.2–4.9, a range of 2.7. **Technical vocabulary is not the
-constraint — the choice of language is.** Pointers and `malloc` translate as well as heaps
-and recurrences.
-
-### Two failures, both understood
-
-- **Sindhi returns the wrong script.** Sarvam renders Devanagari (सिन्धी) where
-  Perso-Arabic (سنڌي) is dominant. Identical across all four models, which places the fault
-  upstream rather than in any adapter, and `sarvam-translate:v1` rejects `output_script`.
-  Remove Sindhi from the picker.
-- **Punjabi leaks Sarvam's OpenAPI schema** on one C-programming sentence, on all three
-  attempts, reproducing the finding from two months earlier. Now rejected in the shipping
-  translation module rather than only in the test harness — the participant reads their own
-  sentence in English instead of raw JSON.
-
-### Reliability
-
-175 of 176 language-runs produced data. Nineteen cells lost to a Sarvam rate-limit abort
-were recovered on a re-run; the harness aborted and labelled the failure rather than
-emitting clean-looking rows. The single unrecovered cell is Punjabi on
-`cp/pointers/dynamic-memory-allocation`, which is the schema leak above.
+| Schema payloads rejected | 1 | 1,575 crossings |
 
 ---
 
-## Caveats to carry into the presentation
+## 3. Subject performance
 
-**Subject and model are confounded by design.** Each subject routes to its own fine-tuned
-model, so a difference between two subjects is also a difference between two models and
-the design cannot separate them. Every comparison above is stated as "this model, on this
-subject" for that reason.
+Each subject's 2 lessons × 22 languages. Fidelity = did the meaning survive; fluency =
+would a native reader accept the sentence. Both 1–5, independent judge.
 
-**The self-score is each model grading itself.** Granite's 89% Low and Qwen3's 17% Low are
-not a measurement of teaching quality — they are two models disagreeing about identical
-text. Which is closer to a human judgement is unknown and would need an external grader.
+| Subject | Model | Turns | Fidelity | Fluency | ≥4.0 fluency | Retries | Leaks | Unrecovered |
+|---|---|---:|---|---|---:|---:|---:|---|
+| Computer Programming | qwen3 | 129 | **4.38** ± 0.99 | **4.43** ± 0.82 | **18/22** | 0/387 | 1 | Punjabi |
+| Data Structures & Algorithms | gemma2 | 132 | 4.35 ± 0.91 | 4.15 ± 0.79 | 14/22 | 2/396 | 0 | — |
+| OOP with Java | mistral | 132 | 4.34 ± **1.17** | 4.10 ± 0.90 | 15/22 | 2/396 | 0 | — |
+| Operating Systems | granite | 132 | 4.30 ± 0.98 | 4.22 ± 0.83 | 16/22 | 0/396 | 0 | — |
 
-**Three repeats is enough for a range, not for significance.** Where two ranges overlap,
-treat the difference as noise. The gaps reported above — 6 versus 61 repeated openings,
-0.11 versus 0.83 mean score — are far larger than the spread within any subject, which is
-why they are stated as findings.
+| Source of variance | Range on a 1–5 scale |
+|---|---:|
+| Between subjects (fidelity) | 0.08 |
+| Between subjects (fluency) | 0.33 |
+| **Between languages (fluency)** | **2.70** |
+
+**Language accounts for roughly 8× the spread that subject does.** Technical vocabulary is
+not the constraint; the participant's choice of language is.
+
+---
+
+## 4. Language performance
+
+Each cell is fidelity / fluency for that language in that subject's column.
+Status from scores alone: **Blocked** < 2.0 fidelity · **Review** < 3.5 fidelity or
+< 4.0 fluency · else **Ready**. † = one lesson never produced data.
+
+| Language | Script | Code | cp | dsa | oop_java | os | Mean | Status |
+|---|---|---|---|---|---|---|---|---|
+| Punjabi † | Gurmukhi | `pa` | 5.0/5.0 | 4.7/4.8 | 4.7/4.8 | 4.5/4.8 | 4.7/4.9 | Ready |
+| Bengali | Bengali | `bn` | 4.2/5.0 | 4.3/4.8 | 4.8/4.8 | 4.2/4.7 | 4.4/4.8 | Ready |
+| Telugu | Telugu | `te` | 4.5/5.0 | 4.3/4.7 | 4.7/4.8 | 4.5/4.7 | 4.5/4.8 | Ready |
+| Gujarati | Gujarati | `gu` | 4.8/5.0 | 4.7/4.8 | 4.5/4.5 | 4.8/4.8 | 4.7/4.8 | Ready |
+| Tamil | Tamil | `ta` | 4.2/4.8 | 4.8/4.8 | 4.7/4.5 | 4.3/4.5 | 4.5/4.7 | Ready |
+| Kannada | Kannada | `kn` | 4.7/5.0 | 4.3/4.5 | 4.7/4.5 | 4.3/4.5 | 4.5/4.6 | Ready |
+| Malayalam | Malayalam | `ml` | 5.0/4.8 | 4.7/4.5 | 4.5/4.5 | 4.8/4.7 | 4.8/4.6 | Ready |
+| Marathi | Devanagari | `mr` | 4.3/4.7 | 4.5/4.5 | 4.5/4.5 | 4.5/4.8 | 4.5/4.6 | Ready |
+| Hindi | Devanagari | `hi` | 5.0/4.5 | 4.2/4.3 | 4.8/4.8 | 4.3/4.7 | 4.6/4.6 | Ready |
+| Assamese | Bengali | `as` | 4.5/4.8 | 3.8/4.5 | 4.3/4.5 | 4.2/4.5 | 4.2/4.6 | Ready |
+| Nepali | Devanagari | `ne` | 3.8/4.8 | 4.7/4.5 | 4.7/4.3 | 4.5/4.7 | 4.4/4.6 | Ready |
+| Odia | Odia | `or` | 4.8/4.8 | 4.7/4.3 | 4.8/4.3 | 4.7/4.7 | 4.8/4.5 | Ready |
+| Urdu | Perso-Arabic | `ur` | 5.0/4.7 | 4.5/4.3 | 4.7/4.5 | 4.5/4.3 | 4.7/4.5 | Ready |
+| Maithili | Devanagari | `mai` | 4.7/4.7 | 4.7/4.7 | 4.7/4.0 | 4.5/4.3 | 4.6/4.4 | Ready |
+| Dogri | Devanagari | `doi` | 4.2/4.5 | 4.8/3.7 | 4.5/4.3 | 4.0/4.2 | 4.4/4.2 | Ready |
+| Bodo | Devanagari | `brx` | 4.8/4.0 | 5.0/3.7 | 4.2/3.7 | 5.0/4.0 | 4.8/3.8 | Review |
+| Manipuri | Meetei Mayek | `mni` | 5.0/4.3 | 4.5/3.8 | 4.8/3.2 | 4.8/3.8 | 4.8/3.8 | Review |
+| Kashmiri | Perso-Arabic | `ks` | 4.5/4.5 | 4.3/3.3 | 3.3/3.7 | 4.3/3.7 | 4.1/3.8 | Review |
+| Konkani | Devanagari | `kok` | 4.5/3.7 | 4.8/3.7 | 4.7/3.7 | 4.3/3.7 | 4.6/3.7 | Review |
+| Santali | Ol Chiki | `sat` | 4.5/3.8 | 4.7/3.2 | 4.8/3.2 | 5.0/3.7 | 4.8/3.5 | Review |
+| Sanskrit | Devanagari | `sa` | 3.3/3.2 | 3.2/3.0 | 3.2/2.8 | 3.0/3.2 | 3.2/3.0 | Review |
+| Sindhi | Devanagari* | `sd` | 1.3/2.2 | 1.5/2.8 | 1.0/2.0 | 1.5/2.0 | **1.3/2.2** | **Blocked** |
+
+\* Sarvam returns Devanagari; Perso-Arabic is the dominant script for Sindhi. That is the defect.
+
+| Tier | Count | Prior report |
+|---|---:|---:|
+| Ready | **15** | 13 |
+| Review | 6 | 7 |
+| Blocked | 1 | 2 |
+
+Each cell is now backed by 9–12 judged turns against 3 in the prior report.
+
+---
+
+## 5. Defects
+
+| Defect | Scope | Evidence | Status |
+|---|---|---|---|
+| Sindhi returns Devanagari, not Perso-Arabic | All 4 models | Fidelity 1.0–1.5 in every column; `sarvam-translate:v1` rejects `output_script` | **Open — remove from picker** |
+| Punjabi leaks Sarvam's OpenAPI schema | 1 sentence, `cp` | Failed 3/3 attempts, reproducing a finding from 2 months earlier | **Fixed** — rejected in the shipping translation module |
+| Sarvam rate limiting returns text unchanged | 3 languages, mid-sweep | Harness aborted and labelled it rather than emitting clean rows | **Recovered** — 19 cells re-run |
+
+---
+
+## 6. Limits
+
+- **Model and subject move together in this run** — the system allows any of 5 models for
+  any subject (20 adapters); this sweep left `--model` unset and took the per-subject
+  default. Deconfounding = one subject × 5 models ≈ 25 min, not yet spent.
+- **The self-score is each model grading itself**, not a measure of teaching quality.
+- **Fidelity and fluency are directional** — Sarvam both produces and is measured on these
+  translations. The 6 Review languages need a native reader.
+- **Nothing reached Bloom's *Analyse***, because the scripted teacher never answers the
+  learner. That ceiling is the test bed's, not the models'.
+- **Voice input is unevaluated** — implemented and unit-tested, never run on real speech.
