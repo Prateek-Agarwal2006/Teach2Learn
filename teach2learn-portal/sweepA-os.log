@@ -1,0 +1,225 @@
+backend=transformers  lessons=6  repeats=3  from=packed by pack_for_server.py
+  NOTE: backend is transformers, so this loads its own copy of the base model.
+  If the host serves vLLM, source deploy/oauth.env as scripts/run.sh does.
+  translation=sarvam  sarvam_key=set
+  judge=openai/gpt-5.6-luna
+
+lesson=os/processes/process-lifecycle  subject=os  profile=granite
+  topic='Processes and communication'  subtopic='Process lifecycle'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+Loading weights:   0%|          | 0/362 [00:00<?, ?it/s]Loading weights:   1%|          | 4/362 [00:00<00:09, 39.48it/s]Loading weights:   3%|▎         | 12/362 [00:00<00:06, 57.74it/s]Loading weights:   5%|▍         | 18/362 [00:00<00:06, 55.36it/s]Loading weights:   7%|▋         | 24/362 [00:00<00:06, 52.11it/s]Loading weights:   9%|▊         | 31/362 [00:00<00:06, 53.67it/s]Loading weights:  11%|█         | 39/362 [00:00<00:05, 57.44it/s]Loading weights:  12%|█▏        | 45/362 [00:00<00:05, 55.79it/s]Loading weights:  14%|█▍        | 51/362 [00:00<00:05, 52.97it/s]Loading weights:  16%|█▌        | 58/362 [00:01<00:05, 55.12it/s]Loading weights:  18%|█▊        | 66/362 [00:01<00:04, 59.64it/s]Loading weights:  20%|█▉        | 72/362 [00:01<00:05, 57.03it/s]Loading weights:  22%|██▏       | 78/362 [00:01<00:05, 54.56it/s]Loading weights:  23%|██▎       | 85/362 [00:01<00:04, 56.31it/s]Loading weights:  26%|██▌       | 93/362 [00:01<00:04, 59.05it/s]Loading weights:  27%|██▋       | 99/362 [00:01<00:04, 56.08it/s]Loading weights:  29%|██▉       | 105/362 [00:01<00:04, 52.96it/s]Loading weights:  31%|███       | 112/362 [00:02<00:04, 54.35it/s]Loading weights:  33%|███▎      | 120/362 [00:02<00:04, 58.98it/s]Loading weights:  35%|███▍      | 126/362 [00:02<00:04, 56.77it/s]Loading weights:  36%|███▋      | 132/362 [00:02<00:04, 54.40it/s]Loading weights:  38%|███▊      | 139/362 [00:02<00:03, 56.55it/s]Loading weights:  41%|████      | 147/362 [00:02<00:03, 61.11it/s]Loading weights:  43%|████▎     | 154/362 [00:02<00:03, 61.71it/s]Loading weights:  44%|████▍     | 161/362 [00:02<00:03, 59.22it/s]Loading weights:  46%|████▌     | 167/362 [00:02<00:03, 55.11it/s]Loading weights:  48%|████▊     | 175/362 [00:03<00:03, 59.52it/s]Loading weights:  51%|█████     | 183/362 [00:03<00:02, 62.71it/s]Loading weights:  52%|█████▏    | 190/362 [00:03<00:02, 62.85it/s]Loading weights:  54%|█████▍    | 197/362 [00:03<00:02, 59.84it/s]Loading weights:  56%|█████▋    | 204/362 [00:03<00:02, 58.19it/s]Loading weights:  58%|█████▊    | 211/362 [00:03<00:02, 60.01it/s]Loading weights:  60%|██████    | 219/362 [00:03<00:02, 64.21it/s]Loading weights:  62%|██████▏   | 226/362 [00:03<00:02, 64.09it/s]Loading weights:  64%|██████▍   | 233/362 [00:04<00:02, 60.52it/s]Loading weights:  66%|██████▋   | 240/362 [00:04<00:02, 58.85it/s]Loading weights:  68%|██████▊   | 247/362 [00:04<00:01, 61.45it/s]Loading weights:  71%|███████   | 256/362 [00:04<00:01, 63.41it/s]Loading weights:  73%|███████▎  | 264/362 [00:04<00:01, 67.15it/s]Loading weights:  75%|███████▍  | 271/362 [00:04<00:01, 67.81it/s]Loading weights:  77%|███████▋  | 278/362 [00:04<00:01, 63.62it/s]Loading weights:  79%|███████▊  | 285/362 [00:04<00:01, 61.37it/s]Loading weights:  81%|████████  | 292/362 [00:04<00:01, 63.46it/s]Loading weights:  83%|████████▎ | 300/362 [00:05<00:00, 67.64it/s]Loading weights:  85%|████████▍ | 307/362 [00:05<00:00, 67.41it/s]Loading weights:  87%|████████▋ | 314/362 [00:05<00:00, 63.14it/s]Loading weights:  89%|████████▊ | 321/362 [00:05<00:00, 60.65it/s]Loading weights:  91%|█████████ | 328/362 [00:05<00:00, 62.21it/s]Loading weights:  93%|█████████▎| 336/362 [00:05<00:00, 65.95it/s]Loading weights:  95%|█████████▍| 343/362 [00:05<00:00, 66.72it/s]Loading weights:  97%|█████████▋| 350/362 [00:05<00:00, 63.26it/s]Loading weights:  99%|█████████▊| 357/362 [00:05<00:00, 61.26it/s]Loading weights: 100%|██████████| 362/362 [00:06<00:00, 60.33it/s]
+  opening: Hi there! I'm ready to learn. To start us off, So, when a process is created, it goes through different states. Can you explain what happens when a process is created?
+  turn 1 (4.5s) eval=Remember/Low: Wait, I'm a bit lost. What exactly does it mean for a process to be in the'ready' state?
+  turn 2 (5.0s) eval=Understand/Low: I'm still really confused. Why does a process go from running to blocked when it's waiting for input?
+  turn 3 (4.5s) eval=Understand/Low: I'm still really confused. What happens to the process's state when it's waiting for input?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly happens when a process is created in an operating system?
+  turn 1 (3.0s) eval=Remember/Low: Wait, I'm a bit lost. Can you explain the different states a process goes through?
+  turn 2 (2.8s) eval=Understand/Low: I'm still really confused. What happens when a process is blocked?
+  turn 3 (3.3s) eval=Apply/Low: I'm still really confused. Why is it important for the OS to keep a control block for each process?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, when a process is created, what exactly happens in the system?
+  turn 1 (5.2s) eval=Remember/Low: I'm still really confused. Can you explain more about what happens when a process moves from the ready to the running state?
+  turn 2 (5.2s) eval=Understand/Low: I'm still really confused. Why does a process move to the blocked state when it's waiting for I/O?
+  turn 3 (5.4s) eval=Understand/Low: I'm still really confused. How does the operating system manage to switch between different processes?
+
+  distinct questions: 4/4
+
+lesson=os/processes/interprocess-communication  subject=os  profile=granite
+  topic='Processes and communication'  subtopic='Interprocess communication'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is interprocess communication?
+  turn 1 (4.3s) eval=Remember/Low: I'm still really confused. Can you explain what happens if processes don't use interprocess communication?
+  turn 2 (5.0s) eval=Understand/Low: I'm still really confused. What are some common methods for interprocess communication?
+  turn 3 (4.9s) eval=Understand/Low: I'm still really confused. How does message passing compare to shared memory in terms of performance?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what's the deal with shared memory?
+  turn 1 (4.6s) eval=Remember/Low: Wait, I'm a bit lost. Can you explain how shared memory actually works between processes?
+  turn 2 (4.8s) eval=Understand/Low: I'm still really confused. I thought pipes were different from shared memory. Can you clarify the difference?
+  turn 3 (4.7s) eval=Understand/Low: I'm still really confused. Why is shared memory considered more efficient than message passing?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what's the deal with shared memory?
+  turn 1 (4.8s) eval=Remember/Low: Hmm, that doesn't quite sound right to me. Can you explain how shared memory actually allows processes to communicate?
+  turn 2 (6.2s) eval=Understand/Low: I'm still really confused. So, if shared memory lets processes access the same space, does that mean they can write to it at the same time?
+  turn 3 (5.9s) eval=Understand/Low: I'm still really confused. So, what happens if two processes try to write to shared memory at the same time?
+
+  distinct questions: 4/4
+
+lesson=os/threads-scheduling/multithreading  subject=os  profile=granite
+  topic='Threads and scheduling'  subtopic='Multithreading'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, if I understand correctly, multithreading is like having multiple conversations at once on a single phone line?
+  turn 1 (4.2s) eval=Remember/Low: I'm still really confused. Wait, I'm a bit lost. Can you explain what you mean by 'address space' in this context?
+  turn 2 (4.2s) eval=Understand/Low: I'm still really confused. I'm still really confused. What exactly do you mean by 'interleaving' in this context?
+  turn 3 (4.2s) eval=Understand/Low: I'm still really confused. I'm still really confused. Could you clarify how multithreading helps with I/O-bound programs?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "i'm still really confused. i'm still"
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a thread in the context of a computer program?
+  turn 1 (3.9s) eval=Remember/Low: I'm still really confused. Can you explain what an address space is and why sharing it is beneficial?
+  turn 2 (3.1s) eval=Understand/Low: I'm still really confused. What do you mean by interleaving?
+  turn 3 (3.6s) eval=Understand/Low: I'm still really confused. How does waiting on I/O operations benefit from multithreading?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a thread in the context of a process?
+  turn 1 (5.6s) eval=Remember/Low: Wait, I'm a bit lost. Can you explain more about how threads share the same address space?
+  turn 2 (5.8s) eval=Understand/Low: I'm still really confused. What does it mean when you say two threads can interleave in unexpected ways?
+  turn 3 (5.7s) eval=Understand/Low: I'm still really confused. How does multithreading help with programs that spend a lot of time waiting for input?
+
+  distinct questions: 4/4
+
+lesson=os/threads-scheduling/cpu-scheduling  subject=os  profile=granite
+  topic='Threads and scheduling'  subtopic='CPU scheduling'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what's the deal with CPU scheduling?
+  turn 1 (4.5s) eval=Remember/Medium: That makes sense, but I'm still slightly unsure about one thing. Why is it important for the scheduler to decide which process runs next?
+  turn 2 (5.0s) eval=Understand/Medium: I think I understand most of that. How does round-robin scheduling affect system efficiency compared to other methods?
+  turn 3 (5.4s) eval=Apply/Medium: Okay, I'm following you. Can you give an example of when round-robin might not be the best choice?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, when you say CPU utilization is high, does that mean the CPU is working really hard and not idle much of the time?
+  turn 1 (4.9s) eval=Remember/Low: I'm still really confused. Wait, I'm a bit lost. Can you explain how CPU utilization relates to having more processes than cores?
+  turn 2 (5.3s) eval=Understand/Low: I'm still really confused. I'm still really confused. What does it mean for a process to starve, and how does round-robin prevent it?
+  turn 3 (4.9s) eval=Understand/Low: I'm still really confused. I'm still really confused. How does the quantum size affect the performance of the scheduler?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "i'm still really confused. i'm still"
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, when a process finishes its work and leaves the CPU, what happens to the resources it was using?
+  turn 1 (4.1s) eval=Remember/Low: Hmm, that doesn't quite sound right to me. Wait, I'm a bit lost. Can you explain what happens to the resources when a process is done?
+  turn 2 (4.3s) eval=Understand/Low: I'm still really confused. I'm a bit confused. So, does round-robin scheduling have anything to do with how resources are managed when a process ends?
+  turn 3 (4.7s) eval=Understand/Low: I'm still really confused. I'm a bit confused. So, if the quantum is too small, does that mean the system spends more time switching between processes?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "i'm still really confused. i'm a"
+
+lesson=os/virtual-memory/demand-paging  subject=os  profile=granite
+  topic='Virtual memory'  subtopic='Demand paging'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?
+  turn 1 (6.5s) eval=Remember/Low: Wait, I'm a bit lost. Why is it beneficial to start running a program before loading all its pages?
+  turn 2 (6.3s) eval=Understand/Low: I'm still really confused. Does this mean the program runs faster because it doesn't need to wait for everything to load at once?
+  turn 3 (5.7s) eval=Apply/Low: I'm still really confused. How does this help with multitasking on a computer?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?
+  turn 1 (4.1s) eval=Understand/Medium: Okay, I'm following you. Why would a system choose to use demand paging instead of loading everything at once?
+  turn 2 (4.4s) eval=Remember/Low: I'm still really confused. Can you explain how demand paging helps with memory usage?
+  turn 3 (3.8s) eval=Understand/Medium: Okay, I'm following you. What happens if all the pages are needed at the same time?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, demand paging is like only loading a book chapter when you actually need it, right?
+  turn 1 (4.6s) eval=Understand/Medium: Okay, I'm following you. Why is it beneficial to start running a program before everything is loaded?
+  turn 2 (4.0s) eval=Apply/Low: I'm still really confused. Could you explain how the operating system handles these page faults?
+  turn 3 (4.5s) eval=Apply/Low: I'm still really confused. What happens if a page fault occurs while a program is running?
+
+  distinct questions: 4/4
+
+lesson=os/virtual-memory/page-replacement  subject=os  profile=granite
+  topic='Virtual memory'  subtopic='Page replacement'  reviewed=True
+  base_model=ibm-granite/granite-3.3-8b-instruct
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is page replacement, and why is it important in operating systems?
+  turn 1 (4.0s) eval=Remember/Low: I'm still really confused. Okay, but why does the operating system need to replace pages if memory is full?
+  turn 2 (4.0s) eval=Understand/Low: I'm still really confused. I see. But how does least-recently-used actually decide which page to replace?
+  turn 3 (3.8s) eval=Apply/Low: I'm still really confused. So, does choosing a clean page always mean fewer disk writes, and is that the main reason it's preferred?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is page replacement, and why is it important in operating systems?
+  turn 1 (5.6s) eval=Remember/Low: I'm still really confused. Can you explain how the operating system decides which page to replace?
+  turn 2 (5.5s) eval=Understand/Low: I'm still really confused. Why is LRU considered a good heuristic for page replacement?
+  turn 3 (5.5s) eval=Apply/Low: I'm still really confused. What happens if a modified page is chosen as the victim?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=os, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, if I understand correctly, when a page is replaced, it's not just removed from memory, but it's also written to a disk, right?
+  turn 1 (4.6s) eval=Remember/Low: I'm still really confused. Wait, why is the replaced page written to disk?
+  turn 2 (6.1s) eval=Understand/Low: I'm still really confused. Oh, I see. So, does that mean if a page is used again, it can just be read from the disk instead of being reloaded into memory?
+  turn 3 (5.5s) eval=Apply/Low: I'm still really confused. Okay, I think I get it. But what happens if a page is modified and then it needs to be replaced again before being written back to disk?
+
+  distinct questions: 4/4
+
+================================================================================================
+lesson                                            n   distinct   fidelity            fluency             
+ranges pool every language and repeat, so on a full sweep they are dominated by
+differences between languages; the JSON keeps each cell for the real breakdown.
+================================================================================================
+os/processes/process-lifecycle                    3   1.00       -                   -                   
+os/processes/interprocess-communication           3   1.00       -                   -                   
+os/threads-scheduling/multithreading              3   1.00       -                   -                   
+os/threads-scheduling/cpu-scheduling              3   1.00       -                   -                   
+os/virtual-memory/demand-paging                   3   1.00       -                   -                   
+os/virtual-memory/page-replacement                3   1.00       -                   -                   
+================================================================================================
+
+==============================================================================
+cost basis over 54 turns, 302s wall clock
+==============================================================================
+  generation      72 calls    301.3s    4.18s/call    1.33/turn
+  translation      0 calls      0.0s    0.00s/call    0.00/turn
+  judge            0 calls      0.0s    0.00s/call    0.00/turn
+------------------------------------------------------------------------------
+  projected at these rates (a floor: a longer run contends for the same GPU)
+  Sweep A (English, 24 lessons x3)           216 turns    0.3h       0 judge calls
+  Sweep B (22 languages, 24 lessons x3)     4752 turns    7.4h       0 judge calls
+==============================================================================
+
+wrote sweepA-os.json

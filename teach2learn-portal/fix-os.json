@@ -1,0 +1,1830 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T13:06:13+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "os/virtual-memory/demand-paging"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 1,
+    "languages": [
+      "kn",
+      "bn",
+      "ml",
+      "mr",
+      "pa",
+      "gu",
+      "or",
+      "ur",
+      "as",
+      "brx",
+      "doi",
+      "kok",
+      "ks",
+      "mai",
+      "mni",
+      "ne",
+      "sa",
+      "sat",
+      "sd"
+    ],
+    "judge_model": "openai/gpt-5.6-luna",
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "topic": "Virtual memory",
+      "subtopic": "Demand paging",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "granite",
+      "repeat": 1,
+      "started_utc": "2026-09-08T13:06:13+00:00",
+      "sweep": [
+        {
+          "code": "kn",
+          "language": "Kannada",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ಬೇಡಿಕೆಯ ಪುಟವು ಮೆಮೊರಿಗೆ ಒಂದು ಪುಟವನ್ನು ಮೊದಲ ಬಾರಿಗೆ ಸ್ಪರ್ಶಿಸಿದಾಗ ಮಾತ್ರ ಲೋಡ್ ಮಾಡುತ್ತದೆ, ಆದ್ದರಿಂದ ಪ್ರೋಗ್ರಾಂ ಡಿಸ್ಕ್ನಿಂದ ಎಲ್ಲವನ್ನೂ ಓದುವ ಮೊದಲು ಚಾಲನೆಯಾಗಲು ಪ್ರಾರಂಭಿಸಬಹುದು.",
+              "teacher_back_en": "The main page is only one page that loads when a user first accesses the page, so the program can start before everything on the disk is read.",
+              "question_en": "I'm still really confused. Wait, I'm a bit lost. Can you explain what demand paging actually does?",
+              "question_local": "ನನಗೆ ಇನ್ನೂ ಗೊಂದಲವಿದೆ. ನಿಲ್ಲು, ನಾನು ಸ್ವಲ್ಪ ದಾರಿ ತಪ್ಪಿದ್ದೇನೆ. ಡಿಮ್ಯಾಂಡ್ ಪೇಜಿಂಗ್ ನಿಜವಾಗಿ ಏನು ಮಾಡುತ್ತದೆ ಎಂದು ವಿವರಿಸಬಲ್ಲೆಯಾ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The explanation is incomplete and doesn't accurately describe demand paging. It focuses on a single page loading first, which is not the core concept of demand paging.\nStrength: The teacher attempted to explain a concept but did not fully capture the essence of demand paging.\nImprovement: The teacher should clarify that demand paging involves loading pages only when they are needed, not all at once.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher attempted to explain a concept but did not fully capture the essence of demand paging.",
+                "improvement": "The teacher should clarify that demand paging involves loading pages only when they are needed, not all at once.",
+                "feedback": "The explanation is incomplete and doesn't accurately describe demand paging. It focuses on a single page loading first, which is not the core concept of demand paging."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "ಅರ್ಥವು ಬಹುತೇಕ ಸರಿಯಾಗಿದೆ, ಆದರೆ “ಬೇಡಿಕೆಯ ಪುಟ” ಬದಲು “ಬೇಡಿಕೆಯ ಪುಟೀಕರಣ” ಹೆಚ್ಚು ಸೂಕ್ತವಾಗಿದೆ."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "ಸಹಜ ಮತ್ತು ಸ್ಪಷ್ಟವಾದ ಕನ್ನಡ ಪ್ರಶ್ನೆ."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "ವಾಸಿಸದ ಪುಟವೊಂದನ್ನು ಮುಟ್ಟಿದರೆ ಪುಟ ದೋಷವು ಉದ್ಭವಿಸುತ್ತದೆ, ಮತ್ತು ಆಪರೇಟಿಂಗ್ ಸಿಸ್ಟಮ್ ಅದನ್ನು ತರುತ್ತದೆ ಮತ್ತು ದೋಷಪೂರಿತ ಸೂಚನೆಯನ್ನು ಮರುಪ್ರಾರಂಭಿಸುತ್ತದೆ.",
+              "teacher_back_en": "Touching a non-user page will produce a page fault, causing the operating system to fetch and then retake the instruction causing the error.",
+              "question_en": "I'm still really confused. I'm a bit lost. Okay, but how does this help with memory management?",
+              "question_local": "ನನಗೆ ಇನ್ನೂ ಗೊಂದಲವಿದೆ. ನಾನು ಸ್ವಲ್ಪ ದಾರಿ ತಪ್ಪಿದ್ದೇನೆ. ಸರಿ, ಆದರೆ ಇದು ಮೆಮೊರಿ ನಿರ್ವಹಣೆಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The explanation is still off-target. It describes the consequence of a page fault rather than explaining what demand paging is.\nStrength: The teacher is trying to explain a related concept but is not clearly defining demand paging.\nImprovement: The teacher should explain that demand paging is a memory management scheme where pages are loaded into memory only when they are needed, reducing unnecessary I/O operations.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher is trying to explain a related concept but is not clearly defining demand paging.",
+                "improvement": "The teacher should explain that demand paging is a memory management scheme where pages are loaded into memory only when they are needed, reducing unnecessary I/O operations.",
+                "feedback": "The explanation is still off-target. It describes the consequence of a page fault rather than explaining what demand paging is."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "ತಾಂತ್ರಿಕ ಅರ್ಥ ಬಹುತೇಕ ಸರಿಯಾಗಿದ್ದು, “faulting instruction”ಗೆ ಸ್ವಲ್ಪ ಅಸ್ಪಷ್ಟ ಅನುವಾದವಿದೆ."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "ಸಹಜ ಮತ್ತು ಸ್ಪಷ್ಟವಾದ ಕನ್ನಡ ಪ್ರಶ್ನೆ."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ಇದು ಚಾಲನೆಯಲ್ಲಿರುವ ಪ್ರೋಗ್ರಾಂಗಳ ಒಟ್ಟು ಗಾತ್ರವು ಭೌತಿಕ ಮೆಮೊರಿಯನ್ನು ಮೀರಲು ಅನುವು ಮಾಡಿಕೊಡುತ್ತದೆ, ಏಕೆಂದರೆ ಯಾವುದೇ ಕ್ಷಣದಲ್ಲಿ ಬಳಸಲಾಗುತ್ತಿರುವ ಪುಟಗಳು ಮಾತ್ರ ನಿವಾಸಿಯಾಗಿರಬೇಕು.",
+              "teacher_back_en": "This allows the total size of running programs to be larger than the physical memory, since only the pages that are being used at any given moment need to be resident.",
+              "question_en": "Okay, I'm still really confused. Does this mean that demand paging can slow down a program if it's accessing a lot of pages?",
+              "question_local": "ಸರಿ, ನಾನಿನ್ನೂ ಗೊಂದಲದಲ್ಲಿದ್ದೇನೆ. ಇದರರ್ಥ ಬೇಡಿಕೆ ಪುಟಗಳನ್ನು ತಲುಪುವ ಪ್ರೋಗ್ರಾಂ ಬಹಳಷ್ಟು ಪುಟಗಳನ್ನು ಪ್ರವೇಶಿಸುತ್ತಿದ್ದರೆ ಅದು ನಿಧಾನವಾಗುತ್ತದೆಯೇ?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Medium\nFeedback: The explanation is better but could be improved by linking it more directly to memory management benefits.\nStrength: The teacher is beginning to connect demand paging to practical memory management advantages.\nImprovement: The teacher could elaborate on how this reduces memory waste and improves efficiency.",
+                "level": "Apply",
+                "score": "Medium",
+                "strength": "The teacher is beginning to connect demand paging to practical memory management advantages.",
+                "improvement": "The teacher could elaborate on how this reduces memory waste and improves efficiency.",
+                "feedback": "The explanation is better but could be improved by linking it more directly to memory management benefits."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "ತಾಂತ್ರಿಕ ಅರ್ಥವನ್ನು ಸರಿಯಾಗಿ ಉಳಿಸಿರುವ ನಿಖರ ಕನ್ನಡ ಅನುವಾದ."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "ಕನ್ನಡ ಸಹಜವಾಗಿದೆ, ಆದರೆ “ಬೇಡಿಕೆ ಪುಟಗಳನ್ನು” ಎಂಬ ಪದಪ್ರಯೋಗ ಸ್ವಲ್ಪ ಅಸ್ಪಷ್ಟವಾಗಿದೆ."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "ನಮಸ್ಕಾರ! ನಾನು ಕಲಿಯಲು ಸಿದ್ಧಳಿದ್ದೇನೆ. ಪ್ರಾರಂಭಿಸಲು, ಬೇಡಿಕೆ ಪೇಜಿಂಗ್ ಎಂದರೇನು?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 63.9
+        },
+        {
+          "code": "bn",
+          "language": "Bengali",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ডিমান্ড পেজিং শুধুমাত্র প্রথম স্পর্শ করার সময় মেমরিতে একটি পৃষ্ঠা লোড করে, তাই একটি প্রোগ্রাম ডিস্ক থেকে সমস্ত কিছু পড়ার আগে চালানো শুরু করতে পারে।",
+              "teacher_back_en": "Demand paging only loads a page during the first access, so a program can start running before all of its data is read from the disk.",
+              "question_en": "Wait, I'm a bit lost. Okay, but how does it handle memory allocation differently compared to other methods?",
+              "question_local": "দাঁড়াও, আমি একটু পথ হারিয়েছি। আচ্ছা, কিন্তু অন্যান্য পদ্ধতির চেয়ে এটা কীভাবে মেমরি অ্যালোকেশন ভিন্নভাবে সামলায়?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is overly simplistic and lacks depth. Demand paging involves more than just loading pages on first access; it also includes managing page replacement and memory allocation.\nStrength: The teacher attempted to explain the concept but did not cover the full scope of demand paging.\nImprovement: The teacher should provide a more comprehensive explanation, including the role of page replacement and memory allocation in demand paging.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher attempted to explain the concept but did not cover the full scope of demand paging.",
+                "improvement": "The teacher should provide a more comprehensive explanation, including the role of page replacement and memory allocation in demand paging.",
+                "feedback": "The teacher's explanation is overly simplistic and lacks depth. Demand paging involves more than just loading pages on first access; it also includes managing page replacement and memory allocation."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "প্রযুক্তিগত অর্থ সম্পূর্ণ ও সঠিকভাবে সংরক্ষিত হয়েছে।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "স্বাভাবিক ও সাবলীল বাংলা, প্রযুক্তিগত পরিভাষার ব্যবহারও যথাযথ।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "একটি পৃষ্ঠা স্পর্শ করা যা আবাসিক নয়, একটি পৃষ্ঠা ত্রুটি উত্থাপন করে এবং অপারেটিং সিস্টেমটি এটি আনবে এবং যে নির্দেশটি ত্রুটিপূর্ণ সেটিকে পুনরায় চালু করবে।",
+              "teacher_back_en": "Touching a page that is not active causes a page fault, wakes up the operating system, and interrupts the instruction.",
+              "question_en": "I'm still really confused. Could you explain how the page fault mechanism works in demand paging?",
+              "question_local": "আমি এখনও খুব বিভ্রান্ত। আপনি কি বুঝিয়ে বলতে পারবেন যে ডিমান্ড পেজিং-এ পেজ ফল্ট মেকানিজম কিভাবে কাজ করে?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still incomplete and lacks clarity on how demand paging specifically handles memory allocation.\nStrength: The teacher mentioned the page fault process but did not connect it to memory allocation strategies.\nImprovement: The teacher should explain how demand paging's page fault mechanism influences memory allocation decisions.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher mentioned the page fault process but did not connect it to memory allocation strategies.",
+                "improvement": "The teacher should explain how demand paging's page fault mechanism influences memory allocation decisions.",
+                "feedback": "The teacher's explanation is still incomplete and lacks clarity on how demand paging specifically handles memory allocation."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "প্রযুক্তিগত অর্থ মোটামুটি অক্ষুণ্ণ, তবে অনুবাদটি কিছুটা আক্ষরিক ও অস্বাভাবিক।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "স্বাভাবিক, স্পষ্ট ও সাবলীল বাংলা প্রশ্ন।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "এটি চলমান প্রোগ্রামগুলির মোট আকারকে ফিজিক্যাল মেমরি অতিক্রম করতে দেয়, কারণ শুধুমাত্র যে পৃষ্ঠাগুলি ব্যবহার করা হচ্ছে সেগুলি যে কোনও মুহূর্তে আবাসিক হতে হবে।",
+              "teacher_back_en": "This allows moving programs around, and increases the total size of the physical memory, since only the pages that are actually being used need to be contiguous.",
+              "question_en": "I'm still really confused. Wait, I'm a bit lost. Can you clarify what happens when a page fault occurs in demand paging?",
+              "question_local": "আমি এখনও খুব বিভ্রান্ত। দাঁড়াও, আমি একটু পথ হারিয়েছি। আপনি কি বুঝিয়ে বলতে পারবেন যে ডিমান্ড পেজিং-এ পেজ ফল্ট হলে কী ঘটে?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's explanation is incorrect and does not accurately describe the page fault mechanism in demand paging.\nStrength: The teacher attempted to explain the benefits of demand paging but provided an inaccurate description of the mechanism.\nImprovement: The teacher should clarify the correct functioning of the page fault mechanism and its role in demand paging.",
+                "level": "Apply",
+                "score": "Low",
+                "strength": "The teacher attempted to explain the benefits of demand paging but provided an inaccurate description of the mechanism.",
+                "improvement": "The teacher should clarify the correct functioning of the page fault mechanism and its role in demand paging.",
+                "feedback": "The teacher's explanation is incorrect and does not accurately describe the page fault mechanism in demand paging."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "অর্থ সঠিক, তবে “resident” এর অনুবাদ কিছুটা আক্ষরিক ও অপ্রচলিত।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "স্বাভাবিক ও বোধগম্য, তবে শিক্ষকের উদ্দেশে “দাঁড়াও” কিছুটা অনানুষ্ঠানিক।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "হাই! আমি শিখতে প্রস্তুত। শুরু করার জন্য, তাহলে, চাহিদা পেজিং আসলে কী?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 46.4
+        },
+        {
+          "code": "ml",
+          "language": "Malayalam",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ഡിമാൻഡ് പേജിംഗ് ഒരു പേജ് മെമ്മറിയിലേക്ക് ലോഡ് ചെയ്യുന്നത് അത് ആദ്യം സ്പർശിക്കുമ്പോൾ മാത്രമാണ്, അതിനാൽ ഒരു പ്രോഗ്രാം ഡിസ്കിൽ നിന്ന് എല്ലാം വായിക്കുന്നതിന് മുമ്പ് പ്രവർത്തിക്കാൻ തുടങ്ങും.",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program will begin execution before the disk is fully read.",
+              "question_en": "Okay, I'm following you. Why is it beneficial to start execution before the disk is fully read?",
+              "question_local": "ശരി, എനിക്ക് മനസ്സിലായി. ഡിസ്ക് പൂർണ്ണമായി വായിക്കുന്നതിന് മുമ്പ് എക്സിക്യൂഷൻ ആരംഭിക്കുന്നത് എന്തുകൊണ്ട് പ്രയോജനകരമാണ്?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could have elaborated on the concept of demand paging and its benefits.",
+                "level": "Remember",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth.",
+                "improvement": "The teacher could have elaborated on the concept of demand paging and its benefits."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "സാങ്കേതിക അർത്ഥം പൂർണ്ണമായി സംരക്ഷിച്ചിരിക്കുന്നു."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാള ചോദ്യമാണ്."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "റെസിഡൻ്റ് അല്ലാത്ത ഒരു പേജ് സ്പർശിക്കുന്നത് ഒരു പേജ് ഫോൾട്ട് ഉണ്ടാക്കുന്നു, ഓപ്പറേറ്റിംഗ് സിസ്റ്റം അത് എടുക്കുകയും ഫോൾട്ട് ചെയ്ത നിർദ്ദേശം പുനരാരംഭിക്കുകയും ചെയ്യുന്നു.",
+              "teacher_back_en": "Touching a page other than the active page causes a page fault, which the operating system catches and reloads the affected instruction.",
+              "question_en": "Okay, I'm following you. What happens if a page other than the active one is touched during execution?",
+              "question_local": "ശരി, എനിക്ക് മനസ്സിലായി. എക്സിക്യൂഷൻ സമയത്ത് സജീവമായ പേജ് അല്ലാത്ത മറ്റേതെങ്കിലും പേജിൽ സ്പർശിച്ചാൽ എന്ത് സംഭവിക്കും?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could have explained the efficiency gained by starting execution early and how it reduces wait time.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth.",
+                "improvement": "The teacher could have explained the efficiency gained by starting execution early and how it reduces wait time."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "സാങ്കേതിക അർത്ഥം കൃത്യമായി സംരക്ഷിച്ചിരിക്കുന്നു."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാള ചോദ്യമാണ്."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ഇത് റണ്ണിംഗ് പ്രോഗ്രാമുകളുടെ മൊത്തം വലുപ്പം ഫിസിക്കൽ മെമ്മറിയെ മറികടക്കാൻ അനുവദിക്കുന്നു, കാരണം ഉപയോഗിക്കുന്ന പേജുകൾ മാത്രമേ ഏത് നിമിഷവും റെസിഡൻ്റ് ആയിരിക്കേണ്ടതുള്ളൂ.",
+              "teacher_back_en": "This allows running programs to exceed the size of physical memory, as only the actual page that is being used is at any moment in residence.",
+              "question_en": "Okay, I'm following you. How does this flexibility benefit programs that need more memory than available?",
+              "question_local": "ശരി, എനിക്ക് മനസ്സിലായി. കൂടുതൽ മെമ്മറി ആവശ്യമുള്ള പ്രോഗ്രാമുകൾക്ക് ഈ ഫ്ലെക്സിബിലിറ്റി എങ്ങനെ പ്രയോജനകരമാകും?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could have provided more examples or scenarios where this flexibility is beneficial.",
+                "level": "Apply",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth.",
+                "improvement": "The teacher could have provided more examples or scenarios where this flexibility is beneficial."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "സാങ്കേതിക അർത്ഥം പൂർണ്ണമായി ശരിയായ മലയാളത്തിൽ നിലനിൽക്കുന്നു."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാളചോദ്യം."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "ഹായ്! ഞാൻ പഠിക്കാൻ തയ്യാറാണ്. തുടങ്ങാനായി, എന്താണ് ഡിമാൻഡ് പേജിംഗ്?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 40.6
+        },
+        {
+          "code": "mr",
+          "language": "Marathi",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "मागणी पृष्ठांकन (Demand paging) जेव्हा एखादे पृष्ठ पहिल्यांदा स्पर्श केले जाते तेव्हाच ते मेमरीमध्ये लोड करते, ज्यामुळे डिस्कवरून सर्व काही वाचण्यापूर्वी प्रोग्राम चालू होऊ शकतो.",
+              "teacher_back_en": "Demand paging loads a page into memory just before it is requested, so programs do not have to wait for the disk to finish before execution begins.",
+              "question_en": "Hmm, that doesn't quite sound right to me. Wait, I'm a bit confused. Does that mean the program pauses while the page is being loaded?",
+              "question_local": "हं, मला ते बरोबर वाटत नाही. थांबा, मी थोडी गोंधळलेली आहे. म्हणजे पेज लोड होत असताना प्रोग्राम थांबतो का?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is too brief and lacks detail about the process of handling a page fault.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's explanation is too brief and lacks detail about the process of handling a page fault."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तांत्रिक अर्थ अचूकपणे जतन केला आहे."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "नैसर्गिक आणि स्पष्ट मराठीत विचारलेला प्रश्न."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "रहिवासी नसलेल्या पृष्ठाला स्पर्श केल्याने पेज फॉल्ट वाढतो आणि ऑपरेटिंग सिस्टम ते मिळवते आणि फॉल्ट झालेल्या सूचना पुन्हा सुरू करते.",
+              "teacher_back_en": "Touching a non-resident page increases the page fault rate and gets the operating system to re-access those faults.",
+              "question_en": "I'm still really confused. Okay, but how does the system know which page to load if it's not already in memory?",
+              "question_local": "मी अजूनही खूप गोंधळलेली आहे. ठीक आहे, पण जर ते आधीपासून मेमरीमध्ये नसेल, तर सिस्टमला कोणते पेज लोड करायचे हे कसे कळते?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is incorrect and does not address the student's question about program pauses.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect and does not address the student's question about program pauses."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ जवळपास अचूक आहे, पण “पेज फॉल्ट वाढतो” ऐवजी “पेज फॉल्ट निर्माण होतो” अधिक योग्य आहे."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "प्रश्न नैसर्गिक, स्पष्ट आणि प्रवाही मराठीत आहे."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "हे चालू असलेल्या प्रोग्रॅमच्या एकूण आकाराला भौतिक मेमरीपेक्षा जास्त होऊ देते, कारण प्रत्यक्षात वापरल्या जाणाऱ्या पृष्ठांनाच कोणत्याही क्षणी निवासी असणे आवश्यक असते.",
+              "teacher_back_en": "This allows the total size of the running program to be larger than the physical memory, as any number of pages can be resident at any given time.",
+              "question_en": "I'm still really confused. So, if the total size of the program can be bigger than the memory, does that mean it can use more resources than available memory?",
+              "question_local": "मी अजूनही खूप गोंधळलेली आहे. तर, जर प्रोग्रामचा एकूण आकार मेमरीपेक्षा मोठा असू शकत असेल, तर याचा अर्थ ती उपलब्ध मेमरीपेक्षा जास्त संसाधने वापरू शकते का?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is incorrect and does not address the student's question about how pages are selected for loading.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect and does not address the student's question about how pages are selected for loading."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तांत्रिक अर्थ अचूक आणि स्पष्टपणे जतन केला आहे."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "नैसर्गिक, स्पष्ट आणि व्याकरणदृष्ट्या योग्य मराठी प्रश्न."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when a page fault happens, what exactly does the system do to handle it?",
+          "opening_local": "नमस्कार! मी शिकायला तयार आहे. सुरूवात करूया, तर, जेव्हा पेज फॉल्ट होतो, तेव्हा सिस्टीम नेमके काय करते?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 40.0
+        },
+        {
+          "code": "pa",
+          "language": "Punjabi",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ਡਿਮਾਂਡ ਪੇਜਿੰਗ ਇੱਕ ਪੇਜ ਨੂੰ ਮੈਮੋਰੀ ਵਿੱਚ ਸਿਰਫ਼ ਉਦੋਂ ਲੋਡ ਕਰਦੀ ਹੈ ਜਦੋਂ ਇਸਨੂੰ ਪਹਿਲੀ ਵਾਰ ਛੂਹਿਆ ਜਾਂਦਾ ਹੈ, ਇਸ ਲਈ ਇੱਕ ਪ੍ਰੋਗਰਾਮ ਡਿਸਕ ਤੋਂ ਸਭ ਕੁਝ ਪੜ੍ਹਨ ਤੋਂ ਪਹਿਲਾਂ ਚੱਲਣਾ ਸ਼ੁਰੂ ਕਰ ਸਕਦਾ ਹੈ।",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program may begin execution before disk has finished reading everything.",
+              "question_en": "That makes sense, but I'm still slightly unsure about one thing. How does this approach help with memory management compared to loading everything at once?",
+              "question_local": "ਇਹ ਗੱਲ ਤਾਂ ਠੀਕ ਲੱਗਦੀ ਹੈ, ਪਰ ਮੈਨੂੰ ਅਜੇ ਵੀ ਇੱਕ ਗੱਲ ਬਾਰੇ ਥੋੜ੍ਹਾ ਯਕੀਨ ਨਹੀਂ ਹੈ। ਇੱਕੋ ਵਾਰ ਸਭ ਕੁਝ ਲੋਡ ਕਰਨ ਨਾਲੋਂ ਇਹ ਤਰੀਕਾ ਮੈਮੋਰੀ ਪ੍ਰਬੰਧਨ ਵਿੱਚ ਕਿਵੇਂ ਮਦਦ ਕਰਦਾ ਹੈ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of demand paging, but it could have included more details about the process and its benefits.\nImprovement: The teacher could have elaborated on how demand paging optimizes memory usage and performance.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher provided a basic explanation of demand paging, but it could have included more details about the process and its benefits.",
+                "improvement": "The teacher could have elaborated on how demand paging optimizes memory usage and performance."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "ਸਹੀ ਅਤੇ ਪੂਰਾ ਤਕਨੀਕੀ ਅਰਥ ਪੰਜਾਬੀ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਹੈ।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "ਕੁਦਰਤੀ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਵਿੱਚ ਪੁੱਛਿਆ ਗਿਆ ਸਵਾਲ ਹੈ।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "ਇੱਕ ਅਜਿਹੇ ਪੰਨੇ ਨੂੰ ਛੂਹਣਾ ਜੋ ਨਿਵਾਸੀ ਨਹੀਂ ਹੈ, ਇੱਕ ਪੰਨਾ ਨੁਕਸ ਪੈਦਾ ਕਰਦਾ ਹੈ, ਅਤੇ ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਇਸਨੂੰ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ ਅਤੇ ਉਸ ਹਦਾਇਤ ਨੂੰ ਮੁੜ ਚਾਲੂ ਕਰਦਾ ਹੈ ਜਿਸ ਵਿੱਚ ਨੁਕਸ ਸੀ।",
+              "teacher_back_en": "Touching a page that is not resident creates a page fault, and the operating system obtains it and reloads the instruction in which the page fault occurred.",
+              "question_en": "I'm still really confused. Can you explain how the instruction pointer helps in handling page faults?",
+              "question_local": "ਮੈਂ ਅਜੇ ਵੀ ਬਹੁਤ ਉਲਝਣ ਵਿੱਚ ਹਾਂ। ਕੀ ਤੁਸੀਂ ਸਮਝਾ ਸਕਦੇ ਹੋ ਕਿ ਇੰਸਟ੍ਰਕਸ਼ਨ ਪੁਆਇੰਟਰ ਪੇਜ ਫਾਲਟਸ ਨੂੰ ਸੰਭਾਲਣ ਵਿੱਚ ਕਿਵੇਂ ਮਦਦ ਕਰਦਾ ਹੈ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response was vague and did not clearly explain the benefits of demand paging over loading everything at once.\nImprovement: The teacher should have explained how demand paging reduces unnecessary memory usage and improves performance by only loading necessary pages.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher's response was vague and did not clearly explain the benefits of demand paging over loading everything at once.",
+                "improvement": "The teacher should have explained how demand paging reduces unnecessary memory usage and improves performance by only loading necessary pages."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "ਤਕਨੀਕੀ ਅਰਥ ਸਹੀ ਪੰਜਾਬੀ ਵਿੱਚ ਪੂਰੀ ਤਰ੍ਹਾਂ ਸੁਰੱਖਿਅਤ ਹੈ।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "ਪ੍ਰਸ਼ਨ ਸੁਭਾਵਿਕ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਵਿੱਚ ਹੈ।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ਇਹ ਚੱਲ ਰਹੇ ਪ੍ਰੋਗਰਾਮਾਂ ਦੇ ਕੁੱਲ ਆਕਾਰ ਨੂੰ ਭੌਤਿਕ ਮੈਮੋਰੀ ਤੋਂ ਵੱਧਣ ਦਿੰਦਾ ਹੈ, ਕਿਉਂਕਿ ਸਿਰਫ ਵਰਤੇ ਜਾ ਰਹੇ ਪੰਨਿਆਂ ਨੂੰ ਕਿਸੇ ਵੀ ਸਮੇਂ ਨਿਵਾਸੀ ਹੋਣ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
+              "teacher_back_en": "This allows for the total size of running programs to be larger than the physical memory, as only the active pages need to be free.",
+              "question_en": "I think I understand most of that. What happens if a page that's not in memory is needed again before the fault is handled?",
+              "question_local": "ਮੈਨੂੰ ਲੱਗਦਾ ਹੈ ਕਿ ਮੈਂ ਇਸਦਾ ਜ਼ਿਆਦਾਤਰ ਸਮਝਦੀ ਹਾਂ। ਕੀ ਹੁੰਦਾ ਹੈ ਜੇਕਰ ਕੋਈ ਪੰਨਾ ਜੋ ਮੈਮੋਰੀ ਵਿੱਚ ਨਹੀਂ ਹੈ, ਨੂੰ ਫਾਲਟ ਦੇ ਸੰਭਾਲਣ ਤੋਂ ਪਹਿਲਾਂ ਦੁਬਾਰਾ ਲੋੜੀਂਦਾ ਹੋਵੇ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's response was somewhat clearer, but it could have been more detailed about the role of the instruction pointer in managing page faults.\nImprovement: The teacher could have explained how the instruction pointer helps in quickly identifying and loading the necessary page to continue execution.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher's response was somewhat clearer, but it could have been more detailed about the role of the instruction pointer in managing page faults.",
+                "improvement": "The teacher could have explained how the instruction pointer helps in quickly identifying and loading the necessary page to continue execution."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "ਤਕਨੀਕੀ ਅਰਥ ਸਹੀ ਹੈ, ਪਰ “ਨਿਵਾਸੀ” ਸ਼ਬਦ ਕੁਝ ਅਸਵਭਾਵਿਕ ਹੈ】【。"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "ਪੰਜਾਬੀ ਕੁਦਰਤੀ ਹੈ, ਪਰ “ਪੰਨਾ ... ਨੂੰ ਦੁਬਾਰਾ ਲੋੜੀਂਦਾ” ਵਾਲਾ ਵਾਕ-ਭਾਗ ਥੋੜ੍ਹਾ ਅਟਪਟਾ ਹੈ۔"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when you talk about demand paging, does that mean the system only loads pages into memory when they're actually needed?",
+          "opening_local": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਸਿੱਖਣ ਲਈ ਤਿਆਰ ਹਾਂ। ਸ਼ੁਰੂ ਕਰਨ ਲਈ, ਜਦੋਂ ਤੁਸੀਂ ਡਿਮਾਂਡ ਪੇਜਿੰਗ ਬਾਰੇ ਗੱਲ ਕਰਦੇ ਹੋ, ਤਾਂ ਕੀ ਇਸਦਾ ਮਤਲਬ ਹੈ ਕਿ ਸਿਸਟਮ ਸਿਰਫ ਉਦੋਂ ਹੀ ਮੈਮੋਰੀ ਵਿੱਚ ਪੰਨੇ ਲੋਡ ਕਰਦਾ ਹੈ ਜਦੋਂ ਉਹਨਾਂ ਦੀ ਅਸਲ ਵਿੱਚ ਲੋੜ ਹੁੰਦੀ ਹੈ?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 46.9
+        },
+        {
+          "code": "gu",
+          "language": "Gujarati",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "માંગ પેજિંગ મેમરીમાં પેજ ત્યારે જ લોડ કરે છે જ્યારે તેને પ્રથમ સ્પર્શ કરવામાં આવે છે, જેથી ડિસ્કમાંથી બધું વાંચવામાં આવે તે પહેલાં પ્રોગ્રામ ચાલવાનું શરૂ કરી શકે.",
+              "teacher_back_en": "The program can then begin executing before the system loads the page, as the demand paging only uses page memory which is only touched by the first memory location in the stack.",
+              "question_en": "Hmm, that doesn't quite sound right to me. Wait, I'm a bit confused. Can you explain what demand paging actually does?",
+              "question_local": "હમ્મ, મને તે બરાબર લાગતું નથી. થોડી રાહ જુઓ, હું થોડી મૂંઝવણમાં છું. શું તમે સમજાવી શકો છો કે ડિમાન્ડ પેજિંગ ખરેખર શું કરે છે?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is incorrect. Demand paging is a memory management scheme where pages are only loaded into memory when they are needed, not before.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect. Demand paging is a memory management scheme where pages are only loaded into memory when they are needed, not before."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "અર્થ અને તકનીકી વિગતો સાચી રીતે જળવાઈ છે."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી પ્રશ્ન."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "એક એવું પૃષ્ઠ સ્પર્શ કરવું જે નિવાસી નથી તે પૃષ્ઠ ખામી ઉભી કરે છે, અને ઓપરેટિંગ સિસ્ટમ તેને મેળવે છે અને ખામીયુક્ત સૂચનાને ફરીથી શરૂ કરે છે.",
+              "teacher_back_en": "Touching a page that is not active causes a page fault, wakes up the operating system, and retries to fetch the page.",
+              "question_en": "I'm still really confused. Okay, but how does demand paging help with memory usage?",
+              "question_local": "હું હજી પણ ખરેખર મૂંઝવણમાં છું. સારું, પણ ડિમાન્ડ પેજિંગ મેમરી વપરાશમાં કેવી રીતે મદદ કરે છે?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still incorrect. Demand paging is about loading pages only when needed, not about faults.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is still incorrect. Demand paging is about loading pages only when needed, not about faults."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "અર્થ સચવાયો છે, જોકે તકનીકી શબ્દપ્રયોગ થોડો અપ્રાકૃતિક છે."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી પ્રશ્ન."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "આ ચાલતા પ્રોગ્રામ્સના કુલ કદને ભૌતિક મેમરીને વટાવી દેવા દે છે, કારણ કે ફક્ત વાસ્તવમાં ઉપયોગમાં લેવાતા પૃષ્ઠોને કોઈપણ ક્ષણે રહેવાની જરૂર છે.",
+              "teacher_back_en": "This allows moving programs around to better fit the overall size of the physical memory, since only the actual program pages are needed at any given time.",
+              "question_en": "I'm still really confused. So, does demand paging mean that programs can run even if they're not fully loaded into memory?",
+              "question_local": "હું હજી પણ ખરેખર મૂંઝવણમાં છું. તો, શું ડિમાન્ડ પેજિંગનો અર્થ એ થાય છે કે પ્રોગ્રામ્સ મેમરીમાં સંપૂર્ણપણે લોડ ન થયા હોય તો પણ ચાલી શકે છે?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's explanation is still incorrect. Demand paging is about loading pages only when needed, not about fitting programs to memory.",
+                "level": "Apply",
+                "score": "Low",
+                "feedback": "The teacher's explanation is still incorrect. Demand paging is about loading pages only when needed, not about fitting programs to memory."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "સંપૂર્ણ તકનીકી અર્થ સાચી ગુજરાતી લિપિમાં જળવાયો છે."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "પ્રશ્ન સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી છે."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "હાય! હું શીખવા માટે તૈયાર છું. શરૂ કરવા માટે, તો, આ ડિમાન્ડ પેજિંગ બરાબર શું છે?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 39.8
+        },
+        {
+          "code": "or",
+          "language": "Odia",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ଡିମାଣ୍ଡ ପେଜିଙ୍ଗ୍ କେବଳ ପ୍ରଥମେ ସ୍ପର୍ଶ କଲାବେଳେ ମେମୋରୀରେ ଏକ ପୃଷ୍ଠା ଲୋଡ୍ କରେ, ତେଣୁ ଏହା ସବୁ ଡିସ୍କରୁ ପଢିବା ପୂର୍ବରୁ ଏକ ପ୍ରୋଗ୍ରାମ ଚାଲିବା ଆରମ୍ଭ କରିପାରିବ।",
+              "teacher_back_en": "Since a page in the memory is only newly loaded when it is first accessed, a program can begin running before all of its pages have been loaded.",
+              "question_en": "Okay, I'm following you. How does the system know which pages to load if they're not all needed at once?",
+              "question_local": "ଓକେ, ମୁଁ ତୁମକୁ ଅନୁସରଣ କରୁଛି। ଯଦି ସମସ୍ତ ପୃଷ୍ଠା ଏକାଥରକେ ଆବଶ୍ୟକ ନୁହେଁ, ତେବେ ସିଷ୍ଟମ କିପରି ଜାଣିବ ଯେ କେଉଁ ପୃଷ୍ଠା ଲୋଡ୍ କରିବ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The analogy helps in understanding the concept of demand paging, but the explanation could be more detailed.\nImprovement: The teacher could expand on the analogy by explaining how the restaurant only prepares dishes as they are ordered, similar to how pages are loaded only when needed.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The analogy helps in understanding the concept of demand paging, but the explanation could be more detailed.",
+                "improvement": "The teacher could expand on the analogy by explaining how the restaurant only prepares dishes as they are ordered, similar to how pages are loaded only when needed."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରାଯୁକ୍ତିକ ଅର୍ଥ ସଠିକ୍ ଭାବେ ଅନୁଦିତ ହୋଇଛି।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "ସ୍ୱାଭାବିକ, ସ୍ପଷ୍ଟ ଏବଂ ଶିକ୍ଷାର୍ଥୀସୁଲଭ ଓଡ଼ିଆ ପ୍ରଶ୍ନ।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "ଏକ ପୃଷ୍ଠାକୁ ସ୍ପର୍ଶ କରିବା ଯାହା ଅବସ୍ଥାପିତ ନୁହେଁ, ଏକ ପୃଷ୍ଠା ତ୍ରୁଟି ସୃଷ୍ଟି କରେ, ଏବଂ ଅପରେଟିଂ ସିଷ୍ଟମ ଏହାକୁ ଆଣେ ଏବଂ ତ୍ରୁଟିଯୁକ୍ତ ନିର୍ଦ୍ଦେଶକୁ ପୁନଃ ଆରମ୍ଭ କରେ।",
+              "teacher_back_en": "Touching a page that is not rendered creates a page fault, causes the operating system to fetch it, and causes the faulty instruction to be retried.",
+              "question_en": "Okay, I'm following you. What happens if the system keeps getting page faults?",
+              "question_local": "ଓକେ, ମୁଁ ତୁମକୁ ଅନୁସରଣ କରୁଛି। ଯଦି ସିଷ୍ଟମରେ ବାରମ୍ବାର ପେଜ୍ ଫଲ୍ଟ ଆସିବ, ତେବେ କ'ଣ ହେବ?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Medium\nStrength: The explanation is correct but lacks depth. It could be improved by discussing how the system uses page-replacement algorithms to decide which pages to load.\nImprovement: The teacher could explain how page-replacement algorithms, like Least Recently Used (LRU), help in deciding which pages to load based on their usage.",
+                "level": "Apply",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth. It could be improved by discussing how the system uses page-replacement algorithms to decide which pages to load.",
+                "improvement": "The teacher could explain how page-replacement algorithms, like Least Recently Used (LRU), help in deciding which pages to load based on their usage."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "Meaning is preserved with slightly awkward phrasing around the nonresident page and faulting instruction."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "ପ୍ରଶ୍ନଟି ସ୍ୱାଭାବିକ, କିନ୍ତୁ “ମୁଁ ତୁମକୁ ଅନୁସରଣ କରୁଛି” ଟିକେ ଅସ୍ୱାଭାବିକ ଲାଗେ."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ଏହା ଚାଲୁଥିବା ପ୍ରୋଗ୍ରାମଗୁଡ଼ିକର ମୋଟ ଆକାରକୁ ଭୌତିକ ମେମୋରୀ ଅତିକ୍ରମ କରିବାକୁ ଦେଇଥାଏ, କାରଣ କେବଳ ବ୍ୟବହୃତ ହେଉଥିବା ପୃଷ୍ଠାଗୁଡ଼ିକ ଯେକୌଣସି ମୁହୂର୍ତ୍ତରେ ରେସିଡେଣ୍ଟ ହେବା ଆବଶ୍ୟକ।",
+              "teacher_back_en": "This allows the total size of programs to exceed physical memory, as only the actual program needs to be resident at any given time.",
+              "question_en": "Okay, I'm following you. Can you explain how demand paging affects system performance?",
+              "question_local": "ଓକେ, ମୁଁ ତୁମକୁ ଅନୁସରଣ କରୁଛି। ତୁମେ ବୁଝାଇ ପାରିବ କି ଡିମାଣ୍ଡ ପେଜିଙ୍ଗ୍ ସିଷ୍ଟମର କାର୍ଯ୍ୟଦକ୍ଷତାକୁ କିପରି ପ୍ରଭାବିତ କରିଥାଏ?",
+              "adapter_evaluation": {
+                "raw": "Level: Analyze\nScore: Medium\nStrength: The explanation is correct but lacks depth. It could be improved by discussing the implications of frequent page faults on system performance.\nImprovement: The teacher could elaborate on the performance impact of frequent page faults, such as increased latency and potential system slowdowns.",
+                "level": "Analyze",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth. It could be improved by discussing the implications of frequent page faults on system performance.",
+                "improvement": "The teacher could elaborate on the performance impact of frequent page faults, such as increased latency and potential system slowdowns."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରାଯୁକ୍ତିକ ଅର୍ଥ ସଠିକ୍ ଭାବେ ରହିଛି।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "ବୁଝିବାଯୋଗ୍ୟ ଓ ସ୍ୱାଭାବିକ, କିନ୍ତୁ ପ୍ରଶ୍ନର ଗଠନ ସାମାନ୍ୟ ଅସ୍ପଷ୍ଟ।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when you say demand paging is like a restaurant serving dishes only when ordered, what does that mean exactly?",
+          "opening_local": "ହେଲୋ! ମୁଁ ଶିଖିବାକୁ ପ୍ରସ୍ତୁତ ଅଛି। ଆରମ୍ଭ କରିବା ପାଇଁ, ତେଣୁ, ଯେତେବେଳେ ତୁମେ କୁହ ଯେ ଡିମାଣ୍ଡ ପେଜିଙ୍ଗ୍ ହେଉଛି ଏକ ରେଷ୍ଟୁରାଣ୍ଟ୍ ପରି କେବଳ ଅର୍ଡର କଲେ ହିଁ ଡିସ୍ ପରସିବା, ତାହାର ଅର୍ଥ କ'ଣ?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 52.0
+        },
+        {
+          "code": "ur",
+          "language": "Urdu",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ڈیمانڈ پیجنگ ایک صفحہ کو میموری میں صرف اس وقت لوڈ کرتی ہے جب اسے پہلی بار چھوا جاتا ہے، تاکہ ایک پروگرام اس کے مکمل طور پر ڈسک سے پڑھے جانے سے پہلے چلنا شروع کر سکے۔",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program can begin execution before all of its data is read from disk.",
+              "question_en": "Okay, I'm following you. Why is it beneficial to start execution before loading all pages?",
+              "question_local": "ٹھیک ہے، میں سمجھ رہی ہوں۔ تمام صفحات لوڈ کرنے سے پہلے عمل درآمد شروع کرنا کیوں فائدہ مند ہے؟",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could elaborate on how demand paging optimizes memory usage and performance.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth.",
+                "improvement": "The teacher could elaborate on how demand paging optimizes memory usage and performance."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "مکمل اور درست تکنیکی ترجمہ ہے۔"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "فطری، رواں اور درست اردو میں پوچھا گیا سوال ہے۔"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "غیر مقیم صفحہ کو چھونے سے صفحہ کی خرابی پیدا ہوتی ہے، اور آپریٹنگ سسٹم اسے حاصل کرتا ہے اور اس ہدایت کو دوبارہ شروع کرتا ہے جس میں خرابی تھی۔",
+              "teacher_back_en": "Touching the non-resident page causes the page to crash, and the operating system captures it and reinitializes the instruction in which the crash occurred.",
+              "question_en": "Wait, I'm a bit lost. Could you explain how demand paging actually helps with memory management?",
+              "question_local": "انتظار کریں، میں تھوڑی کھو گئی ہوں۔ کیا آپ بتا سکتی ہیں کہ ڈیمانڈ پیجنگ دراصل میموری مینجمنٹ میں کیسے مدد کرتی ہے؟",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect and misunderstands the concept of demand paging.\nImprovement: The teacher should clarify that demand paging allows execution to start without loading all pages, not that it causes crashes.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The explanation is incorrect and misunderstands the concept of demand paging.",
+                "improvement": "The teacher should clarify that demand paging allows execution to start without loading all pages, not that it causes crashes."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "مکمل تکنیکی مفہوم درست اردو میں منتقل ہوا ہے۔"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "فطری اور رواں اردو میں پوچھا گیا ہے۔"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "یہ چلنے والے پروگراموں کے کل سائز کو فزیکل میموری سے تجاوز کرنے دیتا ہے، کیونکہ صرف استعمال ہونے والے صفحات کو کسی بھی لمحے رہائشی ہونے کی ضرورت ہوتی ہے۔",
+              "teacher_back_en": "This allows for the total size of running programs to be larger than the physical memory, since only the currently occupied pages need to be free at any given moment.",
+              "question_en": "I think I understand most of that. What happens if a page that's not in memory is needed suddenly?",
+              "question_local": "مجھے لگتا ہے کہ میں اس کا بیشتر سمجھ گئی ہوں۔ اگر کوئی صفحہ جو میموری میں نہیں ہے اچانک درکار ہو تو کیا ہوتا ہے؟",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about the benefits of demand paging.\nImprovement: The teacher could provide more examples or scenarios where this flexibility is advantageous.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The explanation is correct but could be more detailed about the benefits of demand paging.",
+                "improvement": "The teacher could provide more examples or scenarios where this flexibility is advantageous."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "مفہوم درست ہے، مگر \"رہائشی ہونے\" کی ترکیب قدرے غیر فطری ہے۔"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "مجموعی طور پر فطری ہے، مگر ’’اس کا بیشتر سمجھ گئی ہوں‘‘ قدرے غیر فطری ہے۔"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "السلام علیکم! میں سیکھنے کے لیے تیار ہوں۔ شروع کرنے کے لیے، تو، ڈیمانڈ پیجنگ آخر ہے کیا؟",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 41.4
+        },
+        {
+          "code": "as",
+          "language": "Assamese",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ডিমাণ্ড পেজিংয়ে যেতিয়া প্ৰথম স্পৰ্শ কৰা হয় তেতিয়াহে মেম'ৰীত এটা পৃষ্ঠা লোড কৰে, যাতে ডিস্কৰ পৰা সকলো পঢ়াৰ আগতেই এটা প্ৰগ্ৰাম চলাবলৈ আৰম্ভ কৰিব পাৰি।",
+              "teacher_back_en": "Demand paging loads a page into memory just before it is requested, so programs do not have to start all the way from disk.",
+              "question_en": "Okay, I'm following you. How does the system know which page to load before I need it?",
+              "question_local": "ঠিক আছে, মই বুজি পাইছো। মোৰ প্ৰয়োজন হোৱাৰ আগতেই চিষ্টেমটোৱে কেনেকৈ জানিব পাৰে যে কোনখন পৃষ্ঠা লোড কৰিব লাগে?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The analogy is helpful, but the explanation could be more detailed about the mechanism.\nImprovement: The teacher could expand on how demand paging specifically works in operating systems.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The analogy is helpful, but the explanation could be more detailed about the mechanism.",
+                "improvement": "The teacher could expand on how demand paging specifically works in operating systems."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "অৰ্থ সঠিক, কিন্তু বাক্যগঠন অলপ অস্বাভাৱিক।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "স্বাভাৱিক আৰু সাবলীল অসমীয়া প্ৰশ্ন।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "এটা পৃষ্ঠা স্পৰ্শ কৰিলে যিটো নিবাসী, এটা পৃষ্ঠাৰ ত্ৰুটিৰ সৃষ্টি হয়, আৰু অপাৰেটিং ছিষ্টেমে ইয়াক আনে আৰু ত্ৰুটিপূৰ্ণ নিৰ্দেশটো পুনৰ আৰম্ভ কৰে।",
+              "teacher_back_en": "Touching a page causes a page fault, the operating system is then fetched and the instruction is resumed.",
+              "question_en": "I'm still really confused. Can you explain how the operating system predicts which pages I'll need next?",
+              "question_local": "মই এতিয়াও বহুত বিভ্ৰান্ত হৈ আছো। আপুনি বুজাই দিব পাৰিবনে যে অপাৰেটিং ছিষ্টেমে কেনেকৈ ভৱিষ্যদ্বাণী কৰে যে মোৰ পৰৱৰ্তী পৃষ্ঠা কোনবোৰ লাগিব?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The explanation is vague and lacks clarity on the process of predicting which page to load.\nImprovement: The teacher should clarify how the operating system predicts and loads pages before they are needed.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The explanation is vague and lacks clarity on the process of predicting which page to load.",
+                "improvement": "The teacher should clarify how the operating system predicts and loads pages before they are needed."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 2,
+                "note": "“নিবাসী নহয়”ৰ সলনি “নিবাসী” হোৱাত মূল অৰ্থ ওলোটা হৈছে।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "স্বাভাৱিক আৰু স্পষ্ট অসমীয়া প্ৰশ্ন।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ই চলি থকা প্ৰ'গ্ৰামসমূহৰ মুঠ আকাৰ ভৌতিক মেম'ৰীক অতিক্ৰম কৰিবলৈ দিয়ে, কিয়নো কেৱল ব্যৱহাৰ হোৱা পৃষ্ঠাবোৰহে যিকোনো মুহূৰ্তত বাসিন্দা হ'ব লাগিব।",
+              "teacher_back_en": "This allows running programs to exceed the total size of physical memory, as only the currently occupied pages need to be resident at any given time.",
+              "question_en": "I'm still really confused. What happens if a page I need isn't loaded yet?",
+              "question_local": "মই এতিয়াও বহুত বিভ্ৰান্ত হৈ আছো। যদি মই বিচৰা পৃষ্ঠাখন এতিয়াও লোড নহয় তেতিয়া কি হ'ব?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The explanation is incorrect and does not address the prediction mechanism.\nImprovement: The teacher should correct the misconception and explain the prediction mechanism.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The explanation is incorrect and does not address the prediction mechanism.",
+                "improvement": "The teacher should correct the misconception and explain the prediction mechanism."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "অৰ্থ সঠিক, কিন্তু “resident”ৰ অনুবাদ অলপ আক্ষৰিক আৰু অস্বাভাৱিক।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "স্বাভাৱিক আৰু স্পষ্ট অসমীয়া প্ৰশ্ন।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, demand paging is like only loading a book chapter when you actually need it, right?",
+          "opening_local": "হে'ল্লো! মই শিকিবলৈ সাজু। আৰম্ভ কৰিবলৈ, গতিকে, ডিমাণ্ড পেজিং মানে হৈছে যেনেকৈ প্ৰয়োজন তেতিয়াহে কিতাপৰ এটা অধ্যায় লোড কৰা, নহয় জানো?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 46.0
+        },
+        {
+          "code": "brx",
+          "language": "Bodo",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "डिमान्ड पेजिंआ मोनसे पेजखौ मेम'रिआव अब्लासो ल'ड खालामो जेब्ला बेखौ गिबियाव दांनाय जायो, बेनिखायनो मोनसे प्रग्रामआ बे गासैखौबो डिस्कनिफ्राय फरायनायनि सिगांनो सालायनो जागायनो हायो।",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program can start running before all of its data is read from disk.",
+              "question_en": "I think I understand most of that. How does this affect the performance of a computer system?",
+              "question_local": "आं सानो आं बेखौ बांसिन बुजिबाय। बेयो कम्पिउटार सिस्टेमनि मावफुंनायाव माबोरै गोहोम खोख्लैयो?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic analogy but doesn't fully explain the concept of demand paging.\nImprovement: The teacher could expand on the analogy to clarify how demand paging works in practice.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher provides a basic analogy but doesn't fully explain the concept of demand paging.",
+                "improvement": "The teacher could expand on the analogy to clarify how demand paging works in practice."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "पूर्ण तकनीकी अर्थ सही बड़ो लिपियाव राखिएको।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "स्पष्ट र स्वाभाविक बोडो प्रश्न, तर सुरुको वाक्यांश अलि अस्वाभाविक छ।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "थागिरि नङै मोनसे बिलाइखौ दांनाया मोनसे बिलाइनि गोरोन्थि दैखाङो, आरो अपारेटिं सिस्टेमआ बेखौ लाबोयो आरो गोरोन्थि खालामनाय बिथोनखौ फिन जागायो।",
+              "teacher_back_en": "Touching a non-resident leaf causes a page error, and the operating system restarts, skipping the incorrect instruction.",
+              "question_en": "I'm still really confused. Can you explain how demand paging reduces memory usage?",
+              "question_local": "आं दासिमबो जोबोद गोनो गोथो। नोंथाङा बेखेवनो हागोन नामा दि डिमान्ड पेजिंआ माबोरै गोसोखांथि बाहायनायखौ खमायो?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incorrect and doesn't address the question about performance.\nImprovement: The teacher should clarify how demand paging affects performance, such as reducing memory usage but potentially slowing down access times.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher's explanation is incorrect and doesn't address the question about performance.",
+                "improvement": "The teacher should clarify how demand paging affects performance, such as reducing memory usage but potentially slowing down access times."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "पूर्ण तकनीकी अर्थखौ सिखायो।"
+              },
+              "fluency": {
+                "score": 3,
+                "note": "लिरनायाव बाख्रि बाथ्रा आरो गोनो-गोथो जादों, नाथाय माने बुजिनो हायो।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "बेयो खारबाय थानाय प्रग्रामफोरनि गासै महरखौ देहायारि मेम'रिखौ बारलांनो होयो, मानोना बाहायजानाय बिलाइफोरल' जायखिजाया समाव थाथारनांगौ जायो।",
+              "teacher_back_en": "This allows all running programs to share physical memory, since only the actual data pages need to be consistent.",
+              "question_en": "I'm still really confused. Why is it important for programs to share physical memory?",
+              "question_local": "आं दासिमबो जोबोद गोनो गोथो। प्रग्रामफोरनि थाखाय देहायारि मेम'रि रानलायनाया मानो गोनांथार?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The teacher's explanation is incorrect and doesn't address the question about memory usage.\nImprovement: The teacher should clarify how demand paging reduces memory usage by loading only necessary pages, allowing more programs to run simultaneously.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher's explanation is incorrect and doesn't address the question about memory usage.",
+                "improvement": "The teacher should clarify how demand paging reduces memory usage by loading only necessary pages, allowing more programs to run simultaneously."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "अर्थ रावजाबाय आरो बड़ो लिरथाइयाव साजायो।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "स्पष्ट Bodo प्रश्न, तर केही प्राविधिक शब्दावली अस्वाभाविक छ."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, demand paging is like only loading a book chapter when you actually need it, right?",
+          "opening_local": "हाय! आं सोलोंनो थाखाय थियारि। जागायनो थाखाय, डिमान्ड पेजिंआ मोनसे बिजाबनि खोन्दोखौ ल'ड खालामनाय बायदि जेब्ला नोंथांनो थारैनो गोनांथि जायो, नंगौना?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 46.0
+        },
+        {
+          "code": "doi",
+          "language": "Dogri",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "डिमांड पेजिंग इक पेज गी मेमोरी च छड़ा उसलै लोड करदा ऐ जिसलै इसगी पैह्‌ली बारी छूह्‌ता ऐ, इस करियै इक प्रोग्राम उसदे डिस्क थमां सारे पढ़े जाने शा पैह्‌लें गै चलना शुरू करी सकदा ऐ।",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program can begin execution before all of its data is read from disk.",
+              "question_en": "That makes sense, but I'm still slightly unsure about one thing. Okay, but how does the system know which page to load when I need it?",
+              "question_local": "एह् गल्ल समझ च औंदी ऐ, पर में अजें बी इक गल्लै गी लेइयै किश अनिश्चित आं। ठीक ऐ, पर सिस्टम गी कि’यां पता लगदा ऐ जे जिसलै मिगी लोड़ होग तां केह्‌ड़ा पन्ना लोड करना ऐ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth.\nImprovement: The teacher could elaborate on how demand paging works with virtual memory and its benefits.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth.",
+                "improvement": "The teacher could elaborate on how demand paging works with virtual memory and its benefits."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ सही है, पर कुछ वाक्य-विन्यास अस्वाभाविक है."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "अर्थ स्पष्ट ऐ, पर कुछ वाक्य-विन्यास थोड़ा अनैसर्गिक ऐ"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "इक नेही पेज गी छूह्‌ना जेह्‌‌ड़ा मजूद नेईं ऐ, इक पेज गलती पैदा करदा ऐ, ते ऑपरेटिंग सिस्टम इसगी हासल करदा ऐ ते उस हिदायत गी परतियै शुरू करदा ऐ जेह्‌‌ड़ी गल्त ही।",
+              "teacher_back_en": "Touching a page that is not there will create a page error, and the operating system will receive it and start the instruction that was wrong.",
+              "question_en": "Hmm, that doesn't quite sound right to me. Wait, so when a page fault happens, what exactly does the operating system do to fix it?",
+              "question_local": "हम्म, मिगी एह्‌ ठीक नेईं लग्गा दा। रुको, तां जिसलै कोई पेज फाल्ट होंदा ऐ, तां आपरेटिंग सिस्टम इसगी ठीक करने आस्तै असल च केह् करदा ऐ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect. A page error would not start an instruction; it would trigger a page fault, leading to the loading of the required page.\nImprovement: The teacher should clarify the process of handling page faults and how they are managed by the operating system.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The explanation is incorrect. A page error would not start an instruction; it would trigger a page fault, leading to the loading of the required page.",
+                "improvement": "The teacher should clarify the process of handling page faults and how they are managed by the operating system."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ सही ऐ, पर तकनीकी शब्दावली ते वाक्य-विन्यास कुछ अस्वाभाविक ऐ।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Mostly natural Dogri, though a few phrases sound slightly awkward."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "एह्‌‌‌दे कन्नै प्रोग्राम चलाने दा कुल आकार भौतिक मैमरी कोला मता होई जंदा ऐ, की जे छड़े इस्तेमाल कीते जा करदे पेजें गी कुसै बी समें निवासी होने दी लोड़ होंदी ऐ।",
+              "teacher_back_en": "This makes the total size of the program it runs bigger than the physical memory it uses, since only the pages it uses need to be free.",
+              "question_en": "I'm still really confused. Could you explain how demand paging allows a system to run larger programs than its physical memory?",
+              "question_local": "में अजें बी बड़ा उलझन च आं। क्या तुस समझा सकदे ओ जे डिमांड पेजिंग कि’यां इक सिस्टम गी अपनी भौतिक मेमोरी कोला बड्डे प्रोग्राम चलाने दी इजाजत दिंदी ऐ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The explanation is incorrect and unrelated to the question about page faults.\nImprovement: The teacher should focus on explaining the page fault handling process and how demand paging allows for larger programs than physical memory.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The explanation is incorrect and unrelated to the question about page faults.",
+                "improvement": "The teacher should focus on explaining the page fault handling process and how demand paging allows for larger programs than physical memory."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ सही ऐ, पर आखरी वाक्यांश थोड़ा अस्वाभाविक ऐ"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक ते स्पष्ट डोगरी सवाल ऐ।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "नमस्ते! में सिक्खने आस्तै त्यार आं। शुरू करने आस्तै, तां, असल च मांग पेजिंग केह् ऐ?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 48.8
+        },
+        {
+          "code": "kok",
+          "language": "Konkani",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "मागणी पेजिंग पयलें फावट स्पर्श करतनाच मेमरींत एक पान लोड करता, देखून सगळ्यांत पयलीं सगळ्यांक डिस्कांतल्यान वाचचे पयलीं एक प्रोग्राम चलपाक शकता.",
+              "teacher_back_en": "Since a request page loads one page in memory at access time, programs can run before everything else on disk.",
+              "question_en": "Wait, I'm a bit lost. Okay, but how does the system know which page to load from the disk?",
+              "question_local": "थांब, हांव थोडी भुलल्या. ठीक आसा, पूण सिस्टमाक खंयच्या पानांतल्यान डिस्कांतल्यान लोड करचें तें कशें कळटा?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is too vague and doesn't explain the process of handling a page fault.\nImprovement: The teacher should provide a detailed explanation of the steps involved in handling a page fault, such as checking the memory, reading from disk, and updating the page table.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher's response is too vague and doesn't explain the process of handling a page fault.",
+                "improvement": "The teacher should provide a detailed explanation of the steps involved in handling a page fault, such as checking the memory, reading from disk, and updating the page table."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ जतन केला आसा, पूण Konkani वाक्यरचना थोडी अडखळीत आसा."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "अर्थ स्पष्ट आसा, पूण कांय शब्दरचना थोडी अनैसर्गिक आसा"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "रॅजिडेंट नाशिल्ल्या पानाक हात लायल्यार पेज फॉल्ट निर्माण जाता, आनी ऑपरेटिंग सिस्टिम तें घेता आनी फॉल्ट जाल्ली सुचोवणी परत सुरू करता.",
+              "teacher_back_en": "Touching a non-resident leaf causes a page fault, which the operating system catches and restarts.",
+              "question_en": "Hmm, that doesn't quite sound right to me. So, does the page table just randomly pick a page to load, or is there a specific method?",
+              "question_local": "हं, म्हाका तशें बरोबर दिसना. तर, पेज टेबल फकत यादृच्छिकपणान एक पान लोड करपाक निवडटा, वा थंय एक खाशेली पद्दत आसा?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response is still vague and doesn't explain how the system identifies the page to load.\nImprovement: The teacher should explain the role of the page table in identifying the page to load and how the system uses it to locate the necessary data on the disk.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher's response is still vague and doesn't explain how the system identifies the page to load.",
+                "improvement": "The teacher should explain the role of the page table in identifying the page to load and how the system uses it to locate the necessary data on the disk."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "पूर्ण तांत्रिक अर्थ अचूकपणान जतन केला आसा."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "प्रश्न स्पष्ट आसा, पूण कांय शब्दप्रयोग थोडे कृत्रिम दिसतात."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "हाका लागून चलपी प्रोग्रामांचो वट्ट आकार शारिरीक मेमरी परस चड जाता, कारण फकत वापरतात तीं पानां खंयच्याय खिणाक निवासी आसपाक जाय.",
+              "teacher_back_en": "This makes the total size of running programs larger than physical memory because only the pages that are being used are at any given time actually resident.",
+              "question_en": "I'm still really confused. Could you clarify how the page table helps in loading the correct page from the disk?",
+              "question_local": "हांव अजूनय पुरो गोंदळ्ळ्या. पेज टेबल डिस्कांतल्यान योग्य पान लोड करपाक कशें मजत करता तें स्पश्ट करतलें?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The teacher's response is still vague and doesn't explain how the system identifies the page to load.\nImprovement: The teacher should explain the role of the page table in identifying the page to load and how the system uses it to locate the necessary data on the disk.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher's response is still vague and doesn't explain how the system identifies the page to load.",
+                "improvement": "The teacher should explain the role of the page table in identifying the page to load and how the system uses it to locate the necessary data on the disk."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तांत्रिक अर्थ अचूक आसा आनी कोंकणी लिपी योग्य आसा."
+              },
+              "fluency": {
+                "score": 3,
+                "note": "अर्थ समजतो, पण व्याकरण आनी शब्दप्रयोग थोडे अनैसर्गिक आसात."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when a page fault happens, what exactly does the system do to handle it?",
+          "opening_local": "हालो! हांव शिकपाक तयार आसां. सुरवात करूया, जेन्ना पेज फॉल्ट जाता, तेन्ना सिस्टीम ताचेर नियंत्रण दवरपाक कितें करता?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 51.2
+        },
+        {
+          "code": "ks",
+          "language": "Kashmiri",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ڈیمانڈ پیجنگ چھُ اکھ پیج میموری منٛز صرف تیٚلی لوڈ کران ییٚلہِ یہِ گۄڈٕ چھُ ٹچ کرنہٕ یِوان، اَمہِ کِنۍ ہیٚکہِ اکھ پروگرام دَور گژھُن شروٗع کٔرِتھ برٛونٛہہ زِ یہِ سٲرۍ ڈِسکہِ پٮ۪ٹھٕ پرنہٕ یِیہِ۔",
+              "teacher_back_en": "Demand paging loads a page into memory only when it is first accessed, so a program can begin execution before all of its data is read into disk.",
+              "question_en": "I think I understand most of that. How does this affect the performance of a computer system?",
+              "question_local": "مےٚ چھُ باسان زِ مےٚ چھُ اَتھ منٛز زیٛادٕ تر سمجِتھ۔ یہِ کِتھ پٲٹھۍ چھُ کمپیوٹر سِسٹمٕچ کارکردٕگی مُتٲثِر کران؟",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's explanation is correct but could be more detailed about the process and implications of demand paging.\nImprovement: The teacher could expand on how demand paging affects system performance and memory usage.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher's explanation is correct but could be more detailed about the process and implications of demand paging.",
+                "improvement": "The teacher could expand on how demand paging affects system performance and memory usage."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "Meaning is fully preserved in correct Kashmiri script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "واضح اور فصیح سوال، تاہم کچھ الفاظ قدرے غیرطبیعی ہیں۔"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "अख पेज छुवुन योस नॅ बासिथ छि, अख पेज फॉल्ट पैदा करान, त् ऑपरेटिंग सिस्टम छि यि आवान त् यि हिदायत छु वरी शुरू करान योस फॉल्ट करान छि.",
+              "teacher_back_en": "Touching a page that is not needed causes a page fault, and the operating system obtains this information and starts the instruction that caused the fault.",
+              "question_en": "I'm still really confused. Wait, I'm a bit lost. Can you explain again how demand paging impacts system performance?",
+              "question_local": "بہٕ چھس وُنہِ تہِ واریاہ پریشان۔ رُک، بہٕ چھس تھوڑی کھوژمٕژ۔ ہیٚکِو ژٕ دوبارٕ وضاحت کٔرِتھ زِ ڈیمانڈ پیجنگ کِتھ پٲٹھۍ چھُ سسٹمٕچ کارکردگی مُتٲثِر کران؟",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is incorrect and does not address the question about system performance.\nImprovement: The teacher should clarify how demand paging impacts system performance, such as reducing memory waste but potentially increasing latency.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher's response is incorrect and does not address the question about system performance.",
+                "improvement": "The teacher should clarify how demand paging impacts system performance, such as reducing memory waste but potentially increasing latency."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 3,
+                "note": "Meaning is mostly preserved, but the Kashmiri phrasing and script are not fully standard."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Kashmiri is clear and natural overall, though “رُک” sounds slightly awkward in this context."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "یہِ چھُ رننگ پروگرامَن ہُنٛد کُل سایز جسمٲنی میموری کھۄتہٕ زیٛادٕ گژھن دِوان، تِکیٛازِ صِرِف صَفہٕ یِم اصلَس منٛز استعمال چھِ گژھان چھِ کُنہِ تہِ وِزِ مقٲمی آسُن ضروٗری۔",
+              "teacher_back_en": "This allows running programs to exceed the total physical memory size, as only the pages that are actually being used need to be local.",
+              "question_en": "I'm still really confused. I'm still really confused. Can you clarify how demand paging affects system performance?",
+              "question_local": "بہٕ چھس وُنہِ تہِ واریاہ پریشان۔ بہٕ چھس وُنہِ تہِ واریاہ پریشان۔ کیا تُہۍ ہیٚکِو واضح کٔرِتھ زِ ڈیمانڈ پیجنگ کِتھ پٲٹھۍ چھُ سسٹمٕچ کارکردگی مُتٲثِر کران؟",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nStrength: The teacher's explanation is incorrect and does not address the question about system performance.\nImprovement: The teacher should clarify how demand paging impacts system performance, such as reducing memory waste but potentially increasing latency.",
+                "level": "Understand",
+                "score": "Low",
+                "strength": "The teacher's explanation is incorrect and does not address the question about system performance.",
+                "improvement": "The teacher should clarify how demand paging impacts system performance, such as reducing memory waste but potentially increasing latency."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "Meaning is preserved, though the Kashmiri phrasing is somewhat awkward."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "سوال واضح اور قدرتی ہے، مگر ابتدائی جملہ غیر ضروری طور پر دہرایا گیا ہے۔"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when you talk about demand paging, does that mean the system only loads pages into memory when they're actually needed?",
+          "opening_local": "السلام علیکم! بہٕ چھس ہیٚچھنہٕ خٲطرٕ تیار۔ شروٗع کرنہٕ خٲطرٕ، ییٚلہ تہۍ ڈیمانڈ پیجنگس متعلق کتھ چھو کران، کیٛا امیک مطلب چھ یہٕ زِ سسٹم چھ صرف تیٚلی میموری منٛز پیج لوڈ کران ییٚلہ تم حقیقتس منٛز ضروٗرت آسہ؟",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 49.0
+        },
+        {
+          "code": "mai",
+          "language": "Maithili",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "डिमांड पेजिंग एकटा पेज के मेमोरी मे तखने लोड करैत अछि जखन ओकरा पहिल बेर छुएल जाइत अछि, एहि लेल एकटा प्रोग्राम डिस्क सँ सब किछु पढ़ला सँ पहिने चलब शुरू क' सकैत अछि।",
+              "teacher_back_en": "Demand paging loads a page into memory when it is first accessed, so a program may begin execution before disk has finished reading everything.",
+              "question_en": "I think I understand most of that. Why is it beneficial to start execution before everything is loaded?",
+              "question_local": "हमरा लगैत अछि जे हम ओहिमे सँ अधिकांश बुझि गेल छी। सब किछु लोड भेला सँ पहिने कार्यान्वयन शुरू करनाइ किएक फायदेमंद अछि?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Medium\nStrength: The explanation is correct but lacks depth and clarity.\nImprovement: The teacher could have elaborated on the concept of demand paging, explaining how it optimizes memory usage by only loading necessary pages.",
+                "level": "Remember",
+                "score": "Medium",
+                "strength": "The explanation is correct but lacks depth and clarity.",
+                "improvement": "The teacher could have elaborated on the concept of demand paging, explaining how it optimizes memory usage by only loading necessary pages."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तकनीकी अर्थ सही आ पूर्ण रूप सँ सुरक्षित अछि।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "स्वाभाविक आ स्पष्ट, मुदा किछु शब्दावली थोड़े औपचारिक अछि."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "एकटा एहन पृष्ठ केँ छुएब जे निवासी नहि अछि, एकटा पृष्ठ दोष उत्पन्न करैत अछि, आ ऑपरेटिंग सिस्टम ओकरा लऽ जाइत अछि आ ओहि निर्देश केँ फेरसँ शुरू करैत अछि जे दोषपूर्ण छल।",
+              "teacher_back_en": "Touching a page that is not resident causes a page fault, which causes the operating system to fetch and execute the page that caused the fault.",
+              "question_en": "I think I understand most of that. What happens if a page that's needed isn't in memory?",
+              "question_local": "हमरा लगैत अछि जे हम ओकर अधिकतर भाग बुझि गेल छी। जँ कोनो आवश्यक पृष्ठ मेमोरी मे नहि अछि त की होयत?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic understanding of why execution can start before everything is loaded, but the explanation could be more detailed.\nImprovement: The teacher could explain the efficiency gained by allowing the program to start executing as soon as possible, rather than waiting for all pages to be loaded.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher provides a basic understanding of why execution can start before everything is loaded, but the explanation could be more detailed.",
+                "improvement": "The teacher could explain the efficiency gained by allowing the program to start executing as soon as possible, rather than waiting for all pages to be loaded."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थ लगभग पूर्ण अछि, मुदा “fetches” आ “faulted instruction” केर अनुवाद किछु अस्पष्ट अछि."
+              },
+              "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक आ स्पष्ट मैथिली प्रश्न।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ई चलैत प्रोग्रामक कुल आकारकेँ भौतिक मेमोरीसँ बेसी होबय दैत अछि, किएक तँ कोनो क्षणमे केवल उपयोग कयल जा रहल पृष्ठक निवासी होयबाक आवश्यकता होइत अछि।",
+              "teacher_back_en": "This allows moving program execution beyond physical memory, since only the currently in use pages need to be resident.",
+              "question_en": "I think I understand most of that. How does this relate to the overall performance of a computer system?",
+              "question_local": "हमरा लगैत अछि जे हम ओहिमे सँ अधिकांश बुझि गेल छी। ई कंप्यूटर सिस्टमक समग्र प्रदर्शन सँ कोना संबंधित अछि?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Medium\nStrength: The teacher explains the practical application of demand paging, but the explanation could be more detailed about the process.\nImprovement: The teacher could provide more examples or scenarios to illustrate how demand paging works in practice.",
+                "level": "Apply",
+                "score": "Medium",
+                "strength": "The teacher explains the practical application of demand paging, but the explanation could be more detailed about the process.",
+                "improvement": "The teacher could provide more examples or scenarios to illustrate how demand paging works in practice."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "तकनीकी अर्थ पूर्णतः सुरक्षित अछि, यद्यपि “निवासी” किछु अप्राकृतिक अछि।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "प्रश्न स्पष्ट आ स्वाभाविक अछि, मुदा “ओहिमे सँ अधिकांश” केर प्रयोग कने अस्वाभाविक लागैत अछि।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "नमस्कार! हम सीखए लेल तैयार छी। शुरू करए लेल, तखन, मांग पेजिंग आखिर अछि की?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 47.1
+        },
+        {
+          "code": "mni",
+          "language": "Manipuri",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ꯗꯤꯃꯥꯟꯗ ꯄꯦꯖꯤꯡꯅ ꯄꯦꯖ ꯑꯃ ꯃꯦꯃꯣꯔꯤꯗ ꯑꯍꯥꯟꯕ ꯊꯦꯡꯒꯠꯄ ꯃꯇꯝꯈꯛꯇꯗ ꯂꯣꯗ ꯇꯧꯏ, ꯃꯔꯝ ꯑꯗꯨꯅ ꯄ꯭ꯔꯣꯒ꯭ꯔꯥꯝ ꯑꯃꯅ ꯃꯁꯤ ꯄꯨꯝꯅꯃꯛ ꯗꯤꯁ꯭ꯛꯇꯒꯤ ꯄꯥꯈꯤꯗ꯭ꯔꯤꯉꯩ ꯃꯃꯥꯡꯗ ꯆꯠꯊꯕ ꯍꯧꯕ ꯌꯥꯏ꯫",
+              "teacher_back_en": "Dynamic paging only loads a page during its first memory access, so a program can start running before all of it is fetched from disk.",
+              "question_en": "Wait, I'm a bit lost. Can you clarify how demand paging actually works?",
+              "question_local": "ꯉꯥꯏꯕꯤꯌꯨ, ꯑꯩ ꯈꯔ ꯂꯥꯏꯅ ꯂꯩꯇꯦ꯫ ꯗꯤꯃꯥꯟ ꯄꯦꯖꯤꯡ ꯑꯁꯤ ꯀꯔꯝꯅ ꯊꯕꯛ ꯇꯧꯕꯒꯦ ꯍꯥꯏꯕꯗꯨ ꯅꯍꯥꯛꯅ ꯁꯦꯡꯅ ꯇꯥꯛꯄ ꯉꯝꯒꯗ꯭ꯔꯥ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is incorrect. Demand paging loads pages only when they are needed, not before the program starts.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect. Demand paging loads pages only when they are needed, not before the program starts."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "Preserves the full technical meaning in correct Manipuri script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Natural and understandable, though the technical term and a few expressions sound slightly awkward."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "ꯔꯦꯁꯤꯗꯦꯟꯠ ꯑꯣꯏꯗꯕ ꯄꯦꯖ ꯑꯃ ꯁꯣꯛꯄꯅ ꯄꯦꯖ ꯐꯣꯜꯠ ꯑꯃ ꯊꯣꯛꯍꯜꯂꯤ, ꯑꯃꯁꯨꯡ ꯑꯣꯄꯔꯦꯇꯤꯡ ꯁꯤꯁꯇꯦꯝ ꯑꯗꯨꯅ ꯃꯗꯨ ꯂꯧꯊꯣꯛꯏ ꯑꯃꯁꯨꯡ ꯐꯣꯜꯠ ꯇꯧꯈꯤꯕ ꯏꯟꯁꯇ꯭ꯔꯛꯁꯟ ꯑꯗꯨ ꯑꯃꯨꯛ ꯍꯟꯅ ꯍꯧꯏ꯫",
+              "teacher_back_en": "Tapping a non-resident page causes a page fault, and the operating system fetches and runs the faulted instruction.",
+              "question_en": "I'm still really confused. What happens when a page fault occurs during execution?",
+              "question_local": "ꯑꯩ ꯍꯧꯖꯤꯛꯁꯨ ꯌꯥꯝꯅ ꯆꯃꯝꯅꯔꯤ꯫ ꯑꯦꯛꯖꯤꯀ꯭ꯌꯨꯁꯟ ꯇꯧꯔꯤꯉꯩꯗ ꯄꯦꯖ ꯐꯣꯜꯠ ꯑꯃ ꯊꯣꯛꯂꯛꯄ ꯃꯇꯝꯗ ꯀꯔꯤ ꯊꯣꯛꯏ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still vague and doesn't fully clarify the demand paging process.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is still vague and doesn't fully clarify the demand paging process."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "Preserves the full technical meaning in correct Manipuri script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Clear and understandable, though slightly awkward in phrasing."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ꯃꯁꯤꯅ ꯔꯅꯤꯡ ꯄ꯭ꯔꯣꯒ꯭ꯔꯥꯝꯁꯤꯡꯒꯤ ꯑꯄꯨꯟꯕ ꯁꯥꯏꯖ ꯑꯗꯨ ꯐꯤꯖꯤꯀꯦꯜ ꯃꯦꯃꯣꯔꯤꯗꯒꯤ ꯍꯦꯟꯒꯠꯍꯜꯂꯤ, ꯃꯔꯝꯗꯤ ꯇꯁꯦꯡꯅ ꯁꯤꯖꯤꯟꯅꯔꯤꯕ ꯄꯦꯖꯁꯤꯡ ꯈꯛꯇꯃꯛ ꯃꯇꯝ ꯑꯃꯍꯦꯛꯇꯗ ꯔꯦꯁꯤꯗꯦꯟꯠ ꯑꯣꯏꯕ ꯃꯊꯧ ꯇꯥꯏ꯫",
+              "teacher_back_en": "This increases the overall size of the running programs memory, since only the pages that are actually being used are needed at any one time.",
+              "question_en": "I'm still really confused. How does the system decide which pages to keep in memory?",
+              "question_local": "ꯑꯩ ꯍꯧꯖꯤꯛꯁꯨ ꯌꯥꯝꯅ ꯆꯃꯝꯅꯔꯤ꯫ ꯁꯤꯁꯇꯦꯝ ꯑꯁꯤꯅ ꯀꯔꯝꯅ ꯄꯦꯖꯁꯤꯡ ꯑꯗꯨ ꯃꯦꯃꯣꯔꯤꯗ ꯊꯝꯒꯅꯤ ꯍꯥꯏꯕꯗꯨ ꯂꯦꯞꯄꯒꯦ?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's explanation is vague and doesn't explain the process of handling a page fault.",
+                "level": "Apply",
+                "score": "Low",
+                "feedback": "The teacher's explanation is vague and doesn't explain the process of handling a page fault."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "სრულ technical meaning preserved in correct Manipuri script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Natural and understandable, though the phrasing is slightly awkward."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, what exactly is demand paging?",
+          "opening_local": "ꯍꯦꯜ! ꯑꯩ ꯇꯝꯅꯕ ꯁꯦꯝ ꯁꯥꯔꯦ꯫ ꯍꯧꯗꯣꯛꯅꯕ, ꯗꯤꯃꯥꯟ ꯄꯦꯖꯤꯡ ꯍꯥꯏꯕꯁꯤ ꯀꯔꯤꯅꯣ?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 50.1
+        },
+        {
+          "code": "ne",
+          "language": "Nepali",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "माग पृष्ठले मेमोरीमा पृष्ठ लोड गर्दछ जब यो पहिलो पटक छुन्छ, त्यसैले सबै डिस्कबाट पढ्नु अघि एउटा कार्यक्रम चलाउन सुरु गर्न सक्छ।",
+              "teacher_back_en": "The back page loads a page in memory the moment it is touched, so a program can start running before all disk is read.",
+              "question_en": "Wait, I'm a bit lost. Can you explain how demand paging actually works?",
+              "question_local": "पर्खनुहोस्, म अलिकति हराएँ। के तपाईंले माग पेजिङले वास्तवमा कसरी काम गर्छ भनेर बताउन सक्नुहुन्छ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is incorrect. Demand paging involves loading pages only when they are needed, not when they are touched.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect. Demand paging involves loading pages only when they are needed, not when they are touched."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 3,
+                "note": "मुख्य अर्थ बुझिन्छ, तर प्राविधिक पदावली र वाक्य संरचना अस्वाभाविक छन्।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "अर्थ स्पष्ट छ, तर ‘अलमलिएँ’ अझ स्वाभाविक हुन्छ।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "नआएको पृष्ठ छुँदा पृष्ठ त्रुटि उत्पन्न हुन्छ, र अपरेटिङ सिस्टमले यसलाई ल्याउँछ र त्रुटि भएको निर्देशन पुन: सुरु गर्दछ।",
+              "teacher_back_en": "Touching the page without tapping it causes the page to error, and the operating system to bring it back to running, restarting the wrong instruction.",
+              "question_en": "I'm still really confused. What happens if a page isn't loaded when it's needed?",
+              "question_local": "म अझै धेरै अलमलमा छु। यदि कुनै पृष्ठ आवश्यक हुँदा लोड भएन भने के हुन्छ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is incorrect. Demand paging is about loading pages on demand, not about tapping or errors.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect. Demand paging is about loading pages on demand, not about tapping or errors."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "प्राविधिक अर्थ सही छ, तर “नआएको पृष्ठ” केही अप्राकृतिक छ।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक र स्पष्ट नेपाली प्रश्न हो।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "यसले चलिरहेका प्रोग्रामहरूको कुल आकारलाई भौतिक मेमोरीभन्दा बढी हुन दिन्छ, किनकि कुनै पनि क्षणमा वास्तवमा प्रयोग भइरहेका पृष्ठहरू मात्र निवासी हुनु आवश्यक छ।",
+              "teacher_back_en": "This allows for the total size of running programs to be larger than the physical memory, since only the pages actually being used at any given moment need to be resident.",
+              "question_en": "That makes sense, but I'm still slightly unsure about one thing. What are the downsides of using demand paging?",
+              "question_local": "त्यो कुरा ठिक छ, तर मलाई अझै एउटा कुरामा अलिकति शंका छ। डिमान्ड पेजिङ प्रयोग गर्दा के के बेफाइदा हुन्छन्?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Medium\nFeedback: The teacher's explanation is partially correct. It correctly identifies the benefit of demand paging but lacks detail on the consequences of not having a page loaded.",
+                "level": "Apply",
+                "score": "Medium",
+                "feedback": "The teacher's explanation is partially correct. It correctly identifies the benefit of demand paging but lacks detail on the consequences of not having a page loaded."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "प्राविधिक अर्थ सही र स्पष्ट रूपमा संरक्षित छ।"
+              },
+              "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक र स्पष्ट नेपाली प्रश्न हो।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, demand paging is like only loading a book chapter when you need it, right?",
+          "opening_local": "नमस्ते! म सिक्न तयार छु। सुरु गर्नको लागि, त्यसो भए, डिमान्ड पेजिङ भनेको आवश्यक परेको बेला एउटा अध्याय मात्र लोड गर्नु जस्तै हो, हैन र?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 37.5
+        },
+        {
+          "code": "sa",
+          "language": "Sanskrit",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "यदा पृष्ठी प्रथमतः स्पृष्टा भवति तदा एव पृच्छा पृष्ठीं स्मृतौ आरोपयति, येन सर्वं डिस्कतः पठितुं पूर्वमेव कार्यक्रमः चलितुं शक्नोति।",
+              "teacher_back_en": "When the screen is first touched, the touch initiates a memory recall of the screen, allowing the program to run before anything is read from the disk.",
+              "question_en": "Wait, I'm a bit lost. Okay, I'm a bit confused. Can you explain what happens when a page fault actually occurs?",
+              "question_local": "क्षमां कुर्वती, अहं किञ्चित् भ्रान्ता अस्मि। अस्तु, अहं किञ्चित् व्याकुला अस्मि। कृपया वदतु, यदा पृष्ठदोषः वास्तवतः भवति तदा किं घटते?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's explanation is incorrect. The touch doesn't initiate a memory recall; it triggers a page fault if the page isn't in memory.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's explanation is incorrect. The touch doesn't initiate a memory recall; it triggers a page fault if the page isn't in memory."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 2,
+                "note": "मुख्य तकनीकी अर्थ आंशिक है, पर “demand paging” और “page” का अनुवाद अशुद्ध है।"
+              },
+              "fluency": {
+                "score": 3,
+                "note": "अर्थः स्पष्टः, परन्तु “क्षमां कुर्वती” अप्राकृतिकं तथा वाक्यरचना किंचित् अस्वाभाविकी।"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "यत् पृष्ठं न विद्यते तत् स्पृष्ट्वा पृष्ठदोषः उत्पद्यते, तथा च सञ्चालनतन्त्रं तत् आनीय दोषयुक्तं निर्देशं पुनः आरभते।",
+              "teacher_back_en": "Touching a page that is not there causes a page fault, and the operating system reloads the page with the bad instruction.",
+              "question_en": "I'm still really confused. I see. But why does the system need to load just the bad instruction instead of the whole page?",
+              "question_local": "अहम् इदानीमपि भ्रमितः अस्मि। अहं अवगच्छामि। परन्तु प्रणाली सम्पूर्णपृष्ठस्य स्थाने केवलं दोषपूर्णं निर्देशं किमर्थं आरोपयेत्?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Low\nFeedback: The teacher's explanation is still incorrect. A page fault doesn't reload the entire page; it loads just the needed page from disk into memory.",
+                "level": "Understand",
+                "score": "Low",
+                "feedback": "The teacher's explanation is still incorrect. A page fault doesn't reload the entire page; it loads just the needed page from disk into memory."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "अर्थः प्रायः यथावत्, किन्तु “resident” तथा “faulting instruction” यथार्थतया न व्यक्तौ।"
+              },
+              "fluency": {
+                "score": 4,
+                "note": "संस्कृतं स्पष्टं व्याकरणतः प्रायः शुद्धं च, किन्तु “आरोपयेत्” इत्यस्य स्थाने “प्रदर्शयेत्” अधिकं स्वाभाविकम्।"
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "एतेन प्रचलमानानां कार्यक्रमाणां समग्रपरिमाणं भौतिकस्मृत्याः अतिरिच्यते, यतः केवलं प्रयुक्तानि पृष्ठानि एव कस्मिंश्चित् समये निवासिनः भवेयुः।",
+              "teacher_back_en": "This greatly increases the amount of programs that can run, as only the pages that are currently being used can be accessed at any given time.",
+              "question_en": "I'm still really confused. I see. So, how does demand paging actually help with running more programs efficiently?",
+              "question_local": "अहम् अद्यापि भ्रमितः अस्मि। अहं अवगच्छामि। तर्हि कथं याचनापृष्ठणं अधिककार्यक्रमान् कार्यक्षमतररूपेण चालयितुं साहाय्यं करोति?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nFeedback: The explanation is misleading. The system doesn't load just the bad instruction; it loads the required page. The efficiency comes from demand paging, not from loading just one instruction.",
+                "level": "Apply",
+                "score": "Low",
+                "feedback": "The explanation is misleading. The system doesn't load just the bad instruction; it loads the required page. The efficiency comes from demand paging, not from loading just one instruction."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 3,
+                "note": "अर्थः बोध्यः, किन्तु विभक्त्यां, लिङ्गे, तथा “at any moment” इत्यस्य अनुवादे दोषाः सन्ति।"
+              },
+              "fluency": {
+                "score": 2,
+                "note": "अर्थः किञ्चित् बोध्यते, किन्तु पदरचना व्याकरणं च अप्राकृतिकम्।"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when a page fault happens, what exactly does the system do to handle it?",
+          "opening_local": "नमस्ते! अहं शिक्षार्थम् उद्यता अस्मि। आरम्भं कर्तुम्, यदा पृष्ठदोषः भवति, तदा तन्त्रं तत् निवारयितुं किं करोति?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 53.4
+        },
+        {
+          "code": "sat",
+          "language": "Santali",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "ᱰᱤᱢᱟᱱᱰ ᱯᱮᱡᱤᱝ ᱫᱚ ᱢᱤᱫᱴᱟᱝ ᱯᱮᱡᱽ ᱮᱠᱮᱱ ᱡᱚᱠᱷᱚᱱ ᱯᱩᱭᱞᱩ ᱡᱚᱴᱮᱫᱚᱜᱼᱟ ᱛᱚᱠᱷᱚᱱ ᱜᱮ ᱢᱮᱢᱚᱨᱤ ᱨᱮ ᱞᱳᱰᱚᱜᱼᱟ, ᱚᱱᱟᱛᱮ ᱡᱚᱛᱚ ᱰᱤᱥᱠ ᱠᱷᱚᱱ ᱯᱟᱲᱦᱟᱣ ᱢᱟᱲᱟᱝ ᱨᱮ ᱢᱤᱫᱴᱟᱝ ᱯᱨᱳᱜᱨᱟᱢ ᱪᱟᱞᱟᱣ ᱮᱛᱚᱦᱚᱵ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾",
+              "teacher_back_en": "Demand paging loads a page only when it is first accessed, so a program can begin execution before all disks are read.",
+              "question_en": "Wait, I'm a bit lost. Could you explain more about what happens when a page fault occurs?",
+              "question_local": "ᱛᱷᱤᱨᱩᱜ ᱢᱮ, ᱤᱧ ᱱᱟᱥᱮᱱᱟᱜ ᱟᱫ ᱟᱠᱟᱱᱟ ᱾ ᱢᱤᱫᱴᱟᱝ ᱯᱮᱡᱽ ᱯᱷᱚᱞᱴ ᱦᱩᱭ ᱞᱮᱱᱠᱷᱟᱱ ᱪᱮᱫ ᱦᱩᱭᱩᱜᱼᱟ ᱚᱱᱟ ᱵᱟᱨᱮᱛᱮ ᱟᱨᱦᱚᱸ ᱵᱤᱪᱷᱱᱟᱹᱣ ᱠᱟᱛᱮᱫ ᱞᱟᱹᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱥᱮ ?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nFeedback: The teacher's answer is too brief and doesn't explain the process of handling a page fault.",
+                "level": "Remember",
+                "score": "Low",
+                "feedback": "The teacher's answer is too brief and doesn't explain the process of handling a page fault."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "The translation preserves the complete technical meaning in correct Santali script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Natural and understandable Santali in Ol Chiki script, with some borrowed technical terms."
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "ᱡᱟᱦᱟᱸ ᱯᱮᱡᱽ ᱨᱮᱥᱤᱰᱮᱱᱴ ᱵᱟᱝ ᱠᱟᱱᱟ ᱚᱱᱟ ᱯᱮᱡᱽ ᱨᱮ ᱴᱷᱮᱸᱜᱟ ᱞᱮᱠᱷᱟᱱ ᱢᱤᱫᱴᱟᱝ ᱯᱮᱡᱽ ᱯᱷᱚᱞᱴ ᱦᱩᱭᱩᱜᱼᱟ, ᱟᱨ ᱚᱯᱟᱨᱮᱴᱤᱝ ᱥᱤᱥᱴᱮᱢ ᱚᱱᱟ ᱟᱹᱜᱩᱭᱟ ᱟᱨ ᱡᱟᱦᱟᱸ ᱱᱤᱫᱟᱹᱱ ᱨᱮ ᱯᱷᱚᱞᱴ ᱦᱩᱭ ᱟᱠᱟᱱᱟ ᱚᱱᱟ ᱫᱚᱲᱦᱟᱛᱮ ᱮᱛᱚᱦᱚᱵᱚᱜᱼᱟ ᱾",
+              "teacher_back_en": "Clicking on a page that is not a resident page will cause a page fault, and the operating system will fetch the page and reassemble it.",
+              "question_en": "I think I understand most of that. What exactly does the system do to reassemble the page after a fault?",
+              "question_local": "ᱤᱧ ᱫᱚ ᱩᱱᱤᱭᱟᱜ ᱡᱟᱹᱥᱛᱤ ᱜᱮᱧ ᱵᱩᱡᱷᱟᱹᱣ ᱫᱟᱲᱮᱭᱟᱜ ᱠᱟᱱᱟ ᱢᱮᱱᱛᱮᱧ ᱩᱭᱦᱟᱹᱨᱮᱫᱟ ᱾ ᱢᱤᱫᱴᱟᱝ ᱦᱤᱲᱤᱡ ᱛᱟᱭᱚᱢ ᱯᱮᱡᱽ ᱫᱚᱲᱦᱟ ᱡᱚᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱥᱤᱥᱴᱮᱢ ᱫᱚ ᱴᱷᱤᱠ ᱪᱮᱫ ᱮ ᱠᱟᱹᱢᱤᱭᱟ ?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nFeedback: The teacher provides a basic explanation of the page fault process but lacks detail on how the system reassembles the page.",
+                "level": "Understand",
+                "score": "Medium",
+                "feedback": "The teacher provides a basic explanation of the page fault process but lacks detail on how the system reassembles the page."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "The translation preserves the full technical meaning in correct Santali script."
+              },
+              "fluency": {
+                "score": 3,
+                "note": "Correct script and partly understandable, but several phrases sound unnatural and unclear."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "ᱱᱚᱣᱟ ᱫᱚ ᱪᱟᱞᱟᱜ ᱠᱟᱱ ᱯᱨᱳᱜᱨᱟᱢ ᱠᱚ ᱨᱮᱭᱟᱜ ᱜᱩᱴ ᱥᱟᱭᱤᱡᱽ ᱯᱷᱤᱡᱤᱠᱟᱞ ᱢᱮᱢᱚᱨᱤ ᱯᱟᱨᱚᱢ ᱚᱪᱚᱭᱟ, ᱪᱮᱫᱟᱜ ᱥᱮ ᱮᱠᱮᱱ ᱵᱮᱵᱷᱟᱨᱚᱜ ᱠᱟᱱ ᱥᱟᱠᱟᱢ ᱠᱚᱜᱮ ᱡᱟᱦᱟᱸ ᱚᱠᱛᱚ ᱨᱮᱜᱮ ᱛᱟᱦᱮᱱ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ ᱾",
+              "teacher_back_en": "It does not exceed the total size of the programs currently running, as only used pages need to be freed up.",
+              "question_en": "I'm still really confused. Can you clarify how the system manages memory when a page fault happens?",
+              "question_local": "ᱤᱧ ᱱᱤᱛᱦᱚᱸ ᱟᱹᱰᱤᱧ ᱵᱤᱵᱷᱨᱟᱱᱛᱚ ᱟᱠᱟᱱᱟ ᱾ ᱯᱮᱡᱽ ᱯᱷᱚᱞᱴ ᱦᱩᱭ ᱞᱮᱱᱠᱷᱟᱱ ᱥᱤᱥᱴᱮᱢ ᱪᱮᱫ ᱞᱮᱠᱟᱛᱮ ᱢᱮᱢᱚᱨᱤᱭ ᱢᱮᱱᱮᱡᱽᱟ ᱚᱱᱟ ᱵᱟᱵᱚᱫᱛᱮ ᱟᱢ ᱯᱩᱥᱴᱟᱹᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ?",
+              "adapter_evaluation": {
+                "raw": "Level: Apply\nScore: Low\nFeedback: The teacher's answer is misleading and doesn't address the page reassembly process.",
+                "level": "Apply",
+                "score": "Low",
+                "feedback": "The teacher's answer is misleading and doesn't address the page reassembly process."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 5,
+                "note": "Meaning and technical details are fully preserved in correct Ol Chiki script."
+              },
+              "fluency": {
+                "score": 4,
+                "note": "Natural Santali in the correct script, with understandable technical loanwords and minor phrasing awkwardness."
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when a page fault happens, what exactly does the system do to handle it?",
+          "opening_local": "ᱦᱟᱞᱳ! ᱤᱧ ᱥᱮᱸᱲᱟ ᱞᱟᱹᱜᱤᱫ ᱛᱮᱭᱟᱨ ᱟᱠᱟᱱᱟ ᱾ ᱮᱛᱚᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ, ᱛᱚᱵᱮ, ᱡᱚᱠᱷᱚᱱ ᱢᱤᱫᱴᱟᱝ ᱯᱮᱡᱽ ᱯᱷᱚᱞᱴ ᱦᱩᱭᱩᱜᱼᱟ, ᱛᱚᱵᱮ ᱱᱚᱣᱟ ᱥᱤᱥᱴᱚᱢ ᱪᱮᱫ ᱠᱟᱹᱢᱤᱭᱟ ᱱᱚᱣᱟ ᱥᱟᱢᱵᱟᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 57.9
+        },
+        {
+          "code": "sd",
+          "language": "Sindhi",
+          "turns": [
+            {
+              "turn": 1,
+              "teacher_en": "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+              "teacher_local": "मांग पेजिंग हिकु पेज खे मेमोरी में तॾहिं लोड कंदो आहे जॾहिं इन खे पहिरियों भेरो हथि लॻाई वञे, तहिंकरे हिकु प्रोग्रामु हलाइणु शुरू करे सघे थो इन खां पहिरीं त इन जो समूरो हिसो डिस्क मां पढ़ियो वञे।",
+              "teacher_back_en": "On-demand paging loads a page into memory when it is requested the first time, so a program does not need to read the whole disk before it begins execution.",
+              "question_en": "Okay, I'm following you. Why would a system choose to use demand paging instead of loading everything at once?",
+              "question_local": "ठीक आहे, मां तव्हां खे समझी रही आहियां। हिकु सिस्टम सभु कुझु हिकु ई भेरे लोड करण जे बदरां डिमांड पेजिंग जो इस्तेमाल छो कंदो?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of on-demand paging but didn't fully clarify how it differs from other paging methods.\nImprovement: The teacher could have elaborated more on the benefits of on-demand paging compared to preloading all pages.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher provided a basic explanation of on-demand paging but didn't fully clarify how it differs from other paging methods.",
+                "improvement": "The teacher could have elaborated more on the benefits of on-demand paging compared to preloading all pages."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "Meaning is mostly preserved, but the translation is written in Devanagari rather than Sindhi script."
+              },
+              "fluency": {
+                "score": 2,
+                "note": "سوال سمجهه ۾ اچي ٿو، پر سنڌي بدران ديوناگري رسم الخط ۽ غير فطري ملاوٽ آهي۔"
+              }
+            },
+            {
+              "turn": 2,
+              "teacher_en": "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+              "teacher_local": "हिकु अहिड़े सफ़े खे छुहणु जेको रहवासी न आहे, हिकु सफ़े जो ग़लती पैदा करे थो, ऐं ऑपरेटिंग सिस्टम इन खे वठे थो ऐं उहो हिदायत वरी शुरू करे थो जंहिं में ग़लती थी।",
+              "teacher_back_en": "Touching a page that is not active generates a page fault, causes a system to fetch the page, and restarts the instruction causing the fault.",
+              "question_en": "I'm still really confused. Could you explain how demand paging actually helps with memory management?",
+              "question_local": "मूंखे अञा बि सचुपचु उलझन आहे। छा तव्हां समझाए सघंदा आहियो त डिमांड पेजिंग यादगारीअ जे इंतिज़ाम में कीअं मदद कंदी आहे?",
+              "adapter_evaluation": {
+                "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response was incorrect and didn't address the question about the advantages of demand paging.\nImprovement: The teacher should have explained the efficiency of demand paging in terms of memory usage and performance.",
+                "level": "Remember",
+                "score": "Low",
+                "strength": "The teacher's response was incorrect and didn't address the question about the advantages of demand paging.",
+                "improvement": "The teacher should have explained the efficiency of demand paging in terms of memory usage and performance."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 1,
+                "note": "ترجمو ديو नागरी लिपि ۾ آهي، سنڌي رسم الخط ۾ نه آهي."
+              },
+              "fluency": {
+                "score": 1,
+                "note": "Sindhi آهي، پر غلط رسم الخط ۾ لکيل آهي."
+              }
+            },
+            {
+              "turn": 3,
+              "teacher_en": "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment.",
+              "teacher_local": "इहो हलाइंदड़ प्रोग्रामनि जे कुल साइज़ खे जिस्मानी मेमोरी खां वधीक वञण ॾींदो आहे, छाकाणि त रुॻो इस्तेमाल थियंदड़ सफ़ा ई कंहिं बि वक़्ति रहण घुरिजनि।",
+              "teacher_back_en": "This allows moving programs around, increasing the total size of the physical memory, because only free space should remain at any time.",
+              "question_en": "Okay, I'm following you. How does demand paging affect the performance of a system?",
+              "question_local": "ठीक आहे, मां समझी रही आहियां। मांग जी पेजिंग सिस्टम जी कारगुज़ारीअ ते कियं असरअंदाज़ थींदी आहे?",
+              "adapter_evaluation": {
+                "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of the benefits of demand paging but didn't fully clarify how it optimizes memory usage.\nImprovement: The teacher could have elaborated on how demand paging reduces memory waste and allows for more efficient use of physical memory.",
+                "level": "Understand",
+                "score": "Medium",
+                "strength": "The teacher provided a basic explanation of the benefits of demand paging but didn't fully clarify how it optimizes memory usage.",
+                "improvement": "The teacher could have elaborated on how demand paging reduces memory waste and allows for more efficient use of physical memory."
+              },
+              "retries": 0,
+              "seed_untranslated": false,
+              "outbound_untranslated": false,
+              "english_zone_leak": false,
+              "fidelity": {
+                "score": 4,
+                "note": "Meaning is accurate, but it is written in Devanagari rather than standard Sindhi Arabic script."
+              },
+              "fluency": {
+                "score": 2,
+                "note": "سوال سمجهه ۾ اچي ٿو، پر اسڪرپٽ ۽ ٻوليءَ جو استعمال غير فطري آهي۔"
+              }
+            }
+          ],
+          "opening_en": "Hi there! I'm ready to learn. To start us off, So, when you say demand paging, does that mean the system only loads pages into memory when they're actually needed?",
+          "opening_local": "सलाम! मां सिखणु लाइ तैयार आहियां। शुरू करणु लाइ, तव्हां जॾहिं डिमांड पेजिंग जी ॻाल्हि कयो था, त छा इन जो मतलब इहो आहे त सिस्टम सिर्फ तॾहिं मेमोरी में पेज लोड कंदो आहे जॾहिं उहे असल में घुरिजनि था?",
+          "opening_retries": 0,
+          "opening_untranslated": false,
+          "elapsed_seconds": 50.8
+        }
+      ],
+      "elapsed_seconds": 908.9
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 909.3,
+    "turns": 57,
+    "generation": {
+      "calls": 76,
+      "seconds": 311.8,
+      "seconds_per_call": 4.1,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 190,
+      "seconds": 190.2,
+      "seconds_per_call": 1.0,
+      "calls_per_turn": 3.33
+    },
+    "judge": {
+      "calls": 114,
+      "seconds": 406.9,
+      "seconds_per_call": 3.57,
+      "calls_per_turn": 2.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 1.0,
+        "judge_calls": 432
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 21.1,
+        "judge_calls": 9504
+      }
+    }
+  }
+}

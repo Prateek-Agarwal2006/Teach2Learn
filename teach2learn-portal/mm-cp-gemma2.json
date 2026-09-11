@@ -1,0 +1,925 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-09T05:31:48+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "cp/c-basics/types-variables-constants",
+      "cp/c-basics/operators-and-expressions",
+      "cp/control-flow/conditions-and-switch",
+      "cp/control-flow/loops-and-sentinel-values",
+      "cp/pointers/addresses-and-pointers",
+      "cp/pointers/dynamic-memory-allocation"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": "gemma2",
+    "turns": 3,
+    "repeats": 3,
+    "languages": [],
+    "judge_model": null,
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Types, variables, and constants",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:31:48+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say 'int', 'double', and 'char' are types, what exactly does that mean?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how these types are used differently in a program?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if I try to store a very large number in an int variable?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does using const help with debugging or maintaining a program?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of variable types in C, but it could be more detailed.\nImprovement: The teacher should explain the different types of data that each type can hold and how they are used in programming.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of variable types in C, but it could be more detailed.",
+            "improvement": "The teacher should explain the different types of data that each type can hold and how they are used in programming."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the difference in data storage between int and float, but the explanation could be more detailed.\nImprovement: The teacher should explain how these different layouts affect the use of integers and floats in calculations.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the difference in data storage between int and float, but the explanation could be more detailed.",
+            "improvement": "The teacher should explain how these different layouts affect the use of integers and floats in calculations."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the role of const in preventing errors, but the explanation could be more detailed.\nImprovement: The teacher should explain how const affects the behavior of the program and the compiler's role in enforcing this behavior.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the role of const in preventing errors, but the explanation could be more detailed.",
+            "improvement": "The teacher should explain how const affects the behavior of the program and the compiler's role in enforcing this behavior."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 35.1
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Types, variables, and constants",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:32:23+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say 'typedef', is it like you're creating a new name for something that already exists?",
+          "I'm still really confused. Can you explain how 'typedef' actually works with an example?",
+          "I'm still really confused. What would be a good reason to use 'typedef' in a program?",
+          "I'm still really confused. How does using 'typedef' affect the performance of a program?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't address the student's question about 'typedef'.\nImprovement: The teacher should explain how 'typedef' allows creating new names for existing types, which helps in organizing and simplifying code.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't address the student's question about 'typedef'.",
+            "improvement": "The teacher should explain how 'typedef' allows creating new names for existing types, which helps in organizing and simplifying code."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is still incomplete and doesn't address the student's question about 'typedef'.\nImprovement: The teacher should provide a clear example of using 'typedef' to create a new name for a type, such as typedef int score_t; and explain its benefits.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is still incomplete and doesn't address the student's question about 'typedef'.",
+            "improvement": "The teacher should provide a clear example of using 'typedef' to create a new name for a type, such as typedef int score_t; and explain its benefits."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't address the student's question about 'typedef'.\nImprovement: The teacher should explain how 'typedef' can improve code readability and maintainability by providing meaningful names for complex types.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't address the student's question about 'typedef'.",
+            "improvement": "The teacher should explain how 'typedef' can improve code readability and maintainability by providing meaningful names for complex types."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 21.0
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Types, variables, and constants",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:32:44+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say 'typedef', is it like you're creating a new name for an existing type, but it doesn't really change what the type is?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, so if the type is fixed, does that mean I can't change the type of a variable once it's declared?",
+          "Okay, I'm following you. So, if I have an int and a float that are the same size, does that mean they use the same amount of memory?",
+          "Okay, I'm following you. Can you give me an example of how using 'const' might prevent a bug in a program?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a correct but somewhat basic explanation of how types are fixed at compile time in C.\nImprovement: The teacher could have expanded on how 'typedef' specifically works in this context, and how it affects variable declaration.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a correct but somewhat basic explanation of how types are fixed at compile time in C.",
+            "improvement": "The teacher could have expanded on how 'typedef' specifically works in this context, and how it affects variable declaration."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the concept of type conversion in C, but could have provided more detail on how this affects memory usage.\nImprovement: The teacher should have clarified how type conversion works in terms of memory and how it differs from changing a variable's type.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the concept of type conversion in C, but could have provided more detail on how this affects memory usage.",
+            "improvement": "The teacher should have clarified how type conversion works in terms of memory and how it differs from changing a variable's type."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the purpose of the 'const' qualifier in C, focusing on its role in preventing errors.\nImprovement: The teacher could have provided an example of how using 'const' might prevent bugs, or how it interacts with other language features.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the purpose of the 'const' qualifier in C, focusing on its role in preventing errors.",
+            "improvement": "The teacher could have provided an example of how using 'const' might prevent bugs, or how it interacts with other language features."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 24.3
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Operators and expressions",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:33:09+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what are operators exactly?",
+          "I think I understand most of that. Can you show me how operator precedence affects a simple expression?",
+          "I think I understand most of that. What happens if I use a floating-point number in the division?",
+          "I think I understand most of that. Could you give me an example of how short-circuit evaluation works in a real program?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about how precedence affects expression evaluation.\nImprovement: Provide a specific example to illustrate how precedence affects the evaluation of an expression.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about how precedence affects expression evaluation.",
+            "improvement": "Provide a specific example to illustrate how precedence affects the evaluation of an expression."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about how integer division works in C.\nImprovement: Explain with an example how the result of integer division differs from floating-point division.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about how integer division works in C.",
+            "improvement": "Explain with an example how the result of integer division differs from floating-point division."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about how short-circuit evaluation works in logical expressions.\nImprovement: Provide a specific example to illustrate how short-circuit evaluation affects expression evaluation.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about how short-circuit evaluation works in logical expressions.",
+            "improvement": "Provide a specific example to illustrate how short-circuit evaluation affects expression evaluation."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 17.2
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Operators and expressions",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:33:26+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say operators like ++ and -- are evaluated from left to right, does that mean they don't matter where you place them in a sentence?",
+          "Wait, I'm a bit lost. Can you explain how operator placement affects the result if I use ++ or -- in an expression?",
+          "Wait, I'm a bit lost. Why does C not round the result of integer division like other languages do?",
+          "Wait, I'm a bit lost. Can you give an example of how the logical AND operator works with short-circuit evaluation?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Weak explanation, doesn't address the student's question about operator placement.\nImprovement: The teacher should clarify how operator placement affects evaluation order, especially in relation to left-to-right evaluation.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak explanation, doesn't address the student's question about operator placement.",
+            "improvement": "The teacher should clarify how operator placement affects evaluation order, especially in relation to left-to-right evaluation."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Incorrect explanation, confuses integer division with other operations.\nImprovement: The teacher should clarify the concept of integer division and its effect on results.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Incorrect explanation, confuses integer division with other operations.",
+            "improvement": "The teacher should clarify the concept of integer division and its effect on results."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Weak explanation, doesn't address the student's question about logical operators.\nImprovement: The teacher should explain how logical operators work, focusing on short-circuit behavior.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak explanation, doesn't address the student's question about logical operators.",
+            "improvement": "The teacher should explain how logical operators work, focusing on short-circuit behavior."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "wait, i'm a bit lost. can",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 19.3
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "topic": "C fundamentals",
+      "subtopic": "Operators and expressions",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:33:45+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say operators like +, -, *, and / are used in expressions, does that mean they perform operations on values?",
+          "I'm still really confused. Can you give me an example of how operator precedence changes the result of an expression?",
+          "I'm still really confused. What happens if I want to include a remainder in my division, like in a percentage calculation?",
+          "I'm still really confused. How do logical operators like && and || affect the evaluation of expressions?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Weak explanation, lacks detail on how precedence affects expression evaluation.\nImprovement: Provide a specific example to illustrate how precedence affects the evaluation of an expression.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak explanation, lacks detail on how precedence affects expression evaluation.",
+            "improvement": "Provide a specific example to illustrate how precedence affects the evaluation of an expression."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Incorrect explanation, confuses integer division with operator precedence.\nImprovement: Correct the misconception about integer division and explain how it differs from floating-point division.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Incorrect explanation, confuses integer division with operator precedence.",
+            "improvement": "Correct the misconception about integer division and explain how it differs from floating-point division."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Incorrect explanation, confuses logical operators with relational operators.\nImprovement: Clarify the difference between logical and relational operators, and explain how logical operators work in expressions.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Incorrect explanation, confuses logical operators with relational operators.",
+            "improvement": "Clarify the difference between logical and relational operators, and explain how logical operators work in expressions."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 17.5
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Conditions and switch statements",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:34:03+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, a switch statement is like a big decision maker that checks a variable and then runs different code depending on what the variable is?",
+          "Wait, I'm a bit lost. Can you explain how a switch statement is different from a regular if statement?",
+          "That makes sense, but I'm still slightly unsure about one thing. What kind of situations are switch statements particularly useful for?",
+          "Hmm, that doesn't quite sound right to me. Could you give an example of when a switch statement would be more efficient than an if statement?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't clarify the difference between if and switch statements.\nImprovement: The teacher should explain how switch statements work differently from if statements, focusing on their structure and use cases.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't clarify the difference between if and switch statements.",
+            "improvement": "The teacher should explain how switch statements work differently from if statements, focusing on their structure and use cases."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic distinction between switch and if statements, but could elaborate on the practical implications.\nImprovement: The teacher should provide a more detailed explanation of the syntax and use cases for switch statements, highlighting their efficiency in certain scenarios.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a basic distinction between switch and if statements, but could elaborate on the practical implications.",
+            "improvement": "The teacher should provide a more detailed explanation of the syntax and use cases for switch statements, highlighting their efficiency in certain scenarios."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't address the question about use cases.\nImprovement: The teacher should explain practical scenarios where switch statements are advantageous, such as handling multiple conditions based on a single variable.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't address the question about use cases.",
+            "improvement": "The teacher should explain practical scenarios where switch statements are advantageous, such as handling multiple conditions based on a single variable."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 21.5
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Conditions and switch statements",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:34:24+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say 'if' and 'switch' statements are used for decision making, does that mean they help the program decide what to do next based on certain conditions?",
+          "I'm still really confused. Can you explain how a switch statement is different from an if statement?",
+          "I'm still really confused. Could you give an example of when you'd choose a switch statement over an if statement?",
+          "I'm still really confused. What happens if I forget to put a 'break' statement in a switch case?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is too brief and lacks depth, especially regarding the switch statement.\nImprovement: The teacher should provide a more detailed explanation of both if and switch statements, including how they differ in usage and outcomes.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is too brief and lacks depth, especially regarding the switch statement.",
+            "improvement": "The teacher should provide a more detailed explanation of both if and switch statements, including how they differ in usage and outcomes."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is still too brief and doesn't fully clarify the differences between switch and if statements.\nImprovement: The teacher should provide a more detailed comparison, including examples, to help the student understand the structural and readability differences.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is still too brief and doesn't fully clarify the differences between switch and if statements.",
+            "improvement": "The teacher should provide a more detailed comparison, including examples, to help the student understand the structural and readability differences."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't address the question directly, focusing instead on a potential pitfall of switch statements.\nImprovement: The teacher should provide a clear example scenario where a switch statement is more appropriate than an if statement, highlighting its benefits in terms of readability and structure.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't address the question directly, focusing instead on a potential pitfall of switch statements.",
+            "improvement": "The teacher should provide a clear example scenario where a switch statement is more appropriate than an if statement, highlighting its benefits in terms of readability and structure."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 22.4
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Conditions and switch statements",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:34:47+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, a switch statement is like a big decision maker that checks one condition and then acts based on what that condition is?",
+          "Wait, I'm a bit lost. Can you explain how a switch statement is different from an if statement when handling multiple conditions?",
+          "That makes sense, but I'm still slightly unsure about one thing. What kind of scenarios are switch statements particularly good for?",
+          "Hmm, that doesn't quite sound right to me. Could you give me an example of a situation where a switch statement would be more efficient than an if statement?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't clarify the role of switch statements in decision-making.\nImprovement: The teacher should explain how switch statements handle multiple conditions with different cases, contrasting them with if statements.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't clarify the role of switch statements in decision-making.",
+            "improvement": "The teacher should explain how switch statements handle multiple conditions with different cases, contrasting them with if statements."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic comparison between switch and if statements, highlighting readability, but lacks depth.\nImprovement: The teacher should elaborate on how switch statements are more efficient for specific scenarios and provide examples.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a basic comparison between switch and if statements, highlighting readability, but lacks depth.",
+            "improvement": "The teacher should elaborate on how switch statements are more efficient for specific scenarios and provide examples."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher's explanation is incomplete and doesn't address the question about scenarios, focusing instead on a technical detail of fall-through.\nImprovement: The teacher should provide examples of scenarios where switch statements are beneficial and explain why they are efficient in those cases.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher's explanation is incomplete and doesn't address the question about scenarios, focusing instead on a technical detail of fall-through.",
+            "improvement": "The teacher should provide examples of scenarios where switch statements are beneficial and explain why they are efficient in those cases."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 21.9
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Loops and sentinel values",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:35:08+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's a sentinel value and why do we use it in loops?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, but how does using a counter in a for loop make it more efficient than other loops?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you give an example of a situation where a while loop is better than a for loop?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does using a sentinel value make the loop more flexible?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a correct but incomplete explanation of when to use a for loop, focusing on its structure rather than its application.\nImprovement: The teacher should have explained more about the advantages of using a for loop when the number of iterations is known, such as its readability and efficiency.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a correct but incomplete explanation of when to use a for loop, focusing on its structure rather than its application.",
+            "improvement": "The teacher should have explained more about the advantages of using a for loop when the number of iterations is known, such as its readability and efficiency."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly identified a scenario for using a while loop, but could have elaborated on the efficiency and flexibility of while loops in such situations.\nImprovement: The teacher should have explained how the condition-based repetition in a while loop allows for dynamic behavior, which is particularly useful when the number of iterations is unknown.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly identified a scenario for using a while loop, but could have elaborated on the efficiency and flexibility of while loops in such situations.",
+            "improvement": "The teacher should have explained how the condition-based repetition in a while loop allows for dynamic behavior, which is particularly useful when the number of iterations is unknown."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the basic concept of a sentinel value but could have provided more context on its practical use in loops.\nImprovement: The teacher should have explained how sentinel values help manage input loops more gracefully, allowing the loop to terminate naturally based on data conditions rather than relying on a predetermined count.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the basic concept of a sentinel value but could have provided more context on its practical use in loops.",
+            "improvement": "The teacher should have explained how sentinel values help manage input loops more gracefully, allowing the loop to terminate naturally based on data conditions rather than relying on a predetermined count."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 24.5
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Loops and sentinel values",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:35:33+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's a sentinel value and why do we use it in loops?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, but how does using a for loop make the code easier to read compared to other loops?",
+          "That makes sense, but I'm still slightly unsure about one thing. Got it. So, if I wanted to count how many times a user inputs a number before it hits zero, would a while loop be better than a for loop here?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you give an example of how a sentinel value works in a loop?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a clear explanation of when to use a for loop, focusing on its structure and application.\nImprovement: The teacher could have elaborated more on the benefits of using a for loop in such scenarios.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a clear explanation of when to use a for loop, focusing on its structure and application.",
+            "improvement": "The teacher could have elaborated more on the benefits of using a for loop in such scenarios."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a clear explanation of when to use a while loop, focusing on its structure and application.\nImprovement: The teacher could have elaborated more on the benefits of using a while loop in such scenarios.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a clear explanation of when to use a while loop, focusing on its structure and application.",
+            "improvement": "The teacher could have elaborated more on the benefits of using a while loop in such scenarios."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a clear explanation of what a sentinel value is and its purpose in loops.\nImprovement: The teacher could have explained how sentinel values interact with loop logic more deeply.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a clear explanation of what a sentinel value is and its purpose in loops.",
+            "improvement": "The teacher could have explained how sentinel values interact with loop logic more deeply."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 21.7
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "topic": "Control flow",
+      "subtopic": "Loops and sentinel values",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:35:55+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's a sentinel value and why do we use it in loops?",
+          "I think I understand most of that. Okay, but how does a sentinel value help in a loop that's reading data from a file?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you give an example of how a sentinel value might be used in a while loop with file reading?",
+          "Hmm, that doesn't quite sound right to me. Can you explain with a simple code example how a sentinel value works in a loop?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a correct explanation of when to use a for loop, but didn't explain the concept of a sentinel value.\nImprovement: The teacher should have included an explanation of sentinel values and their role in loops, especially in the context of input operations.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a correct explanation of when to use a for loop, but didn't explain the concept of a sentinel value.",
+            "improvement": "The teacher should have included an explanation of sentinel values and their role in loops, especially in the context of input operations."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the use of a while loop in the context of reading data from a file, but could have elaborated on the sentinel value's role.\nImprovement: The teacher should have explained how the sentinel value acts as a condition to terminate the loop, linking it to the while loop's functionality.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the use of a while loop in the context of reading data from a file, but could have elaborated on the sentinel value's role.",
+            "improvement": "The teacher should have explained how the sentinel value acts as a condition to terminate the loop, linking it to the while loop's functionality."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation was vague and didn't provide a clear example or context for how a sentinel value functions in a loop.\nImprovement: The teacher should have provided a concrete example of a sentinel value in action, such as using a specific number or string to terminate the loop.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation was vague and didn't provide a clear example or context for how a sentinel value functions in a loop.",
+            "improvement": "The teacher should have provided a concrete example of a sentinel value in action, such as using a specific number or string to terminate the loop."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 24.0
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Addresses and pointers",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:36:19+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, a pointer is like a map that shows where something is stored in memory, right?",
+          "I think I understand most of that. Can you explain how pointers are different from regular variables?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if I try to use a pointer without assigning it an address first?",
+          "That makes sense, but I'm still slightly unsure about one thing. How do I ensure that a pointer is properly initialized before using it?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of what a pointer is, but it could have included more detail about how pointers are used.\nImprovement: The teacher should have explained how pointers are used to access and manipulate data stored at the specified memory address.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of what a pointer is, but it could have included more detail about how pointers are used.",
+            "improvement": "The teacher should have explained how pointers are used to access and manipulate data stored at the specified memory address."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher mentioned the ampersand and star operators but didn't fully explain their roles in pointer operations.\nImprovement: The teacher should have elaborated on how these operators are used in conjunction with pointers to manipulate memory addresses and values.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher mentioned the ampersand and star operators but didn't fully explain their roles in pointer operations.",
+            "improvement": "The teacher should have elaborated on how these operators are used in conjunction with pointers to manipulate memory addresses and values."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the concept of passing addresses to functions but didn't address the issue of unassigned pointers directly.\nImprovement: The teacher should have explained that using an unassigned pointer can lead to undefined behavior or errors, and how to properly initialize pointers.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the concept of passing addresses to functions but didn't address the issue of unassigned pointers directly.",
+            "improvement": "The teacher should have explained that using an unassigned pointer can lead to undefined behavior or errors, and how to properly initialize pointers."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 21.7
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Addresses and pointers",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:36:40+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I have a variable like double rate, and I use the address-of operator to get its address, what exactly am I getting?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give me an example of how a pointer would be used in a program?",
+          "I think I understand most of that. What happens if I try to use the address-of operator on a constant like 3.14?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why would I want to use pointers instead of just passing variables directly?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher's explanation is correct but could be more detailed.\nImprovement: The teacher should explain how pointers are used to manipulate memory addresses directly.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but could be more detailed.",
+            "improvement": "The teacher should explain how pointers are used to manipulate memory addresses directly."
+          },
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher's explanation is correct but could be more detailed.\nImprovement: The teacher should explain how pointers are used to manipulate memory addresses directly.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but could be more detailed.",
+            "improvement": "The teacher should explain how pointers are used to manipulate memory addresses directly."
+          },
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The teacher's explanation is correct but could be more detailed.\nImprovement: The teacher should explain how pointers are used to manipulate memory addresses directly.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but could be more detailed.",
+            "improvement": "The teacher should explain how pointers are used to manipulate memory addresses directly."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 19.2
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Addresses and pointers",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:37:00+00:00",
+      "baseline": {
+        "questions": [
+          "That makes sense, but I'm still slightly unsure about one thing. Can you explain how pointers are used in functions with an example?",
+          "I'm still really confused. Can you give me a specific example of a pointer in a function?",
+          "I'm still really confused. What does it mean when you say the star operator 'goes back the other way'?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you show me a code example where a pointer changes a variable in a function?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too vague and doesn't provide a clear understanding of how pointers are used in functions.\nImprovement: The teacher should provide a concrete example of a pointer in a function to illustrate its use.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is too vague and doesn't provide a clear understanding of how pointers are used in functions.",
+            "improvement": "The teacher should provide a concrete example of a pointer in a function to illustrate its use."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is too simplistic and lacks depth, failing to clarify how pointers interact with functions.\nImprovement: The teacher should provide a practical example with code to demonstrate how pointers are used in functions.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is too simplistic and lacks depth, failing to clarify how pointers interact with functions.",
+            "improvement": "The teacher should provide a practical example with code to demonstrate how pointers are used in functions."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation provides a basic understanding of how pointers allow functions to modify original variables, but lacks detail.\nImprovement: The teacher should provide a code example to illustrate how pointers modify variables in a function.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation provides a basic understanding of how pointers allow functions to modify original variables, but lacks detail.",
+            "improvement": "The teacher should provide a code example to illustrate how pointers modify variables in a function."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 22.8
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Dynamic memory allocation",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-09T05:37:22+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say dynamic memory allocation, does that mean the computer decides how much memory to use while the program runs?",
+          "Okay, I'm following you. Why would you use malloc instead of just declaring variables like normal?",
+          "Okay, I'm following you. What happens if I forget to free memory after using malloc?",
+          "Okay, I'm following you. Can you give an example of what might happen if I don't set a pointer to NULL after freeing it?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could have included more details about the heap and pointers.\nImprovement: The teacher should have explained the concept of the heap and how malloc fits into it, as well as the role of pointers in accessing the allocated memory.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could have included more details about the heap and pointers.",
+            "improvement": "The teacher should have explained the concept of the heap and how malloc fits into it, as well as the role of pointers in accessing the allocated memory."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher mentioned the importance of freeing memory after using malloc, but the explanation was brief and could have included more about memory leaks.\nImprovement: The teacher should have expanded on the concept of memory leaks and why they are problematic, as well as the importance of freeing memory properly.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher mentioned the importance of freeing memory after using malloc, but the explanation was brief and could have included more about memory leaks.",
+            "improvement": "The teacher should have expanded on the concept of memory leaks and why they are problematic, as well as the importance of freeing memory properly."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the risks of using pointers after freeing memory, but could have provided more context on undefined behavior.\nImprovement: The teacher should have elaborated on what undefined behavior means and potential consequences, emphasizing the importance of setting pointers to NULL.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the risks of using pointers after freeing memory, but could have provided more context on undefined behavior.",
+            "improvement": "The teacher should have elaborated on what undefined behavior means and potential consequences, emphasizing the importance of setting pointers to NULL."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 22.2
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Dynamic memory allocation",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-09T05:37:45+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say dynamic memory allocation, does that mean the computer decides how much memory to use while the program runs?",
+          "I think I understand most of that. Okay, but why would you use malloc instead of just declaring variables like usual?",
+          "I think I understand most of that. What happens if you forget to free a memory block after using malloc?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of what undefined behavior might look like in this context?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could be more detailed.\nImprovement: The teacher should explain the concept of the heap and why memory size might not be known at compile time.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could be more detailed.",
+            "improvement": "The teacher should explain the concept of the heap and why memory size might not be known at compile time."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher mentioned the importance of freeing memory, but the explanation was brief and could be expanded.\nImprovement: The teacher should elaborate on the consequences of memory leaks and the importance of proper memory management.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher mentioned the importance of freeing memory, but the explanation was brief and could be expanded.",
+            "improvement": "The teacher should elaborate on the consequences of memory leaks and the importance of proper memory management."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher highlighted the risks of using pointers after freeing memory, but the explanation could be more detailed.\nImprovement: The teacher should explain what undefined behavior means and why it's important to set pointers to NULL after freeing.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher highlighted the risks of using pointers after freeing memory, but the explanation could be more detailed.",
+            "improvement": "The teacher should explain what undefined behavior means and why it's important to set pointers to NULL after freeing."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 20.4
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Dynamic memory allocation",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-09T05:38:05+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say dynamic memory allocation, does that mean the computer decides how much memory to use while the program runs?",
+          "I think I understand most of that. Why would you use malloc instead of just declaring variables like usual?",
+          "I think I understand most of that. What happens if you forget to free memory after using malloc?",
+          "I think I understand most of that. Can you give an example of what might happen if I accidentally access freed memory?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could have included more details about why and when this technique is used.\nImprovement: The teacher should have explained the advantages of dynamic memory allocation and given an example to illustrate the concept better.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of dynamic memory allocation using malloc, but it could have included more details about why and when this technique is used.",
+            "improvement": "The teacher should have explained the advantages of dynamic memory allocation and given an example to illustrate the concept better."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher mentioned the importance of freeing memory after using malloc, but the explanation was brief and could have included more about the consequences of not freeing memory.\nImprovement: The teacher should have explained the concept of memory leaks and how they can affect program performance and stability.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher mentioned the importance of freeing memory after using malloc, but the explanation was brief and could have included more about the consequences of not freeing memory.",
+            "improvement": "The teacher should have explained the concept of memory leaks and how they can affect program performance and stability."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the risks of using a pointer after freeing its memory block, but the explanation could have been more detailed about the implications of undefined behavior.\nImprovement: The teacher should have provided examples of what might happen due to undefined behavior and emphasized the importance of proper memory management.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the risks of using a pointer after freeing its memory block, but the explanation could have been more detailed about the implications of undefined behavior.",
+            "improvement": "The teacher should have provided examples of what might happen due to undefined behavior and emphasized the importance of proper memory management."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 21.7
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 399.0,
+    "turns": 54,
+    "generation": {
+      "calls": 72,
+      "seconds": 398.4,
+      "seconds_per_call": 5.53,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 0.4,
+        "judge_calls": 0
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 9.8,
+        "judge_calls": 0
+      }
+    }
+  }
+}

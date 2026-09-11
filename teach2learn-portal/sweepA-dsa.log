@@ -1,0 +1,239 @@
+backend=transformers  lessons=6  repeats=3  from=packed by pack_for_server.py
+  NOTE: backend is transformers, so this loads its own copy of the base model.
+  If the host serves vLLM, source deploy/oauth.env as scripts/run.sh does.
+  translation=sarvam  sarvam_key=set
+  judge=openai/gpt-5.6-luna
+
+lesson=dsa/analysis/asymptotic-notation  subject=dsa  profile=gemma2
+  topic='Algorithm analysis'  subtopic='Asymptotic notation'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+Loading weights:   0%|          | 0/464 [00:00<?, ?it/s]Loading weights:   0%|          | 1/464 [00:00<02:12,  3.49it/s]Loading weights:   2%|▏         | 11/464 [00:00<00:13, 34.77it/s]Loading weights:   5%|▍         | 21/464 [00:00<00:08, 54.46it/s]Loading weights:   6%|▋         | 29/464 [00:00<00:07, 59.47it/s]Loading weights:   8%|▊         | 37/464 [00:00<00:06, 64.63it/s]Loading weights:  10%|█         | 47/464 [00:00<00:05, 72.93it/s]Loading weights:  12%|█▏        | 55/464 [00:00<00:05, 74.83it/s]Loading weights:  14%|█▎        | 63/464 [00:01<00:05, 74.10it/s]Loading weights:  15%|█▌        | 71/464 [00:01<00:05, 68.73it/s]Loading weights:  17%|█▋        | 81/464 [00:01<00:05, 75.65it/s]Loading weights:  20%|█▉        | 92/464 [00:01<00:04, 79.04it/s]Loading weights:  22%|██▏       | 103/464 [00:01<00:04, 81.25it/s]Loading weights:  25%|██▍       | 114/464 [00:01<00:04, 81.62it/s]Loading weights:  27%|██▋       | 124/464 [00:01<00:03, 85.15it/s]Loading weights:  29%|██▊       | 133/464 [00:01<00:03, 85.81it/s]Loading weights:  31%|███       | 142/464 [00:02<00:04, 78.04it/s]Loading weights:  32%|███▏      | 150/464 [00:02<00:04, 76.97it/s]Loading weights:  34%|███▍      | 158/464 [00:02<00:03, 76.95it/s]Loading weights:  36%|███▌      | 168/464 [00:02<00:03, 82.90it/s]Loading weights:  38%|███▊      | 177/464 [00:02<00:03, 83.68it/s]Loading weights:  40%|████      | 186/464 [00:02<00:03, 77.05it/s]Loading weights:  42%|████▏     | 194/464 [00:02<00:03, 74.66it/s]Loading weights:  44%|████▎     | 202/464 [00:02<00:03, 75.23it/s]Loading weights:  46%|████▌     | 212/464 [00:02<00:03, 80.71it/s]Loading weights:  48%|████▊     | 221/464 [00:03<00:02, 82.39it/s]Loading weights:  50%|████▉     | 230/464 [00:03<00:02, 79.73it/s]Loading weights:  52%|█████▏    | 239/464 [00:03<00:02, 78.59it/s]Loading weights:  53%|█████▎    | 247/464 [00:03<00:03, 71.39it/s]Loading weights:  56%|█████▌    | 258/464 [00:03<00:02, 75.39it/s]Loading weights:  58%|█████▊    | 268/464 [00:03<00:02, 81.13it/s]Loading weights:  60%|█████▉    | 278/464 [00:03<00:02, 85.32it/s]Loading weights:  62%|██████▏   | 287/464 [00:03<00:02, 85.30it/s]Loading weights:  64%|██████▍   | 296/464 [00:03<00:02, 81.47it/s]Loading weights:  66%|██████▌   | 305/464 [00:04<00:02, 78.43it/s]Loading weights:  67%|██████▋   | 313/464 [00:04<00:02, 71.50it/s]Loading weights:  70%|██████▉   | 323/464 [00:04<00:01, 78.01it/s]Loading weights:  72%|███████▏  | 333/464 [00:04<00:01, 81.47it/s]Loading weights:  74%|███████▎  | 342/464 [00:04<00:01, 78.97it/s]Loading weights:  76%|███████▌  | 351/464 [00:04<00:01, 74.12it/s]Loading weights:  77%|███████▋  | 359/464 [00:04<00:01, 67.82it/s]Loading weights:  79%|███████▉  | 367/464 [00:04<00:01, 67.99it/s]Loading weights:  81%|████████▏ | 377/464 [00:05<00:01, 71.87it/s]Loading weights:  83%|████████▎ | 385/464 [00:05<00:01, 71.13it/s]Loading weights:  85%|████████▍ | 393/464 [00:05<00:01, 68.20it/s]Loading weights:  86%|████████▌ | 400/464 [00:05<00:00, 65.31it/s]Loading weights:  88%|████████▊ | 410/464 [00:05<00:00, 70.02it/s]Loading weights:  90%|█████████ | 418/464 [00:05<00:00, 68.88it/s]Loading weights:  92%|█████████▏| 425/464 [00:05<00:00, 66.22it/s]Loading weights:  93%|█████████▎| 433/464 [00:05<00:00, 67.71it/s]Loading weights:  95%|█████████▌| 443/464 [00:06<00:00, 75.25it/s]Loading weights:  97%|█████████▋| 451/464 [00:06<00:00, 73.82it/s]Loading weights:  99%|█████████▉| 459/464 [00:06<00:00, 71.80it/s]Loading weights: 100%|██████████| 464/464 [00:06<00:00, 73.73it/s]
+  opening: Hi there! I'm ready to learn. To start us off, So, asymptotic notation is like a way to describe how the running time of an algorithm grows with the input size, right?
+  turn 1 (5.2s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Okay, but how does Big-O actually work with numbers?
+  turn 2 (6.5s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. So, if I have two algorithms, one with a running time of 3n^2 and another with n log n, which one is better for large inputs?
+  turn 3 (5.8s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What if the input size is really small?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    3x  "that makes sense, but i'm still"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, asymptotic notation is about predicting how an algorithm performs with large inputs, right?
+  turn 1 (5.5s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Okay, but how does Big-O actually work?
+  turn 2 (5.4s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how you would apply Big-O to a specific algorithm?
+  turn 3 (5.7s) eval=Understand/Medium: I think I understand most of that. What would the Big-O notation be for a simple algorithm like searching through an unsorted list?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  'i think i understand most of'
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, asymptotic notation is about simplifying complex calculations, right?
+  turn 1 (5.8s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how Big-O notation helps compare algorithms?
+  turn 2 (5.3s) eval=Understand/Medium: Okay, I'm following you. What happens if both algorithms have the same Big-O notation?
+  turn 3 (6.4s) eval=Understand/Medium: Okay, I'm following you. How do constant factors affect the performance of algorithms with the same Big-O notation?
+
+  distinct questions: 4/4
+
+lesson=dsa/analysis/recurrences  subject=dsa  profile=gemma2
+  topic='Algorithm analysis'  subtopic='Recurrences'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, when you say a recurrence equation is like a function, what exactly does that mean?
+  turn 1 (4.8s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how this works with something like the merge-sort algorithm?
+  turn 2 (5.6s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. How does this recurrence equation help us understand the efficiency of merge-sort?
+  turn 3 (5.7s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Why is n log n considered a good time complexity compared to something like n^2?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    3x  "that makes sense, but i'm still"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, how do you actually solve these recurrence equations?
+  turn 1 (3.9s) eval=Remember/Low: I'm still really confused. Can you explain more about what you mean by 'solving' these equations?
+  turn 2 (4.6s) eval=Understand/Medium: I think I understand most of that. What happens if the array isn't perfectly splittable, like if n isn't a power of two?
+  turn 3 (4.7s) eval=Apply/Medium: That makes sense, but I'm still slightly unsure about one thing. Could you show me how you would solve a different recurrence, like for a different algorithm?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, when we're dealing with recurrences, why do we assume that the initial subproblem sizes are small?
+  turn 1 (4.1s) eval=Understand/Low: I'm still really confused. Can you explain more about what happens with those smaller subproblems?
+  turn 2 (4.3s) eval=Understand/Low: I'm still really confused. Why do we assume that n is a power of two in these recurrence equations?
+  turn 3 (4.5s) eval=Understand/Low: I'm still really confused. What if n isn't a power of two, how does that affect the recurrence?
+
+  distinct questions: 4/4
+
+lesson=dsa/linear/stacks  subject=dsa  profile=gemma2
+  topic='Linear data structures'  subtopic='Stacks'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, a stack is like a list where you can only add or remove from one end?
+  turn 1 (5.6s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how a stack works in real life?
+  turn 2 (5.5s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What happens if you try to remove from an empty stack?
+  turn 3 (5.9s) eval=Remember/Low: I'm still really confused. Wait, so how does the time complexity actually work for stack operations?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, a stack is like a list where you can only add or remove from one end?
+  turn 1 (5.0s) eval=Remember/Medium: That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how a stack might be used in real life?
+  turn 2 (4.8s) eval=Understand/Medium: Okay, I'm following you. How does the call stack actually work when you're running a program?
+  turn 3 (5.5s) eval=Apply/Low: I'm still really confused. Wait, I thought the time complexity for stack operations was O(1). Can you clarify that?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, how does a stack actually work?
+  turn 1 (5.4s) eval=Understand/Medium: I think I understand most of that. Okay, but what exactly are these push and pop operations?
+  turn 2 (5.2s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how the call stack uses this concept?
+  turn 3 (5.2s) eval=Understand/Medium: I think I understand most of that. What happens if we try to pop from an empty stack?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    3x  'i think i understand most of'
+
+lesson=dsa/linear/queues-and-deques  subject=dsa  profile=gemma2
+  topic='Linear data structures'  subtopic='Queues and deques'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a queue and how does it differ from a stack?
+  turn 1 (4.8s) eval=Remember/Low: I'm still really confused. Can you explain more about how queues are used in real-world scenarios?
+  turn 2 (5.8s) eval=Understand/Low: I'm still really confused. What are some real-world examples where using a queue would be more efficient than a stack?
+  turn 3 (6.4s) eval=Remember/Low: I'm still really confused. Can you give me an example of a situation where using a deque would be the best choice?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "i'm still really confused. can you"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a queue?
+  turn 1 (5.3s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how a queue might be used in a real-world situation?
+  turn 2 (6.1s) eval=Remember/Low: I'm still really confused. Wait, so how does a circular array queue actually work?
+  turn 3 (6.2s) eval=Remember/Low: I'm still really confused. So, if a deque can do both, how is it different from just using a stack and a queue?
+
+  distinct questions: 4/4
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a queue?
+  turn 1 (5.6s) eval=Understand/Medium: I think I understand most of that. How does a queue differ from a stack?
+  turn 2 (5.9s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What are some real-world applications of queues?
+  turn 3 (5.2s) eval=Remember/Low: I'm still really confused. Can you explain more about how a deque works independently?
+
+  distinct questions: 4/4
+
+lesson=dsa/trees-heaps/tree-terminology-and-traversals  subject=dsa  profile=gemma2
+  topic='Trees and priority queues'  subtopic='Tree terminology and traversals'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?
+  turn 1 (5.4s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Okay, and how does a binary tree differ from a regular tree?
+  turn 2 (5.7s) eval=Remember/Low: Hmm, that doesn't quite sound right to me. I'm a bit lost. Wait, so what exactly makes a binary tree different from a regular tree?
+  turn 3 (5.5s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Can you explain how an in-order traversal works in a binary tree?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "that makes sense, but i'm still"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?
+  turn 1 (6.4s) eval=Understand/Medium: I think I understand most of that. Okay, so if a node has multiple children, how does that affect the tree's structure?
+  turn 2 (6.3s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how tree height affects operations like searching for a node?
+  turn 3 (5.8s) eval=Understand/Medium: I think I understand most of that. How does the height of a tree affect the efficiency of searching for a node?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    3x  'i think i understand most of'
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?
+  turn 1 (5.7s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Okay, and how do these traversals work?
+  turn 2 (5.8s) eval=Understand/Medium: I think I understand most of that. Can you give an example of how preorder traversal works?
+  turn 3 (5.9s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What about preorder traversal?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "that makes sense, but i'm still"
+
+lesson=dsa/trees-heaps/heaps  subject=dsa  profile=gemma2
+  topic='Trees and priority queues'  subtopic='Heaps'  reviewed=True
+  base_model=google/gemma-2-9b-it
+  endpoint=None  adapter_name=None
+  adapter_root=/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b  adapter=None
+  device=0  device_map=auto  CUDA_VISIBLE_DEVICES=1
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a heap?
+  turn 1 (6.2s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Okay, and how does this ordering work with the children?
+  turn 2 (5.9s) eval=Understand/Medium: I think I understand most of that. So, does this mean inserting or removing elements is quick because of this array setup?
+  turn 3 (6.7s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What happens if we try to insert an element that's smaller than the root in a min-heap?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "that makes sense, but i'm still"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a heap?
+  turn 1 (6.0s) eval=Understand/Medium: I think I understand most of that. Okay, so how does a heap differ from a binary tree?
+  turn 2 (6.2s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. What are the advantages of using an array for storing a heap?
+  turn 3 (6.2s) eval=Understand/Medium: That makes sense, but I'm still slightly unsure about one thing. Can you give an example of when you would use a heap over other data structures?
+
+  distinct questions: 4/4
+  WARNING: repeated openers (formulaic follow-ups):
+    2x  "that makes sense, but i'm still"
+
+=== BASELINE (English, subject=dsa, model=None) ===
+  opening: Hi there! I'm ready to learn. To start us off, So, what exactly is a heap data structure?
+  turn 1 (5.7s) eval=Understand/Medium: I think I understand most of that. Okay, but how does the ordering work exactly?
+  turn 2 (5.9s) eval=Remember/Low: I'm still really confused. Wait, I'm a bit lost. Can you explain what makes a min-heap different from a max-heap?
+  turn 3 (6.2s) eval=Remember/Low: I'm still really confused. So, if I wanted to remove the smallest element, how would that work in a min-heap?
+
+  distinct questions: 4/4
+
+================================================================================================
+lesson                                            n   distinct   fidelity            fluency             
+ranges pool every language and repeat, so on a full sweep they are dominated by
+differences between languages; the JSON keeps each cell for the real breakdown.
+================================================================================================
+dsa/analysis/asymptotic-notation                  3   1.00       -                   -                   
+dsa/analysis/recurrences                          3   1.00       -                   -                   
+dsa/linear/stacks                                 3   1.00       -                   -                   
+dsa/linear/queues-and-deques                      3   1.00       -                   -                   
+dsa/trees-heaps/tree-terminology-and-traversals   3   1.00       -                   -                   
+dsa/trees-heaps/heaps                             3   1.00       -                   -                   
+================================================================================================
+
+==============================================================================
+cost basis over 54 turns, 352s wall clock
+==============================================================================
+  generation      72 calls    351.2s    4.88s/call    1.33/turn
+  translation      0 calls      0.0s    0.00s/call    0.00/turn
+  judge            0 calls      0.0s    0.00s/call    0.00/turn
+------------------------------------------------------------------------------
+  projected at these rates (a floor: a longer run contends for the same GPU)
+  Sweep A (English, 24 lessons x3)           216 turns    0.4h       0 judge calls
+  Sweep B (22 languages, 24 lessons x3)     4752 turns    8.6h       0 judge calls
+==============================================================================
+
+wrote sweepA-dsa.json

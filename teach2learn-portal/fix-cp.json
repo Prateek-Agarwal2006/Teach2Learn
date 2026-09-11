@@ -1,0 +1,70 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T13:22:18+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "cp/pointers/dynamic-memory-allocation"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 1,
+    "languages": [
+      "pa"
+    ],
+    "judge_model": "openai/gpt-5.6-luna",
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "topic": "Pointers and memory",
+      "subtopic": "Dynamic memory allocation",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "qwen3",
+      "repeat": 1,
+      "started_utc": "2026-09-08T13:22:18+00:00",
+      "sweep": [
+        {
+          "code": "pa",
+          "language": "Punjabi",
+          "turns": [],
+          "error": "TranslationUnavailable: seed for pa leaked a schema fragment on 3 attempts"
+        }
+      ],
+      "elapsed_seconds": 25.2
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 25.6,
+    "turns": 0,
+    "generation": {
+      "calls": 1,
+      "seconds": 18.0,
+      "seconds_per_call": 18.04,
+      "calls_per_turn": null
+    },
+    "translation": {
+      "calls": 4,
+      "seconds": 2.6,
+      "seconds_per_call": 0.66,
+      "calls_per_turn": null
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": null
+    }
+  }
+}

@@ -14,6 +14,17 @@ It answers two separate questions, and they are worth keeping separate:
                boundary, and record what the adapter saw and what the participant
                would read back.
 
+Teacher scripts come from lessons.json at the repo root, shared with the RAG tool's
+harness so both systems receive identical teacher input. Without --lesson or
+--subject every lesson in the bank runs; --repeat runs each one several times, and
+the spread across repeats is what separates a real difference from run-to-run noise.
+
+Two guards, because both failures produce a results file that looks complete:
+INFERENCE_BACKEND=fake needs --allow-fake, since FakeBackend returns a canned string
+rather than calling a model; and lessons nobody has marked reviewed need
+--allow-unreviewed. Either way the output is stamped, so a bad run cannot be
+mistaken for a reportable one later.
+
 On the seeding circularity
 --------------------------
 The sweep seeds each language by translating an English teacher answer with
@@ -23,10 +34,16 @@ itself: a language it renders consistently wrong in both directions still round
 not quality. The independent OpenRouter judge on the seeded text is what actually
 breaks the loop, so prefer its fidelity score when the two disagree.
 
-Nothing is written to the server
---------------------------------
-No file is created, no config is edited, and the portal's database and transcripts
-are never touched -- this calls InferenceService and TranslationService directly.
+Nothing is written to the server, unless you ask for it
+------------------------------------------------------
+No config is edited and the portal's database and transcripts are never touched --
+this calls InferenceService and TranslationService directly. Results always go to
+stdout, which over a pipe is the only way they leave the host.
+
+--out is the one exception: it writes a file wherever the program is running, which
+over a pipe means on the server. That is deliberate for a run measured in hours,
+because it is rewritten after every repeat and so survives a dropped connection,
+but it does leave a file behind. Delete it once the run is collected.
 It is designed to be piped in over ssh and to emit its results on stdout, so the
 GPU host keeps no trace of the run:
 
@@ -59,6 +76,7 @@ import re
 import sys
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from functools import partial
 from collections.abc import Sequence
@@ -80,66 +98,57 @@ from app.topics import normalize_subject, topic_selection  # noqa: E402
 from app.services.translation import (  # noqa: E402
     SUPPORTED_LANGUAGES,
     TranslationService,
+    looks_like_schema,
 )
 
-# One fixed lesson per subject, reused for every language so differences within a
-# subject are attributable to the language rather than to what the teacher said.
+# The teacher scripts live in lessons.json at the repo root rather than here, shared
+# byte-for-byte with the RAG tool's harness so the same lesson run against both
+# systems receives identical teacher input. That is the whole basis for comparing
+# them; a second hardcoded copy would drift within a week.
 #
 # Subject is not just a prompt change: DEFAULT_SUBJECT_MODELS routes each subject to
 # a different base model and a different LoRA (cp->qwen3, dsa->gemma2,
-# oop_java->mistral, os->granite), so sweeping subjects also sweeps adapters. Keep
-# each script at three entries and run --turns 3, so TEACHER_SCRIPT[index % len] is
-# exactly one pass and the cycling that muddied the first baseline cannot return.
-LESSONS: dict[str, dict[str, Any]] = {
-    "os": {
-        "topic_id": "threads-scheduling",
-        "subtopic": "CPU scheduling",
-        "script": (
-            "The scheduler decides which ready process runs next on the CPU, because there are "
-            "usually more runnable processes than cores.",
-            "Round-robin gives each process a fixed time quantum in turn, so no single process "
-            "can starve the others while it holds the CPU.",
-            "A very small quantum wastes time on context switches, while a very large one makes "
-            "the scheduler behave like plain first-come first-served.",
-        ),
-    },
-    "cp": {
-        "topic_id": "pointers",
-        "subtopic": "Dynamic memory allocation",
-        "script": (
-            "malloc reserves a block of memory on the heap while the program is running and "
-            "returns a pointer to its first byte, because the size is not known at compile time.",
-            "Every successful malloc must be matched by exactly one free, otherwise the block "
-            "stays reserved for the whole life of the program and the process leaks memory.",
-            "Using a pointer after its block has been freed is undefined behaviour, so it is "
-            "good practice to set the pointer to NULL immediately after freeing it.",
-        ),
-    },
-    "dsa": {
-        "topic_id": "trees-heaps",
-        "subtopic": "Heaps",
-        "script": (
-            "A binary heap is a complete binary tree where every parent is ordered against its "
-            "children, so the smallest element is always sitting at the root.",
-            "Because the tree is complete, the heap can be stored in a plain array, where the "
-            "children of index i live at 2i+1 and 2i+2 and no pointers are needed.",
-            "Inserting or removing an element only walks one path between a leaf and the root, "
-            "so both operations cost logarithmic time in the number of elements.",
-        ),
-    },
-    "oop_java": {
-        "topic_id": "concurrency",
-        "subtopic": "Synchronization and locks",
-        "script": (
-            "When two threads update the same field at once one update can be lost, because "
-            "reading, changing, and writing back is not a single indivisible step.",
-            "A synchronized block lets only one thread hold the object's monitor at a time, so "
-            "every other thread waits until that block finishes.",
-            "Acquiring two locks in different orders in different threads can deadlock, so the "
-            "usual rule is to always take locks in one fixed global order.",
-        ),
-    },
-}
+# oop_java->mistral, os->granite), so sweeping subjects also sweeps adapters. Every
+# script in the bank is exactly three sentences and runs under --turns 3, so
+# script[index % len] is exactly one pass and the cycling that muddied the first
+# baseline cannot return.
+#
+# scripts/pack_for_server.py assigns the decoded bank to PACKED_LESSONS before this
+# module's code runs, because the packed program reaches the GPU host over stdin and
+# no lessons.json exists there to open. The name is deliberately not _pack_-prefixed:
+# the prelude deletes every _pack_* global once it has finished.
+PACKED_LESSONS: dict[str, Any] | None = None
+
+
+def load_lessons(path: str | None) -> dict[str, Any]:
+    """Return the lesson bank, or exit naming every place that was tried.
+
+    There is deliberately no built-in fallback bank. Falling back would emit a results
+    file that looks like a 24-lesson run and is not -- the same failure shape as the
+    dead Sarvam key that once produced six clean-looking rows, where the absence of an
+    error is indistinguishable from a pass.
+    """
+    if PACKED_LESSONS is not None:
+        bank = dict(PACKED_LESSONS)
+        source = "packed by pack_for_server.py"
+    else:
+        # Piped in over ssh _root is the working directory, so the repo root is worth
+        # trying as well as the portal root.
+        candidates = [Path(path)] if path else [_root / "lessons.json", _root.parent / "lessons.json"]
+        found = next((candidate for candidate in candidates if candidate.exists()), None)
+        if found is None:
+            raise SystemExit(
+                "no lesson bank found. Looked in: "
+                + ", ".join(str(candidate) for candidate in candidates)
+                + "\nPass --lessons PATH, or pipe scripts/pack_for_server.py, which embeds it."
+            )
+        bank = json.loads(found.read_text())
+        source = str(found)
+
+    if not bank.get("lessons"):
+        raise SystemExit(f"lesson bank at {source} contains no lessons")
+    bank["source"] = source
+    return bank
 
 # Indic + Perso-Arabic ranges. Any hit inside text that is supposed to be English
 # means untranslated participant text reached the English zone.
@@ -155,6 +164,60 @@ _NON_LATIN = re.compile(
 )
 
 JUDGE_MODEL = os.getenv("LANGCHECK_JUDGE_MODEL", "openai/gpt-5.6-luna")
+
+# What a pilot exists to measure. The three costs are paid to different places -- GPU
+# time on a shared host, Sarvam quota, OpenRouter spend -- so a single wall-clock
+# number cannot be extrapolated into any of them. Accumulated globally because the
+# sweep runs one language at a time; concurrency would need this per task.
+COST: dict[str, float] = {
+    "generation_seconds": 0.0,
+    "generation_calls": 0,
+    "translation_seconds": 0.0,
+    "translation_calls": 0,
+    "judge_seconds": 0.0,
+    "judge_calls": 0,
+}
+
+# The two sweeps TEST_BED.md plans, as turn counts, so a pilot extrapolates directly
+# into the decision it exists to inform: 24 lessons x 3 repeats x 3 turns, English
+# only for the first and every non-English language for the second.
+PLANNED_TURNS = {
+    "Sweep A (English, 24 lessons x3)": 24 * 3 * 3,
+    "Sweep B (22 languages, 24 lessons x3)": 24 * 3 * 22 * 3,
+}
+
+
+# A generation slower than this means something is wrong with the configuration
+# rather than with the model. On the vLLM path a turn is seconds; the one run that
+# took 794s per language was loading its own copy of the base model onto a GPU that
+# was already full, and silently offloading half of it to the CPU. Nothing in the
+# output said so -- the numbers came out correct, just a hundred times too slowly.
+SLOW_GENERATION_SECONDS = float(os.getenv("LANGCHECK_SLOW_GENERATION_SECONDS", "30"))
+_warned_slow = False
+
+
+async def timed(bucket: str, awaitable: Any) -> Any:
+    """Charge one awaited call to a cost bucket, whether it succeeds or raises."""
+    global _warned_slow
+    started = time.monotonic()
+    try:
+        return await awaitable
+    finally:
+        elapsed = time.monotonic() - started
+        COST[f"{bucket}_seconds"] += elapsed
+        COST[f"{bucket}_calls"] += 1
+        if bucket == "generation" and elapsed > SLOW_GENERATION_SECONDS and not _warned_slow:
+            _warned_slow = True
+            log(
+                f"\n  WARNING: first generation took {elapsed:.0f}s, over the {SLOW_GENERATION_SECONDS:.0f}s\n"
+                "  threshold. At this rate a full sweep runs for days. Usual causes, in order:\n"
+                "    - INFERENCE_BACKEND=transformers while the host serves vLLM. run.sh sources\n"
+                "      .env AND deploy/oauth.env; sourcing only .env leaves the backend on\n"
+                "      transformers, which loads a second copy of the base model.\n"
+                "    - CUDA_VISIBLE_DEVICES pinning the model to a GPU that is already full,\n"
+                "      which offloads layers to the CPU ('parameters are on the meta device').\n"
+                "  Stop now rather than at the end -- the results will be correct and worthless."
+            )
 
 FIDELITY_PROMPT = """You compare a source English sentence with its translation into {language}.
 Reply with exactly two lines and nothing else:
@@ -184,37 +247,68 @@ class TranslationUnavailable(RuntimeError):
 
 @dataclass(frozen=True)
 class Lesson:
+    lesson_id: str
     subject: str
     topic: str
     subtopic: str
     script: tuple[str, ...]
+    reviewed: bool
+    carried_from: str | None
 
 
-def resolve_lesson(subject: str) -> Lesson:
-    """Normalise the subject and validate the topic pair against the real catalogue.
+def resolve_lessons(bank: dict[str, Any], subject: str | None, lesson_id: str | None) -> list[Lesson]:
+    """Select lessons from the bank and validate each against the real catalogue.
 
     topic_selection raises if the pair is not one a participant could have picked,
     which keeps the report from claiming a topic the portal does not actually offer.
+    Validating every selected lesson up front means a typo in the bank fails before
+    the first generation rather than an hour into a sweep.
     """
-    key = normalize_subject(subject)
-    if key not in LESSONS:
-        raise SystemExit(f"no lesson defined for subject {key!r}; have {sorted(LESSONS)}")
-    lesson = LESSONS[key]
-    topic_name, subtopic = topic_selection(key, lesson["topic_id"], lesson["subtopic"])
-    return Lesson(key, topic_name, subtopic, lesson["script"])
+    entries = bank["lessons"]
+    if lesson_id:
+        # Comma-separated, so a run sized to a time budget can name the exact cells it
+        # wants -- two lessons per subject, say -- instead of one invocation each.
+        wanted = [item.strip() for item in lesson_id.split(",") if item.strip()]
+        known = {entry["id"] for entry in entries}
+        missing = [item for item in wanted if item not in known]
+        if missing:
+            raise SystemExit(
+                f"no lesson with id {', '.join(missing)} in {bank['source']}; "
+                "run --list-lessons to see them"
+            )
+        order = {item: position for position, item in enumerate(wanted)}
+        entries = sorted((e for e in entries if e["id"] in order), key=lambda e: order[e["id"]])
+    elif subject:
+        key = normalize_subject(subject)
+        entries = [entry for entry in entries if normalize_subject(entry["subject"]) == key]
+        if not entries:
+            raise SystemExit(f"no lessons for subject {key!r} in {bank['source']}")
+
+    resolved: list[Lesson] = []
+    for entry in entries:
+        key = normalize_subject(entry["subject"])
+        topic_name, subtopic = topic_selection(key, entry["topic_id"], entry["subtopic"])
+        resolved.append(
+            Lesson(
+                entry["id"],
+                key,
+                topic_name,
+                subtopic,
+                tuple(entry["script"]),
+                bool(entry.get("reviewed", False)),
+                entry.get("carried_from"),
+            )
+        )
+    return resolved
 
 
-# Sarvam has returned fragments of its own OpenAPI schema in translated_text --
-# reproducibly, for particular (sentence, language) pairs. That payload would be
-# handed to the adapter as the participant's answer and shown back to them, so it
-# has to be caught as a failed crossing rather than accepted as text.
-_SCHEMA_LEAK = re.compile(
-    r"^\s*[\{\[]|['\"](?:type|title|description|properties|\$ref)['\"]\s*:", re.I
-)
+# The schema-leak detector now lives in translation.py, so the live path rejects these
+# payloads too rather than only the sweep noticing them. Imported above.
 
 
 def _looks_like_schema(text: str) -> bool:
-    return bool(_SCHEMA_LEAK.search(text or ""))
+    # Kept as a name the rest of this file and its tests already use.
+    return looks_like_schema(text)
 
 
 async def translate_or_fail(
@@ -230,7 +324,7 @@ async def translate_or_fail(
     has failed every attempt.
     """
     for attempt in range(1, attempts + 1):
-        result = await call(text, code)
+        result = await timed("translation", call(text, code))
         leaked = _looks_like_schema(result)
         if result.strip() != text.strip() and not leaked:
             return result, attempt - 1
@@ -251,7 +345,7 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
     if not key:
         return {"score": None, "note": "no OPENROUTER_API_KEY"}
     try:
-        response = await client.post(
+        response = await timed("judge", client.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
@@ -263,7 +357,7 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
                 "max_tokens": int(os.getenv("LANGCHECK_JUDGE_MAX_TOKENS", "600")),
             },
             timeout=float(os.getenv("OPENROUTER_TIMEOUT_SECONDS", "90")),
-        )
+        ))
         response.raise_for_status()
         message = response.json()["choices"][0]["message"]
         # A reasoning model returns content: null and puts its text elsewhere, and
@@ -308,9 +402,9 @@ async def run_baseline(
     """English only, real adapter. Establishes whether the learner varies its questions."""
     log(f"\n=== BASELINE (English, subject={lesson.subject}, model={model}) ===")
     history: list[dict[str, str]] = []
-    opening = await service.generate(
+    opening = await timed("generation", service.generate(
         lesson.subject, lesson.subtopic, "The lesson is starting. Ask your first question.", model=model
-    )
+    ))
     history.append({"role": "assistant", "content": opening})
     log(f"  opening: {opening}")
 
@@ -320,9 +414,9 @@ async def run_baseline(
         answer = lesson.script[index % len(lesson.script)]
         history.append({"role": "user", "content": answer})
         started = time.monotonic()
-        result = await service.generate_detailed(
+        result = await timed("generation", service.generate_detailed(
             lesson.subject, lesson.subtopic, messages=history, model=model
-        )
+        ))
         history.append({"role": "assistant", "content": result.raw_content})
         questions.append(result.content)
         evaluations.append(result.evaluation)
@@ -360,9 +454,9 @@ async def run_language(
     record: dict[str, Any] = {"code": code, "language": name, "turns": []}
 
     history: list[dict[str, str]] = []
-    opening_en = await service.generate(
+    opening_en = await timed("generation", service.generate(
         lesson.subject, lesson.subtopic, "The lesson is starting. Ask your first question.", model=model
-    )
+    ))
     history.append({"role": "assistant", "content": opening_en})
     record["opening_en"] = opening_en
     opening_local, opening_retries = await translate_or_fail(
@@ -387,9 +481,9 @@ async def run_language(
         )
 
         history.append({"role": "user", "content": teacher_back})
-        result = await service.generate_detailed(
+        result = await timed("generation", service.generate_detailed(
             lesson.subject, lesson.subtopic, messages=history, model=model
-        )
+        ))
         history.append({"role": "assistant", "content": result.raw_content})
         # Outbound crossing: what the participant reads.
         question_local, outbound_retries = await translate_or_fail(
@@ -483,43 +577,180 @@ def summarise(records: list[dict[str, Any]]) -> None:
         log("     judge unavailable, knowledge_threshold completion cannot fire.")
 
 
-async def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--baseline", action="store_true", help="English-only adapter variety check")
-    parser.add_argument("--sweep", action="store_true", help="run every supported language")
-    parser.add_argument("--languages", help="comma-separated codes instead of all")
-    parser.add_argument(
-        "--subject",
-        default="os",
-        help="cp, dsa, oop_java, or os. Each routes to a different base model and LoRA, "
-             "so this also selects which adapter is exercised.",
+async def run_sweep(
+    service: InferenceService,
+    translator: TranslationService,
+    client: httpx.AsyncClient | None,
+    lesson: Lesson,
+    codes: Sequence[str],
+    model: str | None,
+    turns: int,
+) -> tuple[list[dict[str, Any]], dict[str, Any] | None]:
+    """Every language for one lesson, returning the records and an abort note if any."""
+    log(f"\n=== SWEEP ({len(codes)} languages, lesson={lesson.lesson_id}, model={model}) ===")
+    records: list[dict[str, Any]] = []
+    aborted: dict[str, Any] | None = None
+    consecutive = 0
+    for position, code in enumerate(codes, 1):
+        started = time.monotonic()
+        try:
+            record = await run_language(service, translator, client, lesson, code, model, turns)
+        except TranslationUnavailable as exc:
+            # A single poisoned (sentence, language) pair is a finding about that
+            # language, not a reason to discard the other 21. Only a run of
+            # consecutive failures means Sarvam itself is down.
+            consecutive += 1
+            record = {
+                "code": code,
+                "language": SUPPORTED_LANGUAGES[code],
+                "turns": [],
+                "error": f"TranslationUnavailable: {exc}",
+            }
+            log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {exc}")
+            records.append(record)
+            if consecutive >= 3:
+                log(f"\n  ABORTED: {consecutive} languages in a row failed to translate")
+                aborted = {"at": code, "reason": str(exc), "not_run": list(codes[position:])}
+                break
+            continue
+        except Exception as exc:  # noqa: BLE001 - 21 good languages beat 0
+            record = {
+                "code": code,
+                "language": SUPPORTED_LANGUAGES[code],
+                "turns": [],
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+            log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {record['error']}")
+            consecutive += 1
+        else:
+            consecutive = 0
+            record["elapsed_seconds"] = round(time.monotonic() - started, 1)
+            log(
+                f"  [{position}/{len(codes)}] {record['language']:<12} "
+                f"{record['elapsed_seconds']:.1f}s",
+            )
+        records.append(record)
+    return records, aborted
+
+
+def _cell_means(record: dict[str, Any]) -> tuple[float | None, float | None]:
+    """Mean fidelity and fluency over the judged turns of one language record."""
+    turns = record.get("turns") or []
+    fidelity = [t["fidelity"]["score"] for t in turns if t.get("fidelity", {}).get("score")]
+    fluency = [t["fluency"]["score"] for t in turns if t.get("fluency", {}).get("score")]
+    return (
+        sum(fidelity) / len(fidelity) if fidelity else None,
+        sum(fluency) / len(fluency) if fluency else None,
     )
-    parser.add_argument(
-        "--model",
-        default=None,
-        help="inference profile; default routes by subject exactly as a live session does",
-    )
-    parser.add_argument("--turns", type=int, default=3)
-    parser.add_argument("--no-judge", action="store_true", help="skip OpenRouter scoring")
-    parser.add_argument("--out", help="write full JSON results here")
-    args = parser.parse_args()
 
-    if not args.baseline and not args.sweep:
-        parser.error("pass --baseline, --sweep, or both")
 
-    service = InferenceService()
-    translator = TranslationService()
+def summarise_runs(runs: Sequence[dict[str, Any]]) -> None:
+    """Per lesson, aggregate across repeats.
 
-    # Fail loudly here rather than 22 languages deep. DEFAULT_PROFILES carries no
-    # endpoint or adapter_name, so a vllm run needs INFERENCE_PROFILES in the
-    # environment; without it every generation would error identically.
-    lesson = resolve_lesson(args.subject)
+    A single run gives one number per cell and no way to tell a real difference from
+    run-to-run noise, which is the whole reason --repeat exists. So report the spread
+    next to the mean; where they overlap between two lessons, the difference is not a
+    finding.
+    """
+    by_lesson: dict[str, list[dict[str, Any]]] = {}
+    for run in runs:
+        by_lesson.setdefault(run["lesson_id"], []).append(run)
+
+    log("\n" + "=" * 96)
+    log(f"{'lesson':<50}{'n':<4}{'distinct':<11}{'fidelity':<20}{'fluency':<20}")
+    log("ranges pool every language and repeat, so on a full sweep they are dominated by")
+    log("differences between languages; the JSON keeps each cell for the real breakdown.")
+    log("=" * 96)
+    for lesson_id, lesson_runs in by_lesson.items():
+        distinct = [
+            run["baseline"]["distinct"] / max(len(run["baseline"]["questions"]), 1)
+            for run in lesson_runs
+            if run.get("baseline")
+        ]
+        fidelities: list[float] = []
+        fluencies: list[float] = []
+        for run in lesson_runs:
+            for record in run.get("sweep") or []:
+                fidelity, fluency = _cell_means(record)
+                if fidelity is not None:
+                    fidelities.append(fidelity)
+                if fluency is not None:
+                    fluencies.append(fluency)
+
+        def spread(values: list[float]) -> str:
+            if not values:
+                return "-"
+            mean = sum(values) / len(values)
+            if len(values) == 1:
+                return f"{mean:.2f}"
+            return f"{mean:.2f} ({min(values):.2f}-{max(values):.2f})"
+
+        log(
+            f"{lesson_id:<50}{len(lesson_runs):<4}"
+            f"{(f'{sum(distinct) / len(distinct):.2f}' if distinct else '-'):<11}"
+            f"{spread(fidelities):<20}{spread(fluencies):<20}"
+        )
+    log("=" * 96)
+
+
+def summarise_cost(wall_clock: float, turns_run: int) -> dict[str, Any]:
+    """Print and return what the run cost, and what that implies for the full sweeps."""
+    basis: dict[str, Any] = {"wall_clock_seconds": round(wall_clock, 1), "turns": turns_run}
+    log("\n" + "=" * 78)
+    log(f"cost basis over {turns_run} turns, {wall_clock:.0f}s wall clock")
+    log("=" * 78)
+    for bucket in ("generation", "translation", "judge"):
+        calls = int(COST[f"{bucket}_calls"])
+        seconds = COST[f"{bucket}_seconds"]
+        basis[bucket] = {
+            "calls": calls,
+            "seconds": round(seconds, 1),
+            "seconds_per_call": round(seconds / calls, 2) if calls else None,
+            "calls_per_turn": round(calls / turns_run, 2) if turns_run else None,
+        }
+        log(
+            f"  {bucket:<12}{calls:>6} calls{seconds:>9.1f}s"
+            f"{(seconds / calls if calls else 0):>8.2f}s/call"
+            f"{(calls / turns_run if turns_run else 0):>8.2f}/turn"
+        )
+
+    if not turns_run:
+        log("=" * 78)
+        return basis
+
+    # Projections assume the pilot's per-turn rates hold, which is the assumption the
+    # pilot is there to test. A larger sweep contends for the same GPU, so treat these
+    # as a floor rather than an estimate.
+    per_turn = wall_clock / turns_run
+    judge_per_turn = COST["judge_calls"] / turns_run
+    basis["projected"] = {}
+    log("-" * 78)
+    log("  projected at these rates (a floor: a longer run contends for the same GPU)")
+    for label, turns in PLANNED_TURNS.items():
+        hours = turns * per_turn / 3600
+        judged = int(turns * judge_per_turn)
+        basis["projected"][label] = {
+            "turns": turns,
+            "hours": round(hours, 1),
+            "judge_calls": judged,
+        }
+        log(f"  {label:<40}{turns:>6} turns{hours:>7.1f}h{judged:>8} judge calls")
+    log("=" * 78)
+    return basis
+
+
+def describe_profile(service: InferenceService, lesson: Lesson, model: str | None) -> str:
+    """Log exactly which model and adapter this lesson will exercise, and return its name.
+
+    Printed per lesson rather than once, because subject routes to a different base
+    model and LoRA, so a multi-subject run touches several.
+    """
     config = service.config
     # subject_models is keyed by the normalised slug, so resolve before looking up.
-    profile_name = args.model or config.subject_models.get(lesson.subject, "?")
+    profile_name = model or config.subject_models.get(lesson.subject, "?")
     profile = config.profiles.get(profile_name)
-    log(f"backend={config.backend}  subject={lesson.subject}  profile={profile_name}")
-    log(f"  topic={lesson.topic!r}  subtopic={lesson.subtopic!r}")
+    log(f"\nlesson={lesson.lesson_id}  subject={lesson.subject}  profile={profile_name}")
+    log(f"  topic={lesson.topic!r}  subtopic={lesson.subtopic!r}  reviewed={lesson.reviewed}")
     log(f"  base_model={getattr(profile, 'base_model', '?')}")
     log(f"  endpoint={getattr(profile, 'endpoint', None)}  adapter_name={getattr(profile, 'adapter_name', None)}")
     log(f"  adapter_root={config.adapter_root}  adapter={getattr(profile, 'adapter', None)}")
@@ -527,99 +758,222 @@ async def main() -> None:
     # indices, so a run pinned to one GPU can still land somewhere unintended.
     log(f"  device={getattr(profile, 'device', None)}  device_map={config.device_map}"
         f"  CUDA_VISIBLE_DEVICES={os.getenv('CUDA_VISIBLE_DEVICES', 'unset')}")
-    log(f"  translation={translator.backend}  sarvam_key={'set' if translator.api_key else 'MISSING'}")
+    # Fail loudly here rather than 22 languages deep. DEFAULT_PROFILES carries no
+    # endpoint or adapter_name, so a vllm run needs INFERENCE_PROFILES in the
+    # environment; without it every generation would error identically.
     if config.backend == "vllm" and not getattr(profile, "endpoint", None):
-        parser.error(
+        raise SystemExit(
             f"backend is vllm but profile '{profile_name}' has no endpoint. "
             "Set INFERENCE_PROFILES, or drop the INFERENCE_BACKEND override to use .env as deployed."
         )
+    return profile_name
+
+
+async def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--baseline", action="store_true", help="English-only adapter variety check")
+    parser.add_argument("--sweep", action="store_true", help="run every supported language")
+    parser.add_argument("--languages", help="comma-separated codes instead of all")
+    parser.add_argument(
+        "--lessons",
+        help="path to the shared lesson bank; default is lessons.json at the repo root",
+    )
+    parser.add_argument(
+        "--lesson",
+        help="run these lessons by id, comma-separated, e.g. "
+             "os/threads-scheduling/cpu-scheduling,dsa/trees-heaps/heaps. "
+             "Without this and without --subject, every lesson in the bank runs.",
+    )
+    parser.add_argument("--list-lessons", action="store_true", help="print the selected lessons and exit")
+    parser.add_argument(
+        "--subject",
+        default=None,
+        help="cp, dsa, oop_java, or os: run every lesson for that subject. Each subject "
+             "routes to a different base model and LoRA, so this also selects the adapter.",
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="inference profile; default routes by subject exactly as a live session does",
+    )
+    parser.add_argument("--turns", type=int, default=3)
+    parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help="run each lesson this many times. One run gives a number with no spread, "
+             "which cannot distinguish a real difference from run-to-run noise.",
+    )
+    parser.add_argument("--no-judge", action="store_true", help="skip OpenRouter scoring")
+    parser.add_argument(
+        "--allow-fake",
+        action="store_true",
+        help="permit INFERENCE_BACKEND=fake; results are stamped fake and must not be reported",
+    )
+    parser.add_argument(
+        "--allow-unreviewed",
+        action="store_true",
+        help="permit lessons no human has accepted yet; results are stamped unreviewed",
+    )
+    parser.add_argument("--out", help="write full JSON results here")
+    args = parser.parse_args()
+
+    bank = load_lessons(args.lessons)
+    lessons = resolve_lessons(bank, args.subject, args.lesson)
+
+    if args.list_lessons:
+        log(f"{len(lessons)} lessons from {bank['source']} (version {bank.get('version')})")
+        for lesson in lessons:
+            notes = [] if lesson.reviewed else ["UNREVIEWED"]
+            if lesson.carried_from:
+                notes.append(f"carried from {lesson.carried_from}")
+            log(f"  {lesson.lesson_id:<50}{'  '.join(notes)}")
+        return
+
+    if not args.baseline and not args.sweep:
+        parser.error("pass --baseline, --sweep, or both")
+    if args.repeat < 1:
+        parser.error("--repeat must be at least 1")
+
+    # Step 3 of the plan is a human reading each script. Without this guard that step
+    # is advisory, and the first run under time pressure quietly skips it while the
+    # write-up still says the scripts were accepted by a reader.
+    unreviewed = [lesson.lesson_id for lesson in lessons if not lesson.reviewed]
+    if unreviewed and not args.allow_unreviewed:
+        parser.error(
+            f"{len(unreviewed)} of {len(lessons)} selected lessons are not marked reviewed in "
+            f"{bank['source']}:\n  " + "\n  ".join(unreviewed[:5])
+            + (f"\n  ... and {len(unreviewed) - 5} more" if len(unreviewed) > 5 else "")
+            + "\nHave someone who knows the material accept each script and set "
+              '"reviewed": true, or pass --allow-unreviewed for a dry run.'
+        )
+
+    service = InferenceService()
+    translator = TranslationService()
+    config = service.config
+
+    # FakeBackend returns a canned string rather than calling a model, so every
+    # question, evaluation, and fluency score below would be about that string. The
+    # results file would still look complete, which is the failure this catches.
+    if config.backend == "fake" and not args.allow_fake:
+        parser.error(
+            "INFERENCE_BACKEND=fake returns a scripted string, not a model, so nothing "
+            "model-dependent in the output would mean anything -- and the results file "
+            "would look exactly like a real run. Set INFERENCE_BACKEND=vllm or "
+            "transformers, or pass --allow-fake to check the plumbing."
+        )
+
+    log(f"backend={config.backend}  lessons={len(lessons)}  repeats={args.repeat}  from={bank['source']}")
+    # The deployed portal reads .env and deploy/oauth.env, and only the second sets
+    # vllm. A run that sourced just .env looks identical here apart from this line.
+    if config.backend == "transformers":
+        log("  NOTE: backend is transformers, so this loads its own copy of the base model.")
+        log("  If the host serves vLLM, source deploy/oauth.env as scripts/run.sh does.")
+    log(f"  translation={translator.backend}  sarvam_key={'set' if translator.api_key else 'MISSING'}")
+    log(f"  judge={'off' if args.no_judge else JUDGE_MODEL}")
+
+    if args.languages:
+        codes = [code.strip() for code in args.languages.split(",") if code.strip()]
+        unknown = [code for code in codes if code not in SUPPORTED_LANGUAGES]
+        if unknown:
+            parser.error(f"unsupported language codes: {', '.join(unknown)}")
+    else:
+        codes = [code for code in SUPPORTED_LANGUAGES if code != "en"]
+
     client = None if args.no_judge else httpx.AsyncClient()
+    # Everything the write-up's test bed table needs, recorded by the run itself
+    # rather than remembered afterwards.
     output: dict[str, Any] = {
-        "model": args.model,
-        "profile": profile_name,
-        "subject": lesson.subject,
-        "topic": lesson.topic,
-        "subtopic": lesson.subtopic,
-        "turns": args.turns,
+        "test_bed": {
+            "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "backend": config.backend,
+            "results_are_fake": config.backend == "fake",
+            "results_are_unreviewed": bool(unreviewed),
+            "lessons_source": bank["source"],
+            "lessons_version": bank.get("version"),
+            "lesson_ids": [lesson.lesson_id for lesson in lessons],
+            "unreviewed_lesson_ids": unreviewed,
+            "model_override": args.model,
+            "turns": args.turns,
+            "repeats": args.repeat,
+            "languages": codes if args.sweep else [],
+            # The judge only runs inside a sweep, so a baseline-only run records none.
+            "judge_model": JUDGE_MODEL if (args.sweep and not args.no_judge) else None,
+            "translation_backend": translator.backend,
+            # --repeat only produces a spread because decoding samples; at
+            # temperature 0 the repeats would be identical by construction and the
+            # printed range would be zero while looking like measured variance.
+            "temperature": config.temperature,
+            "top_p": config.top_p,
+            "adapter_root": str(config.adapter_root),
+            "cuda_visible_devices": os.getenv("CUDA_VISIBLE_DEVICES"),
+        },
+        "runs": [],
     }
 
+    run_started = time.monotonic()
+    turns_run = 0
     try:
-        if args.baseline:
-            output["baseline"] = await run_baseline(service, lesson, args.model, args.turns)
-
-        if args.sweep:
-            if args.languages:
-                codes = [c.strip() for c in args.languages.split(",") if c.strip()]
-                unknown = [c for c in codes if c not in SUPPORTED_LANGUAGES]
-                if unknown:
-                    parser.error(f"unsupported language codes: {', '.join(unknown)}")
-            else:
-                codes = [c for c in SUPPORTED_LANGUAGES if c != "en"]
-
-            log(f"\n=== SWEEP ({len(codes)} languages, subject={lesson.subject}, model={args.model}) ===")
-            records = []
-            consecutive = 0
-            for position, code in enumerate(codes, 1):
+        for lesson in lessons:
+            profile_name = describe_profile(service, lesson, args.model)
+            for repeat in range(1, args.repeat + 1):
+                run: dict[str, Any] = {
+                    "lesson_id": lesson.lesson_id,
+                    "subject": lesson.subject,
+                    "topic": lesson.topic,
+                    "subtopic": lesson.subtopic,
+                    "carried_from": lesson.carried_from,
+                    "reviewed": lesson.reviewed,
+                    "profile": profile_name,
+                    "repeat": repeat,
+                    "started_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                }
                 started = time.monotonic()
-                try:
-                    record = await run_language(
-                        service, translator, client, lesson, code, args.model, args.turns
+                if args.baseline:
+                    run["baseline"] = await run_baseline(service, lesson, args.model, args.turns)
+                    turns_run += args.turns
+                if args.sweep:
+                    records, aborted = await run_sweep(
+                        service, translator, client, lesson, codes, args.model, args.turns
                     )
-                except TranslationUnavailable as exc:
-                    # A single poisoned (sentence, language) pair is a finding about that
-                    # language, not a reason to discard the other 21. Only a run of
-                    # consecutive failures means Sarvam itself is down.
-                    consecutive += 1
-                    record = {
-                        "code": code,
-                        "language": SUPPORTED_LANGUAGES[code],
-                        "turns": [],
-                        "error": f"TranslationUnavailable: {exc}",
-                    }
-                    log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {exc}")
-                    if consecutive >= 3:
-                        log(f"\n  ABORTED: {consecutive} languages in a row failed to translate")
-                        output["aborted"] = {
-                            "at": code,
-                            "reason": str(exc),
-                            "not_run": codes[position:],
-                        }
-                        records.append(record)
-                        break
-                    records.append(record)
-                    continue
-                except Exception as exc:  # noqa: BLE001 - 21 good languages beat 0
-                    record = {
-                        "code": code,
-                        "language": SUPPORTED_LANGUAGES[code],
-                        "turns": [],
-                        "error": f"{type(exc).__name__}: {exc}",
-                    }
-                    log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {record['error']}")
-                    consecutive += 1
-                else:
-                    consecutive = 0
-                    log(
-                        f"  [{position}/{len(codes)}] {record['language']:<12} "
-                        f"{time.monotonic() - started:.1f}s",
+                    run["sweep"] = records
+                    if aborted:
+                        run["aborted"] = aborted
+                    turns_run += sum(len(record["turns"]) for record in records)
+                    summarise(records)
+                run["elapsed_seconds"] = round(time.monotonic() - started, 1)
+                output["runs"].append(run)
+                # Written after every repeat, not once at the end. A run measured in
+                # hours will eventually meet a dropped ssh or a killed engine, and
+                # losing every completed lesson to that is not worth the tidiness of a
+                # single final write. Without --out the JSON still goes to stdout at
+                # the end, which is the only way results leave the host over a pipe.
+                if args.out:
+                    Path(args.out).write_text(
+                        json.dumps(output, ensure_ascii=False, indent=2)
                     )
-                records.append(record)
-            output["sweep"] = records
-            summarise(records)
     finally:
         await service.unload_all()
         await translator.close()
         if client is not None:
             await client.aclose()
 
+    summarise_runs(output["runs"])
+    output["cost_basis"] = summarise_cost(time.monotonic() - run_started, turns_run)
+    if config.backend == "fake":
+        log("\n  WARNING: INFERENCE_BACKEND=fake -- these numbers describe a canned string.")
+    if unreviewed:
+        log(f"\n  WARNING: {len(unreviewed)} lesson(s) had no human review.")
+
     payload = json.dumps(output, ensure_ascii=False, indent=2)
+    # stdout always, --out as well. Piped in over ssh, stdout is the only way results
+    # leave the host, so writing only to --out strands them there -- which is exactly
+    # what happened on the first multi-subject run, where every local file was empty
+    # and the results sat on the server needing an scp nobody had planned.
+    print(payload)
     if args.out:
         Path(args.out).write_text(payload)
-        log(f"\nwrote {args.out}")
-    else:
-        # Default target is stdout: piped in over ssh, this is the only way results
-        # leave the host, and it keeps the server free of new files.
-        print(payload)
+        log(f"\nalso wrote {args.out} on this machine (delete it once the run is collected)")
 
 
 if __name__ == "__main__":
