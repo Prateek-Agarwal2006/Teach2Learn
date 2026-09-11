@@ -135,6 +135,7 @@ async def setup_agent(settings):
     scorer_chain = build_scorer_chain(llm)
     final_scorer_chain = build_final_scorer_chain(llm)
     cl.user_session.set("student_chain", student_chain)
+    cl.user_session.set("vs", vs)
     cl.user_session.set("evaluator_chain", evaluator_chain)
     cl.user_session.set("scorer_chain", scorer_chain)
     cl.user_session.set("final_scorer_chain", final_scorer_chain)
@@ -230,6 +231,7 @@ async def start():
     scorer_chain = build_scorer_chain(llm)
     final_scorer_chain = build_final_scorer_chain(llm)
     cl.user_session.set("student_chain", student_chain)
+    cl.user_session.set("vs", vs)
     cl.user_session.set("evaluator_chain", evaluator_chain)
     cl.user_session.set("scorer_chain", scorer_chain)
     cl.user_session.set("final_scorer_chain", final_scorer_chain)
@@ -312,6 +314,7 @@ async def handle_teacher_turn(teacher_explanation: str):
 
     # Load session state
     student_chain = cl.user_session.get("student_chain")
+    vs = cl.user_session.get("vs")
     evaluator_chain = cl.user_session.get("evaluator_chain")
     scorer_chain = cl.user_session.get("scorer_chain")
     qa_pool = cl.user_session.get("qa_pool", [])
@@ -334,10 +337,15 @@ async def handle_teacher_turn(teacher_explanation: str):
     # Expected answer from QA pool
     expected_answer = qa_pool[qa_index].a if qa_index < len(qa_pool) else ""
     student_memory = fetch_student_memory(session_interaction_ids)
-    # 2️⃣ Student generates response
+    # 2️⃣ Student generates response, grounded in the retrieved course material for
+    # what the teacher just said — previously vs was returned by build_student_chain
+    # and never used again, so the student judged every explanation ungrounded.
+    context_docs = vs.similarity_search(teacher_explanation_en, k=4)
+    context = "\n\n".join(doc.page_content for doc in context_docs)
     student_llm_response = student_chain.invoke({
         "teacher_explanation": teacher_explanation_en,
-        "student_memory": student_memory
+        "student_memory": student_memory,
+        "context": context,
     })
 
     if isinstance(student_llm_response['text'], StudentResponse):

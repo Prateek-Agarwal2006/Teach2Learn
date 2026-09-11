@@ -14,3 +14,9 @@ chainlit.md
 # Source PDFs (~150MB, copyrighted textbooks) stay out of git; the built
 # vectorstore/ below is what's actually shared, since it's what the app reads.
 data/
+
+# Raw sweep results: large, regenerated per run. Matches teach2learn-portal's convention;
+# the polished results-languages.md is what's actually shared.
+sweepA-*.json
+sweepB-*.json
+calib.json

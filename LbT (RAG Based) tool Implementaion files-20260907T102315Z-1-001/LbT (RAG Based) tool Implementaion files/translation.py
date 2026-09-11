@@ -86,6 +86,25 @@ def normalize_language(value: str | None) -> str:
     return code if code in SUPPORTED_LANGUAGES else "en"
 
 
+# Sarvam has returned fragments of its own OpenAPI schema in translated_text instead of a
+# translation -- reproducibly, for particular (sentence, language) pairs (a Punjabi sentence
+# in the CP lesson does it on every attempt). The payload is a non-empty string, so it would
+# otherwise reach the model as the participant's own words, be stored, and be shown back on
+# screen. Ported from teach2learn-portal/app/services/translation.py so the two systems'
+# live paths cannot disagree about what a leak looks like.
+#
+# The opening bracket must be followed by a quoted key. Matching a bare leading bracket also
+# matches ordinary prose beginning with one, including every line the echo backend produces.
+_SCHEMA_LEAK = re.compile(
+    r"^\s*[\{\[]\s*['\"]|['\"](?:type|title|description|properties|\$ref)['\"]\s*:", re.I
+)
+
+
+def looks_like_schema(text: str) -> bool:
+    """True when Sarvam returned API documentation where a translation belongs."""
+    return bool(_SCHEMA_LEAK.search(text or ""))
+
+
 class TranslationService:
     """Translate participant-visible text, never raising into the caller."""
 
@@ -194,6 +213,11 @@ class TranslationService:
         translated = response.json().get("translated_text")
         if not isinstance(translated, str) or not translated.strip():
             raise ValueError("Sarvam returned no translated text")
+        if looks_like_schema(translated):
+            # Raising routes this into translate()'s handler, which logs and returns the
+            # original text -- the participant reads their own sentence in English, the
+            # same fallback as a dead key, rather than a wall of JSON.
+            raise ValueError(f"Sarvam returned a schema fragment: {translated[:120]!r}")
         return translated
 
 

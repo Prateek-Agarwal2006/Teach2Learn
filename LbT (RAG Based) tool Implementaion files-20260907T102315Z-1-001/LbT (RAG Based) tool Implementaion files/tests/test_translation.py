@@ -88,3 +88,36 @@ def test_split_for_limit_never_exceeds_the_limit(limit):
     chunks = _split_for_limit(text, limit)
     assert "".join(chunks) == text
     assert all(len(chunk) <= limit for chunk in chunks)
+
+
+def test_schema_fragment_is_rejected_rather_than_returned(monkeypatch):
+    """The real Punjabi payload must not reach the participant as their own words.
+
+    translated_text is a non-empty string here, so the existing isinstance check passes
+    it through. Only the schema guard stops it, and the participant then reads their
+    sentence in English -- the same fallback as any other failure. Ported from
+    teach2learn-portal's fix for the identical Sarvam defect (byte-identical translation.py).
+    """
+    leak = (
+        "{'description': 'The translation of the source sentence assuming the subject is "
+        "female.', 'title': 'Female', 'type': 'string'}"
+    )
+    monkeypatch.setenv("T2L_TRANSLATION_BACKEND", "sarvam")
+    monkeypatch.setenv("SARVAM_API_KEY", "test-key")
+    service = TranslationService()
+    service._client = httpx.AsyncClient(
+        transport=httpx.MockTransport(lambda request: httpx.Response(200, json={"translated_text": leak}))
+    )
+    original = "Every successful malloc must be matched by exactly one free."
+    result = asyncio.run(service.translate(original, "en", "pa"))
+    assert result == original
+    assert "description" not in result
+
+
+def test_ordinary_text_beginning_with_a_bracket_is_not_rejected():
+    """A bare leading bracket is not a leak; requiring a quoted key after it is the test."""
+    from translation import looks_like_schema
+
+    assert not looks_like_schema("[hi] Round-robin gives each process a fixed time quantum.")
+    assert not looks_like_schema("[1] The scheduler decides which process runs next.")
+    assert looks_like_schema("{'description': 'x', 'type': 'string'}")

@@ -1,21 +1,36 @@
-"""Exercise every supported teaching language against the real RAG pipeline.
+"""Exercise the shared lesson bank against the real RAG pipeline.
 
-This is the RAG-based tool's equivalent of teach2learn-portal/scripts/check_languages.py,
-adapted for this project's architecture: there is no fine-tuned adapter here, so the
-"model" step is student_chain.invoke() (a general LLM grounded by a real ingested
-vectorstore, via qa_generator's QA pool), not a LoRA-tuned generation call. Everything
-else -- the translation boundary, the passthrough/leak checks, the independent
-OpenRouter fidelity/fluency judge -- is the same methodology, reusing this project's own
-(verbatim-ported) translation.py unchanged.
+This is the RAG-based tool's counterpart to teach2learn-portal/scripts/check_languages.py,
+reading the same repo-root lessons.json bank that portal harness reads, so results from
+the two systems describe the same teacher input (see RAG_TEST_PLAN.md's "one constraint
+that decides everything"). Adapted for this project's architecture: there is no fine-tuned
+adapter here, so the "model" step is student_chain.invoke() -- a general LLM now actually
+grounded in the ingested vectorstore (see student_chain.py's {context} slot) via
+similarity_search on the teacher's (translated-to-English) explanation each turn.
 
 Nothing is written to Mongo: this calls student_chain.invoke() directly rather than going
 through main.py's handle_teacher_turn(), so no create_session/save_student/etc. runs.
 
-Usage (from this project's root, with SARVAM_API_KEY / OPENROUTER_API_KEY / MONGO_URI
-etc. already in the environment -- source .env first):
+Two native evaluations exist on the two systems (the portal adapter's inline
+Level/Score, this tool's separate evaluator_chain/scorer_chain) and they are not
+comparable to each other -- see RAG_TEST_PLAN.md. This harness does not attempt to
+produce a Bloom-level or Score figure for the RAG side; report_sweep.py's evaluation
+columns will correctly show "-" for these runs rather than a fabricated comparison.
 
-    python scripts/check_languages.py --sweep --subject os --turns 3
-    python scripts/check_languages.py --sweep --languages hi,ta,te --turns 3 --out results.json
+Usage (from this project's root, with the .env already sourced):
+
+    # what's in the bank, and what's reviewed
+    python scripts/check_languages.py --list-lessons
+
+    # one subject, English only, three repeats (question variety + retrieval sanity)
+    python scripts/check_languages.py --baseline --subject os --repeat 3 --out baseline-os.json
+
+    # one lesson, two languages, one repeat -- a pilot before committing to the full sweep
+    python scripts/check_languages.py --sweep --lesson os/threads-scheduling/cpu-scheduling \\
+        --languages hi,ta --out pilot.json
+
+    # the full grid, matching teach2learn-portal/TEST_BED.md's design
+    python scripts/check_languages.py --sweep --repeat 3 --out sweep-all.json
 """
 
 from __future__ import annotations
@@ -27,41 +42,30 @@ import os
 import re
 import sys
 import time
+from collections import Counter
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from functools import partial
 from pathlib import Path
 from typing import Any
 
 import httpx
+from langchain_openai import ChatOpenAI
 
 log = partial(print, file=sys.stderr, flush=True)
 
 _root = Path(__file__).resolve().parents[1] if "__file__" in globals() else Path.cwd()
 sys.path.insert(0, str(_root))
 
-from models import get_llm  # noqa: E402
+from models import StudentResponse  # noqa: E402
 from qa_generator import generate_qa_for_subtopic, load_catalog  # noqa: E402
 from student_chain import build_student_chain  # noqa: E402
-from models import StudentResponse  # noqa: E402
 from translation import SUPPORTED_LANGUAGES, TranslationService  # noqa: E402
 
-# One fixed 3-line lesson, reused for every language so differences within the subject
-# are attributable to the language rather than to what the teacher said. Matches
-# teach2learn-portal's "os" script verbatim -- both tools teach the same topic, so the
-# results are meaningfully comparable across the two implementations.
-LESSONS: dict[str, dict[str, Any]] = {
-    "os": {
-        "subtopic": "CPU scheduling",
-        "script": (
-            "The scheduler decides which ready process runs next on the CPU, because there are "
-            "usually more runnable processes than cores.",
-            "Round-robin gives each process a fixed time quantum in turn, so no single process "
-            "can starve the others while it holds the CPU.",
-            "A very small quantum wastes time on context switches, while a very large one makes "
-            "the scheduler behave like plain first-come first-served.",
-        ),
-    },
-}
+# Fixed decoding params from TEST_BED.md, applied here rather than in models.py's
+# get_llm() so the live app's behaviour is untouched by this harness.
+TEMPERATURE = float(os.getenv("LANGCHECK_TEMPERATURE", "0.25"))
+TOP_P = float(os.getenv("LANGCHECK_TOP_P", "0.9"))
 
 # Indic + Perso-Arabic ranges -- identical to teach2learn-portal's check, since both
 # projects route through the same Sarvam script set across the same 22 languages.
@@ -84,6 +88,10 @@ Note: <one short clause>
 5 means the translation preserves the full technical meaning in correct {language} script.
 1 means the meaning is lost, the script is wrong, or the text is still English."""
 
+# Deliberately "piece of text"/"write", not "question"/"ask": the RAG student legitimately
+# returns no question on rating="understood" and the harness falls back to the reflection
+# text, which is not phrased as a question. RAG_TEST_PLAN.md asks the portal to adopt this
+# wording rather than the reverse.
 FLUENCY_PROMPT = """You judge one piece of text written in {language}, addressed by a student to their teacher.
 Reply with exactly two lines and nothing else:
 Score: <1-5>
@@ -93,12 +101,7 @@ Note: <one short clause>
 
 
 class TranslationUnavailable(RuntimeError):
-    """Sarvam returned the source text unchanged -- translation is not happening.
-
-    translation.py returns the input on any failure, which is right for a live session
-    (the participant keeps going in English) but wrong for a sweep, where an unlabelled
-    passthrough looks identical to a language that was never actually exercised.
-    """
+    """Sarvam returned the source text unchanged -- translation is not happening."""
 
 
 def _looks_like_schema(text: str) -> bool:
@@ -109,9 +112,7 @@ def _has_non_latin(text: str) -> bool:
     return bool(_NON_LATIN.search(text or ""))
 
 
-async def translate_or_fail(
-    call: Any, text: str, code: str, label: str, attempts: int = 3
-) -> tuple[str, int]:
+async def translate_or_fail(call: Any, text: str, code: str, label: str, attempts: int = 3) -> tuple[str, int]:
     """One boundary crossing, retried, returning the text and the retries it cost."""
     for attempt in range(1, attempts + 1):
         result = await call(text, code)
@@ -125,8 +126,10 @@ async def translate_or_fail(
     raise TranslationUnavailable(f"{label} for {code} {why} on {attempts} attempts")
 
 
-async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, Any]:
+async def judge(client: httpx.AsyncClient | None, system: str, user: str) -> dict[str, Any]:
     """One isolated OpenRouter call. Never raises -- a dead judge must not kill the sweep."""
+    if client is None:
+        return {"score": None, "note": "judge disabled"}
     key = os.getenv("OPENROUTER_API_KEY", "").strip()
     if not key:
         return {"score": None, "note": "no OPENROUTER_API_KEY"}
@@ -136,10 +139,7 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
                 "model": JUDGE_MODEL,
-                "messages": [
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user},
-                ],
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
                 "max_tokens": int(os.getenv("LANGCHECK_JUDGE_MAX_TOKENS", "600")),
             },
             timeout=float(os.getenv("OPENROUTER_TIMEOUT_SECONDS", "90")),
@@ -155,81 +155,192 @@ async def judge(client: httpx.AsyncClient, system: str, user: str) -> dict[str, 
         return {"score": None, "note": "judge returned empty content"}
     score = re.search(r"Score:\s*([1-5])", text)
     note = re.search(r"Note:\s*(.+)", text)
-    return {
-        "score": int(score.group(1)) if score else None,
-        "note": note.group(1).strip() if note else text.strip()[:120],
-    }
+    return {"score": int(score.group(1)) if score else None, "note": note.group(1).strip() if note else text.strip()[:120]}
+
+
+def _templated_openers(questions: list[str], words: int = 6) -> list[dict[str, Any]]:
+    """Catch follow-ups that differ only after a shared stock opening.
+
+    Ported verbatim from teach2learn-portal's harness: exact-string distinctness scores
+    "I think I understand most of that. <X>" and "... <Y>" as two different questions,
+    which is how formulaic phrasing slips through a perfect distinctness ratio.
+    """
+    counts: dict[str, int] = {}
+    for question in questions:
+        opener = " ".join(question.strip().lower().split()[:words])
+        if opener:
+            counts[opener] = counts.get(opener, 0) + 1
+    return [{"opener": o, "count": c} for o, c in sorted(counts.items(), key=lambda kv: -kv[1]) if c > 1]
+
+
+def _student_response(raw: Any) -> StudentResponse:
+    return raw if isinstance(raw, StudentResponse) else StudentResponse.parse_raw(raw)
+
+
+def _outbound_text(student_model: StudentResponse) -> tuple[str, str]:
+    """What the participant reads back. The student sometimes has no follow-up
+    (rating="understood", message=None) -- unlike a fine-tuned adapter that always
+    asks something -- so fall back to the always-populated reflection text."""
+    if student_model.message:
+        return student_model.message, "message"
+    return student_model.reflection, "reflection"
+
+
+# --------------------------------------------------------------------------------
+# Lesson bank
+# --------------------------------------------------------------------------------
 
 
 @dataclass(frozen=True)
 class Lesson:
+    id: str
     subject: str
+    topic_id: str
     subtopic: str
     script: tuple[str, ...]
+    reviewed: bool
+    carried_from: str | None
 
 
-def resolve_lesson(subject: str) -> Lesson:
-    if subject not in LESSONS:
-        raise SystemExit(f"no lesson defined for subject {subject!r}; have {sorted(LESSONS)}")
-    lesson = LESSONS[subject]
-    return Lesson(subject, lesson["subtopic"], lesson["script"])
+def _git_root(start: Path) -> Path | None:
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"], cwd=start, capture_output=True, text=True, timeout=5
+        )
+        if result.returncode == 0:
+            return Path(result.stdout.strip())
+    except Exception:  # noqa: BLE001 - fall through to the parents()-based guess
+        pass
+    return None
+
+
+def resolve_lessons_path(explicit: str | None) -> Path:
+    if explicit:
+        path = Path(explicit)
+        if not path.exists():
+            raise SystemExit(f"--lessons path does not exist: {path}")
+        return path
+    # The true repo root, found via git rather than a fixed parents-count, since this
+    # project's folder is nested a variable number of levels deep depending on how it
+    # was extracted/merged (it moved once already, when phase1-test-bed merged in).
+    candidates = []
+    git_root = _git_root(_root)
+    if git_root:
+        candidates.append(git_root / "lessons.json")
+    candidates.append(_root.parent / "lessons.json")
+    candidates.append(_root.parent.parent / "lessons.json")
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    raise SystemExit(
+        "No lesson bank found. Tried: " + ", ".join(str(c) for c in candidates) +
+        ". Pass --lessons explicitly. No fallback bank is used -- see RAG_TEST_PLAN.md."
+    )
+
+
+def load_lessons(path: Path) -> tuple[list[Lesson], int]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    lessons = [
+        Lesson(
+            id=entry["id"],
+            subject=entry["subject"],
+            topic_id=entry["topic_id"],
+            subtopic=entry["subtopic"],
+            script=tuple(entry["script"]),
+            reviewed=bool(entry.get("reviewed", False)),
+            carried_from=entry.get("carried_from"),
+        )
+        for entry in payload["lessons"]
+    ]
+    return lessons, int(payload.get("version", 0))
+
+
+def filter_lessons(
+    lessons: list[Lesson], subject: str | None, lesson_ids: list[str] | None
+) -> list[Lesson]:
+    selected = lessons
+    if subject:
+        selected = [lesson for lesson in selected if lesson.subject == subject]
+    if lesson_ids:
+        wanted = set(lesson_ids)
+        unknown = wanted - {lesson.id for lesson in lessons}
+        if unknown:
+            raise SystemExit(f"unknown lesson id(s): {', '.join(sorted(unknown))}")
+        selected = [lesson for lesson in selected if lesson.id in wanted]
+    return selected
+
+
+# --------------------------------------------------------------------------------
+# Running one lesson
+# --------------------------------------------------------------------------------
+
+
+async def run_baseline(
+    student_chain: Any, vs: Any, lesson: Lesson, opening_en: str
+) -> dict[str, Any]:
+    """English only, real chain, real retrieval. Establishes whether the student
+    varies its questions and whether retrieval is actually influencing it."""
+    questions = [opening_en]
+    student_memory: list[StudentResponse] = []
+    for turn_index in range(len(lesson.script)):
+        teacher_en = lesson.script[turn_index]
+        context_docs = vs.similarity_search(teacher_en, k=4)
+        context = "\n\n".join(doc.page_content for doc in context_docs)
+        response = student_chain.invoke({
+            "teacher_explanation": teacher_en,
+            "student_memory": student_memory,
+            "context": context,
+        })
+        student_model = _student_response(response["text"])
+        student_memory.append(student_model)
+        outbound_text, outbound_kind = _outbound_text(student_model)
+        questions.append(outbound_text)
+        log(f"    turn {turn_index + 1} ({outbound_kind}, rating={student_model.rating}): {outbound_text}")
+
+    distinct = len({q.strip().lower() for q in questions})
+    templated = _templated_openers(questions)
+    return {"questions": questions, "distinct": distinct, "templated_openers": templated, "evaluations": []}
 
 
 async def run_language(
     student_chain: Any,
+    vs: Any,
     translator: TranslationService,
     client: httpx.AsyncClient | None,
     lesson: Lesson,
     opening_en: str,
     code: str,
-    turns: int,
 ) -> dict[str, Any]:
     name = SUPPORTED_LANGUAGES[code]
     record: dict[str, Any] = {"code": code, "language": name, "turns": []}
 
-    opening_local, opening_retries = await translate_or_fail(
-        translator.from_english, opening_en, code, "opening"
-    )
+    opening_local, opening_retries = await translate_or_fail(translator.from_english, opening_en, code, "opening")
     record["opening_en"] = opening_en
     record["opening_local"] = opening_local
     record["opening_retries"] = opening_retries
-    # The opening crosses the boundary too, but it sits outside the turn loop below, so
-    # nothing else would ever check it -- mirrors the same fix made in the finetuned
-    # version's harness after a silently-English opening was scored as clean there.
     record["opening_untranslated"] = opening_local.strip() == opening_en.strip()
 
     student_memory: list[StudentResponse] = []
-    for index in range(turns):
-        teacher_en = lesson.script[index % len(lesson.script)]
-        # Seed: what the participant would have typed in their language.
-        teacher_local, seed_retries = await translate_or_fail(
-            translator.from_english, teacher_en, code, "seed"
-        )
-        # Inbound crossing: what student_chain actually receives.
-        teacher_back, inbound_retries = await translate_or_fail(
-            translator.to_english, teacher_local, code, "inbound"
-        )
+    for turn_index in range(len(lesson.script)):
+        teacher_en = lesson.script[turn_index]
+        teacher_local, seed_retries = await translate_or_fail(translator.from_english, teacher_en, code, "seed")
+        teacher_back, inbound_retries = await translate_or_fail(translator.to_english, teacher_local, code, "inbound")
 
-        student_llm_response = student_chain.invoke({
+        context_docs = vs.similarity_search(teacher_back, k=4)
+        context = "\n\n".join(doc.page_content for doc in context_docs)
+        response = student_chain.invoke({
             "teacher_explanation": teacher_back,
             "student_memory": student_memory,
+            "context": context,
         })
-        raw = student_llm_response["text"]
-        student_model = raw if isinstance(raw, StudentResponse) else StudentResponse.parse_raw(raw)
+        student_model = _student_response(response["text"])
         student_memory.append(student_model)
-
-        # Outbound crossing: what the participant reads back. The student sometimes has
-        # no follow-up question (rating="understood", message=None) -- unlike the
-        # finetuned adapter, which always asks something -- so fall back to the
-        # reflection text, which is always populated, to keep every turn judgeable.
-        outbound_kind = "message" if student_model.message else "reflection"
-        outbound_en = student_model.message or student_model.reflection
-        question_local, outbound_retries = await translate_or_fail(
-            translator.from_english, outbound_en, code, "outbound"
-        )
+        outbound_en, outbound_kind = _outbound_text(student_model)
+        question_local, outbound_retries = await translate_or_fail(translator.from_english, outbound_en, code, "outbound")
 
         turn: dict[str, Any] = {
-            "turn": index + 1,
+            "turn": turn_index + 1,
             "teacher_en": teacher_en,
             "teacher_local": teacher_local,
             "teacher_back_en": teacher_back,
@@ -244,146 +355,184 @@ async def run_language(
         }
         if client is not None and code != "en":
             turn["fidelity"] = await judge(
-                client,
-                FIDELITY_PROMPT.format(language=name),
+                client, FIDELITY_PROMPT.format(language=name),
                 f"English source:\n{teacher_en}\n\n{name} translation:\n{teacher_local}",
             )
-            turn["fluency"] = await judge(
-                client,
-                FLUENCY_PROMPT.format(language=name),
-                f"{name} text:\n{question_local}",
-            )
+            turn["fluency"] = await judge(client, FLUENCY_PROMPT.format(language=name), f"{name} text:\n{question_local}")
         record["turns"].append(turn)
 
     return record
 
 
-def summarise(records: list[dict[str, Any]]) -> None:
-    log("\n" + "=" * 78)
-    log(f"{'lang':<12}{'seed':<7}{'out':<7}{'leak':<7}{'fidel':<8}{'fluent':<8}{'verdict'}")
-    log("=" * 78)
-    for record in records:
-        if record.get("error"):
-            log(f"{record['language']:<12}{'-':<7}{'-':<7}{'-':<7}{'-':<8}{'-':<8}FAILED: {record['error'][:44]}")
-            continue
-        turns = record["turns"]
-        seed_bad = sum(1 for t in turns if t["seed_untranslated"])
-        out_bad = sum(1 for t in turns if t["outbound_untranslated"])
-        leaks = sum(1 for t in turns if t["english_zone_leak"])
-        fidel = [t["fidelity"]["score"] for t in turns if t.get("fidelity", {}).get("score")]
-        fluent = [t["fluency"]["score"] for t in turns if t.get("fluency", {}).get("score")]
-        fidel_avg = sum(fidel) / len(fidel) if fidel else None
-        fluent_avg = sum(fluent) / len(fluent) if fluent else None
+# --------------------------------------------------------------------------------
+# Driver
+# --------------------------------------------------------------------------------
 
-        problems = []
-        if seed_bad or out_bad or record.get("opening_untranslated"):
-            problems.append("PASSTHROUGH")
-        if leaks:
-            problems.append("LEAK")
-        if fidel_avg is not None and fidel_avg < 3.5:
-            problems.append("LOW-FIDELITY")
-        if fluent_avg is not None and fluent_avg < 3.5:
-            problems.append("LOW-FLUENCY")
-        verdict = ", ".join(problems) if problems else "ok"
 
-        log(
-            f"{record['language']:<12}{seed_bad:<7}{out_bad:<7}{leaks:<7}"
-            f"{(f'{fidel_avg:.1f}' if fidel_avg else '-'):<8}"
-            f"{(f'{fluent_avg:.1f}' if fluent_avg else '-'):<8}{verdict}"
-        )
-    log("=" * 78)
+def _write_out(path: str | None, output: dict[str, Any]) -> None:
+    payload = json.dumps(output, ensure_ascii=False, indent=2)
+    if path:
+        Path(path).write_text(payload, encoding="utf-8")
+    print(payload)
 
 
 async def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--sweep", action="store_true", help="run every supported language")
-    parser.add_argument("--languages", help="comma-separated codes instead of all")
-    parser.add_argument("--subject", default="os", help="only 'os' has ingested content right now")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--baseline", action="store_true", help="English-only variety check")
+    parser.add_argument("--sweep", action="store_true", help="translation quality sweep")
+    parser.add_argument("--list-lessons", action="store_true", help="print the bank and exit")
+    parser.add_argument("--lessons", help="explicit path to lessons.json")
+    parser.add_argument("--lesson", help="comma-separated lesson ids instead of all matching --subject")
+    parser.add_argument("--subject", help="cp, dsa, oop_java, or os -- omit to run every subject in the bank")
+    parser.add_argument("--languages", help="comma-separated codes for --sweep, default all 22")
     parser.add_argument("--model", default="openai/gpt-4o", help="LLM behind student_chain (via OpenRouter)")
-    parser.add_argument("--turns", type=int, default=3)
-    parser.add_argument("--no-judge", action="store_true", help="skip OpenRouter scoring")
-    parser.add_argument("--out", help="write full JSON results here")
+    parser.add_argument("--repeat", type=int, default=1, help="times to repeat each lesson (captures sampling variance)")
+    parser.add_argument("--allow-unreviewed", action="store_true")
+    parser.add_argument("--no-judge", action="store_true")
+    parser.add_argument("--out", help="crash-safety copy, rewritten after every repeat")
     args = parser.parse_args()
 
-    if not args.sweep:
-        parser.error("pass --sweep")
+    lessons_path = resolve_lessons_path(args.lessons)
+    all_lessons, lessons_version = load_lessons(lessons_path)
 
-    lesson = resolve_lesson(args.subject)
+    if args.list_lessons:
+        for lesson in all_lessons:
+            flag = "reviewed" if lesson.reviewed else "NOT REVIEWED"
+            carried = f" (carried_from={lesson.carried_from})" if lesson.carried_from else ""
+            print(f"{lesson.id}  [{flag}]{carried}")
+        return
+
+    if not args.baseline and not args.sweep:
+        parser.error("pass --baseline, --sweep, --list-lessons, or a combination of the first two")
+
+    lesson_ids = [x.strip() for x in args.lesson.split(",")] if args.lesson else None
+    lessons = filter_lessons(all_lessons, args.subject, lesson_ids)
+    if not lessons:
+        parser.error("no lessons matched --subject/--lesson")
+
+    unreviewed = [lesson.id for lesson in lessons if not lesson.reviewed]
+    if unreviewed and not args.allow_unreviewed:
+        parser.error(
+            f"{len(unreviewed)} selected lesson(s) are not reviewed: {', '.join(unreviewed)}. "
+            "Pass --allow-unreviewed to run anyway (the output is stamped as unreviewed)."
+        )
+
+    if args.languages:
+        codes = [c.strip() for c in args.languages.split(",") if c.strip()]
+        unknown_codes = [c for c in codes if c not in SUPPORTED_LANGUAGES]
+        if unknown_codes:
+            parser.error(f"unsupported language codes: {', '.join(unknown_codes)}")
+    else:
+        codes = [c for c in SUPPORTED_LANGUAGES if c != "en"]
+
     sarvam_key = os.getenv("SARVAM_API_KEY", "").strip()
-    log(f"subject={lesson.subject}  subtopic={lesson.subtopic!r}  model={args.model}")
-    log(f"sarvam_key={'set' if sarvam_key else 'MISSING'}  openrouter_key={'set' if os.getenv('OPENROUTER_API_KEY') else 'MISSING'}")
+    openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+    log(f"lessons={lessons_path} v{lessons_version}  selected={len(lessons)}  repeats={args.repeat}  model={args.model}")
+    log(f"sarvam_key={'set' if sarvam_key else 'MISSING'}  openrouter_key={'set' if openrouter_key else 'MISSING'}")
 
-    llm = get_llm(args.model)
+    llm = ChatOpenAI(
+        base_url="https://openrouter.ai/api/v1", api_key=openrouter_key, model=args.model,
+        temperature=TEMPERATURE, top_p=TOP_P,
+    )
     catalog = load_catalog()
-    if lesson.subject not in catalog:
-        parser.error(f"'{lesson.subject}' not in catalog -- run ingest.py first")
-    student_chain, vs = build_student_chain(llm, lesson.subject, catalog)
-    translator = TranslationService()
 
-    log("generating QA pool (one call, reused for every language)...")
-    qa_pool = generate_qa_for_subtopic(llm, vs, lesson.subtopic)
-    if not qa_pool:
-        parser.error("QA pool generation returned nothing -- check the model/vectorstore")
-    opening_en = qa_pool[0].question
-    log(f"  opening: {opening_en}")
+    subjects_needed = sorted({lesson.subject for lesson in lessons})
+    missing_subjects = [subject for subject in subjects_needed if subject not in catalog]
+    if missing_subjects:
+        parser.error(f"subject(s) not in vectorstore/catalog.json -- run ingest.py first: {', '.join(missing_subjects)}")
 
-    client = None if args.no_judge else httpx.AsyncClient()
-    output: dict[str, Any] = {
-        "model": args.model,
-        "subject": lesson.subject,
-        "subtopic": lesson.subtopic,
-        "turns": args.turns,
-        "opening_en": opening_en,
+    log(f"building chains for subjects: {', '.join(subjects_needed)}")
+    chains: dict[str, tuple[Any, Any]] = {
+        subject: build_student_chain(llm, subject, catalog) for subject in subjects_needed
     }
 
-    try:
-        if args.languages:
-            codes = [c.strip() for c in args.languages.split(",") if c.strip()]
-            unknown = [c for c in codes if c not in SUPPORTED_LANGUAGES]
-            if unknown:
-                parser.error(f"unsupported language codes: {', '.join(unknown)}")
-        else:
-            codes = [c for c in SUPPORTED_LANGUAGES if c != "en"]
+    translator = TranslationService()
+    client = None if args.no_judge else httpx.AsyncClient()
 
-        log(f"\n=== SWEEP ({len(codes)} languages, subject={lesson.subject}) ===")
-        records = []
-        consecutive = 0
-        for position, code in enumerate(codes, 1):
-            started = time.monotonic()
-            try:
-                record = await run_language(student_chain, translator, client, lesson, opening_en, code, args.turns)
-            except TranslationUnavailable as exc:
-                consecutive += 1
-                record = {"code": code, "language": SUPPORTED_LANGUAGES[code], "turns": [], "error": f"TranslationUnavailable: {exc}"}
-                log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {exc}")
-                if consecutive >= 3:
-                    log(f"\n  ABORTED: {consecutive} languages in a row failed to translate")
-                    output["aborted"] = {"at": code, "reason": str(exc), "not_run": codes[position:]}
-                    records.append(record)
-                    break
-                records.append(record)
-                continue
-            except Exception as exc:  # noqa: BLE001 - other good languages beat zero
-                record = {"code": code, "language": SUPPORTED_LANGUAGES[code], "turns": [], "error": f"{type(exc).__name__}: {exc}"}
-                log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {record['error']}")
-                consecutive += 1
-            else:
-                consecutive = 0
-                log(f"  [{position}/{len(codes)}] {record['language']:<12} {time.monotonic() - started:.1f}s")
-            records.append(record)
-        output["sweep"] = records
-        summarise(records)
+    output: dict[str, Any] = {
+        "test_bed": {
+            "backend": "openrouter",
+            "temperature": TEMPERATURE,
+            "top_p": TOP_P,
+            "judge_model": JUDGE_MODEL if not args.no_judge else None,
+            "lessons_source": str(lessons_path),
+            "lessons_version": lessons_version,
+            "languages": codes if args.sweep else None,
+            "generated_utc": datetime.now(timezone.utc).isoformat(),
+            "results_are_unreviewed": bool(unreviewed),
+        },
+        "runs": [],
+    }
+
+    started_all = time.monotonic()
+    opening_cache: dict[str, str] = {}
+    try:
+        for lesson in lessons:
+            student_chain, vs = chains[lesson.subject]
+            if lesson.id not in opening_cache:
+                log(f"generating QA pool for {lesson.id} ({lesson.subtopic!r})...")
+                qa_pool = generate_qa_for_subtopic(llm, vs, lesson.subtopic)
+                if not qa_pool:
+                    log(f"  WARNING: empty QA pool for {lesson.id}, skipping")
+                    continue
+                opening_cache[lesson.id] = qa_pool[0].question
+            opening_en = opening_cache[lesson.id]
+
+            for repeat_index in range(args.repeat):
+                started = time.monotonic()
+                run: dict[str, Any] = {
+                    "lesson_id": lesson.id,
+                    "subject": lesson.subject,
+                    "profile": args.model,
+                    "repeat": repeat_index,
+                }
+                try:
+                    if args.baseline:
+                        log(f"[{lesson.id}] baseline repeat {repeat_index + 1}/{args.repeat}")
+                        run["baseline"] = await run_baseline(student_chain, vs, lesson, opening_en)
+                    if args.sweep:
+                        log(f"[{lesson.id}] sweep repeat {repeat_index + 1}/{args.repeat} ({len(codes)} languages)")
+                        sweep_records = []
+                        consecutive = 0
+                        for position, code in enumerate(codes, 1):
+                            try:
+                                record = await run_language(student_chain, vs, translator, client, lesson, opening_en, code)
+                            except TranslationUnavailable as exc:
+                                consecutive += 1
+                                record = {"code": code, "language": SUPPORTED_LANGUAGES[code], "turns": [], "error": str(exc)}
+                                log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {exc}")
+                                sweep_records.append(record)
+                                if consecutive >= 3:
+                                    log(f"  ABORTED after {consecutive} consecutive translation failures")
+                                    break
+                                continue
+                            except Exception as exc:  # noqa: BLE001 - other good languages beat zero
+                                consecutive += 1
+                                record = {"code": code, "language": SUPPORTED_LANGUAGES[code], "turns": [], "error": f"{type(exc).__name__}: {exc}"}
+                                log(f"  [{position}/{len(codes)}] {record['language']:<12} FAILED: {record['error']}")
+                                sweep_records.append(record)
+                                continue
+                            else:
+                                consecutive = 0
+                                log(f"  [{position}/{len(codes)}] {record['language']:<12} ok")
+                            sweep_records.append(record)
+                        run["sweep"] = sweep_records
+                except Exception as exc:  # noqa: BLE001 - one bad lesson/repeat should not kill the run
+                    run["error"] = f"{type(exc).__name__}: {exc}"
+                    log(f"[{lesson.id}] repeat {repeat_index + 1} FAILED: {run['error']}")
+
+                run["elapsed_seconds"] = round(time.monotonic() - started, 1)
+                output["runs"].append(run)
+                _write_out(args.out, output)  # crash-safety: rewritten after every repeat
     finally:
         await translator.close()
         if client is not None:
             await client.aclose()
 
-    payload = json.dumps(output, ensure_ascii=False, indent=2)
+    output["test_bed"]["elapsed_seconds"] = round(time.monotonic() - started_all, 1)
+    _write_out(args.out, output)
     if args.out:
-        Path(args.out).write_text(payload)
-        log(f"\nwrote {args.out}")
-    else:
-        print(payload)
+        log(f"\nwrote {args.out} ({len(output['runs'])} runs)")
 
 
 if __name__ == "__main__":

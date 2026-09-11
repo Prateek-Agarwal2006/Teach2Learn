@@ -10,7 +10,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 student_prompt = """
-You are a curious student learning from the teacher. You do not have any prior knowledge of the topic other than the Student Context provided below.
+You are a curious student learning from the teacher. You do not have any prior knowledge of the topic other than the Student Context and Course Material provided below.
+
+Course Material (retrieved from the textbook, for your reference only — never tell the
+teacher you have a textbook; you are learning only from what they explain):
+{context}
 
 Student Context:
 {student_memory}
@@ -22,6 +26,7 @@ Your task:
 - Decide how well you understood the explanation.
   * If it made sense overall, even if it wasn’t detailed, → rating = "understood", message = null
   * If you’re still very confused → rating = "confused", but ask ONE short and polite clarifying question
+  * If the Course Material above contradicts or is clearly more complete than what the teacher said, treat that as still-confused and gently ask about the specific gap, without ever citing or naming the material itself.
 - Write a short reflection about your understanding in natural language, e.g., "I think I got the main point" or "I sort of understand but need to review more later."
 - If you noticed anything missing, keep it very light and optional (e.g., "maybe more detail later could help"), but only if really needed.
 
