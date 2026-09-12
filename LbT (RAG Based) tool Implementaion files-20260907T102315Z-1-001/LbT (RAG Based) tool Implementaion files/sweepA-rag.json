@@ -1,0 +1,1577 @@
+{
+  "test_bed": {
+    "backend": "openrouter",
+    "temperature": 0.25,
+    "top_p": 0.9,
+    "judge_model": "openai/gpt-5.6-luna",
+    "lessons_source": "/home/prateek/Documents/Teach2Learn/lessons.json",
+    "lessons_version": 1,
+    "languages": null,
+    "generated_utc": "2026-09-11T17:56:14.891986+00:00",
+    "results_are_unreviewed": false,
+    "elapsed_seconds": 649.8
+  },
+  "runs": [
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is the difference between a variable and a constant in C?",
+          "Could you please explain how the storage class affects where a variable is stored?",
+          "Could you please explain how the storage class affects the scope and lifetime of a variable?",
+          "Could you please explain how const interacts with storage classes in terms of variable storage location and lifetime?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you please explain how the",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.9
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is the difference between a variable and a constant in C?",
+          "Could you explain how the storage class affects the scope and lifetime of a variable?",
+          "Could you explain how storage classes specifically influence the initial value of a variable?",
+          "Could you explain how const affects the use of pointers?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.4
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is the difference between a variable and a constant in C?",
+          "Could you explain how the storage class affects the variable's scope and lifetime?",
+          "Could you explain how storage classes specifically affect the initial value of a variable?",
+          "Could you explain how const affects the initial value of a variable?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.3
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is an operator in programming?",
+          "Could you explain how associativity affects the evaluation of expressions?",
+          "Could you explain how associativity affects the evaluation of expressions?",
+          "Could you explain how associativity specifically affects the order of evaluation in logical expressions?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how associativity affects",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is an operator in programming?",
+          "Could you explain how associativity affects the evaluation order?",
+          "Could you explain how associativity affects the evaluation order?",
+          "Could you explain how associativity affects the evaluation order in logical expressions?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how associativity affects",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.3
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is an operator in programming?",
+          "Could you explain how associativity affects the evaluation of expressions?",
+          "Could you explain how associativity affects the evaluation of expressions?",
+          "Could you explain how associativity affects the evaluation order of logical expressions?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how associativity affects",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.7
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a switch statement and how does it differ from an if-else statement?",
+          "Could you explain how multiple statements are handled within an if statement?",
+          "Could you explain how multiple statements are handled within a switch case?",
+          "Could you clarify how multiple statements are handled within a switch case?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how multiple statements",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.8
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a switch statement and how does it differ from an if-else statement?",
+          "Could you explain how multiple statements are handled within an if block?",
+          "Could you explain how multiple statements are executed within a switch case?",
+          "Could you clarify how multiple statements are executed within a switch case?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how multiple statements",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a switch statement and how does it differ from an if-else statement?",
+          "Could you explain how multiple statements can be executed within an if statement?",
+          "Could you explain how multiple statements can be executed within a switch case?",
+          "Could you clarify how to handle multiple statements within a switch case?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how multiple statements",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.1
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a sentinel value in the context of loops?",
+          "Could you explain how the initialization, test, and update work together in a for loop?",
+          "Could you explain how the initialization, test, and update work together in a for loop?",
+          "Could you explain how the initialization, test, and update work together in a for loop?"
+        ],
+        "distinct": 2,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the initialization,",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.3
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a sentinel value in the context of loops?",
+          "I think I got the main point that a for loop is useful when you know how many times you want to repeat something because it keeps everything organized in one place.",
+          "I think I got the main point that a while loop is useful when the number of iterations is not known beforehand, as it keeps executing until a condition changes.",
+          "I think I got the main point that a sentinel is a special value used to indicate the end of data input, allowing loops to stop processing without knowing the number of iterations in advance."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.4
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a sentinel value in the context of loops?",
+          "Could you explain how the initialization, test, and update components work together in a for loop?",
+          "Could you explain how a do-while loop is different from a while loop in terms of execution?",
+          "Could you explain how the initialization, test, and update components work together in a for loop?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the initialization,",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.7
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a pointer in C programming?",
+          "Could you explain how pointers can point to other pointers?",
+          "Could you explain how a pointer can hold the address of another pointer?",
+          "Could you explain how pointers can point to other pointers?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how pointers can",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a pointer in C programming?",
+          "Could you explain how pointers can point to other pointers?",
+          "Could you explain how pointers can point to other pointers?",
+          "Could you explain how pointers can point to other pointers?"
+        ],
+        "distinct": 2,
+        "templated_openers": [
+          {
+            "opener": "could you explain how pointers can",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a pointer in C programming?",
+          "Could you explain how a pointer to a pointer works?",
+          "Could you explain how a pointer to a pointer is used in practice?",
+          "Could you explain how pointers to pointers are used in practice?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how a pointer",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is dynamic memory allocation in C?",
+          "Could you explain why we need to cast the pointer returned by malloc to a specific type?",
+          "Could you explain how malloc determines the amount of memory to allocate?",
+          "Could you explain why setting a pointer to NULL after freeing it is important?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.9
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is dynamic memory allocation in C?",
+          "Could you explain why we need to cast the pointer returned by malloc to a specific type?",
+          "Could you explain how malloc determines the amount of memory to allocate?",
+          "Could you explain why it's important to set a pointer to NULL after freeing it?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.9
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is dynamic memory allocation in C?",
+          "Could you explain what happens if we don't use malloc correctly?",
+          "Could you explain why it's important to cast the pointer returned by malloc to the correct type?",
+          "Could you explain why it's important to cast the pointer returned by malloc to the correct type?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain why it's important",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.6
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is the purpose of asymptotic notation in algorithm analysis?",
+          "Could you explain how Big-O notation helps in comparing algorithms more specifically?",
+          "Could you explain how Big-O notation provides an asymptotic upper bound?",
+          "Could you explain how Big-O notation is independent of hardware and software environments?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how big-o notation",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.0
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is the purpose of asymptotic notation in algorithm analysis?",
+          "Could you explain how Big-O notation helps in comparing algorithms with different growth rates?",
+          "Could you explain how Big-O notation relates to growth rates of functions?",
+          "Could you explain how Big-O notation helps in comparing algorithms with different growth rates?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how big-o notation",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.9
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is the purpose of asymptotic notation in algorithm analysis?",
+          "I think I got the main point about Big-O notation being a way to compare algorithms based on how their running time grows with input size, without needing to test them on specific hardware.",
+          "I think I got the main point about how we simplify the analysis of algorithms by focusing on the highest order term and ignoring constant factors and lower-order terms. This helps us understand the efficiency of algorithms as input size grows.",
+          "I think I got the main point about Big-O notation being an upper bound, which helps us understand the efficiency of algorithms without needing to test them on specific hardware. It also makes sense that an algorithm can be fast on typical inputs even if it has a high worst-case complexity."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.5
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a recurrence relation in the context of algorithms?",
+          "Could you explain how the overhead is calculated in a recurrence?",
+          "Could you explain how the overhead is calculated in a recurrence?",
+          "Could you explain how the overhead is calculated in a recurrence?"
+        ],
+        "distinct": 2,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the overhead",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.3
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a recurrence relation in the context of algorithms?",
+          "Could you explain how the recursion tree helps in understanding the cost of recursive algorithms?",
+          "Could you explain how the recursion tree helps in visualizing and solving recurrences?",
+          "Could you explain how to sum the costs across levels of the recursion tree?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the recursion",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.7
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a recurrence relation in the context of algorithms?",
+          "Could you explain how the recursion tree method visually represents the recurrence equation?",
+          "Could you explain how the recursion tree method visually represents the recurrence equation in more detail?",
+          "Could you explain how to sum costs across levels in the recursion tree?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the recursion",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a stack in computer science?",
+          "I think I got the main point that a stack operates on a last-in, first-out basis, where only the top item can be accessed directly.",
+          "I think I got the main point that a stack operates on a last-in, first-out basis, where only the top item can be accessed directly. The teacher's explanation about its use in undo history and call stacks was helpful.",
+          "I think I got the main point that both push and pop operations on a stack are efficient, taking constant time regardless of the number of items in the stack. The teacher's explanation was clear in emphasizing the simplicity of these operations."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a stack in computer science?",
+          "I think I got the main point about how a stack works with the last-in, first-out principle. The explanation about accessing only the top item made sense.",
+          "I think I got the main point about how a stack works with the last-in, first-out principle and its application in undo history and call stacks. The explanation about accessing only the top item made sense.",
+          "I think I got the main point about how both push and pop operations on a stack are efficient because they only involve the top element, making them constant time operations."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.7
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a stack in computer science?",
+          "I think I got the main point that a stack operates on a last-in, first-out basis, meaning the last item added is the first to be removed. The explanation about access being only at one end was clear.",
+          "I think I got the main point that a stack operates on a last-in, first-out basis, meaning the last item added is the first to be removed. The explanation about access being only at one end was clear.",
+          "I think I got the main point that both push and pop operations on a stack are efficient because they only involve the top element, making them constant time operations. The teacher's explanation was clear in emphasizing this aspect."
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.5
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is the main difference between a queue and a stack?",
+          "I think I got the main point that a queue operates by adding items at one end and removing them from the other, ensuring that items leave in the order they arrived.",
+          "I think I got the main point that implementing a queue as a circular array helps avoid shifting elements after each removal by allowing the indices to wrap around. This seems efficient and makes sense.",
+          "I think I got the main point that a deque allows insertion and removal at both ends, making it more flexible than a stack or a queue."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.0
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is the main difference between a queue and a stack?",
+          "I think I got the main point that a queue operates by adding items at one end and removing them from the other, ensuring that items leave in the order they arrived.",
+          "I think I got the main point that implementing a queue as a circular array helps avoid shifting elements by allowing the indices to wrap around.",
+          "I think I got the main point that a deque allows insertion and removal at both ends, making it more flexible than a stack or a queue."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is the main difference between a queue and a stack?",
+          "I think I got the main point that a queue operates by adding items at one end and removing them from the other, ensuring that items leave in the order they arrived.",
+          "I think I got the main point that implementing a queue as a circular array helps avoid shifting elements by allowing the indices to wrap around.",
+          "I think I got the main point that a deque allows insertion and removal at both ends, making it more flexible than both stacks and queues."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.9
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a tree traversal in the context of data structures?",
+          "I think I got the main point that a tree has nodes with a single parent, except for the root, which connects all nodes in a hierarchical structure.",
+          "I think I got the main point that the height of a tree is the length of the longest path from the root to a leaf, which affects the cost of operations that traverse the tree.",
+          "I think I got the main point that an in-order traversal of a binary search tree visits the keys in sorted order by exploring the left subtree fully before the node itself."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.3
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a tree traversal in the context of data structures?",
+          "Could you explain what makes a node an internal or external node?",
+          "Could you clarify what distinguishes an internal node from an external node?",
+          "Could you explain what makes a node an internal or external node?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain what makes a",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a tree traversal in the context of data structures?",
+          "Could you explain what makes a node internal or external?",
+          "Could you clarify what makes a node a leaf or external?",
+          "Could you explain what makes a node internal or external?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain what makes a",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 11.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is the basic definition of a heap in data structures?",
+          "I think I got the main point that a binary heap is a complete binary tree where the smallest element is at the root due to the ordering of parents against their children.",
+          "Could you clarify how the indices for the children are calculated in a heap?",
+          "Could you explain why the operations are logarithmic in the number of elements?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.5
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is the basic definition of a heap in data structures?",
+          "I think I got the main point that a binary heap is a complete binary tree where the smallest element is always at the root due to the order between parents and children.",
+          "Could you clarify how the indices for the children are calculated in a heap?",
+          "Could you explain how the logical-or operation works when deleting a value in the tree?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.9
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is the basic definition of a heap in data structures?",
+          "I think I got the main point that a binary heap is a complete binary tree where the smallest element is always at the root due to the ordering of parents and children.",
+          "I think I got the main point that a binary heap is a complete binary tree stored in an array, where the children of a node at index i are at indices 2i+1 and 2i+2. This makes it efficient to navigate without pointers.",
+          "I think I got the main point that inserting or removing an element in a binary heap involves walking a path between a leaf and the root, which takes logarithmic time relative to the number of elements."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.5
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a constructor in Java?",
+          "I think I got the main point that a constructor is used to initialize an object when it is created, ensuring that the object is ready to use immediately.",
+          "I think I got the main point that Java provides a no-argument constructor only when no other constructors are defined, ensuring that objects can be initialized automatically.",
+          "I think I got the main point that overloaded constructors allow a class to be initialized in different ways, and using 'this' helps avoid code duplication by calling one constructor from another."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.3
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a constructor in Java?",
+          "I think I got the main point. A constructor is used to initialize an object when it's created, ensuring that the object is ready to use.",
+          "I think I got the main point. A constructor is used to initialize an object when it's created, ensuring that the object is ready to use.",
+          "I think I got the main point. Overloaded constructors allow a class to be initialized in different ways, and using 'this' helps avoid repeating code by calling one constructor from another."
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.9
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a constructor in Java?",
+          "Could you explain how a constructor is different from a regular method?",
+          "Could you explain how constructors differ from regular methods in more detail?",
+          "Could you explain how constructors differ from regular methods in more detail?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how constructors differ",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.1
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is access control in object-oriented programming?",
+          "Could you explain how private access differs from protected access?",
+          "Could you clarify how the equals method differs from the == operator when comparing objects?",
+          "Could you explain why overriding hashCode is necessary when equals is overridden?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.7
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is access control in object-oriented programming?",
+          "I think I got the main point that declaring a field private ensures that only the class itself can modify its state, maintaining control over its internal data.",
+          "Could you please explain how the equals method works differently from the == operator when comparing objects?",
+          "Could you explain how overriding the hashCode method affects the performance of collections like HashMap?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.2
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is access control in object-oriented programming?",
+          "I think I got the main point that declaring a field private ensures that only the class itself can modify it, which helps maintain control over the class's state.",
+          "Could you explain a bit more about how the equals method works for comparing objects?",
+          "Could you explain how the hashCode method works in more detail?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.4
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is inheritance in object-oriented programming?",
+          "Could you explain how a subclass can override methods from its superclass?",
+          "Could you explain how a subclass can override methods from its superclass?",
+          "Could you explain how method overriding works in more detail?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how a subclass",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is inheritance in object-oriented programming?",
+          "Could you explain how a subclass can override methods from a superclass?",
+          "Could you explain how method overriding works in subclasses?",
+          "Could you explain how method overriding works in subclasses?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how method overriding",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.4
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is inheritance in object-oriented programming?",
+          "Could you explain how overridden methods work in inheritance?",
+          "Could you explain how overridden methods work in inheritance?",
+          "Could you clarify how Java resolves which overridden method to call at runtime?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how overridden methods",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.6
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is polymorphism in the context of object-oriented programming?",
+          "Could you explain how Java decides which method to call when using a superclass reference?",
+          "Could you explain what dynamic method dispatch means in this context?",
+          "Could you explain how dynamic method dispatch specifically works in Java?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is polymorphism in the context of object-oriented programming?",
+          "Could you explain how Java decides which method to execute when using a superclass reference?",
+          "Could you explain what dynamic method dispatch means in this context?",
+          "Could you clarify how dynamic method dispatch determines which method to execute at runtime?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.4
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is polymorphism in the context of object-oriented programming?",
+          "Could you explain how Java decides which method to call when using a superclass reference?",
+          "Could you explain what dynamic method dispatch is?",
+          "Could you clarify how Java determines which method to execute when a superclass reference points to a subclass object?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of programming?",
+          "Could you explain how thread priorities affect their execution?",
+          "Could you explain how thread priorities influence which thread gets to run when?",
+          "Could you explain how thread priorities determine which thread gets to run first?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how thread priorities",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of programming?",
+          "Could you explain how thread priorities affect their execution?",
+          "Could you explain how thread priorities influence which thread gets to run when?",
+          "Could you clarify how thread priorities affect execution in different operating systems?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how thread priorities",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.6
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of programming?",
+          "Could you explain how thread priorities affect their execution?",
+          "Could you explain how thread priorities affect their execution?",
+          "Could you clarify how thread priorities specifically influence which thread gets CPU time?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how thread priorities",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.4
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is the primary purpose of using locks in thread synchronization?",
+          "Could you explain how we can prevent two threads from updating the same field at once?",
+          "Could you explain how synchronized methods differ from synchronized blocks?",
+          "Could you explain how acquiring locks in a fixed global order prevents deadlock?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.7
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is the primary purpose of using locks in thread synchronization?",
+          "Could you explain how atomic operations help prevent lost updates in multithreading?",
+          "Could you explain how atomic operations specifically prevent lost updates?",
+          "Could you explain how atomic operations specifically prevent lost updates?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how atomic operations",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.5
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is the primary purpose of using locks in thread synchronization?",
+          "Could you explain how synchronization can prevent updates from being lost?",
+          "Could you explain what an atomic operation is and how it relates to synchronization?",
+          "Could you explain how acquiring locks in a fixed order prevents deadlock?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.8
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What are the basic states of a process in the process lifecycle?",
+          "Could you explain what happens when a process is in the blocked state?",
+          "Could you explain what specific events cause a process to enter the blocked state?",
+          "Could you explain what specific events cause a process to enter the blocked state?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain what specific events",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 16.0
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What are the basic states of a process in the process lifecycle?",
+          "Could you explain what happens when a process is blocked?",
+          "Could you explain what happens after a process is blocked?",
+          "Could you explain what happens after a process is blocked?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain what happens after",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 10.2
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What are the basic states of a process in the process lifecycle?",
+          "Could you explain what happens when a process is blocked?",
+          "Could you explain more about how a process transitions between states, especially from blocked back to running?",
+          "Could you explain how a process transitions from blocked back to running?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is interprocess communication (IPC) in operating systems?",
+          "Could you explain how the operating system provides a channel for communication between processes?",
+          "Could you explain what happens when the pipe is full or when the reader blocks?",
+          "Could you explain how the kernel handles synchronization in message passing?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.3
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is interprocess communication (IPC) in operating systems?",
+          "Could you explain how processes can communicate if they have separate address spaces?",
+          "Could you explain how the operating system helps establish these communication channels?",
+          "Could you explain how the operating system establishes communication channels for message passing?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the operating",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.9
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is interprocess communication (IPC) in operating systems?",
+          "Could you explain how processes can communicate if they have separate address spaces?",
+          "Could you explain how the reader knows when the pipe is empty and blocks?",
+          "Could you explain how message passing works in more detail, especially how the kernel handles synchronization?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.7
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of multithreading?",
+          "I think I got the main point that threads are more economical and efficient to switch between than processes because they share the same address space.",
+          "Could you explain how synchronization mechanisms like locks help prevent issues when threads share variables?",
+          "Could you explain how threads can improve performance on a single-core processor?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of multithreading?",
+          "I think I got the main point that threads are more efficient than processes because they share the same address space, making switching between them cheaper.",
+          "I think I got the main point that while threads are efficient because they share the same address space, this sharing can lead to issues like race conditions if not managed properly.",
+          "I think I got the main point that multithreading can improve performance in programs that spend a lot of time waiting for input/output operations, as threads can run concurrently even on a single core."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is a thread in the context of multithreading?",
+          "I think I got the main point that threads within the same process share the same address space, which makes switching between them more efficient compared to switching between separate processes.",
+          "I think I got the main point that while threads sharing the same address space is efficient, it also poses a risk of interleaving issues when they write to the same variable.",
+          "I think I got the main point that using threads can be beneficial even on a single core when a program spends a lot of time waiting for input and output operations, as one thread can continue running while another is waiting."
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i got the main",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is CPU scheduling in operating systems?",
+          "Could you explain how the scheduler chooses which process to run next?",
+          "Could you explain how the scheduler handles multiple processes with different priorities?",
+          "Could you explain how the scheduler handles processes with different priorities?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the scheduler",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.5
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is CPU scheduling in operating systems?",
+          "Could you explain how the scheduler decides which process to run if multiple processes are ready at the same time?",
+          "Could you explain how the scheduler decides which process to run if multiple processes are ready at the same time?",
+          "Could you explain how the scheduler chooses between multiple ready processes?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the scheduler",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.9
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is CPU scheduling in operating systems?",
+          "Could you explain how the scheduler chooses which process to run next?",
+          "Could you explain how the scheduler decides the order of processes in round-robin scheduling?",
+          "Could you explain how the scheduler prioritizes processes in round-robin scheduling?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the scheduler",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 8.6
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is demand paging in the context of operating systems?",
+          "Could you explain how demand paging affects the performance of a computer system?",
+          "Could you explain how demand paging impacts system performance in more detail?",
+          "Could you explain how demand paging affects the handling of page faults?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how demand paging",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.8
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is demand paging in the context of operating systems?",
+          "Could you explain how demand paging affects system performance?",
+          "Could you explain how handling page faults impacts system performance?",
+          "Could you explain how handling page faults impacts system performance?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how handling page",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is demand paging in the context of operating systems?",
+          "Could you explain how demand paging affects performance, especially in terms of page faults?",
+          "Could you explain how page faults impact system performance?",
+          "Could you explain how page faults impact system performance?"
+        ],
+        "distinct": 3,
+        "templated_openers": [
+          {
+            "opener": "could you explain how page faults",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.1
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 0,
+      "baseline": {
+        "questions": [
+          "What is page replacement in the context of demand paging?",
+          "Could you explain how the operating system decides which page to evict?",
+          "Could you explain how LRU is implemented in practice?",
+          "Could you explain more about how the operating system decides which page to evict when memory is full?"
+        ],
+        "distinct": 4,
+        "templated_openers": [],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.8
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 1,
+      "baseline": {
+        "questions": [
+          "What is page replacement in the context of demand paging?",
+          "Could you explain how the operating system decides which page to evict?",
+          "Could you explain how the LRU algorithm is implemented in practice?",
+          "Could you explain how the operating system decides which page to evict in more detail?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the operating",
+            "count": 2
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 6.7
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "profile": "openai/gpt-4o",
+      "repeat": 2,
+      "baseline": {
+        "questions": [
+          "What is page replacement in the context of demand paging?",
+          "Could you explain how the operating system decides which page to evict?",
+          "Could you explain how the operating system keeps track of which page was used least recently?",
+          "Could you explain how the operating system decides which page to evict in more detail?"
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "could you explain how the operating",
+            "count": 3
+          }
+        ],
+        "evaluations": []
+      },
+      "elapsed_seconds": 7.2
+    }
+  ]
+}

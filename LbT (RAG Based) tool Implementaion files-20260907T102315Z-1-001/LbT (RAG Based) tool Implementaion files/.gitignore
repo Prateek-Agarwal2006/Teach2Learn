@@ -15,8 +15,11 @@ chainlit.md
 # vectorstore/ below is what's actually shared, since it's what the app reads.
 data/
 
-# Raw sweep results: large, regenerated per run. Matches teach2learn-portal's convention;
-# the polished results-languages.md is what's actually shared.
+# Raw sweep results are regenerated per run and normally excluded (see
+# results-languages.md for the polished version), but the Phase 1 comparison run's
+# outputs are tracked so Sneh can diff against the finetuned side's raw data too.
 sweepA-*.json
 sweepB-*.json
+!sweepA-rag.json
+!sweepB-rag.json
 calib.json
