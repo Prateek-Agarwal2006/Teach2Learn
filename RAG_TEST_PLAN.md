@@ -25,9 +25,9 @@ What *is* shared, and must stay shared:
 
 | | Status |
 |---|---|
-| `translation.py` | **Already byte-identical.** Verified with `diff`. Do not touch it. |
+| `translation.py` | **Byte-identical.** Re-verified with `cmp` on 2026-09-12, after both sides gained the schema-leak guard. Do not touch it. |
 | `lessons.json` teacher scripts | Portal reads it; the RAG harness must be pointed at it |
-| Judge model and prompts | Same model, but the fluency prompt has drifted — see below |
+| Judge model and prompts | **Aligned 2026-09-12.** Same model, same fidelity and fluency prompts on both sides |
 
 Everything comparable flows from those three. Anything else can differ.
 
@@ -113,7 +113,7 @@ that this was done. It changes the system under test, so it must be stated, not 
 If time allows, running both with and without retrieval isolates what retrieval actually
 contributes, which is a better result than either arm alone.
 
-### 4. Align the fluency judge prompt
+### 4. Align the fluency judge prompt — DONE (2026-09-12)
 
 The fidelity prompt is already identical. The fluency prompt is not:
 
@@ -124,9 +124,12 @@ The fidelity prompt is already identical. The fluency prompt is not:
 
 The RAG wording is the more careful one — its student agent legitimately returns no
 question on `rating="understood"`, so the harness falls back to the reflection text and
-"question" would be wrong. **Change the portal to the RAG wording**, not the reverse, and
-re-run nothing: the portal's language sweep is still in flight and can adopt it. Both must
-be identical before any cross-system claim.
+"question" would be wrong. **The portal took the RAG wording**, in the system prompt and in the judge's user message
+(`{name} text:` rather than `{name} question:`). The portal's sweep had already finished by
+then, so its 525 judged turns were re-scored with the aligned prompt by
+`teach2learn-portal/scripts/rejudge_fluency.py` — judge calls only, nothing regenerated,
+$0.10 measured. 120 of 525 scores moved and the 15/6/1 tier split did not. Original scores
+are kept per turn as `fluency_prompt_v1`.
 
 ---
 
@@ -272,6 +275,13 @@ rather than applied silently, and reproduces the classifications in
   comparison against that report on that cell. If a script must change, change it in the
   shared file, set `reviewed` back to `false`, and say so.
 - **The judge model.** Same model both sides, or the scores are two different opinions.
+
+## Known difference, recorded not corrected
+
+The portal's language sweep ran at **temperature 0.2**; the RAG sweep ran at **0.25**, which
+is what `TEST_BED.md` specifies. Re-running the portal side needs the GPU host, so the
+difference is documented in both results files instead. It bears on question-variety and
+spread figures more than on the fidelity and fluency means.
 
 ## Known imprecision, already accepted
 

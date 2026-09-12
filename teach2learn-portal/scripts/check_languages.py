@@ -226,11 +226,11 @@ Note: <one short clause>
 5 means the translation preserves the full technical meaning in correct {language} script.
 1 means the meaning is lost, the script is wrong, or the text is still English."""
 
-FLUENCY_PROMPT = """You judge one question written in {language}, addressed by a student to their teacher.
+FLUENCY_PROMPT = """You judge one piece of text written in {language}, addressed by a student to their teacher.
 Reply with exactly two lines and nothing else:
 Score: <1-5>
 Note: <one short clause>
-5 means natural, fluent {language} in the correct script that a learner would actually ask.
+5 means natural, fluent {language} in the correct script that a learner would actually write.
 1 means unintelligible, wrong script, or untranslated English."""
 
 
@@ -518,7 +518,7 @@ async def run_language(
             turn["fluency"] = await judge(
                 client,
                 FLUENCY_PROMPT.format(language=name),
-                f"{name} question:\n{question_local}",
+                f"{name} text:\n{question_local}",
             )
         record["turns"].append(turn)
 

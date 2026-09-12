@@ -60,7 +60,7 @@ sys.path.insert(0, str(_root))
 from models import StudentResponse  # noqa: E402
 from qa_generator import generate_qa_for_subtopic, load_catalog  # noqa: E402
 from student_chain import build_student_chain  # noqa: E402
-from translation import SUPPORTED_LANGUAGES, TranslationService  # noqa: E402
+from translation import SUPPORTED_LANGUAGES, TranslationService, looks_like_schema  # noqa: E402
 
 # Fixed decoding params from TEST_BED.md, applied here rather than in models.py's
 # get_llm() so the live app's behaviour is untouched by this harness.
@@ -75,9 +75,9 @@ _NON_LATIN = re.compile(
     r"ꯀ-꯿]"
 )
 
-_SCHEMA_LEAK = re.compile(
-    r"^\s*[\{\[]|['\"](?:type|title|description|properties|\$ref)['\"]\s*:", re.I
-)
+# The schema-leak detector lives in translation.py, byte-shared with teach2learn-portal,
+# so this harness and both live paths agree on what a leak is. The local copy this
+# replaced matched a bare leading bracket, which also matches ordinary prose.
 
 JUDGE_MODEL = os.getenv("LANGCHECK_JUDGE_MODEL", "openai/gpt-5.6-luna")
 
@@ -105,7 +105,7 @@ class TranslationUnavailable(RuntimeError):
 
 
 def _looks_like_schema(text: str) -> bool:
-    return bool(_SCHEMA_LEAK.search(text or ""))
+    return looks_like_schema(text)
 
 
 def _has_non_latin(text: str) -> bool:

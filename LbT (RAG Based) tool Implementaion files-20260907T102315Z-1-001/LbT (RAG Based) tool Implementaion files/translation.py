@@ -87,14 +87,18 @@ def normalize_language(value: str | None) -> str:
 
 
 # Sarvam has returned fragments of its own OpenAPI schema in translated_text instead of a
-# translation -- reproducibly, for particular (sentence, language) pairs (a Punjabi sentence
-# in the CP lesson does it on every attempt). The payload is a non-empty string, so it would
-# otherwise reach the model as the participant's own words, be stored, and be shown back on
-# screen. Ported from teach2learn-portal/app/services/translation.py so the two systems'
-# live paths cannot disagree about what a leak looks like.
+# translation -- reproducibly, for particular (sentence, language) pairs. One Punjabi
+# sentence in the C-programming lesson has done it on every attempt across two months of
+# runs. The payload is a non-empty string, so the isinstance check below waves it through,
+# and it would then reach the model as the participant's own words, be written to the
+# transcript, and be shown back on screen.
 #
-# The opening bracket must be followed by a quoted key. Matching a bare leading bracket also
-# matches ordinary prose beginning with one, including every line the echo backend produces.
+# scripts/check_languages.py imports this rather than defining its own copy, so the test
+# harness and the live path can never disagree about what a leak looks like.
+#
+# The opening bracket must be followed by a quoted key. Matching a bare leading bracket
+# also matched ordinary prose beginning with one, including every line the echo backend
+# produces. The observed payloads all open "{'description':", which this still catches.
 _SCHEMA_LEAK = re.compile(
     r"^\s*[\{\[]\s*['\"]|['\"](?:type|title|description|properties|\$ref)['\"]\s*:", re.I
 )
@@ -215,8 +219,8 @@ class TranslationService:
             raise ValueError("Sarvam returned no translated text")
         if looks_like_schema(translated):
             # Raising routes this into translate()'s handler, which logs and returns the
-            # original text -- the participant reads their own sentence in English, the
-            # same fallback as a dead key, rather than a wall of JSON.
+            # original text. A participant then reads their own sentence in English, which
+            # is the same failure mode as a dead key and far better than a wall of JSON.
             raise ValueError(f"Sarvam returned a schema fragment: {translated[:120]!r}")
         return translated
 
