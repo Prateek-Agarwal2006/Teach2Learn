@@ -41,9 +41,9 @@ wheels/
 # Generated from the matching .md via Chrome headless; not tracked.
 *.pdf
 
-# Sweep results: large, regenerated per run, and collected from the GPU host
-teach2learn-portal/sweepA-*.json
-teach2learn-portal/sweepB-*.json
+# Phase 1 sweep results are tracked: PHASE1_COMPARISON.md is generated from both
+# systems' raw files, and the RAG side tracks its own for the same reason. Interrupted
+# stdout captures stay out -- several are empty and the reporter only warns about them.
 teach2learn-portal/*.stdout.json
 teach2learn-portal/calib.json
 teach2learn-portal/*.log

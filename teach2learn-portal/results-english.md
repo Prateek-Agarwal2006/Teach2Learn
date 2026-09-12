@@ -12,7 +12,7 @@
 | Decoding | temperature 0.2, top-p 0.9 |
 | Judge | not used |
 | Lesson bank | packed by pack_for_server.py v1 |
-| Run at | 2026-09-08T10:04:00+00:00 |
+| Run at | 2026-09-08T10:17:00+00:00 |
 | Total runs | 72 |
 
 ## Question variety, by subject

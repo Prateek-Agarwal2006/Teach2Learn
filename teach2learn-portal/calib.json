@@ -22,7 +22,9 @@
     "temperature": 0.2,
     "top_p": 0.9,
     "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
-    "cuda_visible_devices": "1"
+    "cuda_visible_devices": "1",
+    "fluency_prompt_version": 2,
+    "fluency_prompt_note": "Fluency re-scored with the RAG-aligned prompt (RAG_TEST_PLAN.md blocker 4). Original scores kept per turn as fluency_prompt_v1. Fidelity is untouched."
   },
   "runs": [
     {
@@ -63,6 +65,10 @@
                 "note": "तकनीकी अर्थ सही और स्पष्ट हिंदी में संरक्षित है."
               },
               "fluency": {
+                "score": 4,
+                "note": "हिंदी स्वाभाविक है, लेकिन शिक्षक को “रुको” कहना अनौपचारिक लगता है।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "स्वाभाविक और स्पष्ट हिंदी प्रश्न."
               }
@@ -91,6 +97,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "स्वाभाविक और स्पष्ट हिंदी।"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "यह स्वाभाविक और स्पष्ट हिंदी प्रश्न है।"
               }
             },
@@ -117,6 +127,10 @@
                 "note": "अर्थ सही है, हालांकि हिंदी वाक्य-विन्यास थोड़ा अस्वाभाविक है।"
               },
               "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक और स्पष्ट हिंदी।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "प्रश्न स्वाभाविक, स्पष्ट और व्याकरण की दृष्टि से सही है।"
               }
@@ -155,6 +169,10 @@
                 "note": "Meaning is mostly preserved, but the translation uses Devanagari instead of Sindhi script."
               },
               "fluency": {
+                "score": 2,
+                "note": "سنڌي سمجهه ۾ اچي ٿي، پر رسم الخط ۽ استاد لاءِ لهجو مناسب ناهي."
+              },
+              "fluency_prompt_v1": {
                 "score": 3,
                 "note": "سنڌي ٻولي فصيح آهي، پر رسم الخط درست ناهي."
               }
@@ -183,6 +201,10 @@
               },
               "fluency": {
                 "score": 2,
+                "note": "سنڌي لفظ آهن، پر رسم الخط غلط ۽ جملو ڪجهه غير فطري آهي."
+              },
+              "fluency_prompt_v1": {
+                "score": 2,
                 "note": "سوال سمجهه ۾ اچي ٿو، پر رسم الخط ۽ جملن جي بناوت غير فطري آهي۔"
               }
             },
@@ -209,6 +231,10 @@
                 "note": "The meaning is mostly conveyed, but the translation uses Devanagari rather than Sindhi script."
               },
               "fluency": {
+                "score": 3,
+                "note": "Understandable Sindhi, but written in Devanagari rather than the standard Sindhi script and somewhat unnatural."
+              },
+              "fluency_prompt_v1": {
                 "score": 2,
                 "note": "سوال سمجهه ۾ اچي ٿو، پر رسم الخط ۽ ڪجهه لفظن جي بناوت غيرفطري آهي۔"
               }

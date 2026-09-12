@@ -1,7 +1,8 @@
 # RAG-based Teach2Learn
 
 Companion to `PHASE1_RESULTS.md` (the fine-tuned portal's results), run against the same
-`lessons.json` bank, the same 22 languages, the same judge model, and the byte-identical
+`lessons.json` bank, the same 22 languages, the same judge model and judge prompts (aligned
+2026-09-12; the finetuned side's fluency was re-scored to match), and the byte-identical
 (now schema-leak-fixed) `translation.py`. Where the finetuned side routes each subject to
 a different fine-tuned local model, this system has one general LLM (`openai/gpt-4o`, via
 OpenRouter) playing the student, grounded per turn by a `similarity_search` against the
@@ -16,6 +17,7 @@ evaluations (this tool's `evaluator_chain`/`scorer_chain` vs. the portal's inlin
 | Lesson scripts | 24 (same bank; question-variety run) / 8 (same bank; language sweep — the confirmed comparison subset) |
 | Languages | 22 Indic + English |
 | Student model | `openai/gpt-4o`, pinned (via OpenRouter), temperature 0.25, top-p 0.9 |
+| Decoding difference | The finetuned side ran at temperature **0.2**, not the 0.25 `TEST_BED.md` specifies. Recorded, not corrected — re-running that side needs the GPU host. |
 | English runs / questions | 72 / 288 |
 | Language-runs / judged turns | 175 of 176 / 525 |
 | Boundary crossings | 1,575 |

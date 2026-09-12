@@ -96,18 +96,18 @@ run-to-run noise floor, and every difference called out above is far outside it.
 
 | Subject | Model | Turns | Fidelity | Fluency | ≥4.0 fluency | Retries | Leaks | Unrecovered |
 |---|---|---:|---|---|---:|---:|---:|---|
-| Computer Programming | qwen3 | 129 | **4.38** ± 0.99 | **4.43** ± 0.82 | **18/22** | 0/387 | 1 | Punjabi |
-| Data Structures & Algorithms | gemma2 | 132 | 4.35 ± 0.91 | 4.15 ± 0.79 | 14/22 | 2/396 | 0 | — |
-| OOP with Java | mistral | 132 | 4.34 ± **1.17** | 4.10 ± 0.90 | 15/22 | 2/396 | 0 | — |
-| Operating Systems | granite | 132 | 4.30 ± 0.98 | 4.22 ± 0.83 | 16/22 | 0/396 | 0 | — |
+| Computer Programming | qwen3 | 129 | **4.38** ± 0.99 | **4.31** ± 0.90 | **18/22** | 0/387 | 1 | Punjabi |
+| Data Structures & Algorithms | gemma2 | 132 | 4.35 ± 0.91 | 4.14 ± 0.85 | 14/22 | 2/396 | 0 | — |
+| OOP with Java | mistral | 132 | 4.34 ± **1.17** | 4.04 ± 0.87 | 15/22 | 2/396 | 0 | — |
+| Operating Systems | granite | 132 | 4.30 ± 0.98 | 4.13 ± 0.83 | 16/22 | 0/396 | 0 | — |
 
 | Source of variance | Range on a 1–5 scale |
 |---|---:|
 | Between subjects (fidelity) | 0.08 |
-| Between subjects (fluency) | 0.33 |
-| **Between languages (fluency)** | **2.70** |
+| Between subjects (fluency) | 0.27 |
+| **Between languages (fluency)** | **2.67** |
 
-**Language accounts for roughly 8× the spread that subject does.** Technical vocabulary is
+**Language accounts for roughly 10× the spread that subject does.** Technical vocabulary is
 not the constraint; the participant's choice of language is.
 
 ---
@@ -120,28 +120,28 @@ Status from scores alone: **Blocked** < 2.0 fidelity · **Review** < 3.5 fidelit
 
 | Language | Script | Code | cp | dsa | oop_java | os | Mean | Status |
 |---|---|---|---|---|---|---|---|---|
-| Punjabi † | Gurmukhi | `pa` | 5.0/5.0 | 4.7/4.8 | 4.7/4.8 | 4.5/4.8 | 4.7/4.9 | Ready |
-| Bengali | Bengali | `bn` | 4.2/5.0 | 4.3/4.8 | 4.8/4.8 | 4.2/4.7 | 4.4/4.8 | Ready |
-| Telugu | Telugu | `te` | 4.5/5.0 | 4.3/4.7 | 4.7/4.8 | 4.5/4.7 | 4.5/4.8 | Ready |
-| Gujarati | Gujarati | `gu` | 4.8/5.0 | 4.7/4.8 | 4.5/4.5 | 4.8/4.8 | 4.7/4.8 | Ready |
-| Tamil | Tamil | `ta` | 4.2/4.8 | 4.8/4.8 | 4.7/4.5 | 4.3/4.5 | 4.5/4.7 | Ready |
-| Kannada | Kannada | `kn` | 4.7/5.0 | 4.3/4.5 | 4.7/4.5 | 4.3/4.5 | 4.5/4.6 | Ready |
-| Malayalam | Malayalam | `ml` | 5.0/4.8 | 4.7/4.5 | 4.5/4.5 | 4.8/4.7 | 4.8/4.6 | Ready |
-| Marathi | Devanagari | `mr` | 4.3/4.7 | 4.5/4.5 | 4.5/4.5 | 4.5/4.8 | 4.5/4.6 | Ready |
-| Hindi | Devanagari | `hi` | 5.0/4.5 | 4.2/4.3 | 4.8/4.8 | 4.3/4.7 | 4.6/4.6 | Ready |
-| Assamese | Bengali | `as` | 4.5/4.8 | 3.8/4.5 | 4.3/4.5 | 4.2/4.5 | 4.2/4.6 | Ready |
-| Nepali | Devanagari | `ne` | 3.8/4.8 | 4.7/4.5 | 4.7/4.3 | 4.5/4.7 | 4.4/4.6 | Ready |
-| Odia | Odia | `or` | 4.8/4.8 | 4.7/4.3 | 4.8/4.3 | 4.7/4.7 | 4.8/4.5 | Ready |
-| Urdu | Perso-Arabic | `ur` | 5.0/4.7 | 4.5/4.3 | 4.7/4.5 | 4.5/4.3 | 4.7/4.5 | Ready |
-| Maithili | Devanagari | `mai` | 4.7/4.7 | 4.7/4.7 | 4.7/4.0 | 4.5/4.3 | 4.6/4.4 | Ready |
-| Dogri | Devanagari | `doi` | 4.2/4.5 | 4.8/3.7 | 4.5/4.3 | 4.0/4.2 | 4.4/4.2 | Ready |
-| Bodo | Devanagari | `brx` | 4.8/4.0 | 5.0/3.7 | 4.2/3.7 | 5.0/4.0 | 4.8/3.8 | Review |
-| Manipuri | Meetei Mayek | `mni` | 5.0/4.3 | 4.5/3.8 | 4.8/3.2 | 4.8/3.8 | 4.8/3.8 | Review |
-| Kashmiri | Perso-Arabic | `ks` | 4.5/4.5 | 4.3/3.3 | 3.3/3.7 | 4.3/3.7 | 4.1/3.8 | Review |
-| Konkani | Devanagari | `kok` | 4.5/3.7 | 4.8/3.7 | 4.7/3.7 | 4.3/3.7 | 4.6/3.7 | Review |
-| Santali | Ol Chiki | `sat` | 4.5/3.8 | 4.7/3.2 | 4.8/3.2 | 5.0/3.7 | 4.8/3.5 | Review |
-| Sanskrit | Devanagari | `sa` | 3.3/3.2 | 3.2/3.0 | 3.2/2.8 | 3.0/3.2 | 3.2/3.0 | Review |
-| Sindhi | Devanagari* | `sd` | 1.3/2.2 | 1.5/2.8 | 1.0/2.0 | 1.5/2.0 | **1.3/2.2** | **Blocked** |
+| Telugu | Telugu | `te` | 4.5/4.8 | 4.3/4.8 | 4.7/4.7 | 4.5/4.8 | 4.5/4.8 | Ready |
+| Bengali | Bengali | `bn` | 4.2/5.0 | 4.3/4.8 | 4.8/4.8 | 4.2/4.5 | 4.4/4.8 | Ready |
+| Punjabi † | Gurmukhi | `pa` | 5.0/5.0 | 4.7/5.0 | 4.7/4.5 | 4.5/4.7 | 4.7/4.8 | Ready |
+| Gujarati | Gujarati | `gu` | 4.8/5.0 | 4.7/4.8 | 4.5/4.3 | 4.8/4.8 | 4.7/4.8 | Ready |
+| Hindi | Devanagari | `hi` | 5.0/4.5 | 4.2/4.7 | 4.8/4.7 | 4.3/4.7 | 4.6/4.6 | Ready |
+| Tamil | Tamil | `ta` | 4.2/4.8 | 4.8/4.8 | 4.7/4.3 | 4.3/4.3 | 4.5/4.6 | Ready |
+| Malayalam | Malayalam | `ml` | 5.0/4.7 | 4.7/4.5 | 4.5/4.3 | 4.8/4.8 | 4.8/4.6 | Ready |
+| Assamese | Bengali | `as` | 4.5/4.7 | 3.8/4.8 | 4.3/4.7 | 4.2/4.2 | 4.2/4.6 | Ready |
+| Nepali | Devanagari | `ne` | 3.8/5.0 | 4.7/4.5 | 4.7/4.2 | 4.5/4.7 | 4.4/4.6 | Ready |
+| Marathi | Devanagari | `mr` | 4.3/4.5 | 4.5/4.5 | 4.5/4.7 | 4.5/4.5 | 4.5/4.5 | Ready |
+| Urdu | Perso-Arabic | `ur` | 5.0/4.7 | 4.5/4.3 | 4.7/4.7 | 4.5/4.5 | 4.7/4.5 | Ready |
+| Kannada | Kannada | `kn` | 4.7/5.0 | 4.3/4.3 | 4.7/4.5 | 4.3/4.2 | 4.5/4.5 | Ready |
+| Odia | Odia | `or` | 4.8/4.7 | 4.7/4.3 | 4.8/4.0 | 4.7/4.3 | 4.8/4.3 | Ready |
+| Maithili | Devanagari | `mai` | 4.7/4.7 | 4.7/4.3 | 4.7/4.0 | 4.5/4.3 | 4.6/4.3 | Ready |
+| Dogri | Devanagari | `doi` | 4.2/4.2 | 4.8/3.7 | 4.5/4.0 | 4.0/4.2 | 4.4/4.0 | Ready |
+| Bodo | Devanagari | `brx` | 4.8/4.0 | 5.0/3.8 | 4.2/3.3 | 5.0/4.0 | 4.8/3.8 | Review |
+| Kashmiri | Perso-Arabic | `ks` | 4.5/4.2 | 4.3/3.5 | 3.3/3.8 | 4.3/3.7 | 4.1/3.8 | Review |
+| Manipuri | Meetei Mayek | `mni` | 5.0/4.0 | 4.5/3.7 | 4.8/3.3 | 4.8/3.7 | 4.8/3.7 | Review |
+| Santali | Ol Chiki | `sat` | 4.5/3.7 | 4.7/3.0 | 4.8/3.7 | 5.0/3.3 | 4.8/3.4 | Review |
+| Konkani | Devanagari | `kok` | 4.5/3.3 | 4.8/3.5 | 4.7/3.3 | 4.3/3.3 | 4.6/3.4 | Review |
+| Sanskrit | Devanagari | `sa` | 3.3/3.2 | 3.2/3.2 | 3.2/2.7 | 3.0/3.0 | 3.2/3.0 | Review |
+| Sindhi | Devanagari* | `sd` | 1.3/1.7 | 1.5/2.2 | 1.0/2.3 | 1.5/2.3 | **1.3/2.1** | **Blocked** |
 
 \* Sarvam returns Devanagari; Perso-Arabic is the dominant script for Sindhi. That is the defect.
 
@@ -152,6 +152,22 @@ Status from scores alone: **Blocked** < 2.0 fidelity · **Review** < 3.5 fidelit
 | Blocked | 1 |
 
 Each cell is now backed by 9–12 judged turns against 3 in the prior report.
+
+**Fluency was re-scored on 2026-09-12** with the judge prompt aligned to the RAG harness's
+wording (`RAG_TEST_PLAN.md` blocker 4): "one piece of text ... a learner would actually
+write" rather than "one question ... would actually ask". The RAG wording is the careful
+one, since a student legitimately answers with a reflection rather than a question, and a
+cross-system fluency number needs one prompt on both sides. 525 turns were re-judged by the
+same model; nothing was regenerated. 120 of 525 individual scores moved, almost all by one
+point, and **the tier counts did not change**: 15 Ready / 6 Review / 1 Blocked before and
+after. Each turn keeps its original score as `fluency_prompt_v1` in the results JSON.
+Fidelity is untouched — that prompt was already identical on both sides.
+
+**One condition still differs between the two systems.** This run used temperature 0.2;
+the RAG run used 0.25, which is what `TEST_BED.md` specifies. The deviation is on this
+side, and re-running would need the GPU host. It bears on the question-variety and spread
+figures more than on the fidelity and fluency means, and it is recorded here rather than
+corrected.
 
 ---
 

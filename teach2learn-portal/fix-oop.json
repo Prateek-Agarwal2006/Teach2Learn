@@ -21,7 +21,9 @@
     "temperature": 0.2,
     "top_p": 0.9,
     "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
-    "cuda_visible_devices": "1"
+    "cuda_visible_devices": "1",
+    "fluency_prompt_version": 2,
+    "fluency_prompt_note": "Fluency re-scored with the RAG-aligned prompt (RAG_TEST_PLAN.md blocker 4). Original scores kept per turn as fluency_prompt_v1. Fidelity is untouched."
   },
   "runs": [
     {
@@ -62,6 +64,10 @@
                 "note": "पूर्ण तकनीकी अर्थ सही बिदिन्थिनो।"
               },
               "fluency": {
+                "score": 4,
+                "note": "प्राकृतिक बड़ो, पर कुछ शब्द-चयन थोड़ा अस्वाभाविक हैं।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "Natural and fluent Bodo in the correct script."
               }
@@ -90,6 +96,10 @@
               },
               "fluency": {
                 "score": 3,
+                "note": "Script is correct and mostly understandable, but several phrases sound unnatural and awkward."
+              },
+              "fluency_prompt_v1": {
+                "score": 3,
                 "note": "बुझिनो हायो, नाथाय बाक्यराव खस्थो आरो स्वाभाविक नङा।"
               }
             },
@@ -116,6 +126,10 @@
                 "note": "मुख्य अर्थ सुरक्षित है, लेकिन “draw” का तकनीकी आह्वान थोड़ा अस्पष्ट है."
               },
               "fluency": {
+                "score": 4,
+                "note": "Clear and mostly natural Bodo, with a few slightly awkward technical phrases."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "स्पष्ट आ जायगायाव स्वाभाविक, नाथाय “नामादि” आरो बाक्य-संरचना खम सुधारनो हागोन।"
               }

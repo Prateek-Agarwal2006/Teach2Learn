@@ -1,0 +1,900 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T10:30:51+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "oop_java/classes/constructors",
+      "oop_java/classes/access-control-and-object-identity",
+      "oop_java/oop-design/inheritance",
+      "oop_java/oop-design/polymorphism",
+      "oop_java/concurrency/threads",
+      "oop_java/concurrency/synchronization-and-locks"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 3,
+    "languages": [],
+    "judge_model": null,
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Constructors",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:30:51+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly does a constructor do in Java?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you explain more about what it means for an object to be in a 'safe state'?",
+          "Okay, I'm following you. What happens if I don't define any constructor in my class?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you show me an example of how overloaded constructors work in a class?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic explanation of the constructor's purpose, but it lacks depth and examples.\nImprovement: The teacher should elaborate on what it means to be in a 'safe state' and possibly provide an example.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a basic explanation of the constructor's purpose, but it lacks depth and examples.",
+            "improvement": "The teacher should elaborate on what it means to be in a 'safe state' and possibly provide an example."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly explains the default constructor, but the explanation is somewhat brief and could benefit from an example.\nImprovement: The teacher should provide an example to illustrate the concept more clearly.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly explains the default constructor, but the explanation is somewhat brief and could benefit from an example.",
+            "improvement": "The teacher should provide an example to illustrate the concept more clearly."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explains overloaded constructors adequately, but the explanation could be clearer with examples.\nImprovement: The teacher should provide examples to clarify how overloaded constructors work.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explains overloaded constructors adequately, but the explanation could be clearer with examples.",
+            "improvement": "The teacher should provide examples to clarify how overloaded constructors work."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 27.2
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Constructors",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:31:18+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a constructor in Java?",
+          "Okay, I'm following you. Can you give me an example of how a constructor sets up an object?",
+          "Hmm, that doesn't quite sound right to me. Wait, so does that mean every class in Java automatically has a default constructor?",
+          "I think I understand most of that. How do overloaded constructors actually work in practice?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It defines the basic purpose of a constructor but doesn't elaborate on how constructors are used or their importance.\nImprovement: The teacher could provide more context or examples to help the student grasp the concept better.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It defines the basic purpose of a constructor but doesn't elaborate on how constructors are used or their importance.",
+            "improvement": "The teacher could provide more context or examples to help the student grasp the concept better."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incorrect. Java always provides a no-argument constructor unless it is explicitly overridden, even if no constructor is written.\nImprovement: The teacher should correct the misconception and clarify that Java always provides a no-argument constructor unless it is explicitly overridden.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incorrect. Java always provides a no-argument constructor unless it is explicitly overridden, even if no constructor is written.",
+            "improvement": "The teacher should correct the misconception and clarify that Java always provides a no-argument constructor unless it is explicitly overridden."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed. It introduces the concept of overloaded constructors but doesn't explain how they work or their benefits.\nImprovement: The teacher could provide more context or examples to help the student grasp the concept better.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed. It introduces the concept of overloaded constructors but doesn't explain how they work or their benefits.",
+            "improvement": "The teacher could provide more context or examples to help the student grasp the concept better."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 14.2
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Constructors",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:31:33+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a constructor in Java?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how a constructor sets up an object?",
+          "Wait, I'm a bit lost. Wait, I thought Java always provides a no-argument constructor. Can you clarify how constructors work in Java?",
+          "Okay, I'm following you. Okay, so how does overloading a constructor actually help in real-world applications?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about the purpose and function of constructors.\nImprovement: Provide more context or examples to enhance understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about the purpose and function of constructors.",
+            "improvement": "Provide more context or examples to enhance understanding."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect as it misrepresents the default constructor. Java always provides a no-argument constructor unless it is explicitly overridden.\nImprovement: Correct the misconception and clarify the default behavior of Java regarding constructors.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is incorrect as it misrepresents the default constructor. Java always provides a no-argument constructor unless it is explicitly overridden.",
+            "improvement": "Correct the misconception and clarify the default behavior of Java regarding constructors."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It introduces overloading without explaining how it works or why it's useful.\nImprovement: Provide more context or examples to help the student understand the concept of overloaded constructors.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It introduces overloading without explaining how it works or why it's useful.",
+            "improvement": "Provide more context or examples to help the student understand the concept of overloaded constructors."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.5
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Access control and object identity",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:31:46+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, the 'same' variable in the client and server programs are actually two different references pointing to different objects, right?",
+          "Okay, I'm following you. How does making a field private help with maintaining the object's identity?",
+          "Okay, I'm following you. Can you explain the difference between reference equality and content equality with an example?",
+          "Okay, I'm following you. Why is it necessary to override hashCode when overriding equals?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation covers the basic concept of access control but lacks depth on how it specifically relates to object identity.\nImprovement: The teacher could elaborate on how private fields affect object identity by discussing encapsulation and data hiding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation covers the basic concept of access control but lacks depth on how it specifically relates to object identity.",
+            "improvement": "The teacher could elaborate on how private fields affect object identity by discussing encapsulation and data hiding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation correctly identifies the behavior of the '==' operator but could benefit from more context on reference equality.\nImprovement: The teacher could clarify the distinction between reference equality and content equality with examples.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation correctly identifies the behavior of the '==' operator but could benefit from more context on reference equality.",
+            "improvement": "The teacher could clarify the distinction between reference equality and content equality with examples."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation correctly links equals and hashCode but could be clearer about why hashCode is necessary for collections.\nImprovement: The teacher could explain the importance of hashCode in efficiency and how it interacts with the equals method.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation correctly links equals and hashCode but could be clearer about why hashCode is necessary for collections.",
+            "improvement": "The teacher could explain the importance of hashCode in efficiency and how it interacts with the equals method."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.7
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Access control and object identity",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:32:00+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, the 'this' keyword helps in understanding if two references are actually pointing to the same object, right?",
+          "Okay, I'm following you. Can you explain how 'this' helps in understanding object identity?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does 'this' actually work with the double-equals operator to check for object identity?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is it important to override both equals and hashCode together?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of access control, focusing on the purpose of declaring fields as private.\nImprovement: The teacher could have elaborated more on how access control works in Java, perhaps with examples or different access levels.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of access control, focusing on the purpose of declaring fields as private.",
+            "improvement": "The teacher could have elaborated more on how access control works in Java, perhaps with examples or different access levels."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the use of the double-equals operator but could have clarified how 'this' fits into the comparison of object identity.\nImprovement: The teacher should have expanded on how 'this' is used in conjunction with the double-equals operator to compare object identity.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the use of the double-equals operator but could have clarified how 'this' fits into the comparison of object identity.",
+            "improvement": "The teacher should have expanded on how 'this' is used in conjunction with the double-equals operator to compare object identity."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher touched on the relationship between equals and hashCode but didn't fully explain how overriding one affects the other.\nImprovement: The teacher should have explained the importance of maintaining consistency between equals and hashCode when overriding them.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher touched on the relationship between equals and hashCode but didn't fully explain how overriding one affects the other.",
+            "improvement": "The teacher should have explained the importance of maintaining consistency between equals and hashCode when overriding them."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 15.2
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "topic": "Classes and objects",
+      "subtopic": "Access control and object identity",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:32:15+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, the 'this' keyword helps in understanding which object is calling a method, right?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you explain what you mean by 'keeping control over every change to its own state'?",
+          "I think I understand most of that. Why would you use the double-equals operator instead of a single equals?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is it necessary to override both equals and hashCode when overriding one?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could benefit from more detail on how access control works in Java.\nImprovement: The teacher should explain the concept of encapsulation more clearly.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could benefit from more detail on how access control works in Java.",
+            "improvement": "The teacher should explain the concept of encapsulation more clearly."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could benefit from more examples or context.\nImprovement: The teacher should provide a clearer example of reference equality.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could benefit from more examples or context.",
+            "improvement": "The teacher should provide a clearer example of reference equality."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could benefit from more detail on why hashCode is necessary.\nImprovement: The teacher should explain the relationship between equals and hashCode more thoroughly.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could benefit from more detail on why hashCode is necessary.",
+            "improvement": "The teacher should explain the relationship between equals and hashCode more thoroughly."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 12.8
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Inheritance",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:32:28+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if a superclass has a method and a subclass overrides it, does that mean the subclass can do everything the superclass can do, plus more?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give me an example of how inheritance helps with code reuse?",
+          "Wait, I'm a bit lost. Wait, so does that mean constructors are like the first things that get run when you create an object?",
+          "I'm still really confused. Why can't a class have more than one superclass?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about how inheritance specifically allows for code reuse.\nImprovement: Provide more examples or details about how inheritance facilitates code reuse.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about how inheritance specifically allows for code reuse.",
+            "improvement": "Provide more examples or details about how inheritance facilitates code reuse."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect as it doesn't address code reuse but rather the order of constructor execution.\nImprovement: Correct the misconception about constructor order and reiterate the concept of code reuse.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is incorrect as it doesn't address code reuse but rather the order of constructor execution.",
+            "improvement": "Correct the misconception about constructor order and reiterate the concept of code reuse."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incomplete and slightly misleading, focusing on ambiguity without fully explaining the design choice.\nImprovement: Clarify the reason for a single superclass and its implications on design.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is incomplete and slightly misleading, focusing on ambiguity without fully explaining the design choice.",
+            "improvement": "Clarify the reason for a single superclass and its implications on design."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.9
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Inheritance",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:32:42+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I have a superclass and I make a subclass, does that mean the subclass gets everything the superclass has?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give me an example of how inheritance makes code reusable?",
+          "I'm still really confused. Wait, so does that mean the subclass constructor runs first and then the superclass constructor?",
+          "Okay, I'm following you. Why is it important that a class can only have one superclass?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of inheritance, but it could be more detailed.\nImprovement: The teacher could expand on how inheritance is beneficial or provide examples.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of inheritance, but it could be more detailed.",
+            "improvement": "The teacher could expand on how inheritance is beneficial or provide examples."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incorrect. The subclass constructor doesn't run the superclass constructor; it initializes its part first.\nImprovement: The teacher needs to correct the misconception about constructor execution order.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incorrect. The subclass constructor doesn't run the superclass constructor; it initializes its part first.",
+            "improvement": "The teacher needs to correct the misconception about constructor execution order."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the concept of only one superclass per class, but could elaborate on why this is beneficial.\nImprovement: The teacher could provide more context or examples to clarify the reasoning behind this rule.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the concept of only one superclass per class, but could elaborate on why this is beneficial.",
+            "improvement": "The teacher could provide more context or examples to clarify the reasoning behind this rule."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.5
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Inheritance",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:32:55+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, if I understand correctly, inheritance lets a superclass pass down its traits to subclasses, right?",
+          "Okay, I'm following you. Can you give me an example of how inheritance works with fields and methods?",
+          "Wait, I'm a bit lost. Wait, I'm a bit lost. Can you explain again why the superclass constructor runs first?",
+          "Okay, I'm following you. Okay, I'm following you. So, does this mean if I have two superclasses, Java won't let me use them together?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed about how inheritance specifically uses fields and methods.\nImprovement: Provide more examples or details to enhance understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed about how inheritance specifically uses fields and methods.",
+            "improvement": "Provide more examples or details to enhance understanding."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is incorrect as it doesn't address fields and methods, and it misstates the purpose of constructor calls.\nImprovement: Correct the misconception and provide a clear example of how inheritance initialises fields and calls methods.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is incorrect as it doesn't address fields and methods, and it misstates the purpose of constructor calls.",
+            "improvement": "Correct the misconception and provide a clear example of how inheritance initialises fields and calls methods."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed with examples to clarify the concept of method resolution in inheritance.\nImprovement: Provide more context or examples to help the student grasp the concept of method resolution.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed with examples to clarify the concept of method resolution in inheritance.",
+            "improvement": "Provide more context or examples to help the student grasp the concept of method resolution."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.9
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Polymorphism",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:33:09+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is polymorphism in Java?",
+          "Okay, I'm following you. Can you give me an example of how this works with different types of animals in a zoo?",
+          "I think I understand most of that. How does the program know which method to run when there are multiple subclasses?",
+          "Okay, I'm following you. Could you explain how this works with a simple loop and different shapes?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.\nImprovement: The teacher should provide more context or examples to clarify how polymorphism works in practice.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.",
+            "improvement": "The teacher should provide more context or examples to clarify how polymorphism works in practice."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.\nImprovement: The teacher should provide more context or examples to clarify how polymorphism works in practice.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.",
+            "improvement": "The teacher should provide more context or examples to clarify how polymorphism works in practice."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.\nImprovement: The teacher should provide more context or examples to clarify how polymorphism works in practice.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples to fully illustrate the concept of polymorphism.",
+            "improvement": "The teacher should provide more context or examples to clarify how polymorphism works in practice."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.2
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Polymorphism",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:33:23+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the deal with polymorphism in Java?",
+          "Okay, I'm following you. How does this work with methods?",
+          "I think I understand most of that. Can you give me an example of when this would be useful in a real program?",
+          "Okay, I'm following you. What happens if I try to use a method that's not overridden by the subclass?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the basic concept of polymorphism but could have elaborated more on how this is achieved in Java.\nImprovement: Provide more detail on how polymorphism is implemented in Java, such as through method calls.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the basic concept of polymorphism but could have elaborated more on how this is achieved in Java.",
+            "improvement": "Provide more detail on how polymorphism is implemented in Java, such as through method calls."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the basic concept of method polymorphism but could have provided more examples or clarifications.\nImprovement: Give more examples or clarify how the decision-making process at runtime works.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the basic concept of method polymorphism but could have provided more examples or clarifications.",
+            "improvement": "Give more examples or clarify how the decision-making process at runtime works."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a practical example of polymorphism in action, but could have expanded on the explanation.\nImprovement: Explain more about how the loop works or provide additional examples of real-world applications.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a practical example of polymorphism in action, but could have expanded on the explanation.",
+            "improvement": "Explain more about how the loop works or provide additional examples of real-world applications."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 13.1
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "topic": "Object-oriented design",
+      "subtopic": "Polymorphism",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:33:36+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is polymorphism in Java?",
+          "Okay, I'm following you. Can you explain how this behavior is useful in a real-world application?",
+          "Okay, I'm following you. Could you give me an example of how this helps in code flexibility?",
+          "Okay, I'm following you. What happens if I add a new shape to the list?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic explanation of polymorphism, but it could have been more detailed.\nImprovement: The teacher could have explained how this behavior is beneficial or given a more concrete example.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic explanation of polymorphism, but it could have been more detailed.",
+            "improvement": "The teacher could have explained how this behavior is beneficial or given a more concrete example."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the runtime determination of overriding methods but could have expanded on practical applications.\nImprovement: The teacher could have provided a specific scenario or example to illustrate the real-world utility.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the runtime determination of overriding methods but could have expanded on practical applications.",
+            "improvement": "The teacher could have provided a specific scenario or example to illustrate the real-world utility."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a practical example of polymorphism in action, but the explanation could be more detailed.\nImprovement: The teacher could have elaborated on how the code works or why this is beneficial.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a practical example of polymorphism in action, but the explanation could be more detailed.",
+            "improvement": "The teacher could have elaborated on how the code works or why this is beneficial."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 12.4
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Threads",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:33:48+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a thread in Java?",
+          "Okay, I'm following you. Okay, but how do threads share the heap?",
+          "Wait, I'm a bit lost. Can you clarify what you mean by the scheduler?",
+          "I'm still really confused. What does it mean that the order isn't guaranteed?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples that could help clarify the concept further.\nImprovement: The teacher could provide more details or examples to enhance understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples that could help clarify the concept further.",
+            "improvement": "The teacher could provide more details or examples to enhance understanding."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is partially incorrect as it confuses the roles of start and run.\nImprovement: The teacher needs to clarify the correct roles of start and run in threading.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is partially incorrect as it confuses the roles of start and run.",
+            "improvement": "The teacher needs to clarify the correct roles of start and run in threading."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is vague and doesn't clarify the concept of the scheduler or thread interleaving.\nImprovement: The teacher should provide a more detailed explanation of thread scheduling and interleaving.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is vague and doesn't clarify the concept of the scheduler or thread interleaving.",
+            "improvement": "The teacher should provide a more detailed explanation of thread scheduling and interleaving."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.4
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Threads",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:33:59+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a ThreadGroup in Java?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, so does that mean if one thread changes a variable, others can see it immediately?",
+          "I think I understand most of that. Why would you choose to call run directly instead of start?",
+          "I think I understand most of that. Can you give an example of when this unpredictability might cause problems?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a basic definition of threads, explaining their execution flow and shared resources, but lacks depth on how this impacts program behavior.\nImprovement: The teacher could elaborate on how this shared heap affects thread interactions or provide examples of thread behavior.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a basic definition of threads, explaining their execution flow and shared resources, but lacks depth on how this impacts program behavior.",
+            "improvement": "The teacher could elaborate on how this shared heap affects thread interactions or provide examples of thread behavior."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly explains the difference between start and run but could provide more context on why this distinction is important.\nImprovement: The teacher could discuss the implications of using each method in different scenarios or how it affects thread management.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly explains the difference between start and run but could provide more context on why this distinction is important.",
+            "improvement": "The teacher could discuss the implications of using each method in different scenarios or how it affects thread management."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explains the unpredictability of thread order but could provide more examples or scenarios to illustrate the point.\nImprovement: The teacher could discuss specific situations where this unpredictability causes issues or provide strategies to handle it.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explains the unpredictability of thread order but could provide more examples or scenarios to illustrate the point.",
+            "improvement": "The teacher could discuss specific situations where this unpredictability causes issues or provide strategies to handle it."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 13.6
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Threads",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:34:13+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a thread in Java?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how threads interact with the heap and stack?",
+          "That makes sense, but I'm still slightly unsure about one thing. What's the difference between calling start and run in terms of thread execution?",
+          "That makes sense, but I'm still slightly unsure about one thing. What does it mean for a program to be 'broken' due to thread interleaving?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples that could help clarify the concept further.\nImprovement: The teacher could elaborate on how threads interact with the heap and stack, or provide an analogy for better understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples that could help clarify the concept further.",
+            "improvement": "The teacher could elaborate on how threads interact with the heap and stack, or provide an analogy for better understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples that could help clarify the concept further.\nImprovement: The teacher could elaborate on how the scheduler manages threads and their execution, or provide more context on when to use start versus run.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples that could help clarify the concept further.",
+            "improvement": "The teacher could elaborate on how the scheduler manages threads and their execution, or provide more context on when to use start versus run."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples that could help clarify the concept further.\nImprovement: The teacher could explain what 'interleaving' means with an analogy or more detail, and provide examples of broken programs.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples that could help clarify the concept further.",
+            "improvement": "The teacher could explain what 'interleaving' means with an analogy or more detail, and provide examples of broken programs."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 14.5
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Synchronization and locks",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:34:28+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly does it mean when you say a thread has to acquire a lock before it can access shared data?",
+          "Okay, I'm following you. Okay, so how does a lock actually prevent those updates from being lost?",
+          "That makes sense, but I'm still slightly unsure about one thing. And how does the thread know when it can get the lock back?",
+          "I think I understand most of that. Why is it so important to always acquire locks in the same order?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It touches on the problem but doesn't fully explain how locks solve it.\nImprovement: The teacher should elaborate on how locks prevent this issue by ensuring that once a thread starts updating, no other thread can interfere until it's done.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It touches on the problem but doesn't fully explain how locks solve it.",
+            "improvement": "The teacher should elaborate on how locks prevent this issue by ensuring that once a thread starts updating, no other thread can interfere until it's done."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed. It clarifies the blocking mechanism but could explain how locks are released.\nImprovement: The teacher should explain how locks are released, allowing threads to proceed after the first one finishes.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed. It clarifies the blocking mechanism but could explain how locks are released.",
+            "improvement": "The teacher should explain how locks are released, allowing threads to proceed after the first one finishes."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed. It touches on the importance of lock order but doesn't fully explain why deadlocks occur.\nImprovement: The teacher should explain the consequences of deadlocks and how they can be avoided by strictly adhering to the lock order.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed. It touches on the importance of lock order but doesn't fully explain why deadlocks occur.",
+            "improvement": "The teacher should explain the consequences of deadlocks and how they can be avoided by strictly adhering to the lock order."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 15.1
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Synchronization and locks",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:34:43+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a lock in Java?",
+          "Wait, I'm a bit lost. Can you explain what you mean by a lock in Java?",
+          "I'm still really confused. What does it mean for a thread to hold the object's monitor?",
+          "I'm still really confused. Why is it important to always take locks in a fixed global order?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is vague and lacks clarity on the concept of locks.\nImprovement: The teacher needs to provide a more detailed and accurate explanation of locks and their purpose.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is vague and lacks clarity on the concept of locks.",
+            "improvement": "The teacher needs to provide a more detailed and accurate explanation of locks and their purpose."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is still not clear and uses technical jargon without proper explanation.\nImprovement: The teacher should clarify the concept of locks by explaining the purpose and function more clearly.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is still not clear and uses technical jargon without proper explanation.",
+            "improvement": "The teacher should clarify the concept of locks by explaining the purpose and function more clearly."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is still not clear and uses technical jargon without proper explanation.\nImprovement: The teacher should clarify the concept of locks by explaining the purpose and function more clearly.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is still not clear and uses technical jargon without proper explanation.",
+            "improvement": "The teacher should clarify the concept of locks by explaining the purpose and function more clearly."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.4
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "topic": "Concurrency",
+      "subtopic": "Synchronization and locks",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "mistral",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:34:54+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what's the main purpose of using a lock when dealing with threads?",
+          "Hmm, that doesn't quite sound right to me. Can you explain with an example how using a lock can prevent this kind of issue?",
+          "I'm still really confused. What happens if one thread is already in the synchronized block?",
+          "I'm still really confused. Why is it important to always take locks in the same order?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is correct but lacks depth and clarity.\nImprovement: The teacher should have explained the concept more clearly and provided an example to illustrate the point.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is correct but lacks depth and clarity.",
+            "improvement": "The teacher should have explained the concept more clearly and provided an example to illustrate the point."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is correct but lacks depth and clarity.\nImprovement: The teacher should have explained the concept more clearly and provided an example to illustrate the point.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is correct but lacks depth and clarity.",
+            "improvement": "The teacher should have explained the concept more clearly and provided an example to illustrate the point."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is correct but lacks depth and clarity.\nImprovement: The teacher should have explained the concept more clearly and provided an example to illustrate the point.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is correct but lacks depth and clarity.",
+            "improvement": "The teacher should have explained the concept more clearly and provided an example to illustrate the point."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 11.5
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 254.7,
+    "turns": 54,
+    "generation": {
+      "calls": 72,
+      "seconds": 254.3,
+      "seconds_per_call": 3.53,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 0.3,
+        "judge_calls": 0
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 6.2,
+        "judge_calls": 0
+      }
+    }
+  }
+}

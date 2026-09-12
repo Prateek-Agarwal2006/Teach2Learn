@@ -1,0 +1,925 @@
+{
+  "test_bed": {
+    "generated_utc": "2026-09-08T10:10:39+00:00",
+    "backend": "transformers",
+    "results_are_fake": false,
+    "results_are_unreviewed": false,
+    "lessons_source": "packed by pack_for_server.py",
+    "lessons_version": 1,
+    "lesson_ids": [
+      "dsa/analysis/asymptotic-notation",
+      "dsa/analysis/recurrences",
+      "dsa/linear/stacks",
+      "dsa/linear/queues-and-deques",
+      "dsa/trees-heaps/tree-terminology-and-traversals",
+      "dsa/trees-heaps/heaps"
+    ],
+    "unreviewed_lesson_ids": [],
+    "model_override": null,
+    "turns": 3,
+    "repeats": 3,
+    "languages": [],
+    "judge_model": null,
+    "translation_backend": "sarvam",
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
+    "cuda_visible_devices": "1"
+  },
+  "runs": [
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Asymptotic notation",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:10:39+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, asymptotic notation is like a way to describe how the running time of an algorithm grows with the input size, right?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, but how does Big-O actually work with numbers?",
+          "That makes sense, but I'm still slightly unsure about one thing. So, if I have two algorithms, one with a running time of 3n^2 and another with n log n, which one is better for large inputs?",
+          "That makes sense, but I'm still slightly unsure about one thing. What if the input size is really small?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples to fully clarify the concept.\nImprovement: Provide more detail and examples to illustrate how asymptotic notation is used in comparing algorithms.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples to fully clarify the concept.",
+            "improvement": "Provide more detail and examples to illustrate how asymptotic notation is used in comparing algorithms."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could benefit from a more detailed breakdown of the process.\nImprovement: Explain the reasoning behind dropping constant factors and lower-order terms with examples.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could benefit from a more detailed breakdown of the process.",
+            "improvement": "Explain the reasoning behind dropping constant factors and lower-order terms with examples."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be improved with a comparison of the two algorithms' performance.\nImprovement: Provide a more detailed comparison of n^2 and n log n, explaining why n log n is generally better for large inputs.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be improved with a comparison of the two algorithms' performance.",
+            "improvement": "Provide a more detailed comparison of n^2 and n log n, explaining why n log n is generally better for large inputs."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 36.5
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Asymptotic notation",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:11:16+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, asymptotic notation is about predicting how an algorithm performs with large inputs, right?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, but how does Big-O actually work?",
+          "I think I understand most of that. Can you give an example of how you would apply Big-O to a specific algorithm?",
+          "I think I understand most of that. What would the Big-O notation be for a simple algorithm like searching through an unsorted list?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It doesn't fully explain the concept of asymptotic notation or its purpose.\nImprovement: Provide more detail on what asymptotic notation is and why it's used.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It doesn't fully explain the concept of asymptotic notation or its purpose.",
+            "improvement": "Provide more detail on what asymptotic notation is and why it's used."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be clearer. It doesn't fully explain the process of applying Big-O notation.\nImprovement: Clarify the process of applying Big-O notation with an example.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be clearer. It doesn't fully explain the process of applying Big-O notation.",
+            "improvement": "Clarify the process of applying Big-O notation with an example."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It doesn't provide a clear example of applying Big-O notation.\nImprovement: Provide a specific example to illustrate how Big-O is applied to an algorithm.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It doesn't provide a clear example of applying Big-O notation.",
+            "improvement": "Provide a specific example to illustrate how Big-O is applied to an algorithm."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 18.6
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Asymptotic notation",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:11:34+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, asymptotic notation is about simplifying complex calculations, right?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how Big-O notation helps compare algorithms?",
+          "Okay, I'm following you. What happens if both algorithms have the same Big-O notation?",
+          "Okay, I'm following you. How do constant factors affect the performance of algorithms with the same Big-O notation?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's explanation is correct but could be more detailed.\nImprovement: The teacher should elaborate on how Big-O notation specifically simplifies comparisons by focusing on the main factors affecting an algorithm's performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but could be more detailed.",
+            "improvement": "The teacher should elaborate on how Big-O notation specifically simplifies comparisons by focusing on the main factors affecting an algorithm's performance."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's explanation is correct but lacks depth.\nImprovement: The teacher should provide a more detailed example, such as comparing two algorithms with different constants and lower-order terms, to illustrate the point better.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but lacks depth.",
+            "improvement": "The teacher should provide a more detailed example, such as comparing two algorithms with different constants and lower-order terms, to illustrate the point better."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's explanation is correct but could be clearer.\nImprovement: The teacher should clarify that while Big-O is an upper bound, it doesn't mean the algorithm is always that slow, and it doesn't account for constant factors that can significantly impact performance.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but could be clearer.",
+            "improvement": "The teacher should clarify that while Big-O is an upper bound, it doesn't mean the algorithm is always that slow, and it doesn't account for constant factors that can significantly impact performance."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 19.2
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Recurrences",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:11:53+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when you say a recurrence equation is like a function, what exactly does that mean?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how this works with something like the merge-sort algorithm?",
+          "That makes sense, but I'm still slightly unsure about one thing. How does this recurrence equation help us understand the efficiency of merge-sort?",
+          "That makes sense, but I'm still slightly unsure about one thing. Why is n log n considered a good time complexity compared to something like n^2?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is somewhat vague and lacks depth.\nImprovement: Provide a more detailed analogy or example to clarify the concept.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is somewhat vague and lacks depth.",
+            "improvement": "Provide a more detailed analogy or example to clarify the concept."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be clearer with more detail.\nImprovement: Break down the recurrence equation step-by-step to show how it's derived from the algorithm's process.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be clearer with more detail.",
+            "improvement": "Break down the recurrence equation step-by-step to show how it's derived from the algorithm's process."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth in explaining the significance of n log n.\nImprovement: Elaborate on why n log n is considered efficient and how it compares to other algorithms.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth in explaining the significance of n log n.",
+            "improvement": "Elaborate on why n log n is considered efficient and how it compares to other algorithms."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 18.2
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Recurrences",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:12:12+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, how do you actually solve these recurrence equations?",
+          "I'm still really confused. Can you explain more about what you mean by 'solving' these equations?",
+          "I think I understand most of that. What happens if the array isn't perfectly splittable, like if n isn't a power of two?",
+          "That makes sense, but I'm still slightly unsure about one thing. Could you show me how you would solve a different recurrence, like for a different algorithm?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Weak\nImprovement: The explanation is too brief and lacks detail on the process of solving recurrence equations.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The explanation is too brief and lacks detail on the process of solving recurrence equations."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: Medium\nImprovement: The explanation provides a specific example but could be clearer on the general process of solving recurrences.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "Medium",
+            "improvement": "The explanation provides a specific example but could be clearer on the general process of solving recurrences."
+          },
+          {
+            "raw": "Level: Apply\nScore: Medium\nStrength: Medium\nImprovement: The explanation is correct but could benefit from more detail on how the solution is derived.",
+            "level": "Apply",
+            "score": "Medium",
+            "strength": "Medium",
+            "improvement": "The explanation is correct but could benefit from more detail on how the solution is derived."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 14.8
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "topic": "Algorithm analysis",
+      "subtopic": "Recurrences",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:12:27+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, when we're dealing with recurrences, why do we assume that the initial subproblem sizes are small?",
+          "I'm still really confused. Can you explain more about what happens with those smaller subproblems?",
+          "I'm still really confused. Why do we assume that n is a power of two in these recurrence equations?",
+          "I'm still really confused. What if n isn't a power of two, how does that affect the recurrence?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: Weak\nImprovement: The explanation is incomplete and doesn't address the student's question about assumptions on initial subproblem sizes.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The explanation is incomplete and doesn't address the student's question about assumptions on initial subproblem sizes."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: Weak\nImprovement: The explanation is somewhat clear but lacks depth and doesn't fully explain the role of initial subproblem sizes.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The explanation is somewhat clear but lacks depth and doesn't fully explain the role of initial subproblem sizes."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: Weak\nImprovement: The explanation is brief and doesn't clearly explain why the assumption of n being a power of two is significant.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "Weak",
+            "improvement": "The explanation is brief and doesn't clearly explain why the assumption of n being a power of two is significant."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 15.4
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Stacks",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:12:42+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, a stack is like a list where you can only add or remove from one end?",
+          "I think I understand most of that. Can you give an example of how a stack works in real life?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if you try to remove from an empty stack?",
+          "I'm still really confused. Wait, so how does the time complexity actually work for stack operations?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's explanation is correct but lacks depth. It doesn't explain the concept of LIFO clearly.\nImprovement: The teacher should clarify the LIFO (Last In, First Out) aspect of stacks with examples or analogies.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's explanation is correct but lacks depth. It doesn't explain the concept of LIFO clearly.",
+            "improvement": "The teacher should clarify the LIFO (Last In, First Out) aspect of stacks with examples or analogies."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides relevant examples but could elaborate more on how these examples demonstrate the stack's properties.\nImprovement: The teacher should explain more about how undo history and the call stack specifically use LIFO.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides relevant examples but could elaborate more on how these examples demonstrate the stack's properties.",
+            "improvement": "The teacher should explain more about how undo history and the call stack specifically use LIFO."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's explanation is incorrect. It confuses the time complexity of stack operations with the action of removing from an empty stack.\nImprovement: The teacher should clarify the concept of time complexity and how it applies to stack operations, especially when the stack is empty.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's explanation is incorrect. It confuses the time complexity of stack operations with the action of removing from an empty stack.",
+            "improvement": "The teacher should clarify the concept of time complexity and how it applies to stack operations, especially when the stack is empty."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 19.2
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Stacks",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:13:01+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, a stack is like a list where you can only add or remove from one end?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of how a stack might be used in real life?",
+          "Okay, I'm following you. How does the call stack actually work when you're running a program?",
+          "I'm still really confused. Wait, I thought the time complexity for stack operations was O(1). Can you clarify that?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples.\nImprovement: Provide a real-world analogy or example to clarify the concept of a stack.",
+            "level": "Remember",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples.",
+            "improvement": "Provide a real-world analogy or example to clarify the concept of a stack."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provides a practical application of stacks but could elaborate more on how these applications work.\nImprovement: Explain how the undo history and call stack specifically function using stacks.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provides a practical application of stacks but could elaborate more on how these applications work.",
+            "improvement": "Explain how the undo history and call stack specifically function using stacks."
+          },
+          {
+            "raw": "Level: Apply\nScore: Low\nStrength: The teacher's answer is incorrect; it confuses the time complexity of stack operations with the explanation of the call stack.\nImprovement: Correctly explain the call stack mechanism and its importance in program execution.",
+            "level": "Apply",
+            "score": "Low",
+            "strength": "The teacher's answer is incorrect; it confuses the time complexity of stack operations with the explanation of the call stack.",
+            "improvement": "Correctly explain the call stack mechanism and its importance in program execution."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 17.5
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Stacks",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:13:19+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, how does a stack actually work?",
+          "I think I understand most of that. Okay, but what exactly are these push and pop operations?",
+          "I think I understand most of that. Can you give an example of how the call stack uses this concept?",
+          "I think I understand most of that. What happens if we try to pop from an empty stack?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks detail on how the stack operates with methods like push and pop.\nImprovement: Provide a more detailed explanation of the stack operations, such as push and pop, to clarify how items are added and removed.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks detail on how the stack operates with methods like push and pop.",
+            "improvement": "Provide a more detailed explanation of the stack operations, such as push and pop, to clarify how items are added and removed."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's response is somewhat correct but doesn't fully explain the operations.\nImprovement: The teacher should clarify the push and pop operations by explaining how they function in the context of the stack structure.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's response is somewhat correct but doesn't fully explain the operations.",
+            "improvement": "The teacher should clarify the push and pop operations by explaining how they function in the context of the stack structure."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's response is correct but could be improved with a more detailed example or analogy.\nImprovement: The teacher should provide a more detailed explanation or example to help the student visualize how the call stack operates.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's response is correct but could be improved with a more detailed example or analogy.",
+            "improvement": "The teacher should provide a more detailed explanation or example to help the student visualize how the call stack operates."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 17.5
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Queues and deques",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:13:36+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a queue and how does it differ from a stack?",
+          "I'm still really confused. Can you explain more about how queues are used in real-world scenarios?",
+          "I'm still really confused. What are some real-world examples where using a queue would be more efficient than a stack?",
+          "I'm still really confused. Can you give me an example of a situation where using a deque would be the best choice?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: Weak explanation, lacks detail on how it differs from a stack.\nImprovement: Provide a more detailed comparison with stacks, including examples of scenarios where queues are preferred over stacks.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "Weak explanation, lacks detail on how it differs from a stack.",
+            "improvement": "Provide a more detailed comparison with stacks, including examples of scenarios where queues are preferred over stacks."
+          },
+          {
+            "raw": "Level: Understand\nScore: Low\nStrength: The explanation focuses on implementation details without addressing the broader concept or real-world applications of queues.\nImprovement: Discuss the practical applications of queues, such as in scheduling tasks or managing print jobs, to help the student understand their utility.",
+            "level": "Understand",
+            "score": "Low",
+            "strength": "The explanation focuses on implementation details without addressing the broader concept or real-world applications of queues.",
+            "improvement": "Discuss the practical applications of queues, such as in scheduling tasks or managing print jobs, to help the student understand their utility."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is correct but lacks depth and fails to clarify how a deque is more versatile than a stack or queue alone.\nImprovement: Provide examples of scenarios where a deque's flexibility is advantageous, such as in implementing double-ended queues or as a more versatile data structure.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is correct but lacks depth and fails to clarify how a deque is more versatile than a stack or queue alone.",
+            "improvement": "Provide examples of scenarios where a deque's flexibility is advantageous, such as in implementing double-ended queues or as a more versatile data structure."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i'm still really confused. can you",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 19.1
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Queues and deques",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:13:55+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a queue?",
+          "I think I understand most of that. Can you give an example of how a queue might be used in a real-world situation?",
+          "I'm still really confused. Wait, so how does a circular array queue actually work?",
+          "I'm still really confused. So, if a deque can do both, how is it different from just using a stack and a queue?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth and examples that could help clarify the concept further.\nImprovement: Provide a more detailed explanation with examples to illustrate how queues work in real-world scenarios.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth and examples that could help clarify the concept further.",
+            "improvement": "Provide a more detailed explanation with examples to illustrate how queues work in real-world scenarios."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is partially correct but doesn't address the student's request for a real-world example.\nImprovement: The teacher should provide a clear real-world example of queue usage, such as a line at a grocery store checkout or a print queue in a computer.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response is partially correct but doesn't address the student's request for a real-world example.",
+            "improvement": "The teacher should provide a clear real-world example of queue usage, such as a line at a grocery store checkout or a print queue in a computer."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher's response is incorrect; it confuses the concept of a deque with a stack.\nImprovement: The teacher should clarify the difference between a deque and a stack, emphasizing that a deque is more flexible but still distinct from a stack.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher's response is incorrect; it confuses the concept of a deque with a stack.",
+            "improvement": "The teacher should clarify the difference between a deque and a stack, emphasizing that a deque is more flexible but still distinct from a stack."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 19.1
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "topic": "Linear data structures",
+      "subtopic": "Queues and deques",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:14:14+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a queue?",
+          "I think I understand most of that. How does a queue differ from a stack?",
+          "That makes sense, but I'm still slightly unsure about one thing. What are some real-world applications of queues?",
+          "I'm still really confused. Can you explain more about how a deque works independently?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic definition of a queue but could have included more detail about its structure and operations.\nImprovement: The teacher should explain the FIFO (First-In, First-Out) nature of queues and how they are implemented using arrays or linked lists.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition of a queue but could have included more detail about its structure and operations.",
+            "improvement": "The teacher should explain the FIFO (First-In, First-Out) nature of queues and how they are implemented using arrays or linked lists."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher mentioned a method to improve queue efficiency but didn't clearly explain the difference between queues and stacks.\nImprovement: The teacher should clarify the FIFO vs. LIFO nature of queues and stacks, and how they are used in different applications.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher mentioned a method to improve queue efficiency but didn't clearly explain the difference between queues and stacks.",
+            "improvement": "The teacher should clarify the FIFO vs. LIFO nature of queues and stacks, and how they are used in different applications."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The teacher confused the concept of a deque with the differences between stacks and queues.\nImprovement: The teacher should clearly explain the concept of a deque and how it operates independently of stacks and queues, focusing on its flexibility.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The teacher confused the concept of a deque with the differences between stacks and queues.",
+            "improvement": "The teacher should clearly explain the concept of a deque and how it operates independently of stacks and queues, focusing on its flexibility."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 18.2
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Tree terminology and traversals",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:14:33+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, and how does a binary tree differ from a regular tree?",
+          "Hmm, that doesn't quite sound right to me. I'm a bit lost. Wait, so what exactly makes a binary tree different from a regular tree?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you explain how an in-order traversal works in a binary tree?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be expanded with more detail about the structure and types of trees.\nImprovement: Provide more context on different types of trees, like binary trees or their uses.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be expanded with more detail about the structure and types of trees.",
+            "improvement": "Provide more context on different types of trees, like binary trees or their uses."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation confuses height with the difference between a binary and a regular tree.\nImprovement: Clarify the distinction between binary trees and regular trees, focusing on the number of children nodes.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation confuses height with the difference between a binary and a regular tree.",
+            "improvement": "Clarify the distinction between binary trees and regular trees, focusing on the number of children nodes."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks detail on how in-order traversal works in general.\nImprovement: Explain the traversal process more thoroughly, including how it applies to binary search trees specifically.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks detail on how in-order traversal works in general.",
+            "improvement": "Explain the traversal process more thoroughly, including how it applies to binary search trees specifically."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 18.5
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Tree terminology and traversals",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:14:51+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?",
+          "I think I understand most of that. Okay, so if a node has multiple children, how does that affect the tree's structure?",
+          "I think I understand most of that. Can you give an example of how tree height affects operations like searching for a node?",
+          "I think I understand most of that. How does the height of a tree affect the efficiency of searching for a node?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be more detailed. It lacks information about children nodes and the overall structure of a tree.\nImprovement: The teacher should elaborate on the concept of children nodes and how they relate to the parent node to provide a more comprehensive understanding of tree structure.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be more detailed. It lacks information about children nodes and the overall structure of a tree.",
+            "improvement": "The teacher should elaborate on the concept of children nodes and how they relate to the parent node to provide a more comprehensive understanding of tree structure."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's response is correct but doesn't fully address the question about the impact of multiple children on tree structure.\nImprovement: The teacher should explain how multiple children nodes contribute to the overall depth and breadth of the tree, and how this affects operations like traversal.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's response is correct but doesn't fully address the question about the impact of multiple children on tree structure.",
+            "improvement": "The teacher should explain how multiple children nodes contribute to the overall depth and breadth of the tree, and how this affects operations like traversal."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher's answer is correct but lacks depth in explaining the relationship between tree height and search operations.\nImprovement: The teacher should clarify how the height of the tree influences the efficiency of searching, especially in terms of time complexity.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher's answer is correct but lacks depth in explaining the relationship between tree height and search operations.",
+            "improvement": "The teacher should clarify how the height of the tree influences the efficiency of searching, especially in terms of time complexity."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "i think i understand most of",
+            "count": 3
+          }
+        ]
+      },
+      "elapsed_seconds": 20.3
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Tree terminology and traversals",
+      "carried_from": null,
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:15:11+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a tree in the context of data structures?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, and how do these traversals work?",
+          "I think I understand most of that. Can you give an example of how preorder traversal works?",
+          "That makes sense, but I'm still slightly unsure about one thing. What about preorder traversal?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be expanded to include more details about the structure of a tree.\nImprovement: The teacher could have mentioned the different types of trees, like binary trees or AVL trees, to provide a more comprehensive understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be expanded to include more details about the structure of a tree.",
+            "improvement": "The teacher could have mentioned the different types of trees, like binary trees or AVL trees, to provide a more comprehensive understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It doesn't explain how traversals are performed or their purpose.\nImprovement: The teacher should have provided a more detailed explanation of tree traversals, such as preorder, inorder, and postorder, and their applications.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It doesn't explain how traversals are performed or their purpose.",
+            "improvement": "The teacher should have provided a more detailed explanation of tree traversals, such as preorder, inorder, and postorder, and their applications."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but could be clearer. It doesn't fully explain the preorder traversal process.\nImprovement: The teacher should clarify that in-order traversal visits left, then node, then right, and how this results in sorted order for binary search trees.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but could be clearer. It doesn't fully explain the preorder traversal process.",
+            "improvement": "The teacher should clarify that in-order traversal visits left, then node, then right, and how this results in sorted order for binary search trees."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 19.3
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Heaps",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 1,
+      "started_utc": "2026-09-08T10:15:31+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a heap?",
+          "That makes sense, but I'm still slightly unsure about one thing. Okay, and how does this ordering work with the children?",
+          "I think I understand most of that. So, does this mean inserting or removing elements is quick because of this array setup?",
+          "That makes sense, but I'm still slightly unsure about one thing. What happens if we try to insert an element that's smaller than the root in a min-heap?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks depth. It doesn't mention the two types of heaps or how they are used.\nImprovement: The teacher should elaborate on the two types of heaps (min-heap and max-heap) and provide examples of their applications.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks depth. It doesn't mention the two types of heaps or how they are used.",
+            "improvement": "The teacher should elaborate on the two types of heaps (min-heap and max-heap) and provide examples of their applications."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly explains the storage efficiency of heaps using an array, but misses the opportunity to discuss the implications of this structure on heap operations.\nImprovement: The teacher should explain how this array-based structure affects operations like insertion and deletion.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly explains the storage efficiency of heaps using an array, but misses the opportunity to discuss the implications of this structure on heap operations.",
+            "improvement": "The teacher should explain how this array-based structure affects operations like insertion and deletion."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly identifies the time complexity of heap operations but doesn't explain the reasoning behind it.\nImprovement: The teacher should elaborate on why the operations are O(log n) and how the complete binary tree structure contributes to this efficiency.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly identifies the time complexity of heap operations but doesn't explain the reasoning behind it.",
+            "improvement": "The teacher should elaborate on why the operations are O(log n) and how the complete binary tree structure contributes to this efficiency."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 20.2
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Heaps",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 2,
+      "started_utc": "2026-09-08T10:15:51+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a heap?",
+          "I think I understand most of that. Okay, so how does a heap differ from a binary tree?",
+          "That makes sense, but I'm still slightly unsure about one thing. What are the advantages of using an array for storing a heap?",
+          "That makes sense, but I'm still slightly unsure about one thing. Can you give an example of when you would use a heap over other data structures?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher provided a basic definition of a heap but missed details about the two types of heaps and how they are used.\nImprovement: The explanation should include the two types of heaps (min-heap and max-heap) and their applications to provide a more complete understanding.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher provided a basic definition of a heap but missed details about the two types of heaps and how they are used.",
+            "improvement": "The explanation should include the two types of heaps (min-heap and max-heap) and their applications to provide a more complete understanding."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher explained the storage efficiency of heaps but didn't clarify how this impacts their use or comparison with binary trees.\nImprovement: The teacher should elaborate on the advantages of using an array for heap storage and how it affects operations like insertion and deletion.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher explained the storage efficiency of heaps but didn't clarify how this impacts their use or comparison with binary trees.",
+            "improvement": "The teacher should elaborate on the advantages of using an array for heap storage and how it affects operations like insertion and deletion."
+          },
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The teacher correctly identified the efficiency of heap operations but didn't explain why this is advantageous compared to other data structures.\nImprovement: The teacher should discuss how this efficiency makes heaps suitable for applications like priority queues and heap-sort.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The teacher correctly identified the efficiency of heap operations but didn't explain why this is advantageous compared to other data structures.",
+            "improvement": "The teacher should discuss how this efficiency makes heaps suitable for applications like priority queues and heap-sort."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": [
+          {
+            "opener": "that makes sense, but i'm still",
+            "count": 2
+          }
+        ]
+      },
+      "elapsed_seconds": 19.9
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "topic": "Trees and priority queues",
+      "subtopic": "Heaps",
+      "carried_from": "LANGUAGE_TEST_RESULTS.md",
+      "reviewed": true,
+      "profile": "gemma2",
+      "repeat": 3,
+      "started_utc": "2026-09-08T10:16:11+00:00",
+      "baseline": {
+        "questions": [
+          "Hi there! I'm ready to learn. To start us off, So, what exactly is a heap data structure?",
+          "I think I understand most of that. Okay, but how does the ordering work exactly?",
+          "I'm still really confused. Wait, I'm a bit lost. Can you explain what makes a min-heap different from a max-heap?",
+          "I'm still really confused. So, if I wanted to remove the smallest element, how would that work in a min-heap?"
+        ],
+        "evaluations": [
+          {
+            "raw": "Level: Understand\nScore: Medium\nStrength: The explanation is correct but lacks detail on how the ordering works and the types of heaps.\nImprovement: The teacher should clarify that there are two types of heaps: min-heaps and max-heaps, and explain how the ordering specifically works with examples.",
+            "level": "Understand",
+            "score": "Medium",
+            "strength": "The explanation is correct but lacks detail on how the ordering works and the types of heaps.",
+            "improvement": "The teacher should clarify that there are two types of heaps: min-heaps and max-heaps, and explain how the ordering specifically works with examples."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation focuses on storage efficiency rather than the ordering mechanism.\nImprovement: The teacher should clarify the ordering rules for min-heaps and max-heaps, such as how elements are compared and arranged.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation focuses on storage efficiency rather than the ordering mechanism.",
+            "improvement": "The teacher should clarify the ordering rules for min-heaps and max-heaps, such as how elements are compared and arranged."
+          },
+          {
+            "raw": "Level: Remember\nScore: Low\nStrength: The explanation is correct but lacks context on how these operations relate to the heap structure.\nImprovement: The teacher should explain how the ordering rules determine whether it's a min-heap or max-heap and how these operations affect the heap structure.",
+            "level": "Remember",
+            "score": "Low",
+            "strength": "The explanation is correct but lacks context on how these operations relate to the heap structure.",
+            "improvement": "The teacher should explain how the ordering rules determine whether it's a min-heap or max-heap and how these operations affect the heap structure."
+          }
+        ],
+        "distinct": 4,
+        "templated_openers": []
+      },
+      "elapsed_seconds": 19.4
+    }
+  ],
+  "cost_basis": {
+    "wall_clock_seconds": 351.8,
+    "turns": 54,
+    "generation": {
+      "calls": 72,
+      "seconds": 351.2,
+      "seconds_per_call": 4.88,
+      "calls_per_turn": 1.33
+    },
+    "translation": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "judge": {
+      "calls": 0,
+      "seconds": 0.0,
+      "seconds_per_call": null,
+      "calls_per_turn": 0.0
+    },
+    "projected": {
+      "Sweep A (English, 24 lessons x3)": {
+        "turns": 216,
+        "hours": 0.4,
+        "judge_calls": 0
+      },
+      "Sweep B (22 languages, 24 lessons x3)": {
+        "turns": 4752,
+        "hours": 8.6,
+        "judge_calls": 0
+      }
+    }
+  }
+}

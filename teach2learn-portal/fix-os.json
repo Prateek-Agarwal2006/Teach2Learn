@@ -39,7 +39,9 @@
     "temperature": 0.2,
     "top_p": 0.9,
     "adapter_root": "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b",
-    "cuda_visible_devices": "1"
+    "cuda_visible_devices": "1",
+    "fluency_prompt_version": 2,
+    "fluency_prompt_note": "Fluency re-scored with the RAG-aligned prompt (RAG_TEST_PLAN.md blocker 4). Original scores kept per turn as fluency_prompt_v1. Fidelity is untouched."
   },
   "runs": [
     {
@@ -81,6 +83,10 @@
                 "note": "ಅರ್ಥವು ಬಹುತೇಕ ಸರಿಯಾಗಿದೆ, ಆದರೆ “ಬೇಡಿಕೆಯ ಪುಟ” ಬದಲು “ಬೇಡಿಕೆಯ ಪುಟೀಕರಣ” ಹೆಚ್ಚು ಸೂಕ್ತವಾಗಿದೆ."
               },
               "fluency": {
+                "score": 4,
+                "note": "ಸಹಜವಾಗಿದ್ದರೂ ಶಿಕ್ಷಕರಿಗೆ ಇನ್ನಷ್ಟು ಗೌರವಪೂರ್ವಕವಾಗಿರಬಹುದು."
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "ಸಹಜ ಮತ್ತು ಸ್ಪಷ್ಟವಾದ ಕನ್ನಡ ಪ್ರಶ್ನೆ."
               }
@@ -110,6 +116,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "ಸಹಜ ಮತ್ತು ಸ್ಪಷ್ಟವಾದ ಕನ್ನಡವಾಗಿದೆ."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "ಸಹಜ ಮತ್ತು ಸ್ಪಷ್ಟವಾದ ಕನ್ನಡ ಪ್ರಶ್ನೆ."
               }
             },
@@ -137,6 +147,10 @@
                 "note": "ತಾಂತ್ರಿಕ ಅರ್ಥವನ್ನು ಸರಿಯಾಗಿ ಉಳಿಸಿರುವ ನಿಖರ ಕನ್ನಡ ಅನುವಾದ."
               },
               "fluency": {
+                "score": 4,
+                "note": "ಅರ್ಥ ಸ್ಪಷ್ಟವಾಗಿದ್ದು, “ಬೇಡಿಕೆ ಪುಟಗಳನ್ನು ತಲುಪುವ ಪ್ರೋಗ್ರಾಂ” ಎಂಬ ಪದಬಳಕೆ ಸ್ವಲ್ಪ ಅಸಹಜವಾಗಿದೆ."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "ಕನ್ನಡ ಸಹಜವಾಗಿದೆ, ಆದರೆ “ಬೇಡಿಕೆ ಪುಟಗಳನ್ನು” ಎಂಬ ಪದಪ್ರಯೋಗ ಸ್ವಲ್ಪ ಅಸ್ಪಷ್ಟವಾಗಿದೆ."
               }
@@ -176,6 +190,10 @@
                 "note": "প্রযুক্তিগত অর্থ সম্পূর্ণ ও সঠিকভাবে সংরক্ষিত হয়েছে।"
               },
               "fluency": {
+                "score": 4,
+                "note": "স্বাভাবিক ও বোধগম্য, তবে কারিগরি শব্দগুলোর বাংলা রূপ হলে আরও সাবলীল শোনাত।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "স্বাভাবিক ও সাবলীল বাংলা, প্রযুক্তিগত পরিভাষার ব্যবহারও যথাযথ।"
               }
@@ -205,6 +223,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "স্বাভাবিক ও সাবলীলভাবে লেখা হয়েছে।"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "স্বাভাবিক, স্পষ্ট ও সাবলীল বাংলা প্রশ্ন।"
               }
             },
@@ -232,6 +254,10 @@
                 "note": "অর্থ সঠিক, তবে “resident” এর অনুবাদ কিছুটা আক্ষরিক ও অপ্রচলিত।"
               },
               "fluency": {
+                "score": 4,
+                "note": "ভাষা স্বাভাবিক, তবে “দাঁড়াও” সম্বোধনের সঙ্গে “আপনি” অসঙ্গত।"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "স্বাভাবিক ও বোধগম্য, তবে শিক্ষকের উদ্দেশে “দাঁড়াও” কিছুটা অনানুষ্ঠানিক।"
               }
@@ -271,6 +297,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാളം; സാങ്കേതിക പദപ്രയോഗവും യോജിക്കുന്നു."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാള ചോദ്യമാണ്."
               }
             },
@@ -298,6 +328,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാളം."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാള ചോദ്യമാണ്."
               }
             },
@@ -324,6 +358,10 @@
                 "note": "സാങ്കേതിക അർത്ഥം പൂർണ്ണമായി ശരിയായ മലയാളത്തിൽ നിലനിൽക്കുന്നു."
               },
               "fluency": {
+                "score": 5,
+                "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാളം."
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "സ്വാഭാവികവും വ്യക്തവുമായ മലയാളചോദ്യം."
               }
@@ -362,6 +400,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "नैसर्गिक आणि स्पष्ट मराठी, तांत्रिक संदर्भात योग्य."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "नैसर्गिक आणि स्पष्ट मराठीत विचारलेला प्रश्न."
               }
             },
@@ -388,6 +430,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "नैसर्गिक आणि स्पष्ट मराठी, तांत्रिक शब्दांचा योग्य वापर."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "प्रश्न नैसर्गिक, स्पष्ट आणि प्रवाही मराठीत आहे."
               }
             },
@@ -413,6 +459,10 @@
                 "note": "तांत्रिक अर्थ अचूक आणि स्पष्टपणे जतन केला आहे."
               },
               "fluency": {
+                "score": 4,
+                "note": "वाक्य स्पष्ट आणि स्वाभाविक आहे, पण “ती”ऐवजी “तो” अधिक योग्य आहे."
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "नैसर्गिक, स्पष्ट आणि व्याकरणदृष्ट्या योग्य मराठी प्रश्न."
               }
@@ -452,6 +502,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "ਕੁਦਰਤੀ ਅਤੇ ਸੁਚੱਜੀ ਪੰਜਾਬੀ ਵਿੱਚ ਲਿਖਿਆ ਸਪਸ਼ਟ ਸਵਾਲ ਹੈ۔"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "ਕੁਦਰਤੀ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਵਿੱਚ ਪੁੱਛਿਆ ਗਿਆ ਸਵਾਲ ਹੈ।"
               }
             },
@@ -479,6 +533,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "ਕੁਦਰਤੀ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ, ਤਕਨੀਕੀ ਸ਼ਬਦਾਵਲੀ ਸਮੇਤ"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "ਪ੍ਰਸ਼ਨ ਸੁਭਾਵਿਕ ਅਤੇ ਸਪਸ਼ਟ ਪੰਜਾਬੀ ਵਿੱਚ ਹੈ।"
               }
             },
@@ -505,6 +563,10 @@
                 "note": "ਤਕਨੀਕੀ ਅਰਥ ਸਹੀ ਹੈ, ਪਰ “ਨਿਵਾਸੀ” ਸ਼ਬਦ ਕੁਝ ਅਸਵਭਾਵਿਕ ਹੈ】【。"
               },
               "fluency": {
+                "score": 3,
+                "note": "ਅਰਥ ਸਪਸ਼ਟ ਹੈ, ਪਰ ਵਾਕ-ਰਚਨਾ ਕੁਝ ਅਟਪਟੀ ਹੈ۔"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "ਪੰਜਾਬੀ ਕੁਦਰਤੀ ਹੈ, ਪਰ “ਪੰਨਾ ... ਨੂੰ ਦੁਬਾਰਾ ਲੋੜੀਂਦਾ” ਵਾਲਾ ਵਾਕ-ਭਾਗ ਥੋੜ੍ਹਾ ਅਟਪਟਾ ਹੈ۔"
               }
@@ -543,6 +605,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી, યોગ્ય તકનીકી શબ્દપ્રયોગ સાથે."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી પ્રશ્ન."
               }
             },
@@ -570,6 +636,10 @@
               "fluency": {
                 "score": 5,
                 "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી પ્રશ્ન."
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
+                "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી પ્રશ્ન."
               }
             },
             {
@@ -594,6 +664,10 @@
                 "note": "સંપૂર્ણ તકનીકી અર્થ સાચી ગુજરાતી લિપિમાં જળવાયો છે."
               },
               "fluency": {
+                "score": 5,
+                "note": "સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી ભાષા."
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "પ્રશ્ન સ્વાભાવિક અને સ્પષ્ટ ગુજરાતી છે."
               }
@@ -632,6 +706,10 @@
                 "note": "ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରାଯୁକ୍ତିକ ଅର୍ଥ ସଠିକ୍ ଭାବେ ଅନୁଦିତ ହୋଇଛି।"
               },
               "fluency": {
+                "score": 4,
+                "note": "ବୋଧଗମ୍ୟ ଓ ସ୍ୱାଭାବିକ, କିନ୍ତୁ ଶିକ୍ଷକଙ୍କ ପ୍ରତି ସମ୍ବୋଧନ ଅଧିକ ସମ୍ମାନଜନକ ହୋଇପାରେ।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "ସ୍ୱାଭାବିକ, ସ୍ପଷ୍ଟ ଏବଂ ଶିକ୍ଷାର୍ଥୀସୁଲଭ ଓଡ଼ିଆ ପ୍ରଶ୍ନ।"
               }
@@ -660,6 +738,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "ସ୍ପଷ୍ଟ ଓ ସ୍ୱାଭାବିକ, କିନ୍ତୁ ଶିକ୍ଷକଙ୍କ ପାଇଁ ଅଧିକ ସମ୍ମାନସୂଚକ ଭାଷା ହୋଇପାରେ।"
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "ପ୍ରଶ୍ନଟି ସ୍ୱାଭାବିକ, କିନ୍ତୁ “ମୁଁ ତୁମକୁ ଅନୁସରଣ କରୁଛି” ଟିକେ ଅସ୍ୱାଭାବିକ ଲାଗେ."
               }
             },
@@ -686,6 +768,10 @@
                 "note": "ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରାଯୁକ୍ତିକ ଅର୍ଥ ସଠିକ୍ ଭାବେ ରହିଛି।"
               },
               "fluency": {
+                "score": 4,
+                "note": "ସ୍ୱାଭାବିକ ଓଡ଼ିଆ, କିନ୍ତୁ ଶିକ୍ଷକଙ୍କ ପାଇଁ ଅନୌପଚାରିକ ସମ୍ବୋଧନ ବ୍ୟବହୃତ ହୋଇଛି।"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "ବୁଝିବାଯୋଗ୍ୟ ଓ ସ୍ୱାଭାବିକ, କିନ୍ତୁ ପ୍ରଶ୍ନର ଗଠନ ସାମାନ୍ୟ ଅସ୍ପଷ୍ଟ।"
               }
@@ -725,6 +811,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "فطری، رواں اور درست اردو ہے۔"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "فطری، رواں اور درست اردو میں پوچھا گیا سوال ہے۔"
               }
             },
@@ -752,6 +842,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "قدرتی، واضح اور رواں اردو ہے۔"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "فطری اور رواں اردو میں پوچھا گیا ہے۔"
               }
             },
@@ -778,6 +872,10 @@
                 "note": "مفہوم درست ہے، مگر \"رہائشی ہونے\" کی ترکیب قدرے غیر فطری ہے۔"
               },
               "fluency": {
+                "score": 4,
+                "note": "مفہوم واضح ہے، مگر ایک جملہ قدرے غیر فطری ہے۔"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "مجموعی طور پر فطری ہے، مگر ’’اس کا بیشتر سمجھ گئی ہوں‘‘ قدرے غیر فطری ہے۔"
               }
@@ -816,6 +914,10 @@
                 "note": "অৰ্থ সঠিক, কিন্তু বাক্যগঠন অলপ অস্বাভাৱিক।"
               },
               "fluency": {
+                "score": 4,
+                "note": "স্বাভাৱিক আৰু স্পষ্ট, যদিও “মোৰ প্ৰয়োজন হোৱাৰ আগতেই” অংশটো অলপ অস্বাভাৱিক।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "স্বাভাৱিক আৰু সাবলীল অসমীয়া প্ৰশ্ন।"
               }
@@ -843,6 +945,10 @@
                 "note": "“নিবাসী নহয়”ৰ সলনি “নিবাসী” হোৱাত মূল অৰ্থ ওলোটা হৈছে।"
               },
               "fluency": {
+                "score": 4,
+                "note": "স্বাভাৱিক আৰু স্পষ্ট, যদিও “পৰৱৰ্তী পৃষ্ঠা” অংশটো অলপ অস্বাভাৱিক।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "স্বাভাৱিক আৰু স্পষ্ট অসমীয়া প্ৰশ্ন।"
               }
@@ -870,6 +976,10 @@
                 "note": "অৰ্থ সঠিক, কিন্তু “resident”ৰ অনুবাদ অলপ আক্ষৰিক আৰু অস্বাভাৱিক।"
               },
               "fluency": {
+                "score": 5,
+                "note": "স্বাভাৱিক আৰু স্পষ্ট অসমীয়া বাক্য।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "স্বাভাৱিক আৰু স্পষ্ট অসমীয়া প্ৰশ্ন।"
               }
@@ -909,6 +1019,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Clear and mostly natural Bodo, with minor awkward phrasing."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "स्पष्ट र स्वाभाविक बोडो प्रश्न, तर सुरुको वाक्यांश अलि अस्वाभाविक छ।"
               }
             },
@@ -936,6 +1050,10 @@
               },
               "fluency": {
                 "score": 3,
+                "note": "Understandable Bodo, but several phrases are unnatural and contain awkward English-transliterated wording."
+              },
+              "fluency_prompt_v1": {
+                "score": 3,
                 "note": "लिरनायाव बाख्रि बाथ्रा आरो गोनो-गोथो जादों, नाथाय माने बुजिनो हायो।"
               }
             },
@@ -962,6 +1080,10 @@
                 "note": "अर्थ रावजाबाय आरो बड़ो लिरथाइयाव साजायो।"
               },
               "fluency": {
+                "score": 4,
+                "note": "Clear and mostly natural Bodo, with minor phrasing issues."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "स्पष्ट Bodo प्रश्न, तर केही प्राविधिक शब्दावली अस्वाभाविक छ."
               }
@@ -1001,6 +1123,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "स्पष्ट ते स्वाभाविक डोगरी, पर किश वाक्य-विन्यास होर सुधारी सकदा ऐ"
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "अर्थ स्पष्ट ऐ, पर कुछ वाक्य-विन्यास थोड़ा अनैसर्गिक ऐ"
               }
             },
@@ -1028,6 +1154,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Mostly natural Dogri, with a few grammatical and register-related awkwardnesses."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "Mostly natural Dogri, though a few phrases sound slightly awkward."
               }
             },
@@ -1054,6 +1184,10 @@
                 "note": "अर्थ सही ऐ, पर आखरी वाक्यांश थोड़ा अस्वाभाविक ऐ"
               },
               "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक ते स्पष्ट डोगरी, तकनीकी शब्द ठीक ढंगै कन्नै बरते गे न।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "स्वाभाविक ते स्पष्ट डोगरी सवाल ऐ।"
               }
@@ -1092,6 +1226,10 @@
                 "note": "अर्थ जतन केला आसा, पूण Konkani वाक्यरचना थोडी अडखळीत आसा."
               },
               "fluency": {
+                "score": 3,
+                "note": "अर्थ स्पष्ट आसा, पूण कांय व्याकरणीक आनी नैसर्गीकपणाच्या चुकां आसात."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "अर्थ स्पष्ट आसा, पूण कांय शब्दरचना थोडी अनैसर्गिक आसा"
               }
@@ -1120,6 +1258,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Natural and understandable Konkani, with slightly technical or literal phrasing."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "प्रश्न स्पष्ट आसा, पूण कांय शब्दप्रयोग थोडे कृत्रिम दिसतात."
               }
             },
@@ -1146,6 +1288,10 @@
                 "note": "तांत्रिक अर्थ अचूक आसा आनी कोंकणी लिपी योग्य आसा."
               },
               "fluency": {
+                "score": 3,
+                "note": "अर्थ स्पष्ट आसा, पूण कांय व्याकरणीक आनी शब्दप्रयोगाच्या चुका आसात."
+              },
+              "fluency_prompt_v1": {
                 "score": 3,
                 "note": "अर्थ समजतो, पण व्याकरण आनी शब्दप्रयोग थोडे अनैसर्गिक आसात."
               }
@@ -1185,6 +1331,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Mostly natural and clear Kashmiri, with minor phrasing issues."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "واضح اور فصیح سوال، تاہم کچھ الفاظ قدرے غیرطبیعی ہیں۔"
               }
             },
@@ -1212,6 +1362,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "واضح اور فصیح، مگر اُستاد سے خطاب میں غیررسمی ضمیریں استعمال ہوئی ہیں۔"
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "Kashmiri is clear and natural overall, though “رُک” sounds slightly awkward in this context."
               }
             },
@@ -1238,6 +1392,10 @@
                 "note": "Meaning is preserved, though the Kashmiri phrasing is somewhat awkward."
               },
               "fluency": {
+                "score": 4,
+                "note": "صاف اور فصیح کشمیری، اگرچہ پہلا جملہ دہرایا گیا ہے۔"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "سوال واضح اور قدرتی ہے، مگر ابتدائی جملہ غیر ضروری طور پر دہرایا گیا ہے۔"
               }
@@ -1277,6 +1435,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "अर्थ स्पष्ट अछि, मुदा किछु वाक्यांश अल्प स्वाभाविक लगैत अछि."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "स्वाभाविक आ स्पष्ट, मुदा किछु शब्दावली थोड़े औपचारिक अछि."
               }
             },
@@ -1304,6 +1466,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "स्वाभाविक आ स्पष्ट मैथिली अछि।"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "स्वाभाविक आ स्पष्ट मैथिली प्रश्न।"
               }
             },
@@ -1330,6 +1496,10 @@
                 "note": "तकनीकी अर्थ पूर्णतः सुरक्षित अछि, यद्यपि “निवासी” किछु अप्राकृतिक अछि।"
               },
               "fluency": {
+                "score": 4,
+                "note": "स्वाभाविक मैथिली अछि, मुदा “ओहिमे सँ अधिकांश बुझि गेल छी” किछु असहज सुनाइत अछि।"
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "प्रश्न स्पष्ट आ स्वाभाविक अछि, मुदा “ओहिमे सँ अधिकांश” केर प्रयोग कने अस्वाभाविक लागैत अछि।"
               }
@@ -1368,6 +1538,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Clear and mostly natural, though the opening address and technical wording are slightly awkward."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "Natural and understandable, though the technical term and a few expressions sound slightly awkward."
               }
             },
@@ -1394,6 +1568,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Natural and understandable, with some borrowed technical terminology."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "Clear and understandable, though slightly awkward in phrasing."
               }
             },
@@ -1419,6 +1597,10 @@
                 "note": "სრულ technical meaning preserved in correct Manipuri script."
               },
               "fluency": {
+                "score": 4,
+                "note": "Clear and natural overall, with a slightly awkward question ending."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "Natural and understandable, though the phrasing is slightly awkward."
               }
@@ -1457,6 +1639,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "बुझिने र स्वाभाविक छ, तर “म अलि अलमलिएँ” बढी प्रचलित हुन्छ।"
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "अर्थ स्पष्ट छ, तर ‘अलमलिएँ’ अझ स्वाभाविक हुन्छ।"
               }
             },
@@ -1483,6 +1669,10 @@
               },
               "fluency": {
                 "score": 5,
+                "note": "स्वाभाविक र स्पष्ट नेपाली वाक्य।"
+              },
+              "fluency_prompt_v1": {
+                "score": 5,
                 "note": "स्वाभाविक र स्पष्ट नेपाली प्रश्न हो।"
               }
             },
@@ -1508,6 +1698,10 @@
                 "note": "प्राविधिक अर्थ सही र स्पष्ट रूपमा संरक्षित छ।"
               },
               "fluency": {
+                "score": 5,
+                "note": "स्वाभाविक र स्पष्ट नेपाली वाक्य।"
+              },
+              "fluency_prompt_v1": {
                 "score": 5,
                 "note": "स्वाभाविक र स्पष्ट नेपाली प्रश्न हो।"
               }
@@ -1546,6 +1740,10 @@
               },
               "fluency": {
                 "score": 3,
+                "note": "अर्थः स्पष्टः, किन्तु आरम्भवाक्यं अप्राकृतिकं तथा केचन पदप्रयोगाः अस्वाभाविकाः।"
+              },
+              "fluency_prompt_v1": {
+                "score": 3,
                 "note": "अर्थः स्पष्टः, परन्तु “क्षमां कुर्वती” अप्राकृतिकं तथा वाक्यरचना किंचित् अस्वाभाविकी।"
               }
             },
@@ -1572,6 +1770,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "अर्थः स्पष्टः, यद्यपि “आरोपयेत्” अत्र किंचित् अप्राकृतिकम्।"
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "संस्कृतं स्पष्टं व्याकरणतः प्रायः शुद्धं च, किन्तु “आरोपयेत्” इत्यस्य स्थाने “प्रदर्शयेत्” अधिकं स्वाभाविकम्।"
               }
             },
@@ -1597,6 +1799,10 @@
                 "note": "अर्थः बोध्यः, किन्तु विभक्त्यां, लिङ्गे, तथा “at any moment” इत्यस्य अनुवादे दोषाः सन्ति।"
               },
               "fluency": {
+                "score": 2,
+                "note": "प्रारम्भिक वाक्ये स्पष्टे स्तः, किन्तु “याचनापृष्ठणम्” तथा “कार्यक्षमतररूपेण” अप्राकृतिकेऽशुद्धे च स्तः।"
+              },
+              "fluency_prompt_v1": {
                 "score": 2,
                 "note": "अर्थः किञ्चित् बोध्यते, किन्तु पदरचना व्याकरणं च अप्राकृतिकम्।"
               }
@@ -1635,6 +1841,10 @@
               },
               "fluency": {
                 "score": 4,
+                "note": "Natural and understandable Santali, with some slightly awkward phrasing and borrowed technical terms."
+              },
+              "fluency_prompt_v1": {
+                "score": 4,
                 "note": "Natural and understandable Santali in Ol Chiki script, with some borrowed technical terms."
               }
             },
@@ -1660,6 +1870,10 @@
                 "note": "The translation preserves the full technical meaning in correct Santali script."
               },
               "fluency": {
+                "score": 2,
+                "note": "The Ol Chiki script is correct, but the phrasing is awkward and the meaning is difficult to follow."
+              },
+              "fluency_prompt_v1": {
                 "score": 3,
                 "note": "Correct script and partly understandable, but several phrases sound unnatural and unclear."
               }
@@ -1686,6 +1900,10 @@
                 "note": "Meaning and technical details are fully preserved in correct Ol Chiki script."
               },
               "fluency": {
+                "score": 4,
+                "note": "Clear and appropriate Santali, with slight grammatical awkwardness."
+              },
+              "fluency_prompt_v1": {
                 "score": 4,
                 "note": "Natural Santali in the correct script, with understandable technical loanwords and minor phrasing awkwardness."
               }
@@ -1725,6 +1943,10 @@
               },
               "fluency": {
                 "score": 2,
+                "note": "سنڌي مفھوم سمجھ ۾ اچي ٿو، پر رسم الخط ۽ ٻوليءَ جو استعمال غير فطري آهي."
+              },
+              "fluency_prompt_v1": {
+                "score": 2,
                 "note": "سوال سمجهه ۾ اچي ٿو، پر سنڌي بدران ديوناگري رسم الخط ۽ غير فطري ملاوٽ آهي۔"
               }
             },
@@ -1751,6 +1973,10 @@
                 "note": "ترجمو ديو नागरी लिपि ۾ آهي، سنڌي رسم الخط ۾ نه آهي."
               },
               "fluency": {
+                "score": 3,
+                "note": "سنڌي ٻولي فطري آهي، پر صحيح سنڌي رسم الخط بدران ديوناگري ۾ لکيل آهي۔"
+              },
+              "fluency_prompt_v1": {
                 "score": 1,
                 "note": "Sindhi آهي، پر غلط رسم الخط ۾ لکيل آهي."
               }
@@ -1778,6 +2004,10 @@
                 "note": "Meaning is accurate, but it is written in Devanagari rather than standard Sindhi Arabic script."
               },
               "fluency": {
+                "score": 2,
+                "note": "مفهوم آهي پر سنڌي رسم الخط بدران ديوناگري ۽ ڪجهه غير فطري لفظ آهن."
+              },
+              "fluency_prompt_v1": {
                 "score": 2,
                 "note": "سوال سمجهه ۾ اچي ٿو، پر اسڪرپٽ ۽ ٻوليءَ جو استعمال غير فطري آهي۔"
               }
