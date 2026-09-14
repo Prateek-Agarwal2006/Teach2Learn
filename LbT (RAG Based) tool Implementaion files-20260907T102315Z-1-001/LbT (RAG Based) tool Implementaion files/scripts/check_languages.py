@@ -31,6 +31,16 @@ Usage (from this project's root, with the .env already sourced):
 
     # the full grid, matching teach2learn-portal/TEST_BED.md's design
     python scripts/check_languages.py --sweep --repeat 3 --out sweep-all.json
+
+    # experiment: the English baseline again, with the student also given the teacher's earlier
+    # sentences, the opening question held to the committed run's, and retrieval queries embedded
+    # through OpenRouter when no OPENAI_API_KEY is available
+    python scripts/check_languages.py --baseline --repeat 3 --teacher-history \
+        --openings-from sweepA-rag.json --embeddings-via-openrouter --no-judge --out sweepA-rag-history.json
+
+The three experiment flags are opt-in. Without them the harness builds the committed chain and prompt
+exactly; with --teacher-history, turn one's prompt still renders byte-identically, because the teacher
+history block is empty until the teacher has said something earlier in the lesson.
 """
 
 from __future__ import annotations
@@ -276,8 +286,44 @@ def filter_lessons(
 # --------------------------------------------------------------------------------
 
 
+TEACHER_HISTORY_ANCHOR = "Student Context:"
+
+
+def teacher_history_block(earlier: list[str]) -> str:
+    """The teacher's earlier sentences in this lesson, placed ahead of the student's memory.
+
+    The live app already records these (main.py's ConversationBufferMemory) but never passes them
+    to student_chain.invoke, so the student sees its own earlier replies and not what they were
+    replies to. Empty before the first sentence, so turn one renders the committed prompt exactly.
+    """
+    if not earlier:
+        return ""
+    lines = "\n".join(f"{number}. {sentence}" for number, sentence in enumerate(earlier, 1))
+    return f"Earlier in this lesson, the teacher explained:\n{lines}\n\n"
+
+
+def with_teacher_history(llm: Any) -> Any:
+    """student_chain.py's own prompt with one {teacher_history} slot added.
+
+    Built here rather than in student_chain.py so the shared module, the live app, and the
+    committed baseline results all stay untouched. An LLMChain drops input keys its prompt does
+    not declare, so the slot has to be a real template variable, not a partial with a default.
+    """
+    import student_chain as shared
+    from langchain.chains import LLMChain
+    from langchain.output_parsers import PydanticOutputParser
+    from langchain.prompts import ChatPromptTemplate
+
+    if shared.student_prompt.count(TEACHER_HISTORY_ANCHOR) != 1:
+        raise SystemExit("student_prompt changed shape; re-anchor the teacher-history slot")
+    template = shared.student_prompt.replace(TEACHER_HISTORY_ANCHOR, "{teacher_history}" + TEACHER_HISTORY_ANCHOR)
+    parser = PydanticOutputParser(pydantic_object=StudentResponse)
+    prompt = ChatPromptTemplate.from_template(template).partial(format_instructions=parser.get_format_instructions())
+    return LLMChain(llm=llm, prompt=prompt, output_parser=parser)
+
+
 async def run_baseline(
-    student_chain: Any, vs: Any, lesson: Lesson, opening_en: str
+    student_chain: Any, vs: Any, lesson: Lesson, opening_en: str, teacher_history: bool = False
 ) -> dict[str, Any]:
     """English only, real chain, real retrieval. Establishes whether the student
     varies its questions and whether retrieval is actually influencing it."""
@@ -287,11 +333,12 @@ async def run_baseline(
         teacher_en = lesson.script[turn_index]
         context_docs = vs.similarity_search(teacher_en, k=4)
         context = "\n\n".join(doc.page_content for doc in context_docs)
-        response = student_chain.invoke({
-            "teacher_explanation": teacher_en,
-            "student_memory": student_memory,
-            "context": context,
-        })
+        inputs = {"teacher_explanation": teacher_en, "student_memory": student_memory, "context": context}
+        if teacher_history:
+            if "teacher_history" not in student_chain.prompt.input_variables:
+                raise SystemExit("--teacher-history needs the chain from with_teacher_history(); this one would drop it")
+            inputs["teacher_history"] = teacher_history_block(lesson.script[:turn_index])
+        response = student_chain.invoke(inputs)
         student_model = _student_response(response["text"])
         student_memory.append(student_model)
         outbound_text, outbound_kind = _outbound_text(student_model)
@@ -390,6 +437,11 @@ async def main() -> None:
     parser.add_argument("--allow-unreviewed", action="store_true")
     parser.add_argument("--no-judge", action="store_true")
     parser.add_argument("--out", help="crash-safety copy, rewritten after every repeat")
+    parser.add_argument("--teacher-history", action="store_true",
+                        help="experiment: also give the student the teacher's earlier sentences (baseline only)")
+    parser.add_argument("--openings-from", help="reuse each lesson's opening question from an earlier results file")
+    parser.add_argument("--embeddings-via-openrouter", action="store_true",
+                        help="embed retrieval queries through OpenRouter when no OPENAI_API_KEY is available")
     args = parser.parse_args()
 
     lessons_path = resolve_lessons_path(args.lessons)
@@ -404,6 +456,8 @@ async def main() -> None:
 
     if not args.baseline and not args.sweep:
         parser.error("pass --baseline, --sweep, --list-lessons, or a combination of the first two")
+    if args.teacher_history and args.sweep:
+        parser.error("--teacher-history is wired into the English baseline only")
 
     lesson_ids = [x.strip() for x in args.lesson.split(",")] if args.lesson else None
     lessons = filter_lessons(all_lessons, args.subject, lesson_ids)
@@ -441,10 +495,24 @@ async def main() -> None:
     if missing_subjects:
         parser.error(f"subject(s) not in vectorstore/catalog.json -- run ingest.py first: {', '.join(missing_subjects)}")
 
+    if args.embeddings_via_openrouter:
+        # student_chain.py builds OpenAIEmbeddings(model="text-embedding-3-small") against OpenAI directly.
+        # The same model is served through OpenRouter with the identical 1536-dim vectors the store holds.
+        import student_chain as shared
+        from langchain_openai import OpenAIEmbeddings
+
+        def openrouter_embeddings(**_ignored: Any) -> Any:
+            return OpenAIEmbeddings(model="openai/text-embedding-3-small", base_url="https://openrouter.ai/api/v1",
+                                    api_key=openrouter_key, check_embedding_ctx_length=False)
+
+        shared.OpenAIEmbeddings = openrouter_embeddings
+
     log(f"building chains for subjects: {', '.join(subjects_needed)}")
     chains: dict[str, tuple[Any, Any]] = {
         subject: build_student_chain(llm, subject, catalog) for subject in subjects_needed
     }
+    if args.teacher_history:
+        chains = {subject: (with_teacher_history(llm), vs) for subject, (_, vs) in chains.items()}
 
     translator = TranslationService()
     client = None if args.no_judge else httpx.AsyncClient()
@@ -460,12 +528,24 @@ async def main() -> None:
             "languages": codes if args.sweep else None,
             "generated_utc": datetime.now(timezone.utc).isoformat(),
             "results_are_unreviewed": bool(unreviewed),
+            "teacher_history": args.teacher_history,
+            "openings_from": args.openings_from,
+            "embeddings_route": "openrouter" if args.embeddings_via_openrouter else "openai",
         },
         "runs": [],
     }
 
     started_all = time.monotonic()
     opening_cache: dict[str, str] = {}
+    if args.openings_from:
+        earlier = json.loads(Path(args.openings_from).read_text())
+        for earlier_run in earlier.get("runs", []):
+            questions = (earlier_run.get("baseline") or {}).get("questions") or []
+            if questions:
+                opening_cache.setdefault(earlier_run["lesson_id"], questions[0])
+        absent = [lesson.id for lesson in lessons if lesson.id not in opening_cache]
+        if absent:
+            parser.error(f"--openings-from has no opening for: {', '.join(absent)}")
     try:
         for lesson in lessons:
             student_chain, vs = chains[lesson.subject]
@@ -489,7 +569,7 @@ async def main() -> None:
                 try:
                     if args.baseline:
                         log(f"[{lesson.id}] baseline repeat {repeat_index + 1}/{args.repeat}")
-                        run["baseline"] = await run_baseline(student_chain, vs, lesson, opening_en)
+                        run["baseline"] = await run_baseline(student_chain, vs, lesson, opening_en, teacher_history=args.teacher_history)
                     if args.sweep:
                         log(f"[{lesson.id}] sweep repeat {repeat_index + 1}/{args.repeat} ({len(codes)} languages)")
                         sweep_records = []
