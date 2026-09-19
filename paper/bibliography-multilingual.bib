@@ -1,0 +1,372 @@
+% Bibliography for teach2learn-multilingual.tex (named to avoid clobbering an existing bibliography.bib)
+%
+% Provenance of each entry (check every entry against its DOI or publisher page before
+% submission):
+%   [web]   details confirmed against the publisher, ACL Anthology, PMLR, arXiv or dblp
+%           while drafting (2026-09-16)
+%   [prior] copied from the reference list of Lahoria et al.'s Teach2Learn paper
+%           (Teach2Learn___ILE.pdf); still needs a DOI check
+%   [std]   standard reference not re-checked; confirm volume and pages
+%   [TODO]  incomplete; must be finished before submission
+
+% ---------------------------------------------------------------- Teach2Learn predecessors
+
+@unpublished{lahoria2025teach2learn,
+  author = {Lahoria, Shivam and Matu, Sundar and Siva, Samravi and Jain, Lakshya and Kumar, Dhruv and Challa, Jagat Sesh},
+  title  = {Teach2Learn: A Multi-Agentic {LLM} Tutoring Tool using Learning by Teaching Paradigm},
+  note   = {[TODO] Add venue, year and DOI or preprint link},
+}
+
+@unpublished{finetunedT2L,
+  author = {{TODO}},
+  title  = {Fine-tuned Teach2Learn},
+  note   = {[TODO] The fine-tuned Teach2Learn paper: authors, title, venue or preprint},
+}
+
+% ---------------------------------------------------------------- Learning by teaching
+
+@article{roscoe2007,
+  author  = {Roscoe, Rod D. and Chi, Michelene T. H.},
+  title   = {Understanding Tutor Learning: Knowledge-Building and Knowledge-Telling in Peer Tutors' Explanations and Questions},
+  journal = {Review of Educational Research},
+  volume  = {77},
+  number  = {4},
+  pages   = {534--574},
+  year    = {2007},
+  note    = {[prior]},
+}
+
+@article{biswas2005,
+  author  = {Biswas, Gautam and Leelawong, Krittaya and Schwartz, Daniel and Vye, Nancy and {The Teachable Agents Group at Vanderbilt}},
+  title   = {Learning by Teaching: A New Agent Paradigm for Educational Software},
+  journal = {Applied Artificial Intelligence},
+  volume  = {19},
+  number  = {3--4},
+  pages   = {363--392},
+  year    = {2005},
+  note    = {[prior]; author list after Schwartz not re-checked},
+}
+
+@article{blair2007,
+  author  = {Blair, Kristen and Schwartz, Daniel L. and Biswas, Gautam and Leelawong, Krittaya},
+  title   = {Pedagogical Agents for Learning by Teaching: Teachable Agents},
+  journal = {Educational Technology},
+  volume  = {47},
+  number  = {1},
+  pages   = {56--61},
+  year    = {2007},
+  note    = {[prior]},
+}
+
+@article{matsuda2013,
+  author  = {Matsuda, Noboru and Yarzebinski, Evelyn and Keiser, Victoria and Raizada, Rohan and Cohen, William W. and Stylianides, Gabriel J. and Koedinger, Kenneth R.},
+  title   = {Cognitive Anatomy of Tutor Learning: Lessons Learned with {SimStudent}},
+  journal = {Journal of Educational Psychology},
+  volume  = {105},
+  number  = {4},
+  pages   = {1152--1163},
+  year    = {2013},
+  note    = {[web]},
+}
+
+@article{graesser1994,
+  author  = {Graesser, Arthur C. and Person, Natalie K.},
+  title   = {Question Asking During Tutoring},
+  journal = {American Educational Research Journal},
+  volume  = {31},
+  number  = {1},
+  pages   = {104--137},
+  year    = {1994},
+  note    = {[std]},
+}
+
+% ---------------------------------------------------------------- LLM-based LbT systems
+
+@inproceedings{jin2024teach,
+  author    = {Jin, Hyoungwook and Lee, Seonghee and Shin, Hyungyu and Kim, Juho},
+  title     = {Teach {AI} How to Code: Using Large Language Models as Teachable Agents for Programming Education},
+  booktitle = {Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI '24)},
+  publisher = {ACM},
+  year      = {2024},
+  note      = {[prior]; add DOI and confirm fourth author},
+}
+
+@inproceedings{ma2024debugging,
+  author    = {Ma, Qianou and Shen, Hua and Koedinger, Kenneth and Wu, Sherry Tongshuang},
+  title     = {How to Teach Programming in the {AI} Era? {U}sing {LLMs} as a Teachable Agent for Debugging},
+  booktitle = {Artificial Intelligence in Education (AIED 2024)},
+  year      = {2024},
+  note      = {[prior]; add pages and confirm fourth author},
+}
+
+@article{chen2024bjet,
+  author  = {Chen, Angxuan and Wei, Yuang and Le, Huixiao and Zhang, Yan},
+  title   = {Learning-by-Teaching with {ChatGPT}: The Effect of a Teachable {ChatGPT} Agent on Programming Education},
+  journal = {British Journal of Educational Technology},
+  year    = {2024},
+  note    = {[prior]; add volume, pages and confirm fourth author},
+}
+
+@inproceedings{rogers2025playing,
+  author    = {Rogers, Kantwon and Davis, Michael and Maharana, Mallesh and others},
+  title     = {Playing Dumb to Get Smart: Creating and Evaluating an {LLM}-based Teachable Agent within University Computer Science Classes},
+  booktitle = {Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI '25)},
+  publisher = {ACM},
+  year      = {2025},
+  note      = {[prior]; complete author list and DOI},
+}
+
+@inproceedings{schmucker2024ruffle,
+  author    = {Schmucker, Robin and Xia, Meng and Azaria, Amos and Mitchell, Tom},
+  title     = {{Ruffle\&Riley}: Insights from Designing and Evaluating a Large Language Model-Based Conversational Tutoring System},
+  booktitle = {Artificial Intelligence in Education},
+  editor    = {Olney, Andrew M. and Chounta, Irene-Angelica and Liu, Zitao and Santos, Olga C. and Bittencourt, Ig Ibert},
+  publisher = {Springer Nature Switzerland},
+  address   = {Cham},
+  pages     = {75--90},
+  year      = {2024},
+  note      = {[prior]; confirm fourth author and editors},
+}
+
+% ---------------------------------------------------------------- Methods and models
+
+@inproceedings{lewis2020rag,
+  author    = {Lewis, Patrick and Perez, Ethan and Piktus, Aleksandra and Petroni, Fabio and Karpukhin, Vladimir and Goyal, Naman and K{\"u}ttler, Heinrich and Lewis, Mike and Yih, Wen-tau and Rockt{\"a}schel, Tim and Riedel, Sebastian and Kiela, Douwe},
+  title     = {Retrieval-Augmented Generation for Knowledge-Intensive {NLP} Tasks},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {33},
+  pages     = {9459--9474},
+  year      = {2020},
+  note      = {[std]},
+}
+
+@inproceedings{hu2022lora,
+  author    = {Hu, Edward J. and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
+  title     = {{LoRA}: Low-Rank Adaptation of Large Language Models},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2022},
+  note      = {[std]},
+}
+
+@inproceedings{kwon2023vllm,
+  author    = {Kwon, Woosuk and Li, Zhuohan and Zhuang, Siyuan and Sheng, Ying and Zheng, Lianmin and Yu, Cody Hao and Gonzalez, Joseph and Zhang, Hao and Stoica, Ion},
+  title     = {Efficient Memory Management for Large Language Model Serving with {PagedAttention}},
+  booktitle = {Proceedings of the 29th Symposium on Operating Systems Principles (SOSP '23)},
+  publisher = {ACM},
+  pages     = {611--626},
+  year      = {2023},
+  doi       = {10.1145/3600006.3613165},
+  note      = {[web]},
+}
+
+@misc{qwen3,
+  author        = {{Qwen Team}},
+  title         = {{Qwen3} Technical Report},
+  year          = {2025},
+  eprint        = {2505.09388},
+  archivePrefix = {arXiv},
+  note          = {[web]},
+}
+
+@misc{qwen25,
+  author        = {{Qwen Team}},
+  title         = {{Qwen2.5} Technical Report},
+  year          = {2024},
+  eprint        = {2412.15115},
+  archivePrefix = {arXiv},
+  note          = {[std]},
+}
+
+@misc{gemma2,
+  author        = {{Gemma Team}},
+  title         = {{Gemma 2}: Improving Open Language Models at a Practical Size},
+  year          = {2024},
+  eprint        = {2408.00118},
+  archivePrefix = {arXiv},
+  note          = {[web]},
+}
+
+@misc{mistral7b,
+  author        = {Jiang, Albert Q. and Sablayrolles, Alexandre and Mensch, Arthur and others},
+  title         = {{Mistral 7B}},
+  year          = {2023},
+  eprint        = {2310.06825},
+  archivePrefix = {arXiv},
+  note          = {[std]},
+}
+
+@misc{granite33,
+  author       = {{IBM Granite Team}},
+  title        = {{Granite 3.3 8B Instruct} model card},
+  howpublished = {\url{https://huggingface.co/ibm-granite/granite-3.3-8b-instruct}},
+  year         = {2025},
+  note         = {[TODO] Confirm; cite the Granite technical report if one covers 3.3},
+}
+
+@misc{gpt4o,
+  author       = {{OpenAI}},
+  title        = {{GPT-4o} model overview},
+  howpublished = {\url{https://platform.openai.com/docs/models/gpt-4o}},
+  year         = {2024},
+  note         = {[prior]},
+}
+
+@inproceedings{ovadia2024,
+  author    = {Ovadia, Oded and Brief, Menachem and Mishaeli, Moshik and Elisha, Oren},
+  title     = {Fine-Tuning or Retrieval? {C}omparing Knowledge Injection in {LLMs}},
+  booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing},
+  pages     = {237--250},
+  address   = {Miami, Florida, USA},
+  year      = {2024},
+  note      = {[web]},
+}
+
+@misc{gptluna,
+  author       = {{OpenAI}},
+  title        = {{GPT-5.6 Luna}, via {OpenRouter}},
+  howpublished = {\url{https://openrouter.ai/openai/gpt-5.6-luna}},
+  year         = {2026},
+  note         = {Model identifier openai/gpt-5.6-luna. Accessed 18 September 2026. [web]},
+}
+
+% ---------------------------------------------------------------- Multilingual NLP and speech
+
+@inproceedings{ahuja2023mega,
+  author    = {Ahuja, Kabir and Diddee, Harshita and Hada, Rishav and Ochieng, Millicent and Ramesh, Krithika and Jain, Prachi and Nambi, Akshay and Ganu, Tanuja and Segal, Sameer and Ahmed, Mohamed and Bali, Kalika and Sitaram, Sunayana},
+  title     = {{MEGA}: Multilingual Evaluation of Generative {AI}},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  pages     = {4232--4267},
+  address   = {Singapore},
+  year      = {2023},
+  note      = {[web] venue and pages; author list [std]},
+}
+
+@article{gala2023indictrans2,
+  author  = {Gala, Jay and Chitale, Pranjal A. and AK, Raghavan and Gumma, Varun and Doddapaneni, Sumanth and Kumar, Aswanth and Nawale, Janki and Sujatha, Anupama and Puduppully, Ratish and Raghavan, Vivek and Kumar, Pratyush and Khapra, Mitesh M. and Dabre, Raj and Kunchukuttan, Anoop},
+  title   = {{IndicTrans2}: Towards High-Quality and Accessible Machine Translation Models for all 22 Scheduled {Indian} Languages},
+  journal = {Transactions on Machine Learning Research},
+  year    = {2023},
+  note    = {[web] title, venue, year; full author list [std]},
+}
+
+@inproceedings{radford2023whisper,
+  author    = {Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},
+  title     = {Robust Speech Recognition via Large-Scale Weak Supervision},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {202},
+  pages     = {28492--28518},
+  year      = {2023},
+  note      = {[web]},
+}
+
+@inproceedings{bhogale2023vistaar,
+  author    = {Bhogale, Kaushal and Sundaresan, Sai and Raman, Abhigyan and Javed, Tahir and Khapra, Mitesh M. and Kumar, Pratyush},
+  title     = {Vistaar: Diverse Benchmarks and Training Sets for {Indian} Language {ASR}},
+  booktitle = {Proceedings of Interspeech 2023},
+  pages     = {4384--4388},
+  year      = {2023},
+  note      = {[web]},
+}
+
+@misc{sarvamtranslate,
+  author       = {{Sarvam AI}},
+  title        = {Sarvam-Translate model documentation},
+  howpublished = {\url{https://docs.sarvam.ai/api/getting-started/models/sarvam-translate}},
+  year         = {2026},
+  note         = {Accessed 18 September 2026. [web] Lists 22 Indian languages plus English},
+}
+
+@misc{sarvamstt,
+  author       = {{Sarvam AI}},
+  title        = {Saaras speech-to-text model documentation},
+  howpublished = {\url{https://docs.sarvam.ai/api/getting-started/models/saaras}},
+  year         = {2026},
+  note         = {Accessed 18 September 2026. [web] Lists 22 Indian languages plus English},
+}
+
+@misc{whispertokenizer,
+  author       = {{OpenAI}},
+  title        = {Whisper: language list in \texttt{whisper/tokenizer.py}},
+  howpublished = {\url{https://github.com/openai/whisper/blob/main/whisper/tokenizer.py}},
+  year         = {2026},
+  note         = {Accessed 18 September 2026. [web] Includes hi, ta, te, kn, bn, ml, mr, pa, gu, ur, as, ne, sa, sd; not or, mai, mni, brx, doi, kok, ks, sat},
+}
+
+% ---------------------------------------------------------------- LLM judges
+
+@inproceedings{zheng2023judging,
+  author    = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric and Zhang, Hao and Gonzalez, Joseph and Stoica, Ion},
+  title     = {Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}},
+  booktitle = {Advances in Neural Information Processing Systems 36 (Datasets and Benchmarks Track)},
+  year      = {2023},
+  note      = {[web]},
+}
+
+@inproceedings{wang2024fair,
+  author    = {Wang, Peiyi and Li, Lei and Chen, Liang and Cai, Zefan and Zhu, Dawei and Lin, Binghuai and Cao, Yunbo and Kang, Lei and Liu, Qi and Liu, Tianyu and Sui, Zhifang},
+  title     = {Large Language Models are not Fair Evaluators},
+  booktitle = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages     = {9440--9450},
+  address   = {Bangkok, Thailand},
+  year      = {2024},
+  note      = {[web] venue and pages; author list [std]},
+}
+
+@inproceedings{kocmi2023gemba,
+  author    = {Kocmi, Tom and Federmann, Christian},
+  title     = {Large Language Models Are State-of-the-Art Evaluators of Translation Quality},
+  booktitle = {Proceedings of the 24th Annual Conference of the European Association for Machine Translation},
+  pages     = {193--203},
+  address   = {Tampere, Finland},
+  year      = {2023},
+  note      = {[web]},
+}
+
+@inproceedings{hada2024multilingual,
+  author    = {Hada, Rishav and Gumma, Varun and de Wynter, Adrian and Diddee, Harshita and Ahmed, Mohamed and Choudhury, Monojit and Bali, Kalika and Sitaram, Sunayana},
+  title     = {Are Large Language Model-based Evaluators the Solution to Scaling Up Multilingual Evaluation?},
+  booktitle = {Findings of the Association for Computational Linguistics: EACL 2024},
+  pages     = {1051--1070},
+  address   = {St. Julian's, Malta},
+  year      = {2024},
+  note      = {[web]},
+}
+
+% ---------------------------------------------------------------- Policy, statistics, open science
+
+@misc{unesco2016language,
+  author       = {{UNESCO Global Education Monitoring Report}},
+  title        = {If You Don't Understand, How Can You Learn?},
+  howpublished = {Policy Paper 24. \url{https://www.unesco.org/gem-report/en/publication/if-you-dont-understand-how-can-you-learn}},
+  year         = {2016},
+  note         = {[web] title and publisher; confirm policy paper number and document code},
+}
+
+@misc{nep2020,
+  author       = {{Ministry of Human Resource Development, Government of India}},
+  title        = {National Education Policy 2020},
+  howpublished = {\url{https://www.education.gov.in/sites/upload_files/mhrd/files/NEP_Final_English_0.pdf}},
+  year         = {2020},
+  note         = {[web] para. 4.11 on home language as medium of instruction; confirm URL},
+}
+
+@book{efron1993,
+  author    = {Efron, Bradley and Tibshirani, Robert J.},
+  title     = {An Introduction to the Bootstrap},
+  publisher = {Chapman \& Hall},
+  address   = {New York},
+  year      = {1993},
+  note      = {[std]},
+}
+
+@article{nosek2018,
+  author  = {Nosek, Brian A. and Ebersole, Charles R. and DeHaven, Alexander C. and Mellor, David T.},
+  title   = {The Preregistration Revolution},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {115},
+  number  = {11},
+  pages   = {2600--2606},
+  year    = {2018},
+  note    = {[std]},
+}
