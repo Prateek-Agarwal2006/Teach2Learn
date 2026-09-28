@@ -10,10 +10,10 @@
 {% block content %}
 {% set current_turn = turn|default(0) %}
 {% set is_complete = session.status == 'completed' %}
-<section class="chat" data-chat data-session-id="{{ session.id }}" data-ws-url="{{ websocket_url|default('/ws/chat/' ~ session.id) }}" data-max-turns="{{ max_turns }}" data-turn="{{ current_turn }}" data-complete="{{ 'true' if is_complete else 'false' }}">
+<section class="chat" data-chat data-session-id="{{ session.id }}" data-base-path="{{ base_path }}" data-ws-url="{{ websocket_url|default(base_path ~ '/ws/chat/' ~ session.id) }}" data-max-turns="{{ max_turns }}" data-turn="{{ current_turn }}" data-complete="{{ 'true' if is_complete else 'false' }}">
   <header class="chat-header">
     <div class="chat-heading">
-      <a class="back-link" href="/history"><span aria-hidden="true">←</span> Session history</a>
+      <a class="back-link" href="{{ base_path }}/history"><span aria-hidden="true">←</span> Session history</a>
       <h1>{{ session.subtopic|default(session.topic) }}</h1>
       <p class="chat-meta">{{ session.subject|replace('_', ' ')|upper }} · {{ session.topic }} · {{ session.model_name|default(session.model) }}{% if session.lang and session.lang != 'en' %} · {{ supported_languages.get(session.lang, session.lang) }}{% endif %}</p>
     </div>
@@ -62,7 +62,7 @@
   <div class="chat-complete" data-chat-complete role="status" {% if not is_complete %}hidden{% endif %}>
     <p class="chat-complete-title"><span class="check-mark" aria-hidden="true">✓</span> Teaching session complete</p>
     <p>Thanks for teaching. Your personalized feedback is ready.</p>
-    <a class="button button-primary" href="/sessions/{{ session.id }}/complete" data-complete-link>View teaching feedback</a>
+    <a class="button button-primary" href="{{ base_path }}/sessions/{{ session.id }}/complete" data-complete-link>View teaching feedback</a>
   </div>
 </section>
 {% endblock %}

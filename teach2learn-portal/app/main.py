@@ -12,7 +12,7 @@ from typing import Any
 import uvicorn
 import httpx
 from authlib.integrations.base_client.errors import OAuthError
-from fastapi import FastAPI, File, Form, Request, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, File, Form, Request, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -82,6 +82,15 @@ session_socket_locks: dict[str, asyncio.Lock] = {}
 final_feedback_tasks: dict[str, asyncio.Task] = {}
 IS_PRODUCTION = os.getenv("APP_ENV", "development") == "production"
 PUBLIC_ORIGIN = os.getenv("PUBLIC_ORIGIN", "https://learnbyteaching.sasanktumpati.com").rstrip("/")
+# Lets one FastAPI process live at a URL subpath behind a shared reverse proxy
+# (e.g. multiple independent deployments on one domain). Every route below is
+# registered on `router` with this prefix rather than directly on `app`, so
+# url_for()-generated links (static assets, the OAuth callback) get it automatically;
+# literal RedirectResponse paths and template hrefs are prefixed by hand instead,
+# since Starlette has no way to rewrite a string it didn't generate.
+BASE_PATH = os.getenv("T2L_BASE_PATH", "").rstrip("/")
+if BASE_PATH and not BASE_PATH.startswith("/"):
+    BASE_PATH = f"/{BASE_PATH}"
 MAX_REQUEST_BYTES = max(1024, int(os.getenv("MAX_REQUEST_BYTES", str(256 * 1024))))
 # Voice recordings are audio, not JSON/form bodies, so they get their own much
 # larger ceiling; ~2 minutes of compressed webm/opus comfortably fits in 15 MB.
@@ -179,14 +188,15 @@ app.add_middleware(
     https_only=IS_PRODUCTION,
     max_age=max(900, int(os.getenv("SESSION_MAX_AGE_SECONDS", "43200"))),
 )
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount(f"{BASE_PATH}/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
+router = APIRouter(prefix=BASE_PATH)
 
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     content_length = request.headers.get("content-length")
-    size_limit = MAX_AUDIO_BYTES if request.url.path == "/api/transcribe" else MAX_REQUEST_BYTES
+    size_limit = MAX_AUDIO_BYTES if request.url.path == f"{BASE_PATH}/api/transcribe" else MAX_REQUEST_BYTES
     if content_length:
         try:
             too_large = int(content_length) > size_limit
@@ -254,11 +264,26 @@ def language_for(session: dict) -> str:
 
 
 async def localized_messages(messages: list[dict[str, Any]], lang: str) -> list[dict[str, Any]]:
-    """Render stored English transcript text in the participant's language."""
+    """Render stored English transcript text in the participant's language.
+
+    Only the AI student's own turns get a speaker_gender hint (matching its
+    established 👩‍🎓 persona) -- the teacher's own turns are re-translated here too
+    when history is redisplayed, and guessing a gender for the teacher's own words
+    would be putting words in their mouth, not the AI's.
+    """
     if lang == "en":
         return messages
     translator = get_translation_service()
-    contents = await translator.all_from_english([str(item.get("content", "")) for item in messages], lang)
+    contents = await asyncio.gather(
+        *(
+            translator.from_english(
+                str(item.get("content", "")),
+                lang,
+                speaker_gender="Female" if item.get("role") == "assistant" else None,
+            )
+            for item in messages
+        )
+    )
     return [{**item, "content": text} for item, text in zip(messages, contents)]
 
 
@@ -283,6 +308,7 @@ def render(request: Request, template: str, **context):
         context={
             "participant": participant,
             "is_admin": is_admin(participant),
+            "base_path": BASE_PATH,
             "min_turns": MIN_TURNS,
             "max_turns": MAX_TURNS,
             "google_oauth_enabled": google_auth.enabled,
@@ -599,17 +625,17 @@ def complete_page_context(session: dict, result: dict | None = None, **context: 
     }
 
 
-@app.get("/", response_class=HTMLResponse)
+@router.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return RedirectResponse("/study" if participant_for(request) else "/login", status_code=303)
+    return RedirectResponse(f"{BASE_PATH}/study" if participant_for(request) else f"{BASE_PATH}/login", status_code=303)
 
 
-@app.get("/login", response_class=HTMLResponse)
+@router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
     return render(request, "login.html")
 
 
-@app.get("/auth/google")
+@router.get("/auth/google")
 async def google_login(request: Request):
     if not google_auth.enabled:
         return render(request, "login.html", error="Google sign-in is not configured." )
@@ -618,10 +644,10 @@ async def google_login(request: Request):
     return await oauth.google.authorize_redirect(request, redirect_uri, hd=hosted_domain)
 
 
-@app.get("/auth/callback", name="google_auth_callback")
+@router.get("/auth/callback", name="google_auth_callback")
 async def google_auth_callback(request: Request):
     if not google_auth.enabled:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     try:
         token = await oauth.google.authorize_access_token(request)
         user = token.get("userinfo") or await oauth.google.userinfo(token=token)
@@ -646,18 +672,18 @@ async def google_auth_callback(request: Request):
     )
     request.session["participant_id"] = participant["id"]
     logger.info("participant_google_login participant_id=%s", participant["id"])
-    return RedirectResponse("/study", status_code=303)
+    return RedirectResponse(f"{BASE_PATH}/study", status_code=303)
 
 
-@app.post("/logout")
+@router.post("/logout")
 async def logout(request: Request):
     request.session.clear()
-    return RedirectResponse("/login", status_code=303)
+    return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
 
 
 if not IS_PRODUCTION and os.getenv("T2L_DEV_LOGIN_ENABLED", "").strip().lower() in {"1", "true", "yes", "on"}:
 
-    @app.get("/dev/login")
+    @router.get("/dev/login")
     async def dev_login(request: Request):
         """Sign in a throwaway local participant so the portal can be exercised without Google."""
         participant = database.get_or_create_participant(
@@ -667,17 +693,17 @@ if not IS_PRODUCTION and os.getenv("T2L_DEV_LOGIN_ENABLED", "").strip().lower() 
         )
         request.session["participant_id"] = participant["id"]
         logger.warning("dev_login_used participant_id=%s", participant["id"])
-        return RedirectResponse("/study", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/study", status_code=303)
 
 
-@app.get("/study", response_class=HTMLResponse)
+@router.get("/study", response_class=HTMLResponse)
 async def study(request: Request):
     if not participant_for(request):
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     return render(request, "select.html", models=MODELS, subjects=subjects(), taxonomy=TOPICS)
 
 
-@app.post("/study/start")
+@router.post("/study/start")
 async def start_study(
     request: Request,
     model: str = Form(...),
@@ -688,7 +714,7 @@ async def start_study(
 ):
     participant = participant_for(request)
     if not participant:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     try:
         topic_name, subtopic_name = topic_selection(subject, topic, subtopic)
         model_name = next(item["name"] for item in MODELS if item["id"] == model)
@@ -730,17 +756,17 @@ async def start_study(
     )
     transcripts.sync_session(session_id)
     logger.info("session_started session_id=%s model=%s subject=%s subtopic=%s", session_id, model, subject, subtopic_name)
-    return RedirectResponse(f"/sessions/{session_id}", status_code=303)
+    return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}", status_code=303)
 
 
-@app.get("/sessions/{session_id}", response_class=HTMLResponse)
+@router.get("/sessions/{session_id}", response_class=HTMLResponse)
 async def session_page(request: Request, session_id: str):
     participant = participant_for(request)
     session = owned_session(participant, session_id)
     if not session:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     if session["status"] == "completed":
-        return RedirectResponse(f"/sessions/{session_id}/complete", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}/complete", status_code=303)
     view = session_view(session)
     return render(
         request,
@@ -752,7 +778,7 @@ async def session_page(request: Request, session_id: str):
     )
 
 
-@app.post("/api/transcribe")
+@router.post("/api/transcribe")
 async def transcribe_audio(
     request: Request,
     session_id: str = Form(...),
@@ -786,7 +812,7 @@ async def transcribe_audio(
     return JSONResponse({"text": text})
 
 
-@app.websocket("/ws/chat/{session_id}")
+@router.websocket("/ws/chat/{session_id}")
 async def chat_socket(websocket: WebSocket, session_id: str):
     if IS_PRODUCTION and websocket.headers.get("origin", "").rstrip("/") != PUBLIC_ORIGIN:
         await websocket.close(code=1008)
@@ -871,7 +897,9 @@ async def chat_socket(websocket: WebSocket, session_id: str):
                     await websocket.send_json(
                         {
                             "status": "evaluating",
-                            "content": await translator.from_english(generation.content, user_lang),
+                            "content": await translator.from_english(
+                                generation.content, user_lang, speaker_gender="Female"
+                            ),
                             "turn": turn,
                             "done": False,
                         }
@@ -947,7 +975,9 @@ async def chat_socket(websocket: WebSocket, session_id: str):
                 logger.info("session_completed session_id=%s turn=%s reason=%s", session_id, turn, decision.reason)
             await websocket.send_json(
                 {
-                    "content": None if preview_sent else await translator.from_english(public_content, user_lang),
+                    "content": None
+                    if preview_sent
+                    else await translator.from_english(public_content, user_lang, speaker_gender="Female"),
                     "turn": turn,
                     "done": True,
                     "complete": decision.complete,
@@ -960,31 +990,31 @@ async def chat_socket(websocket: WebSocket, session_id: str):
         session_lock.release()
 
 
-@app.get("/sessions/{session_id}/complete", response_class=HTMLResponse)
+@router.get("/sessions/{session_id}/complete", response_class=HTMLResponse)
 async def complete(request: Request, session_id: str):
     session = owned_session(participant_for(request), session_id)
     if not session:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     if session["status"] != "completed":
-        return RedirectResponse(f"/sessions/{session_id}", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}", status_code=303)
     if settings.student_questionnaire_enabled and database.get_survey(session_id):
-        return RedirectResponse(f"/sessions/{session_id}/thanks", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}/thanks", status_code=303)
     result = await final_feedback_result(session)
     context = complete_page_context(session, result)
     context["teaching_feedback"] = await localized_feedback(context["teaching_feedback"], language_for(session))
     return render(request, "complete.html", **context)
 
 
-@app.post("/sessions/{session_id}/survey")
+@router.post("/sessions/{session_id}/survey")
 async def submit_survey(
     request: Request,
     session_id: str,
 ):
     session = owned_session(participant_for(request), session_id)
     if not session or session["status"] != "completed":
-        return RedirectResponse("/history", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/history", status_code=303)
     if not settings.student_questionnaire_enabled:
-        return RedirectResponse(f"/sessions/{session_id}/complete", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}/complete", status_code=303)
     form = await request.form()
     try:
         response_data = parse_hci_student_survey(form)
@@ -1003,30 +1033,30 @@ async def submit_survey(
         return response
     database.save_survey(session_id, response_data)
     logger.info("survey_saved session_id=%s instrument_id=%s", session_id, response_data["instrument_id"])
-    return RedirectResponse(f"/sessions/{session_id}/thanks", status_code=303)
+    return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}/thanks", status_code=303)
 
 
-@app.get("/sessions/{session_id}/thanks", response_class=HTMLResponse)
+@router.get("/sessions/{session_id}/thanks", response_class=HTMLResponse)
 async def thanks(request: Request, session_id: str):
     if not owned_session(participant_for(request), session_id):
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     return render(request, "thanks.html", session_id=session_id)
 
 
-@app.get("/history", response_class=HTMLResponse)
+@router.get("/history", response_class=HTMLResponse)
 async def history(request: Request):
     participant = participant_for(request)
     if not participant:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     session_rows = [session_view(item) for item in database.list_sessions(participant["id"])]
     return render(request, "history.html", sessions=session_rows)
 
 
-@app.get("/history/{session_id}", response_class=HTMLResponse)
+@router.get("/history/{session_id}", response_class=HTMLResponse)
 async def history_detail(request: Request, session_id: str):
     session = owned_session(participant_for(request), session_id)
     if not session:
-        return RedirectResponse("/history", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/history", status_code=303)
     result = await final_feedback_result(session) if session["status"] == "completed" else None
     lang = language_for(session)
     feedback = teaching_feedback_for(session_id, result) if session["status"] == "completed" else None
@@ -1039,11 +1069,11 @@ async def history_detail(request: Request, session_id: str):
     )
 
 
-@app.get("/admin", response_class=HTMLResponse)
+@router.get("/admin", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
     participant = participant_for(request)
     if not participant:
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     if not is_admin(participant):
         return HTMLResponse("Admin access is restricted.", status_code=403)
     all_users = database.list_participants_with_session_counts()
@@ -1065,10 +1095,10 @@ async def admin_dashboard(request: Request):
     return render(request, "admin.html", users=users, totals=totals, query=query)
 
 
-@app.get("/admin/users/{participant_id}", response_class=HTMLResponse)
+@router.get("/admin/users/{participant_id}", response_class=HTMLResponse)
 async def admin_user_detail(request: Request, participant_id: str):
     if not participant_for(request):
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     if not admin_for(request):
         return HTMLResponse("Admin access is restricted.", status_code=403)
     user = database.get_participant(participant_id)
@@ -1083,10 +1113,10 @@ async def admin_user_detail(request: Request, participant_id: str):
     return render(request, "admin_user.html", user=user, sessions=sessions, summary=summary)
 
 
-@app.get("/admin/sessions/{session_id}", response_class=HTMLResponse)
+@router.get("/admin/sessions/{session_id}", response_class=HTMLResponse)
 async def admin_session_detail(request: Request, session_id: str):
     if not participant_for(request):
-        return RedirectResponse("/login", status_code=303)
+        return RedirectResponse(f"{BASE_PATH}/login", status_code=303)
     if not admin_for(request):
         return HTMLResponse("Admin access is restricted.", status_code=403)
     session = database.get_session(session_id)
@@ -1108,16 +1138,19 @@ async def admin_session_detail(request: Request, session_id: str):
     )
 
 
-@app.get("/api/catalog")
+@router.get("/api/catalog")
 async def catalog(request: Request):
     if not participant_for(request):
         return JSONResponse({"detail": "Authentication required."}, status_code=401)
     return {"models": MODELS, "subjects": TOPICS}
 
 
-@app.get("/health")
+@router.get("/health")
 async def health():
     return JSONResponse({"status": "ok"})
+
+
+app.include_router(router)
 
 
 def run():

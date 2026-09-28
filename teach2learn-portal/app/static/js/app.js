@@ -105,6 +105,7 @@
   if (chat) {
     const MAX_TURNS = Number(chat.dataset.maxTurns) || 6;
     const sessionId = chat.dataset.sessionId;
+    const basePath = chat.dataset.basePath || '';
 
     const form = $('[data-chat-form]', chat);
     const input = $('[data-chat-input]', chat);
@@ -383,7 +384,7 @@
             const body = new FormData();
             body.append('session_id', sessionId);
             body.append('audio', blob, 'recording.wav');
-            const response = await fetch('/api/transcribe', { method: 'POST', body });
+            const response = await fetch(`${basePath}/api/transcribe`, { method: 'POST', body });
             const payload = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(payload.detail || 'Could not transcribe that recording.');
             const text = String(payload.text || '').trim();

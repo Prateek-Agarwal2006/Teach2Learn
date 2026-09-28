@@ -7,8 +7,8 @@
   <h1>Thank you for taking part</h1>
   <p>Your session and HCI study responses have been saved. You can review the conversation or teach another topic.</p>
   <div class="button-row">
-    <a class="button button-primary" href="/study">Start another session</a>
-    <a class="button button-secondary" href="/history/{{ session_id }}">Review teaching feedback</a>
+    <a class="button button-primary" href="{{ base_path }}/study">Start another session</a>
+    <a class="button button-secondary" href="{{ base_path }}/history/{{ session_id }}">Review teaching feedback</a>
   </div>
 </section>
 {% endblock %}

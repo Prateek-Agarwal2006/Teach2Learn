@@ -97,6 +97,27 @@ def test_successful_call_is_cached(monkeypatch):
     asyncio.run(service.close())
 
 
+def test_speaker_gender_is_sent_only_when_given(monkeypatch):
+    """Hindi (and other gendered languages) need a hint for verb agreement the AI
+    persona's own lines don't get from English -- but only when a caller asks for it,
+    since blindly gendering the participant's own re-displayed words would be wrong."""
+    monkeypatch.setenv("T2L_TRANSLATION_BACKEND", "sarvam")
+    monkeypatch.setenv("SARVAM_API_KEY", "test-key")
+    calls: list[dict] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(json.loads(request.content))
+        return httpx.Response(200, json={"translated_text": "अगला प्रश्न"})
+
+    service = TranslationService()
+    service._client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    asyncio.run(service.from_english("Next question", "hi", speaker_gender="Female"))
+    asyncio.run(service.from_english("Your explanation", "hi"))
+    assert calls[0]["speaker_gender"] == "Female"
+    assert "speaker_gender" not in calls[1]
+    asyncio.run(service.close())
+
+
 @pytest.mark.parametrize("limit", [40, 1000, 2000])
 def test_split_for_limit_never_exceeds_the_limit(limit):
     text = "This is a sentence about scheduling. " * 200

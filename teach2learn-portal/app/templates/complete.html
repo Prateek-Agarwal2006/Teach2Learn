@@ -39,7 +39,7 @@
   </section>
   {% endif %}
   {% if student_questionnaire_enabled %}
-  <form class="panel survey-form" method="post" action="/sessions/{{ session.id }}/survey" data-busy-form>
+  <form class="panel survey-form" method="post" action="{{ base_path }}/sessions/{{ session.id }}/survey" data-busy-form>
     <div class="stack-tight">
       <span class="tag">Student questionnaire</span>
       <h2>Evaluation of EquitableT2L</h2>
@@ -90,8 +90,8 @@
   </form>
   {% else %}
   <div class="completion-actions">
-    <a class="button button-primary" href="/history/{{ session.id }}">Review conversation</a>
-    <a class="button button-secondary" href="/study">Start another session</a>
+    <a class="button button-primary" href="{{ base_path }}/history/{{ session.id }}">Review conversation</a>
+    <a class="button button-secondary" href="{{ base_path }}/study">Start another session</a>
   </div>
   {% endif %}
 </div>

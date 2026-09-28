@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page admin-page">
   <header class="page-header">
-    <a class="back-link" href="/admin"><span aria-hidden="true">←</span> All users</a>
+    <a class="back-link" href="{{ base_path }}/admin"><span aria-hidden="true">←</span> All users</a>
     <span class="eyebrow">Participant</span>
     <h1>{{ user.metadata.name|default(user.external_id) }}</h1>
     <p>{{ user.metadata.email|default('No email') }} · Joined {{ user.created_at }}</p>
@@ -18,7 +18,7 @@
   {% if sessions %}
   <ul class="history-list">
     {% for item in sessions %}
-    <li><a class="history-link" href="/admin/sessions/{{ item.id }}">
+    <li><a class="history-link" href="{{ base_path }}/admin/sessions/{{ item.id }}">
       <span class="history-body"><span class="tag">{{ item.subject|replace('_', ' ')|upper }}</span><span class="history-title">{{ item.subtopic|default(item.topic) }}</span><span class="history-sub">{{ item.topic }} · {{ item.model_name|default(item.model) }}</span></span>
       <span class="history-meta"><span class="status status-{{ item.status }}">{{ item.status|title }}</span><span>{{ item.turn }} turn{{ '' if item.turn == 1 else 's' }}</span><time datetime="{{ item.created_at }}">{{ item.created_label }}</time><span class="history-arrow" aria-hidden="true">→</span></span>
     </a></li>

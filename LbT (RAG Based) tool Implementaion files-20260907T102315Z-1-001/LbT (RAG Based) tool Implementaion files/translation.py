@@ -138,14 +138,28 @@ class TranslationService:
             return True
         return self.backend == "sarvam" and bool(self.api_key)
 
-    async def translate(self, text: str, source_lang: str, target_lang: str) -> str:
-        """Translate text, returning the original on any failure."""
+    async def translate(
+        self,
+        text: str,
+        source_lang: str,
+        target_lang: str,
+        speaker_gender: str | None = None,
+    ) -> str:
+        """Translate text, returning the original on any failure.
+
+        speaker_gender ("Male"/"Female") tells Sarvam which grammatical gender to use
+        for verb forms that many target languages require even when English gave no
+        hint (Hindi "समझ गई" vs "समझ गया" for "I understood"). Only pass this for text
+        the AI student persona itself is speaking -- never for translating the
+        teacher's own words back to them, since that would put words in their mouth
+        in a gender they may not be.
+        """
         source_lang = normalize_language(source_lang)
         target_lang = normalize_language(target_lang)
         if not text.strip() or source_lang == target_lang or not self.is_enabled():
             return text
 
-        cache_key = (text, source_lang, target_lang)
+        cache_key = (text, source_lang, target_lang, speaker_gender)
         cached = self._cache.get(cache_key)
         if cached is not None:
             return cached
@@ -154,7 +168,10 @@ class TranslationService:
             chunks = _split_for_limit(text, _MODEL_INPUT_LIMITS[self.model])
             translated = "".join(
                 await asyncio.gather(
-                    *(self._translate_chunk(chunk, source_lang, target_lang) for chunk in chunks)
+                    *(
+                        self._translate_chunk(chunk, source_lang, target_lang, speaker_gender)
+                        for chunk in chunks
+                    )
                 )
             )
         except Exception as exc:
@@ -180,11 +197,19 @@ class TranslationService:
     async def to_english(self, text: str, source_lang: str) -> str:
         return await self.translate(text, source_lang, "en")
 
-    async def from_english(self, text: str, target_lang: str) -> str:
-        return await self.translate(text, "en", target_lang)
+    async def from_english(
+        self, text: str, target_lang: str, speaker_gender: str | None = None
+    ) -> str:
+        return await self.translate(text, "en", target_lang, speaker_gender=speaker_gender)
 
-    async def all_from_english(self, texts: list[str], target_lang: str) -> list[str]:
-        return list(await asyncio.gather(*(self.from_english(item, target_lang) for item in texts)))
+    async def all_from_english(
+        self, texts: list[str], target_lang: str, speaker_gender: str | None = None
+    ) -> list[str]:
+        return list(
+            await asyncio.gather(
+                *(self.from_english(item, target_lang, speaker_gender=speaker_gender) for item in texts)
+            )
+        )
 
     async def close(self) -> None:
         if self._client is not None and not self._client.is_closed:
@@ -196,18 +221,27 @@ class TranslationService:
             self._client = httpx.AsyncClient(timeout=self.timeout)
         return self._client
 
-    async def _translate_chunk(self, text: str, source_lang: str, target_lang: str) -> str:
+    async def _translate_chunk(
+        self,
+        text: str,
+        source_lang: str,
+        target_lang: str,
+        speaker_gender: str | None = None,
+    ) -> str:
         if self.backend == "echo":
             return f"[{target_lang}] {text}"
+        payload = {
+            "input": text,
+            "source_language_code": _SARVAM_CODES[source_lang],
+            "target_language_code": _SARVAM_CODES[target_lang],
+            "model": self.model,
+        }
+        if speaker_gender:
+            payload["speaker_gender"] = speaker_gender
         response = await self._get_client().post(
             SARVAM_TRANSLATE_URL,
             headers={"api-subscription-key": self.api_key},
-            json={
-                "input": text,
-                "source_language_code": _SARVAM_CODES[source_lang],
-                "target_language_code": _SARVAM_CODES[target_lang],
-                "model": self.model,
-            },
+            json=payload,
         )
         response.raise_for_status()
         translated = response.json().get("translated_text")

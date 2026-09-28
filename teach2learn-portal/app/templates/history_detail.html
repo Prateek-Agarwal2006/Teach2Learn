@@ -3,12 +3,12 @@
 {% block content %}
 <div class="page page-default">
   <header class="page-header">
-    <a class="back-link" href="/history"><span aria-hidden="true">←</span> All sessions</a>
+    <a class="back-link" href="{{ base_path }}/history"><span aria-hidden="true">←</span> All sessions</a>
     <span class="tag">{{ session.subject|replace('_', ' ')|upper }}</span>
     <h1>{{ session.subtopic|default(session.topic) }}</h1>
     <p class="subtle">{{ session.topic }} · {{ session.model_name|default(session.model) }} · {{ session.created_label|default(session.created_at) }} · {{ session.turn }} turn{{ '' if session.turn == 1 else 's' }}</p>
     {% if session.status == 'active' %}
-    <p class="button-row"><a class="button button-secondary" href="/sessions/{{ session.id }}">Resume this session</a></p>
+    <p class="button-row"><a class="button button-secondary" href="{{ base_path }}/sessions/{{ session.id }}">Resume this session</a></p>
     {% endif %}
   </header>
   {% if teaching_feedback %}

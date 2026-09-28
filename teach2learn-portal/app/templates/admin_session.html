@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page admin-page">
   <header class="page-header">
-    <a class="back-link" href="/admin/users/{{ user.id }}"><span aria-hidden="true">←</span> {{ user.metadata.name|default(user.external_id) }}</a>
+    <a class="back-link" href="{{ base_path }}/admin/users/{{ user.id }}"><span aria-hidden="true">←</span> {{ user.metadata.name|default(user.external_id) }}</a>
     <span class="tag">{{ session.subject|replace('_', ' ')|upper }}</span>
     <h1>{{ session.subtopic|default(session.topic) }}</h1>
     <p>{{ user.metadata.email|default(user.external_id) }} · {{ session.model_name|default(session.model) }} · {{ session.created_label }}</p>

@@ -45,7 +45,7 @@ def stop_input():
 _EMOJI_PREFIX_RE = re.compile(r"^([^\w\s]+)\s+")
 
 
-async def _localize(text: str, lang: str) -> str:
+async def _localize(text: str, lang: str, speaker_gender: str | None = None) -> str:
     """Translate a UI/chrome string once the participant's language is known.
     A no-op for English, same as the content translation calls elsewhere.
 
@@ -54,6 +54,9 @@ async def _localize(text: str, lang: str) -> str:
     ZWJ emoji sequences like the student avatar don't reliably survive the
     round trip (simple single-codepoint emoji like ⚠️/📚 do), so this keeps
     every message's prefix visually consistent regardless of that quirk.
+
+    speaker_gender is only meaningful for the AI student's own lines (matching its
+    established persona) -- pass it there, never for text addressed to the teacher.
     """
     prefix = ""
     match = _EMOJI_PREFIX_RE.match(text)
@@ -62,7 +65,9 @@ async def _localize(text: str, lang: str) -> str:
     if lang == "en":
         translated = text
     else:
-        translated = await get_translation_service().from_english(text, lang)
+        translated = await get_translation_service().from_english(
+            text, lang, speaker_gender=speaker_gender
+        )
     return f"{prefix} {translated}" if prefix else translated
 
 
@@ -257,7 +262,8 @@ async def start():
         return
 
     # Step 5: Generate student doubts/questions for the chosen subtopic (ONE API call)
-    qa_pool = generate_qa_for_subtopic(llm, vs, chosen_subtopic)  # returns list of QAPair
+    # 3 questions x 2 follow-ups each = 6 teacher turns per session (see below).
+    qa_pool = generate_qa_for_subtopic(llm, vs, chosen_subtopic, n=3)  # returns list of QAPair
 
     # Step 6: Store in session
     cl.user_session.set("qa_pool", qa_pool)
@@ -274,12 +280,12 @@ async def start():
             f"👩‍🎓 Student: Great! Let’s start with **{chosen_subtopic}**. "
             f"Here’s my first question:\n\n{first_q}"
         )
-        message = cl.Message(content=await _localize(content_en, lang))
+        message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
         await message.send()
         session_memory.chat_memory.add_ai_message(message.content)
     else:
         content_en = f"👩‍🎓 Student: I don’t have any questions for {chosen_subtopic} yet."
-        message = cl.Message(content=await _localize(content_en, lang))
+        message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
         await message.send()
         session_memory.chat_memory.add_ai_message(message.content)
 
@@ -389,15 +395,25 @@ async def handle_teacher_turn(teacher_explanation: str):
     save_scorer(interaction_id, scorer_model)
 
     # 5️⃣ Continue conversation
-    if student_model.message and followup_count < 3:
+    # 2 follow-ups per question x 3 questions = 6 teacher turns per session, matching
+    # the finetuned portal's session length (was 3x5=15, which read as "never ends").
+    if student_model.message and followup_count < 2:
         followup_count += 1
-        student_message = await translator.from_english(student_model.message, lang) if lang != "en" else student_model.message
+        student_message = (
+            await translator.from_english(student_model.message, lang, speaker_gender="Female")
+            if lang != "en"
+            else student_model.message
+        )
         message = cl.Message(content=f"👩‍🎓 Student: {student_message}")
         await message.send()
         session_memory.chat_memory.add_ai_message(message.content)
     else:
         if qa_index >= len(qa_pool)-1:
-            message = cl.Message(content=await _localize("👩‍🎓 Student: Thank you for clarifying all my questions!", lang))
+            message = cl.Message(
+                content=await _localize(
+                    "👩‍🎓 Student: Thank you for clarifying all my questions!", lang, speaker_gender="Female"
+                )
+            )
             stop_input()
             final_scorer_chain = cl.user_session.get("final_scorer_chain")
             interaction_scores = fetch_session_scores(session_id)
@@ -413,7 +429,9 @@ async def handle_teacher_turn(teacher_explanation: str):
             stop_input()
         else:
             followup_count = 0
-            message = cl.Message(content=await _localize("👩‍🎓 Student: I have another question!", lang))
+            message = cl.Message(
+                content=await _localize("👩‍🎓 Student: I have another question!", lang, speaker_gender="Female")
+            )
             await message.send()
             session_memory.chat_memory.add_ai_message(message.content)
             qa_index += 1
@@ -421,7 +439,7 @@ async def handle_teacher_turn(teacher_explanation: str):
             if qa_index < len(qa_pool):
                 next_q = qa_pool[qa_index].question
                 if lang != "en":
-                    next_q = await translator.from_english(next_q, lang)
+                    next_q = await translator.from_english(next_q, lang, speaker_gender="Female")
                 await cl.Message(content=f"👩‍🎓 Student: {next_q}").send()
     cl.user_session.set("followup_count", followup_count)
 

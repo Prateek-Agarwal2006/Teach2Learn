@@ -15,9 +15,9 @@
     <div><strong>{{ totals.turns }}</strong><span>Teaching turns</span></div>
     <div><strong>{{ totals.active }}</strong><span>Active sessions</span></div>
   </section>
-  <form class="admin-search" method="get" action="/admin" role="search">
+  <form class="admin-search" method="get" action="{{ base_path }}/admin" role="search">
     <label for="admin-user-search">Find a participant</label>
-    <div><input id="admin-user-search" type="search" name="q" value="{{ query }}" placeholder="Search by name or email"><button class="button button-secondary" type="submit">Search</button>{% if query %}<a class="button button-quiet" href="/admin">Clear</a>{% endif %}</div>
+    <div><input id="admin-user-search" type="search" name="q" value="{{ query }}" placeholder="Search by name or email"><button class="button button-secondary" type="submit">Search</button>{% if query %}<a class="button button-quiet" href="{{ base_path }}/admin">Clear</a>{% endif %}</div>
   </form>
   {% if users %}
   <div class="admin-table-wrap">
@@ -30,14 +30,14 @@
           <td>{{ user.session_count }}</td>
           <td>{{ user.turn_count or 0 }}</td>
           <td>{{ user.last_session_at|default('—', true) }}</td>
-          <td><a href="/admin/users/{{ user.id }}">Browse <span aria-hidden="true">→</span></a></td>
+          <td><a href="{{ base_path }}/admin/users/{{ user.id }}">Browse <span aria-hidden="true">→</span></a></td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
   {% else %}
-  <div class="empty-state"><h2>{{ 'No matching users' if query else 'No users yet' }}</h2><p>{{ 'Try a different name or email.' if query else 'Participant activity will appear here.' }}</p>{% if query %}<a class="button button-secondary" href="/admin">Clear search</a>{% endif %}</div>
+  <div class="empty-state"><h2>{{ 'No matching users' if query else 'No users yet' }}</h2><p>{{ 'Try a different name or email.' if query else 'Participant activity will appear here.' }}</p>{% if query %}<a class="button button-secondary" href="{{ base_path }}/admin">Clear search</a>{% endif %}</div>
   {% endif %}
 </div>
 {% endblock %}

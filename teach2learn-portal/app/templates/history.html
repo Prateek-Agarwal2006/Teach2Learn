@@ -8,13 +8,13 @@
       <h1>Session history</h1>
       <p>Review a previous conversation, or start a new topic.</p>
     </div>
-    <a class="button button-primary" href="/study">New session</a>
+    <a class="button button-primary" href="{{ base_path }}/study">New session</a>
   </header>
   {% if sessions %}
   <ul class="history-list">
     {% for item in sessions %}
     <li>
-      <a class="history-link" href="/history/{{ item.id }}">
+      <a class="history-link" href="{{ base_path }}/history/{{ item.id }}">
         <span class="history-body">
           <span class="tag">{{ item.subject|replace('_', ' ')|upper }}</span>
           <span class="history-title">{{ item.subtopic|default(item.topic) }}</span>
@@ -34,7 +34,7 @@
   <div class="empty-state">
     <h2>No sessions yet</h2>
     <p>Once you finish teaching a topic, the conversation is saved here.</p>
-    <a class="button button-primary" href="/study">Choose a topic</a>
+    <a class="button button-primary" href="{{ base_path }}/study">Choose a topic</a>
   </div>
   {% endif %}
 </div>
