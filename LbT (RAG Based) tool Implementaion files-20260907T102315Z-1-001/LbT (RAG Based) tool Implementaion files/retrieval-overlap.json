@@ -1,0 +1,1804 @@
+{
+  "provenance": {
+    "preregistration": "PHASE1_PREREGISTRATION.md, 'Retrieval overlap and repeated questions', 2026-09-19T05:32:53Z",
+    "started_utc": "2026-09-19T05:34:44+00:00",
+    "finished_utc": "2026-09-19T05:35:24+00:00",
+    "embedding_model": "openai/text-embedding-3-small",
+    "k": 4,
+    "seed": 20260914,
+    "bootstrap_draws": 5000,
+    "lessons": "/home/sneh-desai/Desktop/multilingual_expansion/lessons.json",
+    "lessons_version": 1,
+    "rag_results": "sweepA-rag.json",
+    "rag_history_results": "sweepA-rag-history.json",
+    "embedding_calls": 72
+  },
+  "groups": {
+    "overlap_gt_0": 15,
+    "overlap_eq_0": 57
+  },
+  "shared_passages_distribution": {
+    "0 of 4": 57,
+    "1 of 4": 14,
+    "2 of 4": 1
+  },
+  "identical_passage_sets": 0,
+  "results": {
+    "primary_test": "difference",
+    "repeat_rate": {
+      "difference": -0.1023391812865497,
+      "spearman": -0.25315755639335474,
+      "rate_overlap_gt_0": 0.05555555555555555,
+      "rate_overlap_eq_0": 0.15789473684210525,
+      "difference_bootstrap": {
+        "ci95": [
+          -0.18303571428571427,
+          -0.0078125
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      },
+      "spearman_bootstrap": {
+        "ci95": [
+          -0.4677447064482151,
+          -0.002920076633077015
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      }
+    },
+    "repeat_rate_rag": {
+      "difference": -0.1415204678362573,
+      "spearman": -0.2582579360103434,
+      "rate_overlap_gt_0": 0.02222222222222222,
+      "rate_overlap_eq_0": 0.16374269005847952,
+      "difference_bootstrap": {
+        "ci95": [
+          -0.22564102564102564,
+          -0.05128205128205128
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      },
+      "spearman_bootstrap": {
+        "ci95": [
+          -0.4041119295602435,
+          -0.06908412722757808
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      }
+    },
+    "repeat_rate_rag_history": {
+      "difference": -0.06315789473684211,
+      "spearman": -0.11868948608440932,
+      "rate_overlap_gt_0": 0.08888888888888888,
+      "rate_overlap_eq_0": 0.15204678362573099,
+      "difference_bootstrap": {
+        "ci95": [
+          -0.19642857142857145,
+          0.08994708994708994
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      },
+      "spearman_bootstrap": {
+        "ci95": [
+          -0.3267206684211727,
+          0.1479384045816277
+        ],
+        "draws": 5000,
+        "skipped_draws": 0
+      }
+    }
+  },
+  "verdict": "contradicted (interval below zero)",
+  "units": [
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/c-basics/types-variables-constants",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 3,
+      "conversations_rag": 3,
+      "repeats_rag_history": 3,
+      "conversations_rag_history": 3,
+      "repeat_rate": 1.0,
+      "repeat_rate_rag": 1.0,
+      "repeat_rate_rag_history": 1.0
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "cp/c-basics/operators-and-expressions",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/control-flow/conditions-and-switch",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/control-flow/loops-and-sentinel-values",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.5,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.6666666666666666,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "cp/pointers/addresses-and-pointers",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "cp/pointers/dynamic-memory-allocation",
+      "subject": "cp",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/analysis/asymptotic-notation",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/analysis/recurrences",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/linear/stacks",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/linear/queues-and-deques",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/tree-terminology-and-traversals",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "dsa/trees-heaps/heaps",
+      "subject": "dsa",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.4,
+      "shared_passages": 2,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/classes/constructors",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 2,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.5,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.6666666666666666
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/classes/access-control-and-object-identity",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "oop_java/oop-design/inheritance",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/oop-design/polymorphism",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/threads",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "oop_java/concurrency/synchronization-and-locks",
+      "subject": "oop_java",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/process-lifecycle",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/processes/interprocess-communication",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/multithreading",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 1,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.3333333333333333,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "os/threads-scheduling/cpu-scheduling",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    },
+    {
+      "lesson_id": "os/virtual-memory/demand-paging",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 2,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.3333333333333333,
+      "repeat_rate_rag": 0.6666666666666666,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "pair": [
+        1,
+        2
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "pair": [
+        1,
+        3
+      ],
+      "overlap": 0.14285714285714285,
+      "shared_passages": 1,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 0,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.0,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.0
+    },
+    {
+      "lesson_id": "os/virtual-memory/page-replacement",
+      "subject": "os",
+      "pair": [
+        2,
+        3
+      ],
+      "overlap": 0.0,
+      "shared_passages": 0,
+      "repeats_rag": 0,
+      "conversations_rag": 3,
+      "repeats_rag_history": 1,
+      "conversations_rag_history": 3,
+      "repeat_rate": 0.16666666666666666,
+      "repeat_rate_rag": 0.0,
+      "repeat_rate_rag_history": 0.3333333333333333
+    }
+  ],
+  "passages": {
+    "cp/c-basics/types-variables-constants": [
+      [
+        "cp_r3.pdf#p228#a58a8978e713",
+        "cp_r3.pdf#p237#00abdc10bc0d",
+        "cp_r3.pdf#p237#ac1bfe379d3f",
+        "cp_r3.pdf#p228#319a82b1fffd"
+      ],
+      [
+        "cp_r3.pdf#p538#0d9c51a4262f",
+        "cp_r3.pdf#p395#f1d607a67469",
+        "cp_tb.pdf#p77#ee15cdbd324f",
+        "cp_tb.pdf#p76#ae0554952d15"
+      ],
+      [
+        "CP_r1.pdf#p190#39fbc0fc847c",
+        "CP_r1.pdf#p190#b6e6f5a61017",
+        "CP_r1.pdf#p134#be06f20b5a31",
+        "CP_r1.pdf#p190#6755a55b5781"
+      ]
+    ],
+    "cp/c-basics/operators-and-expressions": [
+      [
+        "cp_tb.pdf#p98#926e81e890c4",
+        "cp_tb.pdf#p198#6486ce2540f9",
+        "cp_tb.pdf#p596#c19df446c103",
+        "cp_tb.pdf#p98#8fe01a5139af"
+      ],
+      [
+        "cp_tb.pdf#p93#4980ee0f5e02",
+        "cp_tb.pdf#p728#252bb8883467",
+        "cp_tb.pdf#p117#5ae79362f8f5",
+        "cp_tb.pdf#p116#141a5d56b7d3"
+      ],
+      [
+        "cp_tb.pdf#p197#9265207a84d9",
+        "cp_tb.pdf#p199#717ff30c0bc4",
+        "cp_r3.pdf#p84#be47bf3b9372",
+        "cp_tb.pdf#p197#a3602c737c3a"
+      ]
+    ],
+    "cp/control-flow/conditions-and-switch": [
+      [
+        "cp_r3.pdf#p92#57009469ba6f",
+        "cp_r3.pdf#p70#050f60a30d0f",
+        "cp_r3.pdf#p70#92e3d8685c99",
+        "cp_tb.pdf#p229#1fa43248dd84"
+      ],
+      [
+        "cp_tb.pdf#p241#9c0c197e3ee3",
+        "cp_tb.pdf#p240#04841d10c4b0",
+        "cp_r3.pdf#p159#1b02a69f7064",
+        "cp_r3.pdf#p158#edf266b1ae53"
+      ],
+      [
+        "cp_tb.pdf#p240#eff2c52d9f97",
+        "cp_tb.pdf#p240#04841d10c4b0",
+        "cp_tb.pdf#p239#655fd91c8f50",
+        "cp_tb.pdf#p229#947fa93262af"
+      ]
+    ],
+    "cp/control-flow/loops-and-sentinel-values": [
+      [
+        "cp_tb.pdf#p308#a70a16096737",
+        "cp_tb.pdf#p321#253af5d7c02a",
+        "cp_tb.pdf#p268#e664a0e682dc",
+        "cp_tb.pdf#p269#0a169b88b75a"
+      ],
+      [
+        "cp_tb.pdf#p293#8069285e516a",
+        "cp_tb.pdf#p320#1d1007dd7254",
+        "cp_tb.pdf#p293#fece53315024",
+        "cp_r3.pdf#p116#f6eaccfd753b"
+      ],
+      [
+        "cp_tb.pdf#p283#efa09834330f",
+        "cp_tb.pdf#p285#a45dd6702971",
+        "cp_tb.pdf#p283#48ac06be07f8",
+        "cp_tb.pdf#p417#111a76cb2e98"
+      ]
+    ],
+    "cp/pointers/addresses-and-pointers": [
+      [
+        "cp_r3.pdf#p198#5bf0180203c2",
+        "cp_tb.pdf#p338#40d1a555ce4d",
+        "cp_r3.pdf#p197#c3532e607c32",
+        "cp_r3.pdf#p199#0c71f78658a0"
+      ],
+      [
+        "cp_r3.pdf#p194#9d092e52221d",
+        "cp_tb.pdf#p347#6423db207929",
+        "cp_tb.pdf#p482#36a1e8878276",
+        "cp_tb.pdf#p596#c19df446c103"
+      ],
+      [
+        "cp_r3.pdf#p192#9f68a175f4dd",
+        "cp_r3.pdf#p180#4ed17d2ccb35",
+        "cp_r3.pdf#p201#b8458c3982ca",
+        "cp_r3.pdf#p210#e0b6d2d0be78"
+      ]
+    ],
+    "cp/pointers/dynamic-memory-allocation": [
+      [
+        "cp_tb.pdf#p731#f1a3416b3e78",
+        "cp_tb.pdf#p731#9d5f197a5dd5",
+        "cp_tb.pdf#p726#dc0d9954939e",
+        "cp_tb.pdf#p735#2191bda6ca8f"
+      ],
+      [
+        "cp_tb.pdf#p731#f1a3416b3e78",
+        "cp_r3.pdf#p698#c8d97f12f7f1",
+        "CP_r1.pdf#p125#3f57cd3179a8",
+        "CP_r1.pdf#p126#29efa43e513c"
+      ],
+      [
+        "cp_tb.pdf#p779#33e93246b134",
+        "CP_r1.pdf#p12#aad2738d060d",
+        "CP_r1.pdf#p10#b2527ba76b46",
+        "CP_r1.pdf#p10#fffaaab7a80e"
+      ]
+    ],
+    "dsa/analysis/asymptotic-notation": [
+      [
+        "TB.pdf#p17#90932baab54d",
+        "RB.pdf#p67#4a6cf46a1a5e",
+        "RB.pdf#p63#1c38b0215530",
+        "TB.pdf#p31#3abc4d1ee424"
+      ],
+      [
+        "RB.pdf#p48#e42d32bcb400",
+        "RB.pdf#p48#2fcaa48fc88f",
+        "RB.pdf#p66#412613f5384c",
+        "TB.pdf#p25#4a6f08002a80"
+      ],
+      [
+        "RB.pdf#p67#4a6cf46a1a5e",
+        "RB.pdf#p68#1e2c82a4601a",
+        "TB.pdf#p28#e265c1bee16b",
+        "RB.pdf#p68#9e14eba7f584"
+      ]
+    ],
+    "dsa/analysis/recurrences": [
+      [
+        "RB.pdf#p57#5b742e164746",
+        "RB.pdf#p85#ca55a393d222",
+        "TB.pdf#p276#d3eea16a5fe2",
+        "TB.pdf#p276#dccf1156e74f"
+      ],
+      [
+        "RB.pdf#p56#c6e692b737d3",
+        "TB.pdf#p274#74f44ac0581e",
+        "TB.pdf#p275#bd17c1602c90",
+        "RB.pdf#p87#61959cf4f997"
+      ],
+      [
+        "RB.pdf#p112#25b827081960",
+        "RB.pdf#p112#3768d097a3e1",
+        "RB.pdf#p109#9c77a39ed5ff",
+        "RB.pdf#p108#cfea4b8a67a0"
+      ]
+    ],
+    "dsa/linear/stacks": [
+      [
+        "RB.pdf#p253#0c44741c1bc5",
+        "RB.pdf#p252#2545704de9bb",
+        "TB.pdf#p68#f3d60c521c1d",
+        "RB.pdf#p253#b43deee4516d"
+      ],
+      [
+        "TB.pdf#p75#013e07d19020",
+        "TB.pdf#p67#844fd242a9a0",
+        "TB.pdf#p71#cd84005c5732",
+        "TB.pdf#p70#fa46f9311395"
+      ],
+      [
+        "RB.pdf#p473#078f726bd954",
+        "RB.pdf#p472#83115f3f9ec1",
+        "RB.pdf#p477#6c108e4db8cc",
+        "RB.pdf#p253#b43deee4516d"
+      ]
+    ],
+    "dsa/linear/queues-and-deques": [
+      [
+        "RB.pdf#p254#9c371a6d644a",
+        "TB.pdf#p72#6f0d1c06a1f7",
+        "TB.pdf#p72#ce2cc1e28cba",
+        "RB.pdf#p254#64b43fd2f75c"
+      ],
+      [
+        "TB.pdf#p73#a17bc95471ed",
+        "TB.pdf#p72#ce2cc1e28cba",
+        "TB.pdf#p74#0161c809d41d",
+        "TB.pdf#p73#4b3172313d85"
+      ],
+      [
+        "TB.pdf#p72#6f0d1c06a1f7",
+        "TB.pdf#p68#f3d60c521c1d",
+        "RB.pdf#p256#1ba866cd39f9",
+        "RB.pdf#p255#569d217f4e33"
+      ]
+    ],
+    "dsa/trees-heaps/tree-terminology-and-traversals": [
+      [
+        "TB.pdf#p86#50bef35013f1",
+        "RB.pdf#p1196#ddeb0261726d",
+        "TB.pdf#p86#ac0b15afc28c",
+        "RB.pdf#p1196#d497e59f4991"
+      ],
+      [
+        "TB.pdf#p90#d0f9342421dc",
+        "TB.pdf#p91#a7790b7fbfcd",
+        "RB.pdf#p1197#ae59d5ae91e5",
+        "RB.pdf#p1197#db89a2a363ea"
+      ],
+      [
+        "RB.pdf#p307#4650682d3338",
+        "RB.pdf#p307#b60d920b8278",
+        "RB.pdf#p313#b42af722d5b1",
+        "RB.pdf#p308#0d80cfc7c4b3"
+      ]
+    ],
+    "dsa/trees-heaps/heaps": [
+      [
+        "RB.pdf#p547#b05d43d5e785",
+        "TB.pdf#p110#972eb3f22c2c",
+        "RB.pdf#p172#e5e9d3f91af1",
+        "TB.pdf#p110#ab833480680f"
+      ],
+      [
+        "RB.pdf#p171#ff554f9fcf68",
+        "RB.pdf#p172#c19ffacb2f8a",
+        "TB.pdf#p112#f4237c42dc9e",
+        "RB.pdf#p171#4e615100c6ad"
+      ],
+      [
+        "RB.pdf#p554#b48ab2879e0d",
+        "TB.pdf#p213#44c479bf1bc5",
+        "TB.pdf#p175#633078c61995",
+        "RB.pdf#p367#31908a11d435"
+      ]
+    ],
+    "oop_java/classes/constructors": [
+      [
+        "javabook_t1.pdf#p148#5d60ab270549",
+        "javabook_t1.pdf#p155#376f75acf222",
+        "javabook_t2.pdf#p23#980a34fb8a63",
+        "javabook_t2.pdf#p23#980a34fb8a63"
+      ],
+      [
+        "javabook_t1.pdf#p157#3982c7622436",
+        "javabook_t1.pdf#p148#5d60ab270549",
+        "javabook_t1.pdf#p368#0cc8b119c3f1",
+        "javabook_t1.pdf#p155#376f75acf222"
+      ],
+      [
+        "javabook_t1.pdf#p369#7d58d72d2b6f",
+        "javabook_t1.pdf#p368#62bdad3dfcd9",
+        "javabook_t2.pdf#p435#6a3726397eab",
+        "javabook_t1.pdf#p370#1d20ec307d02"
+      ]
+    ],
+    "oop_java/classes/access-control-and-object-identity": [
+      [
+        "javabook_t1.pdf#p224#1d4be7ae7789",
+        "javabook_t2.pdf#p175#7139963d5e17",
+        "javabook_t1.pdf#p180#5a158eb8eeae",
+        "javabook_t1.pdf#p53#09f282a15845"
+      ],
+      [
+        "javabook_t1.pdf#p303#13d695b3b719",
+        "javabook_t1.pdf#p456#6414c279ed5b",
+        "javabook_t2.pdf#p294#a00898468005",
+        "javabook_t2.pdf#p295#d6bd583a5a7f"
+      ],
+      [
+        "javabook_t2.pdf#p299#37de7f5055ee",
+        "javabook_t2.pdf#p299#fdae4990f766",
+        "javabook_t2.pdf#p298#9f7fbf4f431b",
+        "javabook_t1.pdf#p550#987a73417ddc"
+      ]
+    ],
+    "oop_java/oop-design/inheritance": [
+      [
+        "javabook_t2.pdf#p238#ce477760f115",
+        "javabook_t2.pdf#p240#70e94bb7d788",
+        "javabook_t1.pdf#p195#7309d07c1d77",
+        "javabook_t1.pdf#p213#8a24315e1dc6"
+      ],
+      [
+        "javabook_t1.pdf#p208#68e5ea6e4367",
+        "javabook_t2.pdf#p242#f10557d9dbff",
+        "javabook_t1.pdf#p201#a125e409242f",
+        "javabook_t1.pdf#p209#90eef75cb67c"
+      ],
+      [
+        "javabook_t1.pdf#p55#56d050bd9261",
+        "javabook_t2.pdf#p267#8290cf9bff0f",
+        "javabook_t1.pdf#p212#558bdb20e428",
+        "javabook_t1.pdf#p213#8a24315e1dc6"
+      ]
+    ],
+    "oop_java/oop-design/polymorphism": [
+      [
+        "javabook_t1.pdf#p212#558bdb20e428",
+        "javabook_t1.pdf#p200#87d0f4bf753c",
+        "javabook_t1.pdf#p212#f9727350d3f5",
+        "javabook_t2.pdf#p34#b9f8e302bdb3"
+      ],
+      [
+        "javabook_t1.pdf#p212#558bdb20e428",
+        "javabook_t1.pdf#p211#eb1fba040ef8",
+        "javabook_t1.pdf#p213#0800fbc8684d",
+        "javabook_t1.pdf#p209#1af4fd8bbd4d"
+      ],
+      [
+        "javabook_t2.pdf#p257#640ad6639107",
+        "javabook_t2.pdf#p257#a849118fbf99",
+        "javabook_t2.pdf#p249#cde1872819e8",
+        "javabook_t2.pdf#p280#cfb65cb41b7f"
+      ]
+    ],
+    "oop_java/concurrency/threads": [
+      [
+        "javabook_t2.pdf#p383#4b180833474d",
+        "javabook_t1.pdf#p269#2e72297af566",
+        "javabook_t1.pdf#p280#82f4760442b8",
+        "javabook_t2.pdf#p388#60977ced480a"
+      ],
+      [
+        "javabook_t2.pdf#p388#10ff64f922eb",
+        "javabook_t1.pdf#p281#b94116797245",
+        "javabook_t1.pdf#p291#426dd06e57a7",
+        "javabook_t1.pdf#p928#a165012daf55"
+      ],
+      [
+        "javabook_t1.pdf#p269#a65e7bb4c6c6",
+        "javabook_t1.pdf#p280#82f4760442b8",
+        "javabook_t1.pdf#p282#f3b5dd140a24",
+        "javabook_t1.pdf#p969#9c162debd7ee"
+      ]
+    ],
+    "oop_java/concurrency/synchronization-and-locks": [
+      [
+        "javabook_t2.pdf#p407#0e6cffa982d5",
+        "javabook_t2.pdf#p396#5665c0d66a5d",
+        "javabook_t2.pdf#p397#f9fec40c41ad",
+        "javabook_t1.pdf#p981#e72f25f4b360"
+      ],
+      [
+        "javabook_t1.pdf#p281#78cec53a0220",
+        "javabook_t2.pdf#p404#30013f06367a",
+        "javabook_t2.pdf#p398#90911f081777",
+        "javabook_t1.pdf#p270#4c4aee56e00f"
+      ],
+      [
+        "javabook_t2.pdf#p398#d40984c93d9f",
+        "javabook_t1.pdf#p978#9a83a9d7889b",
+        "javabook_t2.pdf#p398#b13a23f2f24b",
+        "javabook_t1.pdf#p289#7d005bd4b4a1"
+      ]
+    ],
+    "os/processes/process-lifecycle": [
+      [
+        "os_textbook.pdf#p116#ce283589f463",
+        "os_textbook.pdf#p202#2fd72472ecff",
+        "os_textbook.pdf#p118#0262c601078d",
+        "os_textbook.pdf#p202#03f76c93d3be"
+      ],
+      [
+        "os_textbook.pdf#p36#69c81d07c135",
+        "os_textbook.pdf#p33#82d92880abd2",
+        "os_textbook.pdf#p197#beb0efb4fadb",
+        "os_textbook.pdf#p230#5b5911aebad6"
+      ],
+      [
+        "os_textbook.pdf#p26#9afe6368d27b",
+        "os_textbook.pdf#p123#6e7278a12d67",
+        "os_textbook.pdf#p117#edc0834d5e35",
+        "os_textbook.pdf#p26#e7679bf68c10"
+      ]
+    ],
+    "os/processes/interprocess-communication": [
+      [
+        "os_textbook.pdf#p130#c6a22adb1254",
+        "os_textbook.pdf#p154#9444cc6abce3",
+        "os_textbook.pdf#p130#8728d85f3ef8",
+        "os_textbook.pdf#p836#99f4c2a990f9"
+      ],
+      [
+        "os_textbook.pdf#p148#b59cba03d1d3",
+        "os_textbook.pdf#p149#48aea3985d6d",
+        "os_textbook.pdf#p595#29d381d7326f",
+        "os_textbook.pdf#p152#d36f0101e867"
+      ],
+      [
+        "os_textbook.pdf#p132#d4c6b35f8574",
+        "os_textbook.pdf#p130#7191631e07d8",
+        "os_textbook.pdf#p79#6a292e7d8abe",
+        "os_textbook.pdf#p130#c6a22adb1254"
+      ]
+    ],
+    "os/threads-scheduling/multithreading": [
+      [
+        "os_textbook.pdf#p168#64dd8538ee6e",
+        "os_textbook.pdf#p836#99f4c2a990f9",
+        "os_textbook.pdf#p336#2b6fbb5129b0",
+        "os_textbook.pdf#p168#4ce55ff9974c"
+      ],
+      [
+        "os_textbook.pdf#p130#c6a22adb1254",
+        "os_textbook.pdf#p240#d4a9a9894df5",
+        "os_textbook.pdf#p271#1f867e0c1736",
+        "os_textbook.pdf#p168#64dd8538ee6e"
+      ],
+      [
+        "os_textbook.pdf#p168#64dd8538ee6e",
+        "os_textbook.pdf#p217#3983f4b8a4de",
+        "os_textbook.pdf#p117#ce4bb512e332",
+        "os_textbook.pdf#p187#a4e833052ee4"
+      ]
+    ],
+    "os/threads-scheduling/cpu-scheduling": [
+      [
+        "scheduling.txt#p?#4180e769022c",
+        "os_textbook.pdf#p121#d83f404b6b80",
+        "os_textbook.pdf#p225#282c5b441c74",
+        "os_textbook.pdf#p201#a06ac0794526"
+      ],
+      [
+        "os_textbook.pdf#p207#925e957213fc",
+        "os_textbook.pdf#p208#c6f45d94f0aa",
+        "os_textbook.pdf#p828#bc8473ed60fa",
+        "os_textbook.pdf#p335#479825f59901"
+      ],
+      [
+        "os_textbook.pdf#p209#4c8448c27c07",
+        "os_textbook.pdf#p208#844f542d62d7",
+        "os_textbook.pdf#p208#7e7960871e08",
+        "os_textbook.pdf#p925#fab5b00eab1f"
+      ]
+    ],
+    "os/virtual-memory/demand-paging": [
+      [
+        "os_textbook.pdf#p380#f12cb1dcdad8",
+        "os_textbook.pdf#p374#a7dec6255c9c",
+        "os_textbook.pdf#p378#f4e7f8f55213",
+        "os_textbook.pdf#p380#f811b73d7bbe"
+      ],
+      [
+        "os_textbook.pdf#p377#d06966e2fde8",
+        "os_textbook.pdf#p376#bce976c2c418",
+        "os_textbook.pdf#p377#9bf317a6a951",
+        "os_textbook.pdf#p412#bfe384484ea6"
+      ],
+      [
+        "os_textbook.pdf#p372#12e2fca42a0f",
+        "os_textbook.pdf#p382#1432717306ba",
+        "os_textbook.pdf#p371#8ac0a93247a5",
+        "os_textbook.pdf#p413#df19eacb8141"
+      ]
+    ],
+    "os/virtual-memory/page-replacement": [
+      [
+        "os_textbook.pdf#p877#2cf81ad22f0c",
+        "os_textbook.pdf#p876#5b31a96240c2",
+        "os_textbook.pdf#p413#8140592faca1",
+        "os_textbook.pdf#p385#968d4e2632b6"
+      ],
+      [
+        "os_textbook.pdf#p389#60ff4816c081",
+        "os_textbook.pdf#p390#2f50461093c0",
+        "os_textbook.pdf#p393#02dbd715630c",
+        "os_textbook.pdf#p393#32d59b771353"
+      ],
+      [
+        "os_textbook.pdf#p384#11a4a4804fe1",
+        "os_textbook.pdf#p394#71d5de048fff",
+        "os_textbook.pdf#p882#f8b5e38c7a6d",
+        "os_textbook.pdf#p876#5b31a96240c2"
+      ]
+    ]
+  }
+}

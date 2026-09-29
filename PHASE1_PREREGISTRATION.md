@@ -54,3 +54,46 @@ next to the result. If it falls below 70%, depth is reported but not scored.
 dimensions keep their relative weights, scaled by 0.8: fluency 36, lexical variety 12,
 non-repetition 12, robustness 12, reliability 8. Verdict rule unchanged: 95% interval of the
 difference must exclude zero. The previous five-dimension scorecard stays on the page.
+
+---
+
+# Retrieval overlap and repeated questions — written before any retrieval is logged
+
+Written: 2026-09-19T05:32:53Z
+
+## Question
+The pre-registered teacher-history experiment failed: RAG repeated a question in 23 of 72 English
+conversations before the change and 24 of 72 after. The remaining hypothesis is that retrieval causes
+the repeats. The student prompt tells the model to ask about any gap between the teacher and the
+retrieved passages, so if two turns of a lesson retrieve the same passages, the later turn may ask
+the same gap question again.
+
+## Data
+No new questions are generated. For each of the 24 lessons, each of its three teacher sentences is
+passed to `similarity_search(sentence, k=4)` against that subject's committed vectorstore, exactly as
+the English sweep did, using the same embedding model (text-embedding-3-small via OpenRouter). A
+passage is identified by its source file, page, and a hash of its text. Questions come from the
+committed sweepA-rag.json (RAG) and sweepA-rag-history.json (RAG + teacher history). Retrieval depends
+only on the teacher sentence, so all repeats of a lesson, in both arms, share its passages.
+
+## Unit, exposure, outcome
+- Unit: a lesson and a pair of its turns, (1,2), (1,3), (2,3): 24 x 3 = 72 units.
+- Exposure: Jaccard overlap between the two turns' sets of four passage IDs.
+- Outcome: of the 6 conversations for that lesson (3 per arm), the share in which the later turn's
+  question sentence equals the earlier turn's, after the same normalisation score_systems.py uses
+  (last sentence ending in "?", lower-cased, punctuation removed). Conversations where either turn has
+  no question sentence count as not repeating.
+
+## Primary test
+Repeat rate among units with overlap > 0, minus repeat rate among units with overlap = 0. 95% interval
+from a 5,000-draw bootstrap that resamples lessons (all three pairs of a lesson move together), seed
+20260914. If either group has fewer than 5 units, the primary test is instead the Spearman correlation
+between overlap and repeat rate across the 72 units, with the same lesson bootstrap.
+
+## Prediction and failure rule
+Prediction: units whose turns share retrieved passages repeat more often. The hypothesis fails if the
+95% interval includes zero.
+
+## Reported whatever they show
+Spearman correlation between overlap and repeat rate; each arm separately; the share of units with
+identical passage sets; the distribution of overlap values.
