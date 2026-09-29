@@ -375,7 +375,70 @@ def fig_depth() -> None:
     render("fig6-depth", w, h, "".join(s))
 
 
+# ------------------------------------------------------------------ Figure 7: language agreement
+
+def pearson(a: list[float], b: list[float]) -> float:
+    ma, mb = sum(a) / len(a), sum(b) / len(b)
+    cov = sum((x - ma) * (y - mb) for x, y in zip(a, b))
+    return cov / (sum((x - ma) ** 2 for x in a) * sum((y - mb) ** 2 for y in b)) ** 0.5
+
+
+def ranks(values: list[float]) -> list[float]:
+    order = sorted(range(len(values)), key=lambda k: values[k])
+    out = [0.0] * len(values)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            out[order[k]] = (i + j) / 2 + 1
+        i = j + 1
+    return out
+
+
+def fig_agreement() -> None:
+    rows = md_rows(ROOT / "PHASE1_COMPARISON.md", "| Language | Code | FT fidelity")
+    data = [(r[0], float(r[5]), float(r[6])) for r in rows]
+    ft = [d[1] for d in data]
+    rag = [d[2] for d in data]
+    r_all, rho_all = pearson(ft, rag), pearson(ranks(ft), ranks(rag))
+    kept = [d for d in data if d[0] != "Sindhi"]
+    rho_kept = pearson(ranks([d[1] for d in kept]), ranks([d[2] for d in kept]))
+    w, h = 500, 470
+    left, top, size = 70, 30, 370
+    lo, hi = 1.5, 5.0
+    X = lambda v: left + (v - lo) / (hi - lo) * size
+    Y = lambda v: top + size - (v - lo) / (hi - lo) * size
+    s = [f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">']
+    for tick in (2.0, 3.0, 4.0, 5.0):
+        s.append(f'<line x1="{X(tick)}" y1="{top}" x2="{X(tick)}" y2="{top + size}" stroke="{GRID}"/>')
+        s.append(f'<line x1="{left}" y1="{Y(tick)}" x2="{left + size}" y2="{Y(tick)}" stroke="{GRID}"/>')
+        s.append(t(X(tick), top + size + 18, f"{tick:.1f}", 11, "middle", INK_2))
+        s.append(t(left - 8, Y(tick) + 4, f"{tick:.1f}", 11, "end", INK_2))
+    s.append(f'<line x1="{X(lo)}" y1="{Y(lo)}" x2="{X(hi)}" y2="{Y(hi)}" stroke="{INK_2}" stroke-width="1.2" stroke-dasharray="5 4"/>')
+    s.append(t(X(2.6) + 8, Y(2.6) + 4, "y = x", 11, "start", INK_2))
+    s.append(t(left + size / 2, top + size + 40, "Fine-tuned learners: mean judged fluency (1-5)", 12, "middle", INK_2))
+    s.append(t(18, top + size / 2, "RAG learner: mean judged fluency (1-5)", 12, "middle", INK_2,
+               extra=f'transform="rotate(-90 18 {top + size / 2})"'))
+    labelled = {"Sindhi": (8, 4), "Sanskrit": (8, 4), "Santali": (8, 4), "Konkani": (-8, 4),
+                "Punjabi": (-8, -6), "Bengali": (8, 14), "Odia": (-8, -8)}
+    for name, x, y in data:
+        s.append(f'<circle cx="{X(x)}" cy="{Y(y)}" r="4.5" fill="{SERIES[0]}" stroke="{SURFACE}" stroke-width="1.5"/>')
+        if name in labelled:
+            dx, dy = labelled[name]
+            s.append(t(X(x) + dx, Y(y) + dy, name, 11, "start" if dx > 0 else "end"))
+    bx, by = X(3.35), Y(2.55)
+    s.append(t(bx, by, f"Pearson r = {r_all:.2f}", 12))
+    s.append(t(bx, by + 18, f"Spearman ρ = {rho_all:.2f}", 12))
+    s.append(t(bx, by + 36, f"without Sindhi: ρ = {rho_kept:.2f}", 11, "start", INK_2))
+    s.append(t(bx, by + 54, "one point per language", 11, "start", INK_2))
+    s.append("</svg>")
+    render("fig7-language-agreement", w, h, "".join(s))
+
+
 if __name__ == "__main__":
+    fig_agreement()
     fig_architecture()
     fig_example()
     fig_heatmap()

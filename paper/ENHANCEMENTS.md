@@ -1,6 +1,10 @@
 # Planned enhancements to the paper
 
-Recorded on 2026-09-19 from an internal review of `teach2learn-multilingual.tex`. **None of this has been applied yet.** It is kept here to be worked through later.
+Recorded on 2026-09-19 from an internal review of `teach2learn-multilingual.tex`.
+
+**Status (2026-09-19): the writing changes and the retrieval analysis are applied to the manuscript.**
+- Main-text prose is 13.3% shorter, and main-text tables went from 14 to 11. That is a little short of the 15–20% target; Related Work and the Methods subsections are the next places to trim.
+- Still open: the study-team items and the submission blockers listed at the end of this file.
 
 ## The review in brief
 
@@ -25,7 +29,7 @@ Recorded on 2026-09-19 from an internal review of `teach2learn-multilingual.tex`
 
 1. **Title:** "Teaching an AI Learner in Your Own Language: A Translation Boundary for Learning-by-Teaching Tutors in 22 Indian Languages and a Comparison of Two AI Learners".
 2. **Composite 0–100 score:** move to an appendix. The main results report the six dimensions separately.
-3. **Retrieval analysis:** run it. Test whether turns that retrieve the same textbook passages are the ones where the RAG learner repeats a question (details below).
+3. **Retrieval analysis:** done on 2026-09-19. The hypothesis failed, so repeated passages are not the cause. See `RETRIEVAL_OVERLAP_RESULTS.md` at the repo root; the paper still needs the new subsection.
 
 ## Writing changes (ours)
 
@@ -91,7 +95,9 @@ Move the following into a new appendix, "Implementation Details", and keep about
   - If there is a privacy reason not to, state it.
 - **Keep reporting failures.** Sindhi, the Punjabi schema payload, rate limiting, non-determinism, grammatical gender and the English interface all add credibility.
 
-## Retrieval-overlap analysis (ours, new data)
+## Retrieval-overlap analysis (ours, new data) — DONE 2026-09-19
+
+**Result:** repeats were less common between turns that shared a passage (5.6%) than between turns that shared none (15.8%). No turn pair retrieved identical passages, and 54 of 59 repeats involved no shared passage. The hypothesis failed. Full results are in `RETRIEVAL_OVERLAP_RESULTS.md` and the RAG project's `retrieval-overlap.json`. The original plan follows.
 
 1. **Pre-register it** in `PHASE1_PREREGISTRATION.md` with a UTC timestamp before running.
    - **Hypothesis:** a later follow-up repeats an earlier one more often when the two turns retrieved overlapping passages.

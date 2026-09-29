@@ -58,7 +58,7 @@
 
 \begin{document}
 
-\title[Teaching an AI Learner in Your Own Language]{Teaching an AI Learner in Your Own Language: Fine-Tuned and Retrieval-Augmented Learning-by-Teaching Tutors in 22 Indian Languages}
+\title[Teaching an AI Learner in Your Own Language]{Teaching an AI Learner in Your Own Language: A Translation Boundary for Learning-by-Teaching Tutors in 22 Indian Languages and a Comparison of Two AI Learners}
 
 \author[1]{\fnm{First} \sur{Author}}\email{iauthor@gmail.com}
 \author[1]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
@@ -72,21 +72,22 @@
 \orgname{BITS Pilani, Pilani Campus},
 \orgaddress{\street{Vidya Vihar}, \city{Pilani}, \postcode{333031}, \state{Rajasthan}, \country{India}}}
 
-\abstract{Learning-by-teaching tutors built on large language models let a student consolidate
+\abstract{Learning-by-teaching tutors built on large language models let students consolidate
 their understanding by explaining a topic to an AI learner, but existing systems work only in
-English, which disadvantages students who reason best in their home language. We extend two
-independent implementations of the Teach2Learn tutor, one whose learner is a subject-specific
-fine-tuned small model and one whose learner is GPT-4o grounded in course textbooks through
-retrieval, to all 22 scheduled Indian languages. A translation boundary translates only what the
-participant writes and reads, so inference, evaluation and stored research data stay in English;
-dictated speech enters by the same path as typed text. Because both systems now share this layer,
-we compare them on identical input: 24 reviewed lessons, one independent judge and two
-pre-registered analyses. Across 1,575 boundary crossings per system, no text passed untranslated
-and no Indian-language script reached the English side. Both systems placed the same 15 languages
-in the ready tier and agreed on the tier of all 22, indicating that multilingual quality is set by
-the translation layer rather than the learner. The retrieval-augmented learner read slightly more
-fluently, while the fine-tuned learner never repeated a question, against 23 of 72 conversations
-for the retrieval-augmented one. \trackb{One sentence on the user study's main result.}}
+English. We show that an English-only tutor can be made multilingual without rebuilding it: a
+translation boundary translates only what the participant writes and reads, so inference,
+evaluation and stored research data stay in English. We place the same boundary around two
+independent Teach2Learn implementations, one with subject-specific fine-tuned learners and one with
+a retrieval-augmented GPT-4o learner, and use it to compare them on identical input across all 22
+scheduled Indian languages, with 24 reviewed lessons, one independent judge and three
+pre-registered protocols. Across 1,575 boundary crossings per system, no text passed untranslated and
+no Indian-language script reached the English side. Both systems placed the same 15 languages in the
+ready tier and agreed on all 22, and per-language fluency was closely correlated across them,
+suggesting that the translation layer is a dominant determinant of multilingual quality. The two
+architectures differed in conversational behaviour: the retrieval-augmented learner read slightly
+more fluently but repeated a question in 23 of 72 conversations, against none for the fine-tuned
+learners, and neither the teacher's earlier sentences nor overlapping retrieval explained the
+repeats. \trackb{One sentence on the user study's main result.}}
 
 \keywords{Learning by Teaching, Multilingual Education, Indian Languages, Machine Translation, Large Language Models, Retrieval-Augmented Generation, Fine-Tuning, LLM-as-a-Judge, Speech Input, Mixed-Methods Evaluation}
 
@@ -97,58 +98,64 @@ for the retrieval-augmented one. \trackb{One sentence on the user study's main r
 %% =======================================================================================
 
 Learning by Teaching (LbT) asks a student to explain a topic to a learner, on the premise that
-explaining forces the explainer to organise, justify and repair their own understanding
-\cite{roscoe2007,biswas2005}. Large language models (LLMs) have made it practical to supply that
-learner on demand \cite{jin2024teach,ma2024debugging,rogers2025playing}. Teach2Learn is one such
-system, built in two independent implementations: a multi-agent, retrieval-augmented tool whose
-student agent is grounded in course textbooks \cite{lahoria2025teach2learn}, and a portal in which
-subject-specific fine-tuned adapters play the learner \cite{finetunedT2L}. Both were built,
-deployed and evaluated in English only, and the evaluation of the retrieval-augmented tool names
-support for multilingual learners as future work \cite{lahoria2025teach2learn}.
+explaining forces the explainer to organise, justify and repair their own understanding, and that
+the learner's questions drive this process \cite{roscoe2007,biswas2005}. Large language models
+(LLMs) have made it practical to supply such a learner on demand
+\cite{jin2024teach,ma2024debugging,rogers2025playing}. Teach2Learn is one such system, built in two
+independent implementations: a multi-agent tool whose student agent is grounded in course textbooks
+through retrieval \cite{lahoria2025teach2learn}, and a portal in which subject-specific fine-tuned
+models play the learner \cite{finetunedT2L}.
 
-That limitation matters most where LbT is used. The students these tools serve at our institution
-come from across India, and many first learned to reason about technical material in a language
-other than English. Learning in a language one does not fully command is a documented barrier
+Both implementations, like the other systems cited above, work only in English; the evaluation of
+the retrieval-augmented tool names multilingual support as future work \cite{lahoria2025teach2learn}.
+Learning in a language one does not fully command is a documented barrier
 \cite{unesco2016language}, and India's National Education Policy 2020 makes the home language the
-preferred medium of instruction \cite{nep2020}. An LbT tutor is an unusually sharp case, because
-the activity \emph{is} producing explanations: a student who can explain a CPU scheduler fluently
-in Tamil but haltingly in English is being assessed on their English.
+preferred medium of instruction \cite{nep2020}. LbT is an unusually sharp case, because the activity
+\emph{is} producing explanations: a student who can explain a CPU scheduler fluently in Tamil but
+haltingly in English is being assessed on their English.
 
-Two routes lead to a multilingual tutor. One replaces the learner with a model that works natively
-in every language. The other keeps the existing English system and translates at its edge. The
-first would mean retraining the fine-tuned implementation, whose learners are 7--9B-parameter
-adapters trained on English dialogues, and in both implementations the learner's self-evaluation
-and the feedback judge parse English output. We therefore take the second route and draw a single
-translation boundary around each system. Only text the participant writes or reads crosses it;
-everything behind it, including all stored research data, stays English.
+A multilingual tutor could replace the learner with a model that works natively in every language,
+but that would mean retraining the fine-tuned learners, which are 7--9B-parameter models trained on
+English dialogues, and rewriting evaluation logic that parses English output in both
+implementations. We take the other route. We draw a single translation boundary around each existing
+system: only text the participant writes or reads crosses it, and everything behind it, including
+the learner, its evaluation and all stored research data, stays English.
 
-Because both implementations now share the same translation module, they can for the first time be
-compared under identical conditions. We built a benchmark in which both learners receive the same
-reviewed teacher scripts, translated by the same code into the same 22 languages and scored by the
-same independent judge. It lets us ask two questions that matter for deployment: does the boundary
-work reliably across all 22 languages, and, once language is held constant, how do a small
-fine-tuned learner and a large retrieval-augmented one differ as conversational partners?
+Translating at the edge is not free. Translation can change the technical meaning of an explanation
+before the learner reads it, make the learner's questions stilted when they are translated back,
+degrade the English that the feedback judge evaluates, and fail without anyone noticing. Whether
+these costs depend on the language, on the learner, or on both is an empirical question.
+
+Because both implementations now share the same translation module, we can answer it under
+identical conditions. We built a benchmark in which both learners receive the same human-reviewed
+teacher scripts, translated by the same code into the same 22 languages and scored by the same
+independent judge. The comparison is between two complete learner architectures, not an ablation of
+retrieval versus fine-tuning: the learners also differ in base model and prompt. Three protocols were
+pre-registered, two of them with predictions.
+
+Four findings stand out. First, the boundary is reliable: across 1,575 crossings per system, no text
+passed untranslated and no Indian-language script reached the English side. Second, quality varies
+far more by language than by subject or system: both systems place the same 15 languages in the
+ready tier, and their per-language fluency is closely correlated (Spearman $\rho = 0.87$). Third,
+the two architectures differ in conversational behaviour: the retrieval-augmented GPT-4o learner
+reads slightly more fluently, but it repeats a question in one conversation in three, while the
+fine-tuned learners never do. Fourth, two pre-registered explanations for those repeats, the
+learner not seeing the teacher's earlier sentences and the learner retrieving the same passages
+again, were both rejected.
 
 \subsection{Our Contributions}\label{sec:contributions}
 
 \begin{enumerate}
-\item A \textbf{translation-boundary architecture} in which only participant-visible text is
-translated, while the model, its private evaluation, Bloom-level completion logic, the feedback
-judge and all stored research data remain English. It is implemented with a byte-identical
-translation module in two independent LbT systems, and the expansion from 8 to 22 languages
-changed two dictionaries in one file (Section~\ref{sec:system}).
-\item \textbf{Voice input} in all 22 languages, designed so that no audio is stored and dictated
-text follows the same path as typed text (Section~\ref{sec:voice}). We describe this feature but do
-not evaluate its accuracy.
-\item A \textbf{commensurable cross-system benchmark}: a shared, human-reviewed lesson bank,
-identical translation code, one judge model and prompt for both systems, mechanical failure checks
-alongside judged quality, and two pre-registered analyses (Section~\ref{sec:method}).
-\item \textbf{Benchmark findings} (Section~\ref{sec:results}): no untranslated or wrong-script text
-in 1,575 boundary crossings per system; identical quality tiers for all 22 languages across two
-systems that share nothing but the translation layer; a small fluency advantage for the
-retrieval-augmented learner; no repeated questions from the fine-tuned learner against 23 of 72
-conversations for the retrieval-augmented one; and a pre-registered intervention that failed to
-remove those repeats.
+\item A \textbf{translation-boundary architecture} that makes an English-only LbT tutor multilingual
+without changing its inference, evaluation or storage, implemented with a byte-identical module in two
+independent systems. The architecture also accepts speech input, which joins the same path as typed
+text; we describe it but do not evaluate recognition accuracy (Section~\ref{sec:system}).
+\item A \textbf{commensurable cross-system benchmark}: a shared, human-reviewed lesson bank, identical
+translation code, one judge model and prompt for both systems, mechanical failure checks alongside
+judged quality, and three pre-registered protocols (Section~\ref{sec:method}).
+\item \textbf{Findings} on multilingual quality (Section~\ref{sec:results}) and on learner behaviour
+(Section~\ref{sec:behaviour}), including two pre-registered negative results on why the
+retrieval-augmented learner repeats itself.
 \item \trackb{A multilingual user study with students and instructors.}
 \end{enumerate}
 
@@ -158,19 +165,16 @@ remove those repeats.
 \item[RQ1] Can a single translation layer at the edge of the system extend two architecturally
 different LbT tutors to 22 Indian languages without changing inference, evaluation or stored data,
 and how reliably does it work?
-\item[RQ2] How much does translation quality vary by language, by subject and by system?
-\item[RQ3] Given identical teacher input, how do a fine-tuned small-model learner and a
-retrieval-augmented GPT-4o learner differ in fluency, repetition, question depth and lexical
-variety?
+\item[RQ2] How much does multilingual quality vary by language, by subject and by system?
+\item[RQ3] Given identical teacher input, how do the two learner architectures differ in fluency,
+repetition, responsiveness, lexical variety and question depth?
 \item[RQ4] \trackb{How do students experience teaching an AI learner in their own language?}
 \end{description}
 
-The rest of the paper is organised as follows. Section~\ref{sec:related} reviews related work.
-Section~\ref{sec:system} describes the two systems, the translation boundary, voice input and the
-learning workflow. Sections~\ref{sec:method} and~\ref{sec:results} present the benchmark and its
-results (RQ1--RQ3), and Sections~\ref{sec:study-method} and~\ref{sec:study-findings} the user study
-(RQ4). Section~\ref{sec:discussion} discusses the findings, Section~\ref{sec:limitations} their
-limits, and Section~\ref{sec:conclusion} concludes.
+After related work (Section~\ref{sec:related}) and the systems (Section~\ref{sec:system}), we present
+the benchmark (Section~\ref{sec:method}), its results for RQ1--RQ2 (Section~\ref{sec:results}) and RQ3
+(Section~\ref{sec:behaviour}), and the user study for RQ4 (Sections~\ref{sec:study-method}
+and~\ref{sec:study-findings}), followed by discussion, limitations and conclusions.
 
 %% =======================================================================================
 \section{Related Work}\label{sec:related}
@@ -200,22 +204,22 @@ studies an LLM that ``plays dumb'' in university CS classes \cite{rogers2025play
 in a conversational tutoring system \cite{schmucker2024ruffle}. Teach2Learn extends this line to
 whole CS courses with Bloom-ordered questioning, first with a retrieval-augmented multi-agent design
 \cite{lahoria2025teach2learn} and then with fine-tuned learner models \cite{finetunedT2L}. All of these
-systems operate in English. To our knowledge, none supports Indian languages.
+systems operate in English; in the literature we reviewed, we found none that supports Indian
+languages.
 
 \subsection{Retrieval-Augmented and Fine-Tuned Learner Agents}
 
-Two techniques shape what an LLM learner knows and how it behaves. Retrieval-augmented generation
-conditions each response on passages retrieved from a document collection \cite{lewis2020rag}; in a
-tutor it can confine the learner to course material and ground its questions in the curriculum
-\cite{lahoria2025teach2learn}. Fine-tuning changes the model's weights instead, and
-parameter-efficient methods such as LoRA make this practical for 7--9B-parameter models on modest
-hardware \cite{hu2022lora}. The fine-tuned Teach2Learn uses it to train small models to behave as
-novice learners who always ask \cite{finetunedT2L}. Where the two have been compared, the comparison
-has mostly concerned knowledge injection, where retrieval outperformed unsupervised fine-tuning on
-factual questions \cite{ovadia2024}. Whether either yields a better \emph{learner}, one that asks
-relevant, non-repetitive questions, is a different question. We know of no study that compares them
-on the same teacher input. Our comparison (Section~\ref{sec:res-compare}) addresses this only in
-part, because the two learners also differ in base model and prompt.
+Retrieval-augmented generation conditions each response on passages retrieved from a document
+collection \cite{lewis2020rag}; in a tutor it can confine the learner to course material
+\cite{lahoria2025teach2learn}. Fine-tuning changes the model's weights instead, and LoRA makes this
+practical for 7--9B-parameter models \cite{hu2022lora}; the fine-tuned Teach2Learn uses it to train
+small models to behave as novice learners who always ask \cite{finetunedT2L}. Comparisons of the two
+have mostly concerned knowledge injection, where retrieval outperformed unsupervised fine-tuning
+\cite{ovadia2024}. Whether either yields a better \emph{learner}, one that asks relevant,
+non-repetitive questions, is a different question; in the literature we reviewed we found no study
+that compares the two on the same teacher input. Our comparison (Section~\ref{sec:behaviour})
+addresses it only in part, because the two learner architectures also differ in base model and
+prompt.
 
 \subsection{Multilingual and Indian-language Educational Technology}
 
@@ -249,8 +253,8 @@ measure the judge's agreement with itself, and treat judged scores as directiona
 readers confirm them. To characterise the learner's questions we use Graesser and Person's question
 taxonomy \cite{graesser1994}.
 
-\textbf{Research gap.} No LbT tutor supports Indian languages, and no study compares a fine-tuned
-learner with a retrieval-augmented one on identical teacher input.
+\textbf{Research gap.} In the literature we reviewed, no LbT tutor supports Indian languages, and
+no study compares a fine-tuned learner with a retrieval-augmented one on identical teacher input.
 
 %% =======================================================================================
 \section{System Architecture and Learning Workflow}\label{sec:system}
@@ -258,15 +262,16 @@ learner with a retrieval-augmented one on identical teacher input.
 
 \subsection{The Two Teach2Learn Systems}\label{sec:two-systems}
 
-Table~\ref{tab:systems} summarises the two systems. In both, the participant chooses a subject
-and subtopic and teaches it to an AI learner that asks follow-up questions. The four subjects are
-BITS Pilani's first courses in Computer Programming (\texttt{cp}), Data Structures and Algorithms
-(\texttt{dsa}), Object-Oriented Programming in Java (\texttt{oop\_java}), and Operating Systems
-(\texttt{os}).
+Table~\ref{tab:systems} summarises the two systems. In both, the participant chooses a subject and
+subtopic and teaches it to an AI learner that asks follow-up questions. The four subjects are BITS
+Pilani's first courses in Computer Programming (\texttt{cp}), Data Structures and Algorithms
+(\texttt{dsa}), Object-Oriented Programming in Java (\texttt{oop\_java}) and Operating Systems
+(\texttt{os}). Below we call the two learner architectures the \emph{fine-tuned learners} and the
+\emph{RAG learner}.
 
 \begin{table}[t]
-\caption{The two systems extended in this work. Only the translation and speech modules
-(Sections~\ref{sec:boundary}--\ref{sec:voice}) are shared.}\label{tab:systems}
+\caption{The two learner architectures compared in this work. Only the translation and speech
+modules are shared (Section~\ref{sec:boundary}).}\label{tab:systems}
 \footnotesize
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}p{0.2\textwidth}p{0.36\textwidth}p{0.36\textwidth}}
 \toprule
@@ -281,50 +286,27 @@ Corpus & None at inference & 21,564 chunks from 7,093 textbook pages across the 
 \end{tabular*}
 \end{table}
 
-\paragraph{Fine-tuned portal.} Each adapter was trained on English dialogues in which the teacher's
-turn is rendered as \texttt{Previous Question: \ldots\ Teacher's Answer: \ldots}, and it emits a
-follow-up question together with a private evaluation block giving a Bloom level and a
-Low/Medium/High score. The portal strips that block before display and uses it to end a session
-early once a knowledge threshold is reached, between a minimum of three and a maximum of six
-teacher turns. In production, one vLLM engine per base model serves its adapters on a GPU host;
-the benchmark ran the same adapters through Hugging Face Transformers on that host.
-The training data and procedure are described in \cite{finetunedT2L}.
+\paragraph{Fine-tuned learners.} Each subject routes to its own LoRA-adapted base model, trained on
+English dialogues in which the teacher's turn is rendered as \texttt{Previous Question: \ldots\
+Teacher's Answer: \ldots}. The learner emits a follow-up question together with a private evaluation
+block giving a Bloom level and a Low/Medium/High score. The portal strips that block before display
+and uses it to end a session early once a knowledge threshold is reached, between three and six
+teacher turns. The training data and procedure are described in \cite{finetunedT2L}.
 
-\paragraph{RAG tool.} The student agent is an LLM prompted to behave as a novice while privately
-consulting retrieved course material (Appendix~\ref{app:prompts}). Textbooks named in the course
-handouts were split into 1,000-character chunks with 200-character overlap, embedded with
-\texttt{text-embedding-3-small}, and stored per subject in Chroma (Table~\ref{tab:corpus}). The
-student returns a JSON object with a rating, a reflection and an optional question; when it rates
-an explanation ``understood'' it may return no question, and the participant then sees the
-reflection.
-
-\begin{table}[t]
-\caption{Retrieval corpus of the RAG tool. One of five \texttt{cp} sources (Forouzan and Gilberg)
-failed to parse and is absent.}\label{tab:corpus}
-\footnotesize
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}llrr}
-\toprule
-Subject & Sources & Pages & Chunks \\
-\midrule
-\texttt{cp} & Hanly and Koffman, plus three reference books & 2,289 & 7,530 \\
-\texttt{dsa} & Cormen et al.; Goodrich, Tamassia and Mount & 2,033 & 5,605 \\
-\texttt{oop\_java} & Schildt; Horstmann & 1,788 & 5,148 \\
-\texttt{os} & Silberschatz and Galvin & 983 & 3,281 \\
-\midrule
-Total & & 7,093 & 21,564 \\
-\botrule
-\end{tabular*}
-\end{table}
+\paragraph{RAG learner.} The student agent is GPT-4o prompted to behave as a novice while privately
+consulting four textbook passages retrieved for each teacher turn (Appendix~\ref{app:prompts}; corpus
+in Appendix~\ref{app:implementation}). It returns a rating, a reflection and an optional question;
+when it rates an explanation ``understood'' it may return no question, and the participant then sees
+the reflection.
 
 \subsection{The Translation Boundary}\label{sec:boundary}
 
 Figure~\ref{fig:boundary} shows the design. Everything that existed before (inference, the private
-evaluation, completion logic, the feedback judge, and storage) sits inside an English zone that
-does not know a language was chosen. Text crosses the boundary exactly twice per turn: the
-participant's answer is translated into English on the way in, and the learner's question is
-translated into the participant's language on the way out. The opening question, the completion
-message and the final feedback are translated outward in the same way. Table~\ref{tab:crosses}
-lists what crosses and what never does.
+evaluation, completion logic, the feedback judge and storage) sits inside an English zone that does
+not know a language was chosen. Text crosses the boundary twice per turn: the participant's answer is
+translated into English on the way in, and the learner's question is translated into the
+participant's language on the way out. The opening question, the completion message and the final
+feedback are translated outward in the same way (Table~\ref{tab:crosses}).
 
 \begin{figure}[t]
 \centering
@@ -354,119 +336,58 @@ Database rows and transcripts & Never; stored in English & Research analysis sta
 Three design choices follow from keeping the English zone untouched.
 
 \paragraph{Store English, translate at display time.} The database and transcripts hold only the
-English text, and stored conversations are translated again when a page is rendered. A Hindi
-session therefore yields an English transcript that existing analysis and administrative views
-read unchanged. The English answer is written before the model responds, so a later translation
-failure can cost readability but not corrupt the record. The cost, discussed in
-Section~\ref{sec:lim-system}, is that the participant's original wording is not kept.
+English text, and stored conversations are translated again when a page is rendered. A Hindi session
+therefore yields an English transcript that existing analysis reads unchanged. The cost is that the
+participant's original wording is not kept (Section~\ref{sec:disc-storage}).
 
 \paragraph{The judge sits inside the English zone.} Both systems' feedback evaluators read the
-translated-to-English answer. Translation quality therefore feeds evaluation quality, and in the
-fine-tuned portal, where evaluation decides when a session ends, a translation problem becomes a
-session-length problem.
+translated-to-English answer, so translation quality feeds evaluation quality. In the fine-tuned
+portal, where evaluation decides when a session ends, a translation problem becomes a session-length
+problem.
 
-\paragraph{Fail quietly, then check loudly.} The module never raises into a live session: on a
-missing key, HTTP error, timeout or malformed response it returns the original text, so the session
-continues in English rather than stopping. A degraded session thus looks like a working one, which
-is why the benchmark (Section~\ref{sec:method}) checks every crossing mechanically.
+\paragraph{Fail open.} On any translation failure the module returns the original text and the
+session continues, so a degraded session looks like a working one; the benchmark therefore checks
+every crossing mechanically (Section~\ref{sec:measures}).
 
-\subsection{Implementation}\label{sec:impl}
+\subsection{Implementation and Language Coverage}\label{sec:impl}
 
-Both systems import one module, \texttt{translation.py}, byte-identical in the two code bases and
-verified with \texttt{cmp} before the comparison runs. It calls \texttt{sarvam-translate:v1}
-\cite{sarvamtranslate}, which accepts 2,000 input characters, matching the portal's 2,000-character
-answer limit; an alternative model with a 1,000-character limit would have dropped long answers
-back to untranslated text. Longer text is split on sentence boundaries. Results are cached in
-process by (text, source, target). Language codes are an explicit table rather than derived,
-because the service spells Odia \texttt{od-IN}, not the ISO \texttt{or-IN} (Appendix~\ref{app:languages}).
-The module also rejects one failure mode that is not an error: for particular sentence--language
-pairs the service returned a fragment of its own API schema in place of a translation, which would
-otherwise have reached the model as the participant's words. A pattern check now treats such
-payloads as failures in both the live path and the benchmark harness.
+Both systems import one translation module, byte-identical in the two code bases, that calls Sarvam
+AI's \texttt{sarvam-translate:v1} \cite{sarvamtranslate}. It also rejects one failure that is not an
+error: for particular sentence--language pairs the service returned a fragment of its own API schema
+in place of a translation, which would otherwise have reached the learner as the participant's words.
+The first release offered eight languages; extending it to all 22 languages the service accepts
+changed two dictionaries in one file, because the language picker, session metadata and every
+display path read from them. The fine-tuned portal translates the conversation and feedback but not
+its interface; the RAG tool also translates the interface messages it sends. Appendix~\ref{app:implementation}
+gives the details, and Appendix~\ref{app:languages} lists the languages, scripts and codes.
 
-In the RAG tool, which renders its interface through Chainlit rather than templates, the language
-is picked with the same action-button mechanism as the subject, and interface messages the tool
-itself sends (prompts to choose a subject, error notices) are also translated. The fine-tuned
-portal translates conversation and feedback but not its buttons, headings or survey
-(Section~\ref{sec:lim-system}).
+\subsection{Speech Input}\label{sec:voice}
 
-\subsection{From 8 to 22 Languages}\label{sec:expansion}
-
-The first release offered eight languages. That was a scope decision, not a limit of the service,
-and expanding to all 22 languages the service accepts required adding entries to two dictionaries in
-the translation module: the language picker, session metadata and every display path read from
-them. A unit test locks the two dictionaries to the same key set, because a language present in the
-picker but missing a service code would otherwise fail as a silent passthrough. Appendix~\ref{app:languages}
-lists the languages, scripts and codes.
-
-\subsection{Voice Input}\label{sec:voice}
-
-Both systems accept spoken answers. The portal adds a microphone button that records with the
-browser's \texttt{MediaRecorder}, re-encodes the clip to WAV in the browser, and uploads it to a
-session-scoped endpoint (15\,MB limit). The RAG tool uses Chainlit's built-in audio capture and wraps
-the streamed PCM chunks into a 24\,kHz WAV file on the server. In both, a shared
-\texttt{transcription.py} module sends the audio to a speech-to-text provider and discards it. The
-portal places the returned text in the answer box for the participant to review and send; the RAG
-tool shows it as the participant's message and submits it as their turn.
-
-Four properties of the design matter for the rest of the paper.
-(i)~Audio is never written to disk or the database; only the resulting text is kept, exactly as for
-a typed answer.
-(ii)~Transcription does not translate: speech is transcribed in the language spoken, and the text
-then crosses the translation boundary like typed input.
-(iii)~Unlike translation, a transcription failure surfaces as an error (the RAG tool asks the
-participant to try again) rather than passing anything through, since there is no safe fallback text
-for audio.
-(iv)~The client-side WAV re-encode exists because the default speech backend rejected the
-\texttt{audio/webm;codecs=opus} container that Chrome records by default, despite documentation
-listing WebM as supported.
-
-Two backends are configurable. The default is Sarvam's Saaras v3 model, which the provider
-documents as covering all 22 languages plus English \cite{sarvamstt}. The alternative is Whisper
-large-v3 \cite{radford2023whisper} through OpenRouter. Whisper's published language list includes
-14 of the 22 languages and omits Bodo, Dogri, Kashmiri, Konkani, Maithili, Manipuri, Odia and Santali
-\cite{whispertokenizer}, which is why Saaras is the default. These are the providers' coverage
-statements, not our measurements. We verified that both backends transcribe live microphone
-recordings end to end, but we did not measure transcription accuracy
-(Section~\ref{sec:lim-system}).
+Both systems also accept spoken answers. A second shared module sends the recording to a
+speech-to-text service and discards the audio; the returned text then crosses the boundary exactly
+like a typed answer, so speech needs no separate path through the English zone. The default service,
+Sarvam's Saaras v3, is documented as covering all 22 languages \cite{sarvamstt}; the alternative,
+Whisper large-v3 \cite{radford2023whisper}, lists 14 of the 22 \cite{whispertokenizer}. Recognition
+accuracy is outside the scope of this study (Appendix~\ref{app:implementation}).
 
 \subsection{Learning Workflow in the Participant's Language}\label{sec:workflow}
 
-A session proceeds in the same six steps in both systems. Only steps 1, 4 and 6 differ from the
-English-only workflow described in the earlier papers
-\cite{lahoria2025teach2learn,finetunedT2L}.
-
-\begin{enumerate}
-\item \textbf{Choose a language.} In the portal the teaching language is a field on the
-topic-selection form; in the RAG tool it is the first choice offered, before the subject. It is
-stored with the session (the portal's session metadata, the RAG tool's session document) and never
-changes during the session.
-\item \textbf{Choose what to teach.} The participant picks a subject, topic and subtopic from the
-same catalogue as in English.
-\item \textbf{Receive the opening question.} The learner generates its first question in English.
-The English text is stored, and the participant sees it in their language.
-\item \textbf{Teach.} The participant types or dictates an explanation in their language. It is
-translated into English, stored, and passed to the learner; in the RAG tool the English text is also
-the retrieval query. The learner's English reply is evaluated privately in English (in the portal, the
-inline Bloom level and score; in the RAG tool, the student's rating and the evaluator and scorer
-agents), and its question is translated and shown.
-\item \textbf{Finish.} Each system applies its own completion rule to the English evaluations: the
-portal ends early once a knowledge threshold is reached, between three and six teacher turns.
-\item \textbf{Read feedback.} Strengths, improvements and a summary are produced in English and
-translated when displayed. In the portal, reopening a past session translates its stored English
-transcript again at display time.
-\end{enumerate}
+A session follows the English-only workflow of the earlier papers \cite{lahoria2025teach2learn,finetunedT2L}
+with three changes. The participant first chooses a teaching language, which is stored with the
+session. Each explanation, typed or dictated, is translated into English, stored and passed to the
+learner (in the RAG tool it is also the retrieval query), and the learner's English question is
+translated before it is shown; evaluation and the completion rule run on the English text. Final
+feedback is produced in English and translated when displayed.
 
 \subsection{An Example Turn}\label{sec:example}
 
 Figure~\ref{fig:example} traces one Hindi turn from the benchmark (Section~\ref{sec:method}). The
 teacher's English sentence is translated into Hindi, standing in for what a participant would type.
 The inbound translation that both learners receive keeps the claim but drops ``on the CPU'' and
-``runnable''. Each learner replies in English, and its reply is translated back into Hindi. The
-fine-tuned learner (Granite 3.3 8B, the operating-systems model) opens with a stock expression of
-doubt before asking why the choice matters; the RAG learner asks how the scheduler chooses among
-ready processes. Both Hindi questions address the teacher with feminine verb forms, a choice the
-translation service made on the participant's behalf (Section~\ref{sec:lim-system}).
+``runnable''. The fine-tuned learner (Granite 3.3 8B, the operating-systems model) opens with a stock
+expression of doubt before asking why the choice matters; the RAG learner asks how the scheduler
+chooses among ready processes. Both Hindi questions address the teacher with feminine verb forms, a
+choice the translation service made on the participant's behalf (Section~\ref{sec:lim-system}).
 
 \begin{figure}[t]
 \centering
@@ -493,46 +414,34 @@ applied to inputs that are identical for both. Three components are shared.
 (Section~\ref{sec:measures}).
 \end{enumerate}
 
-The two systems' native self-assessments are deliberately excluded. The fine-tuned learner grades
-the teacher inline on a three-level scale; the RAG tool's scorer emits five continuous sub-scores
-between 0 and 1. The scales do not map onto each other, and self-grading differs in kind from
-grading by a separate agent, so no comparison between them would mean anything.
-
-Two inputs cannot be made identical without disabling part of a system, and we report both as
-design differences rather than normalising them away. First, the opening question is generated by
-the adapter on one side and by the retrieval-grounded question generator on the other; we
-therefore compute cross-system question measures over follow-up questions only. Second, the
-student prompts differ: the RAG student is told to assume the explanation was helpful enough and may
-reply with a reflection instead of a question, whereas the adapter was trained to always ask. The
-share of turns that are questions is therefore reported but not scored (Table~\ref{tab:notscored}).
+The comparison is architectural: the learners also differ in base model, size and prompt. Their
+native self-assessments are excluded, because the scales do not map onto each other (an inline
+three-level grade against five continuous sub-scores from separate agents). Two inputs cannot be
+made identical without disabling part of a system. The opening question comes from the adapter on one
+side and from a retrieval-grounded generator on the other, so question measures use follow-ups only.
+The RAG student may reply with a reflection instead of a question, whereas the adapter always asks,
+so the share of turns that are questions is reported but not scored (Table~\ref{tab:notscored}).
 
 \subsection{Lesson Bank}\label{sec:lessons}
 
-A teacher is simulated by a fixed script, so that differences between runs can be attributed to the
-language or the system rather than to what a participant happened to say. The bank holds 24 lessons:
-four subjects, three topics each, two subtopics per topic, each drawn from the portal's own topic
-catalogue. Each lesson is exactly three sentences, each a claim plus its reason, written the way a
-student teaching the subtopic might speak, with no questions and no address to the learner
-(Appendix~\ref{app:lessons}). Operators are spelled out in words because every sentence is
-machine-translated into 22 scripts. A reader who knows the material reviewed and accepted every
-script before any run, and the harness refuses to run an unreviewed script.
-
-Four scripts were carried over verbatim from an earlier single-lesson-per-subject pilot so that
-cells can be compared with it. One of them, on heaps, describes the root as the smallest element,
-which holds for a min-heap only, and uses the bank's only raw arithmetic (\texttt{2i+1},
-\texttt{2i+2}); it was kept unchanged rather than corrected to preserve that comparison.
+A teacher is simulated by a fixed script, so that differences between runs reflect the language or
+the system rather than what a participant happened to say. The bank holds 24 lessons (four subjects,
+three topics each, two subtopics per topic) drawn from the portal's own catalogue. Each lesson is three
+sentences, each a claim plus its reason, with operators spelled out in words because every sentence is
+machine-translated (Appendix~\ref{app:lessons}). A reader who knows the material reviewed every script
+before any run, and the harness refuses to run an unreviewed one.
 
 \subsection{Runs}\label{sec:runs}
 
 \begin{description}
-\item[Sweep A (English).] All 24 lessons, three repeats each, per system: 72 conversations, no
-translation and no judge. Variation between repeats comes from sampled decoding.
-\item[Sweep B (languages).] Eight lessons, two per subject and including the four carried-over
-scripts, in each of 22 languages, one repeat per system: 176 language-runs of three turns.
-\item[Model run (fine-tuned side only).] All five deployed base models on the six \texttt{os} and six
-\texttt{cp} lessons, three repeats each, in English, to separate model behaviour from subject.
-\item[Teacher-history experiment (RAG side only).] Sweep A repeated with one pre-registered change
-(Section~\ref{sec:prereg}).
+\item[Sweep A (English).] All 24 lessons, three repeats each, per system (72 conversations), without
+translation or judge.
+\item[Sweep B (languages).] Eight lessons, two per subject, in each of 22 languages, one repeat per
+system: 176 language-runs of three turns.
+\item[Model run.] All five deployed fine-tuned models on the \texttt{os} and \texttt{cp} lessons in
+English (Appendix~\ref{app:models}).
+\item[Pre-registered analyses.] The teacher-history experiment (Sweep A with one change) and the
+retrieval-overlap analysis (retrieval only, no generation), both on the RAG side.
 \end{description}
 
 In a Sweep B turn the English teacher sentence is first translated into the target language (the
@@ -541,19 +450,15 @@ In a Sweep B turn the English teacher sentence is first translated into the targ
 (\emph{outbound}). Each turn therefore makes three crossings, and 525 turns make 1,575. The opening
 question's translation is checked too but not counted in that total.
 
-Both systems used top-$p$ 0.9 with sampling and no fixed seed. The RAG learner (GPT-4o, pinned)
-used temperature 0.25 as the test-bed specification required; the fine-tuned runs used 0.2
-(Section~\ref{sec:deviations}). Every results file records its backend, model, lesson ids and bank
-version, languages, judge model, decoding parameters, and timestamps.
+Both systems sampled with top-$p$ 0.9. The RAG learner (GPT-4o, pinned) used temperature 0.25 as
+specified and the fine-tuned runs 0.2 (Section~\ref{sec:deviations}). Every results file records its
+full configuration.
 
 \subsection{Measures}\label{sec:measures}
 
 \paragraph{Mechanical checks.} These need no judgement: whether a seed or outbound translation came
-back identical to its input (untranslated), whether any non-Latin character reached the English side
-(a script leak, checked over every Indic script the service returns, including Meetei Mayek), how
-many retries a crossing needed, and whether a schema payload was rejected. The benchmark harness
-makes up to three attempts per crossing with backoff and records the cell as failed only if every
-attempt fails.
+back unchanged (untranslated), whether any Indian-language character reached the English side (a
+script leak), how many retries a crossing needed, and whether a schema payload was rejected.
 
 \paragraph{Judged quality.} An independent model, \texttt{openai/gpt-5.6-luna} accessed through
 OpenRouter \cite{gptluna}, scores two things on a 1--5 scale with the prompts in
@@ -576,26 +481,23 @@ uniquely with the teacher's latest sentence, and \emph{looks backward} if an ear
 more.
 
 \paragraph{Question depth.} Each question sentence is sent alone, with no system name, subject or
-teacher text and with all arms shuffled together, to the same judge model, which assigns one of
-Graesser and Person's 18 categories \cite{graesser1994}. Categories are grouped into levels in code,
-not by the judge: \emph{shallow} (verification, disjunctive, concept completion, feature
-specification, quantification), \emph{intermediate} (definition, example, comparison,
-interpretation), \emph{deep} (causal antecedent, causal consequence, goal orientation,
-instrumental/procedural, enablement, expectational, judgmental); assertions and requests are
-excluded. Identical question text is judged once. A random 60 questions are judged a second time to
-measure agreement.
+teacher text and with all arms shuffled together, to the same judge, which assigns one of Graesser and
+Person's 18 categories \cite{graesser1994}. Code, not the judge, groups the categories into shallow,
+intermediate and deep levels, as pre-registered (Appendix~\ref{app:prereg}). A random 60 questions are
+judged twice to measure agreement.
 
-\subsection{Scorecard}\label{sec:scorecard}
+\subsection{Behavioural and Translation Dimensions}\label{sec:scorecard}
 
-To summarise RQ3, six dimensions are each placed on a 0--100 scale and combined as a weighted mean
-(Table~\ref{tab:scorecard}): fluency, $(\bar{f}-1)/4\times100$ over paired turns; question depth,
-the share of questions rated deep; lexical variety, the normalised opener entropy; non-repetition,
-the share of English conversations without a repeated question; robustness, the share of the 22
-languages rated Ready; and reliability, the share of crossings with no retry, untranslated result,
-or leak. Only signals that both harnesses record and that the learner itself produces are scored.
-A dimension is awarded to a system only when the 95\% interval of the difference excludes zero; for
-reliability we use Fisher's exact test, and robustness is a tie unless the Ready counts differ.
-Because any weighting is a judgement, the composite is also reported under four alternatives.
+RQ3 is answered along six dimensions, each placed on a 0--100 scale and reported separately
+(Table~\ref{tab:dimensions}): fluency, $(\bar{f}-1)/4\times100$ over paired turns; question depth, the
+share of questions rated deep; lexical variety, the normalised opener entropy; non-repetition, the
+share of English conversations without a repeated question; robustness, the share of the 22 languages
+rated Ready; and reliability, the share of crossings with no retry, untranslated result or leak. Only
+signals that both harnesses record and that the learner itself produces are used. A dimension favours
+a system only when the 95\% interval of the difference excludes zero; for reliability we use Fisher's
+exact test, and robustness is a tie unless the Ready counts differ. We do not combine the dimensions
+into an overall score in the main text, because any weighting is necessarily normative; the
+pre-registered composite and its sensitivity to weighting are reported in Appendix~\ref{app:composite}.
 
 \subsection{Statistical Analysis}\label{sec:stats}
 
@@ -603,54 +505,49 @@ Fluency differences use turns paired by (lesson, language, turn) and a 5,000-dra
 over (lesson, language) \cite{efron1993}. Resampling lessons with replacement duplicates questions,
 which depresses entropy below its own point estimate, so the English measures instead draw half the
 lessons without replacement (1,000 draws) and centre each distribution on the full-sample estimate.
-Draws are paired across systems throughout, and composite intervals combine component draws by
-index while holding the two count-based components at their observed values. All analyses use one
-fixed random seed. The analysis scripts and raw results files are listed under Code and Data
-availability.
+Draws are paired across systems throughout. Agreement between the two systems' per-language means is
+summarised by Pearson and Spearman correlations. The retrieval-overlap analysis uses a 5,000-draw
+bootstrap that resamples lessons. All analyses use fixed random seeds. The analysis scripts and raw
+results files are listed under Code and Data availability.
 
 \subsection{Pre-Registration}\label{sec:prereg}
 
-Two analyses were written down, with UTC timestamps, before the data they judge existed
+Three protocols were written down, with UTC timestamps, before the data they judge existed
 \cite{nosek2018}; the full text is in Appendix~\ref{app:prereg}.
 
 \begin{enumerate}
-\item \textbf{Teacher-history experiment} (2026-09-14 18:31 UTC). The live RAG tool stores the
-teacher's messages but passes the student only its own earlier replies. The experiment adds the
-teacher's earlier sentences in the lesson to the student prompt and changes nothing else, reusing
-each lesson's opening question from the committed run. Primary metric: English conversations that
-repeat a question (baseline 23 of 72). Prediction: a fall toward the fine-tuned level of 0. Failure
-criterion: the 95\% interval of the change includes zero.
-\item \textbf{Question-depth instrument} (2026-09-14 18:35 UTC). The category grouping above, a
-weight of 20 in the scorecard with the other five dimensions scaled by 0.8, and a rule that depth is
-reported but not scored if re-judge agreement on depth level falls below 70\%.
+\item \textbf{Teacher-history experiment} (2026-09-14 18:31 UTC): give the RAG student the teacher's
+earlier sentences and change nothing else; predicted to reduce conversations that repeat a question
+from 23 of 72 toward the fine-tuned level of 0.
+\item \textbf{Question-depth instrument} (2026-09-14 18:35 UTC): the category grouping, and a rule that
+depth is not used if re-judge agreement on depth level falls below 70\%.
+\item \textbf{Retrieval-overlap analysis} (2026-09-19 05:32 UTC): predicted that pairs of turns that
+retrieve overlapping passages repeat a question more often than pairs that do not.
 \end{enumerate}
+
+For both predictions, the failure criterion is that the 95\% interval of the predicted effect
+includes zero.
 
 \subsection{Deviations and Revisions}\label{sec:deviations}
 
-Four departures from plan are recorded rather than corrected.
-(i)~The fine-tuned side's runs used temperature 0.2 instead of the specified 0.25; re-running
-needs the GPU host. A lower temperature should, if anything, favour repetition on that side, which
-makes its non-repetition result conservative.
-(ii)~The two harnesses first used different fluency prompts (``one question \ldots\ a learner would
-actually ask'' against ``one piece of text \ldots\ a learner would actually write''). The second is
-correct for a learner that may reply with a reflection, so the fine-tuned side's 525 fluency scores
-were re-judged with it and nothing was regenerated. 120 of 525 scores moved, almost all by one
-point, and no language changed tier. The original scores are retained in the results files.
-(iii)~The scorecard changed twice, and both earlier versions are reported
-(Table~\ref{tab:weights}). A single variety dimension of weight 30, fixed before any transcripts were
-read, rewarded a learner for varying the first six words of questions it then repeated verbatim; it
-was split evenly into lexical variety and non-repetition. Question depth was then added under the
-pre-registration above.
-(iv)~On the fine-tuned side, service rate limiting during Sweep B returned text unchanged for three
-languages; the harness stopped rather than recording clean-looking rows, and 19 cells were re-run.
+Four departures from plan are recorded rather than corrected. (i)~The fine-tuned runs used
+temperature 0.2 instead of 0.25; a lower temperature should, if anything, favour repetition on that
+side, which makes its non-repetition result conservative. (ii)~The two harnesses first used different
+fluency prompts; the fine-tuned side's 525 fluency scores were re-judged with the shared prompt
+(Appendix~\ref{app:prompts}) without regenerating anything, and 120 scores moved, almost all by one
+point, with no language changing tier. (iii)~The composite changed twice; both earlier versions are in
+Appendix~\ref{app:composite}. (iv)~Rate limiting during the fine-tuned side's Sweep B returned text
+unchanged for three languages; the harness stopped rather than record clean-looking rows, and 19 cells
+were re-run.
 
 \subsection{Cost}\label{sec:cost}
 
 Costs were measured from the provider's credit balance before and after each run, not estimated.
-The RAG side's benchmark runs cost US\$3.44 in OpenRouter calls (generation and judge) and
-INR~430.67 (about US\$5.15) in translation, about US\$8.59 in total. On the fine-tuned side,
-where generation runs on local GPUs, 1,060 judge calls cost about US\$0.30. The teacher-history
-experiment cost US\$0.89.
+The RAG side's benchmark runs cost US\$3.44 in OpenRouter calls (generation and judge) and INR~430.67
+(about US\$5.15) in translation, about US\$8.59 in total. On the fine-tuned side, where generation runs
+on local GPUs, 1,060 judge calls cost about US\$0.30. The teacher-history experiment cost US\$0.89, and
+the retrieval-overlap analysis made 144 embedding calls (two identical runs) at a cost of a fraction
+of a cent.
 
 \subsection{Use of AI Tools}\label{sec:ai-use}
 
@@ -660,32 +557,33 @@ described above: the learners, the judge, and the translation and speech service
 
 \paragraph{Software.} Claude Opus 5 and Claude Sonnet 5 (Anthropic) assisted in writing the
 translation and transcription modules, the benchmark harnesses, and the analysis and reporting
-scripts. Both were used through the Claude Code command-line tool between 18 August and 15 September
+scripts. Both were used through the Claude Code command-line tool between 18 August and 19 September
 2026. The authors directed each change, reviewed it, and ran the test suites. Commits made with AI
 assistance are marked as co-authored in the project's version history.
 
 \paragraph{Manuscript.} Claude Opus 5 (model identifier \texttt{claude-opus-5}), used through Claude
-Code between 16 and 18 September 2026, wrote the first draft of Sections~\ref{sec:intro}--\ref{sec:results},
+Code between 16 and 19 September 2026, wrote the first draft of Sections~\ref{sec:intro}--\ref{sec:behaviour},
 \ref{sec:discussion}, \ref{sec:lim-system}, \ref{sec:lim-benchmark} and~\ref{sec:conclusion} and of
-the appendices. It worked from the project's own results files, documentation and code, following an
-outline agreed with the authors. It also generated the long tables and the figures by writing scripts
-that read the committed results files; the figures are data plots, and no generative image model was
-used. It proposed references, whose bibliographic details were checked against publisher or indexing
-records. The authors' instructions to the tool are available from the corresponding author on
-request. The authors reviewed, revised and verified the text, numbers and references, and take full
-responsibility for the content. No AI tool is listed as an author.
+the appendices, and revised them after an internal review. It worked from the project's own results
+files, documentation and code, following an outline agreed with the authors. It also generated the
+long tables and the figures by writing scripts that read the committed results files; the figures are
+data plots, and no generative image model was used. It proposed references, whose bibliographic
+details were checked against publisher or indexing records. The authors' instructions to the tool are
+available from the corresponding author on request. The authors reviewed, revised and verified the
+text, numbers and references, and take full responsibility for the content. No AI tool is listed as
+an author.
 \todo{Before submission, confirm that every statement in this subsection is true, and add how the
 user-study sections were written.}
 
 %% =======================================================================================
-\section{Benchmark Results}\label{sec:results}
+\section{Results: The Multilingual Boundary}\label{sec:results}
 %% =======================================================================================
 
-\subsection{The Boundary Holds (RQ1)}\label{sec:res-boundary}
+\subsection{Reliability of the Boundary (RQ1)}\label{sec:res-boundary}
 
 Table~\ref{tab:mechanical} gives the mechanical checks. Across 525 judged turns per system, no
-participant text and no text shown back was left untranslated, and no Indic script reached the
-English zone. Four of the fine-tuned side's 1,575 crossings needed a retry, all rate-limit
+participant text and no text shown back was left untranslated, and no Indian-language script reached
+the English zone. Four of the fine-tuned side's 1,575 crossings needed a retry, all rate-limit
 responses from the translation service during that run; the RAG side needed none. The difference is
 not significant (Fisher's exact $p=0.12$) and does not involve the learner.
 
@@ -706,23 +604,21 @@ Schema payloads rejected & 1 & 1 & 1,575 crossings \\
 \end{tabular*}
 \end{table}
 
-The one run that failed on both systems was the same cell: one sentence of the dynamic memory
-allocation lesson, translated into Punjabi, returned the service's API schema on every attempt on
-both systems, as it had in earlier runs. The guard of
-Section~\ref{sec:impl} rejected it, so it reached neither learner; Punjabi's remaining lessons ran
-normally. The second defect is upstream and unfixed: Sindhi is returned in Devanagari, whereas the
-Perso-Arabic script is dominant for written Sindhi, and the service does not accept an output-script
-parameter for this model. Sindhi scored fidelity between 1.0 and 1.5 on all four fine-tuned models
-and on the RAG learner. We recommend removing it from the language picker.
+Two defects surfaced. One sentence of the dynamic-memory lesson, translated into Punjabi, returned the
+service's API schema on every attempt on both systems; the guard of Section~\ref{sec:impl} rejected
+it, so it reached neither learner, and Punjabi's other lessons ran normally. The second defect is
+upstream and unfixed: Sindhi is returned in Devanagari, whereas Perso-Arabic is the dominant script
+for written Sindhi, and the service does not accept an output-script parameter for this model. Sindhi
+scored fidelity between 1.0 and 1.5 on all four fine-tuned models and on the RAG learner.
 
-\subsection{Language, Not Subject or System, Governs Quality (RQ2)}\label{sec:res-languages}
+\subsection{Language Dominates Subject and System (RQ2)}\label{sec:res-languages}
 
 Table~\ref{tab:languages} gives fidelity and fluency per language for both systems, and
 Appendix~\ref{app:matrices} breaks each down by subject. Both systems place 15 languages in the Ready
 tier, 6 in Review and 1 in Blocked, and \textbf{they agree on the tier of every one of the 22
-languages}. The Review languages (Bodo, Kashmiri, Konkani, Manipuri, Santali and Sanskrit) keep
-high fidelity but fall short on fluency; Sanskrit is the weakest on both, and Sindhi is Blocked on
-both.
+languages}. The Review languages (Bodo, Kashmiri, Konkani, Manipuri, Santali and Sanskrit) keep high
+fidelity but fall short on fluency; Sanskrit is the weakest of them on both systems, and Sindhi is
+Blocked on both.
 
 \begin{table}[p]
 \caption{Fidelity and fluency by language, 1--5, from one judge and one prompt for both systems.
@@ -760,6 +656,29 @@ Sindhi & \texttt{sd} & 1.33 & 1.00 & $-$0.33 & 2.12 & 1.88 & $-$0.25 & Blocked \
 \end{tabular*}
 \end{table}
 
+Agreement on fidelity is expected by construction, since fidelity grades the translation of the same
+teacher sentence on both sides. The informative measure is fluency, which grades each learner's own
+message after translation. Here too the two systems agree closely (Figure~\ref{fig:agreement}): across
+the 22 languages, the correlation between their mean fluency is $r = 0.98$ (Pearson) and $\rho = 0.87$
+(Spearman), and $\rho = 0.86$ without Sindhi. Every language falls on the same side of the 4.0 Review
+threshold in both systems (Dogri sits exactly on it for the fine-tuned learners), and the six Review
+languages plus Sindhi are the seven lowest on both.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fig7-language-agreement.pdf}
+\caption{Mean judged fluency per language, fine-tuned learners against the RAG learner. Points near
+the diagonal are languages the two architectures handle equally well.}\label{fig:agreement}
+\end{figure}
+
+Language accounts for far more of the variation than subject (Table~\ref{tab:subjects}). Mean fluency
+spans 0.27 across subjects on the fine-tuned side and 0.12 on the RAG side, but 2.67 and 3.07 across
+languages. The two learners share nothing but the translation layer, so this pattern is consistent
+with the translation layer being a dominant determinant of multilingual quality in this
+architecture, and with technical vocabulary not being the binding constraint. It does not isolate
+the translation layer's contribution: observed fluency combines inbound translation, the learner's
+English output, outbound translation and the judge.
+
 \begin{table}[t]
 \caption{Quality by subject, 1--5. Subject also selects the fine-tuned model.}\label{tab:subjects}
 \footnotesize
@@ -779,82 +698,23 @@ Range across subjects & & 0.08 & 0.09 & 0.27 & 0.12 \\
 \end{tabular*}
 \end{table}
 
-Language accounts for far more of the variation than subject (Table~\ref{tab:subjects}). Mean fluency
-spans 0.27 across subjects on the fine-tuned side and 0.12 on the RAG side, but 2.67 and 3.07 across
-languages (Sindhi to the highest-scoring language). Subject-level fidelity differs by less than 0.1
-on either side. Tier agreement on fidelity is expected by construction, since fidelity grades the
-translation of the same teacher sentence on both sides. The informative part is fluency, which grades
-each learner's own message: in all 22 languages the two systems' mean fluency falls on the same side
-of the 4.0 threshold (Dogri sits exactly on it for the fine-tuned side), and the six Review
-languages plus Sindhi are the seven lowest in fluency on both. The two learners share
-nothing but the translation layer, so we read this as evidence that multilingual quality in this
-design is set by the translation service rather than by which learner is teaching, and that technical
-vocabulary is not the binding constraint. Figure~\ref{fig:heatmap} shows the same pattern cell by cell: rows change colour, columns do not.
+Two properties of the measurement qualify these numbers. The translation service is not
+deterministic: 116 of the 525 teacher sentences were translated differently in the two systems'
+runs, concentrated in low-resource languages (Santali 14 of 24, Kashmiri 12 of 24). And the judge is
+noisy at the scale of the differences we report: on the 409 turns where both systems received
+identical translated sentences, it gave identical fidelity scores 84\% of the time, its mean absolute
+disagreement with itself on the same sentence was 0.18, and the net fidelity gap was $-0.02$, which we
+take as the noise floor.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig3-heatmap-fluency.pdf}
-\caption{Judged fluency by language and subject for both systems (1--5; darker is more fluent).
-Rows are ordered by mean fluency across both systems. Subject also selects the fine-tuned
-model.}\label{fig:heatmap}
-\end{figure}
-
-Two properties of the translation service qualify these numbers. It is not deterministic: 116 of
-the 525 teacher sentences were translated differently in the two systems' runs, concentrated in
-low-resource languages (Santali 14 of 24, Kashmiri 12 of 24). And the judge is noisy at the scale of
-the differences we report: on the 409 turns where both systems received identical translated
-sentences, it gave identical fidelity scores 84\% of the time, and its mean absolute disagreement
-with itself on the same sentence was 0.18. The net fidelity gap on those identical strings was
-$-0.02$, which we take as the noise floor.
-
-\subsection{Fine-Tuned versus RAG Learners (RQ3)}\label{sec:res-compare}
-
-Table~\ref{tab:scorecard} gives the scorecard. With all six dimensions the RAG learner scores 81.4
-[78.8, 83.9] against 75.0 [72.6, 77.3] for the fine-tuned learner, a gap of $+6.5$ [$+3.6$, $+9.6$].
-\textbf{That lead rests on question depth.} Without it, the five remaining dimensions give 79.3
-against 78.6, a gap of $+0.7$ [$-2.2$, $+3.3$], which is a tie; and, as Section~\ref{sec:res-depth}
-shows, the depth measure largely reflects how the RAG learner phrases its questions. The RAG learner
-leads on fluency and lexical variety; the fine-tuned learner leads on non-repetition; robustness and
-reliability are tied.
-
-\begin{table}[t]
-\caption{Six-dimension scorecard, each dimension on 0--100. Intervals are 95\% bootstrap intervals
-of the difference; a dimension goes to a system only if its interval excludes zero.
-$^\dagger$Read with Section~\ref{sec:res-depth}.}\label{tab:scorecard}
-\footnotesize
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrrll}
-\toprule
-Dimension & Weight & FT & RAG & Difference [95\% CI] & Goes to \\
-\midrule
-Fluency & 36 & 78.9 & 82.5 & $+0.14$ on 1--5 [$+0.08$, $+0.21$] & RAG \\
-Question depth$^\dagger$ & 20 & 60.2 & 89.9 & $+30$ pts deep [$+18$, $+41$] & RAG \\
-Lexical variety & 12 & 52.9 & 78.5 & $+0.26$ entropy [$+0.14$, $+0.37$] & RAG \\
-Non-repetition & 12 & 100.0 & 68.1 & 0 vs 23 of 72 repeat [$+19$, $+44$ pts] & FT \\
-Robustness & 12 & 68.2 & 68.2 & 15 vs 15 of 22 Ready & Tie \\
-Reliability & 8 & 99.7 & 100.0 & 4 vs 0 of 1,575, $p=0.12$ & Tie \\
-\midrule
-Composite (six) & 100 & 75.0 & 81.4 & $+6.5$ [$+3.6$, $+9.6$] & RAG \\
-Composite without depth & 100 & 78.6 & 79.3 & $+0.7$ [$-2.2$, $+3.3$] & Tie \\
-\botrule
-\end{tabular*}
-\end{table}
-
-\subsubsection{Fluency}
+\subsection{Fluency of the Two Learners after Translation}\label{sec:res-fluency}
 
 The RAG learner's messages read slightly more fluently after translation: $+0.14$ on the 1--5 scale
-over 524 paired turns, 95\% CI [$+0.08$, $+0.21$]. The effect is smaller than the judge's own
-disagreement with itself, but it is consistent: the RAG message scored higher on 147 turns and the
-fine-tuned one on 82 (295 level), and RAG was higher in 19 of 22 languages. It survives every cut in
-Table~\ref{tab:fluency}, including turns on which the translation service returned identical input
-to both systems and pairs matched for length. Computer Programming, where the fine-tuned side runs
+over 524 paired turns, 95\% CI [$+0.08$, $+0.21$]. The effect is smaller than the judge's disagreement
+with itself, but it is consistent: the RAG message scored higher on 147 turns and the fine-tuned one
+on 82 (295 level), and RAG was higher in 19 of 22 languages. It survives every cut in
+Table~\ref{tab:fluency}, including turns on which the translation service returned identical input to
+both systems and pairs matched for length. Computer Programming, where the fine-tuned side runs
 Qwen3, is the exception with no difference (Figure~\ref{fig:forest}).
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.9\textwidth]{figures/fig4-fluency-forest.pdf}
-\caption{Fluency difference, RAG minus fine-tuned, with 95\% cluster-bootstrap intervals, for the
-cuts in Table~\ref{tab:fluency}.}\label{fig:forest}
-\end{figure}
 
 \begin{table}[t]
 \caption{Fluency, RAG minus fine-tuned, with 95\% cluster-bootstrap intervals over (lesson,
@@ -876,25 +736,51 @@ Operating Systems & 132 & 4.13 & 4.35 & $+0.22$ & [$+0.11$, $+0.33$] \\
 \end{tabular*}
 \end{table}
 
-\subsubsection{Repetition and Responsiveness}
-
-The clearest behavioural difference needs no judge. The fine-tuned learner never asked the same
-question twice in a conversation; the RAG learner did so in 23 of 72 English conversations and in 55
-of 175 language conversations, against 5 of 175 for the fine-tuned learner (Table~\ref{tab:repeats}).
-The overlap proxy points the same way: 61\% of the fine-tuned learner's questions relate most closely
-to the teacher's latest sentence, against 44\% for RAG, and 30\% of RAG's questions look back to an
-earlier sentence, against 14\%. Word overlap is a crude proxy; the repeat count is not.
-Table~\ref{tab:transcripts} shows one lesson verbatim. For LbT this matters directly: a learner that
-re-asks a question the teacher has moved past gives the teacher nothing new to explain.
-Figure~\ref{fig:repeats} breaks the English repeats down by subject.
-
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.8\textwidth]{figures/fig5-repeats.pdf}
-\caption{English conversations in which the learner asked the same question twice, of 18 per
-subject, for the fine-tuned learner, the RAG learner, and the RAG learner given the teacher's
-earlier sentences (Section~\ref{sec:res-experiment}).}\label{fig:repeats}
+\includegraphics[width=0.9\textwidth]{figures/fig4-fluency-forest.pdf}
+\caption{Fluency difference, RAG minus fine-tuned, with 95\% cluster-bootstrap intervals, for the
+cuts in Table~\ref{tab:fluency}.}\label{fig:forest}
 \end{figure}
+
+%% =======================================================================================
+\section{Results: Learner Behaviour}\label{sec:behaviour}
+%% =======================================================================================
+
+This section compares the two learner architectures on the English sweep and, where noted, the
+language sweep. Table~\ref{tab:dimensions} summarises the six dimensions. The clearest difference, and
+the one that needs no judge, is repetition.
+
+\begin{table}[t]
+\caption{The six dimensions, each on 0--100 and reported separately. Intervals are 95\% bootstrap
+intervals of the difference; a dimension favours a system only if its interval excludes zero. The
+composite that combines them is in Appendix~\ref{app:composite}. $^\dagger$Read with
+Section~\ref{sec:res-depth}.}\label{tab:dimensions}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrll}
+\toprule
+Dimension & FT & RAG & Difference [95\% CI] & Favours \\
+\midrule
+Non-repetition & 100.0 & 68.1 & 0 vs 23 of 72 repeat [$+19$, $+44$ pts] & FT \\
+Fluency & 78.9 & 82.5 & $+0.14$ on 1--5 [$+0.08$, $+0.21$] & RAG \\
+Lexical variety & 52.9 & 78.5 & $+0.26$ entropy [$+0.14$, $+0.37$] & RAG \\
+Question depth$^\dagger$ & 60.2 & 89.9 & $+30$ pts deep [$+18$, $+41$] & RAG \\
+Robustness & 68.2 & 68.2 & 15 vs 15 of 22 Ready & Tie \\
+Reliability & 99.7 & 100.0 & 4 vs 0 of 1,575, $p=0.12$ & Tie \\
+\botrule
+\end{tabular*}
+\end{table}
+
+\subsection{Repetition and Responsiveness}\label{sec:res-repeats}
+
+The fine-tuned learners never asked the same question twice in a conversation. The RAG learner did so
+in 23 of 72 English conversations and in 55 of 175 language conversations, against 5 of 175 for the
+fine-tuned learners (Table~\ref{tab:repeats}, Figure~\ref{fig:repeats}). A word-overlap proxy points
+the same way: 61\% of the fine-tuned learners' questions relate most closely to the teacher's latest
+sentence, against 44\% for RAG, and 30\% of RAG's questions look back to an earlier sentence, against
+14\%. The proxy is crude; the repeat count is not. Table~\ref{tab:transcripts} shows one lesson
+verbatim. For LbT this matters directly: a learner that re-asks a question the teacher has moved past
+gives the teacher nothing new to explain.
 
 \begin{table}[t]
 \caption{Repetition and responsiveness. Intervals are for RAG minus fine-tuned.}\label{tab:repeats}
@@ -913,6 +799,14 @@ Questions looking back to an earlier sentence & 14\% & 30\% & [$+6$, $+28$] \\
 \end{tabular*}
 \end{table}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig5-repeats.pdf}
+\caption{English conversations in which the learner asked the same question twice, of 18 per
+subject, for the fine-tuned learner, the RAG learner, and the RAG learner given the teacher's
+earlier sentences (the teacher-history experiment, Section~\ref{sec:res-explain}).}\label{fig:repeats}
+\end{figure}
+
 \begin{table}[t]
 \caption{One lesson as each learner asked it (\texttt{os/threads-scheduling/cpu-scheduling}).
 Stock lead-ins of the fine-tuned learner are in italics. Bold marks a question asked word for word
@@ -929,22 +823,70 @@ Turn & Teacher & Fine-tuned (Granite 3.3 8B) & RAG (GPT-4o) \\
 \end{tabular*}
 \end{table}
 
-\subsubsection{Lexical Variety}
+\subsection{Two Pre-Registered Explanations, Both Rejected}\label{sec:res-explain}
+
+\paragraph{The learner cannot see what the teacher said earlier.} The live RAG tool passes the
+student only its own earlier replies, not the teacher's earlier sentences. Adding those sentences to
+the prompt did not stop the repeats (Appendix~\ref{app:experiment}): 24 of 72 conversations repeated a
+question, against 23 of 72 before, a change of $+1.4$ points, 95\% CI [$-10.8$, $+14.2$]. By the
+pre-registered criterion the prediction failed, and no secondary measure moved. Subject by subject the
+counts shifted in both directions (\texttt{cp} 8$\rightarrow$12, \texttt{oop\_java} 6$\rightarrow$4,
+\texttt{os} 5$\rightarrow$4, \texttt{dsa} unchanged at 4), consistent with noise.
+\paragraph{The learner retrieves the same passages again.} The student prompt tells the RAG learner to
+ask about any gap between the teacher and the retrieved passages, so two turns that retrieve the same
+passages might produce the same question. They do not (Table~\ref{tab:retrieval}). No two turns of any
+lesson retrieved the same four passages; 57 of the 72 turn pairs shared none. Pairs that shared a
+passage repeated a question \emph{less} often than pairs that shared none (5.6\% against 15.8\%, a
+difference of $-10.2$ points, 95\% CI [$-18.3$, $-0.8$]), and 54 of the 59 repeated questions came
+between turns that retrieved entirely different passages. The pre-registered prediction failed. The
+interval lies just below zero and only 15 pairs shared any passage, so we read this as no support for
+the hypothesis, not as evidence that shared passages prevent repeats. (Retrieval was deterministic,
+and the analysis reproduces the repeat counts above.)
+
+\begin{table}[t]
+\caption{Retrieval-overlap analysis (pre-registered). A unit is a lesson and a pair of its turns;
+the repeat rate is the share of that lesson's conversations in which the later question repeats the
+earlier one. Intervals resample lessons.}\label{tab:retrieval}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrrl}
+\toprule
+& \multicolumn{2}{c}{Repeat rate} & & \\
+\cmidrule(lr){2-3}
+Arm & Shared passage & None shared & Difference & 95\% CI \\
+\midrule
+Both arms (primary) & 5.6\% & 15.8\% & $-10.2$ pts & [$-18.3$, $-0.8$] \\
+RAG (committed run) & 2.2\% & 16.4\% & $-14.2$ pts & [$-22.6$, $-5.1$] \\
+RAG + teacher history & 8.9\% & 15.2\% & $-6.3$ pts & [$-19.6$, $+9.0$] \\
+\midrule
+\multicolumn{5}{l}{Units: 15 share at least one of four passages, 57 share none; no unit retrieves identical sets.} \\
+\multicolumn{5}{l}{Rank correlation of overlap with repeat rate (both arms): $-0.25$ [$-0.47$, $-0.00$].} \\
+\botrule
+\end{tabular*}
+\end{table}
+
+With both explanations rejected, the repeats most likely arise on the generation side. Candidates
+include the question template that every RAG question follows (``Could you explain how \ldots?'', see
+Section~\ref{sec:res-depth}), the prompt's instruction to assume the explanation was sufficient, and
+how the learner uses its memory of its own earlier replies. Testing them requires new generations
+with a changed prompt.
+
+\subsection{Lexical Variety}\label{sec:res-lexical}
 
 The fine-tuned learners lean on stock lead-ins. The most common six-word opening begins 83\% of
 Qwen3's questions on \texttt{cp} (``that makes sense but i'm still\ldots''), 37\% of Gemma~2's,
 26\% of Mistral's and 9\% of Granite's; for the RAG learner the corresponding shares are 15--24\%.
 Rarefied to 169 questions per system, normalised opener entropy is 0.53 for the fine-tuned learners
-and 0.78 for RAG ($+0.26$ [$+0.14$, $+0.37$]). This measure understates RAG's own formula: RAG's
+and 0.78 for RAG ($+0.26$ [$+0.14$, $+0.37$]). The measure understates RAG's own formula: its
 characteristic opening, ``Could you explain how'', is only four words long, so the six-word opener
-still varies.
+still varies. A run of all five fine-tuned models on the same lessons (Appendix~\ref{app:models})
+shows that the stock lead-ins depend on the subject as well as the model.
 
-\subsubsection{Question Depth}\label{sec:res-depth}
+\subsection{Question Depth}\label{sec:res-depth}
 
 The blind judge rated 90\% of the RAG learner's questions deep, against 60\% for the fine-tuned
-learner (Table~\ref{tab:depth}). The instrument is consistent: on 60 re-judged questions it assigned
-the same depth level 97\% of the time and the same category 93\%, well above the pre-registered 70\%
-floor, so depth is scored.
+learners (Table~\ref{tab:depth}, Figure~\ref{fig:depth}). The instrument is consistent: on 60
+re-judged questions it assigned the same depth level 97\% of the time and the same category 93\%,
+well above the pre-registered 70\% floor.
 
 \begin{table}[t]
 \caption{Question depth by arm, from a judge blind to system, subject and lesson.}\label{tab:depth}
@@ -964,113 +906,28 @@ Categories used, of 18 & 13 & 7 & 7 \\
 \end{tabular*}
 \end{table}
 
-We do not think this measures depth alone. \textbf{Every} RAG question is phrased as a request to
-explain or clarify, and Graesser and Person file ``how does X work?'' under instrumental/procedural,
-a deep category; 82\% of RAG's questions land in that one category, and RAG uses 7 of the 18
-categories against 13 for the fine-tuned learner. The judge sees only the question sentence, so it
-cannot tell whether the teacher had already answered it. Two checks cut the other way: among the
-fine-tuned learner's own questions, those phrased as a request to explain were only slightly more
-often deep (66\%) than the rest (59\%), and counting each repeated question once leaves RAG at 90\%.
-Neither check can settle RAG's case, because RAG never phrases a question any other way. Depth is the
-only dimension that changes the overall verdict, so we report the composite both with and without it
-and do not claim that the RAG learner asks deeper questions. A person rating a sample of questions
-with the lesson in view could separate RAG's template from what its questions ask.
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig6-depth.pdf}
 \caption{Question depth by arm, from a judge blind to system, subject and lesson.}\label{fig:depth}
 \end{figure}
 
-\subsubsection{Sensitivity to Weighting}
+We do not think this measures depth alone. \textbf{Every} RAG question is phrased as a request to
+explain or clarify, and Graesser and Person file ``how does X work?'' under instrumental/procedural,
+a deep category; 82\% of RAG's questions land in that one category, and RAG uses 7 of the 18
+categories against 13 for the fine-tuned learners. The judge sees only the question sentence, so it
+cannot tell whether the teacher had already answered it. Two checks cut the other way: among the
+fine-tuned learners' own questions, those phrased as a request to explain were only slightly more
+often deep (66\%) than the rest (59\%), and counting each repeated question once leaves RAG at 90\%.
+Neither check can settle RAG's case, because RAG never phrases a question any other way. We therefore
+do not claim that the RAG learner asks deeper questions. A person rating a sample of questions with
+the lesson in view could separate RAG's template from what its questions ask.
 
-Table~\ref{tab:weights} recomputes the composite under other weightings, including both superseded
-versions. RAG leads under every weighting that includes depth except one that prioritises
-conversation over translation, which is a tie; without depth the systems tie.
+\subsection{Recorded, Not Scored}\label{sec:res-notscored}
 
-\begin{table}[t]
-\caption{Composite under alternative weightings (fluency, depth, lexical variety, non-repetition,
-robustness, reliability).}\label{tab:weights}
-\footnotesize
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}llrrll}
-\toprule
-Weighting & Weights & FT & RAG & RAG$-$FT [95\% CI] & Leader \\
-\midrule
-This paper & 36/20/12/12/12/8 & 75.0 & 81.4 & $+6.5$ [$+3.6$, $+9.6$] & RAG \\
-Equal & 16/20/16/16/16/16 & 76.0 & 81.5 & $+5.5$ [$+2.1$, $+9.1$] & RAG \\
-Multilingual first & 48/20/8/8/12/4 & 74.3 & 81.5 & $+7.2$ [$+4.6$, $+10.0$] & RAG \\
-Conversation first & 20/20/8/32/12/8 & 80.2 & 78.7 & $-1.5$ [$-6.6$, $+3.4$] & Tie \\
-Without depth (revision 1) & 45/---/15/15/15/10 & 78.6 & 79.3 & $+0.7$ [$-2.2$, $+3.3$] & Tie \\
-Pre-declared (superseded) & 45/---/30$^{a}$/---/15/10 & 71.6 & 80.9 & $+9.3$ [$+5.9$, $+12.7$] & RAG \\
-\botrule
-\end{tabular*}
-\footnotesize{$^{a}$Single ``variety'' dimension measured by opener entropy alone.}
-\end{table}
-
-\subsubsection{Recorded, Not Scored}
-
-Table~\ref{tab:notscored} lists differences that follow from how each system was built or
-prompted. Scoring them would compare design choices rather than learners.
-
-\begin{table}[t]
-\caption{Differences recorded but not scored.}\label{tab:notscored}
-\footnotesize
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}p{0.34\textwidth}rrp{0.36\textwidth}}
-\toprule
-Observation & FT & RAG & Why not scored \\
-\midrule
-Follow-ups that are questions (English) & 100\% & 78\% & RAG prompt permits a reflection; adapter is trained to ask \\
-Language turns answered with a reflection & 0/525 & 21/525 & Same prompt difference \\
-Words per follow-up & 20.3 & 16.9 & Set by each system's instructions \\
-Distinct follow-up strings & 99\% & 78\% & A fixed lead-in with a new ending counts as distinct \\
-Runs flagged by the harness's opener check & 36/72 & 53/72 & RAG's reflections all begin alike \\
-\botrule
-\end{tabular*}
-\end{table}
-
-\subsection{A Pre-Registered Intervention That Failed}\label{sec:res-experiment}
-
-Because the live RAG tool never shows the student the teacher's earlier sentences, we predicted that
-supplying them would stop the repeats. It did not (Table~\ref{tab:experiment}): 24 of 72 conversations
-repeated a question, against 23 of 72 before, a change of $+1.4$ points with 95\% CI [$-10.8$,
-$+14.2$]. By the pre-registered criterion the prediction failed, and no secondary measure moved.
-Subject by subject the counts shifted in both directions (\texttt{cp} 8$\rightarrow$12,
-\texttt{oop\_java} 6$\rightarrow$4, \texttt{os} 5$\rightarrow$4, \texttt{dsa} unchanged at 4), consistent
-with noise. An untested alternative remains: the student prompt tells the model to ask about any gap
-between the teacher and the retrieved passages, so if the same passages are retrieved on every turn of
-a lesson, the same gap question may return. Logging retrieved passage identifiers per turn would test
-this without generating new questions.
-
-\begin{table}[t]
-\caption{Teacher-history experiment, paired by lesson (committed RAG run vs.\ the new arm).}\label{tab:experiment}
-\footnotesize
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrrl}
-\toprule
-Measure & RAG & + history & Change & 95\% CI \\
-\midrule
-Conversations repeating a question (primary) & 23/72 & 24/72 & $+1.4$ pts & [$-10.8$, $+14.2$] \\
-Looks back to an earlier sentence & 30\% & 31\% & $+1.3$ pts & [$-9.7$, $+12.7$] \\
-Answers the current sentence & 44\% & 41\% & $-3.4$ pts & [$-12.2$, $+4.4$] \\
-Follow-ups that are questions & 78\% & 82\% & $+3.7$ pts & [$-2.7$, $+11.2$] \\
-Questions rated deep & 90\% & 92\% & $+1.6$ pts & [$-2.0$, $+5.5$] \\
-Lexical variety (entropy, rarefied to 169) & 0.78 & 0.80 & $+0.011$ & [$-0.028$, $+0.056$] \\
-\botrule
-\end{tabular*}
-\end{table}
-
-\subsection{Model Behaviour on the Fine-Tuned Side}\label{sec:res-models}
-
-Running all five deployed models on
-the same \texttt{os} and \texttt{cp} lessons separates model from subject. Qwen~2.5 7B was the only
-model stable across both subjects: the share of follow-ups beginning with its most common opening was
-33\% and 30\%, its mean Bloom level 1.00 and 0.98, and it reached the Apply level 17 and 14 times
-against 0--9 for the others, while also generating fastest (2.7\,s per generation). Qwen3 8B collapsed
-to four distinct openings on \texttt{cp}, beginning 85\% of follow-ups with the same phrase, against
-22\% on \texttt{os}; the \texttt{cp} figure reproduced in an independent run a day apart (83\%). The
-\texttt{cp} lessons reduced opener variety for every model, so Qwen3 is the extreme of a general
-effect. Granite 3.3 8B on \texttt{os}, run twice a day apart, gave 9\% both times, which bounds
-run-to-run noise. No subject currently routes to Qwen~2.5.
-
+Some differences follow from how each system was built or prompted, and scoring them would compare
+design choices rather than learners: for example, 100\% of the fine-tuned learners' follow-ups are
+questions against 78\% for RAG, whose prompt permits a reflection (Appendix~\ref{app:notscored}).
 %% =======================================================================================
 \section{User Study: Methodology}\label{sec:study-method}
 %% =======================================================================================
@@ -1101,66 +958,70 @@ run-to-run noise. No subject currently routes to Qwen~2.5.
 \section{Discussion}\label{sec:discussion}
 %% =======================================================================================
 
-\subsection{Multilingual Quality Comes from the Translation Layer}
+\subsection{Language Is a Dominant Determinant of Multilingual Quality}
 
-The clearest result is that the two systems agree. They share only the translation module, yet
-they place every one of the 22 languages in the same tier, and the fluency of their messages ranks
-the languages similarly: the same seven languages score lowest on both. Language explains an order of magnitude more of the variation in
-fluency than subject does. For anyone extending a tutor in the same way, choosing and monitoring
-the translation service therefore matters more than choosing the learner. It also suggests a cheap
-way to screen a new language: route an existing English system through the boundary and read the
-tiers, before deciding whether a native multilingual learner is worth its cost.
+The two systems share only the translation module, yet they place all 22 languages in the same tier,
+their per-language fluency is closely correlated, and language explains an order of magnitude more of
+the variation than subject. This does not prove that the translation layer alone sets quality, since
+inbound translation, the learner and the judge all contribute to every score, but it suggests a
+practical priority: when extending a tutor this way, choosing and monitoring the translation service
+matters more than choosing the learner. It also offers a cheap screen for a new language: route an
+existing English system through the boundary and read the tiers before paying for a natively
+multilingual learner.
 
-The same result sets an upper bound on what edge translation can deliver. Six languages sit in the
-Review tier on both systems. Five of them keep fidelity above 4 but fall below 4 on fluency, and
-Sanskrit is low on both. These are the languages
-where a participant is most likely to read stilted questions, and where the judge is least
-trustworthy \cite{hada2024multilingual}. Sindhi fails outright, for a reason no application can fix.
-A deployment should offer the Ready languages by default, mark the Review languages as
-experimental, and not offer Sindhi.
+The same result bounds what edge translation delivers today. The six Review languages are where a
+participant is most likely to read stilted questions and where the judge is least trustworthy
+\cite{hada2024multilingual}, and Sindhi fails for a reason no application can fix. A deployment should
+offer the Ready languages by default, mark the Review languages as experimental, and not offer
+Sindhi.
 
-\subsection{What the Comparison Can and Cannot Claim}
+\subsection{An Architectural Comparison, Not an Ablation}
 
 Once language is held constant, the two learners differ in ways that follow their construction. The
 RAG learner, a far larger model, writes slightly more fluent messages and varies its openings more.
-The fine-tuned learners are trained to always ask and to follow the teacher's latest sentence, and
-they never repeat a question. Neither difference can be credited to retrieval or to fine-tuning as
-such: the RAG learner is GPT-4o, the fine-tuned learners are 7--9B-parameter models, and the prompts
-differ too. The composite lead that question depth gives RAG should be read the same way. A judge
-that sees only the question sentence rewards ``Could you explain how \ldots?'', and every RAG
-question takes that form. Without depth the systems tie. Of the dimensions that separate them, only
-repetition needs no judge, and it favours the fine-tuned learner.
+The fine-tuned learners, trained to always ask and to follow the teacher's latest sentence, never
+repeat a question. Neither difference can be credited to retrieval or to fine-tuning as such: the RAG
+learner is GPT-4o, the fine-tuned learners are 7--9B-parameter models, and the prompts differ. The
+two architectures do not rank on a single scale; they fail in different ways. The apparent depth
+advantage of the RAG learner should be read the same way, since a judge that sees only the question
+sentence rewards ``Could you explain how \ldots?'', and every RAG question takes that form.
 
-\subsection{Repetition Matters More Than It Appears}
+\subsection{Repetition Is the Failure That Matters}
 
 A repeated question is easy to dismiss as a stylistic flaw, but LbT depends on it not happening.
 Tutor learning comes from questions that push the tutor to build on what they have just said
 \cite{roscoe2007}. A learner that returns to a question the teacher has already moved past gives the
-teacher nothing new to explain, and one conversation in three did so with the RAG learner. Our
-pre-registered attempt to fix this by showing the learner the teacher's earlier sentences failed.
-The remaining hypothesis, that the same retrieved passages return on every turn and pull the learner
-back to the same gap, can be tested from logs alone, without generating new questions.
+teacher nothing new to explain, and one conversation in three did so with the RAG learner. Two
+natural explanations, missing teacher history and repeated retrieval, were each pre-registered and
+each rejected. That narrows the search to how the learner generates its questions, which is where
+the next experiment should look.
 
-\subsection{Designing for Quiet Failure}
+\subsection{A Boundary That Fails Open Must Fail Loudly}
 
-The translation module never interrupts a session: when translation fails, the original text passes
-through. This keeps sessions alive during outages, but it means a failure looks like success. Two
-of the defects we found would have been invisible without mechanical checks: an API that returned
-its own schema in place of a Punjabi translation, and a rate limit that returned text unchanged. A
-boundary that fails quietly needs checks that fail loudly. We recommend that deployments log every
-passthrough, that the checks in our benchmark harness (retries, schema rejection, script detection)
-also run on the live path, and that a passthrough and a judge failure in the same session be
-treated as one incident, since together they degrade both what the participant reads and how the
-session is evaluated.
+Passing the original text through on failure keeps sessions alive during outages, but a failure
+then looks like success. Two defects we found would have been invisible without mechanical checks: a
+schema fragment returned in place of a Punjabi translation, and a rate limit that returned text
+unchanged. The general principle is that a boundary that fails open must fail loudly. Deployments
+should log every passthrough, run the benchmark's checks (retries, schema rejection, script detection)
+on the live path, and treat a passthrough and a judge failure in the same session as one incident,
+since together they degrade both what the participant reads and how the session is evaluated.
+
+\subsection{What to Store}\label{sec:disc-storage}
+
+Storing only English keeps research data independent of language, which is why the boundary was
+designed that way. It also discards evidence. When a participant's explanation is mistranslated,
+the stored record cannot show whether the fault lay with the participant or with the translation,
+and native-language evaluators have nothing to inspect. Studies that use this design should consider
+storing the original language and text, the English translation and translation metadata alongside
+each other, with audio still discarded, subject to participant consent.
 
 \subsection{Implications for the Two Teach2Learn Systems}
 
-For the fine-tuned portal, the five-model run points to Qwen~2.5 7B, which no subject currently
-uses, as the most stable learner across subjects, and to the Computer Programming lessons as a case
-where every model falls back on stock openings. For the RAG tool, the priority is repetition, not
-fluency or depth. Separately from this work, the RAG student prompt instructs the learner to assume
-the explanation was helpful enough, which works against the probing that LbT relies on; revising it
-is a larger lever than any change to the translation layer.
+For the fine-tuned portal, the five-model run (Appendix~\ref{app:models}) points to Qwen~2.5 7B,
+which no subject currently uses, as the most stable learner. For the RAG tool, the priority is
+repetition: its student prompt tells the learner to assume the explanation was helpful enough, which
+works against the probing LbT relies on, and revising it is a larger lever than any change to the
+translation layer.
 
 \trackb{Relate the benchmark findings to what participants reported: whether teaching in their own
 language changed their experience, and whether the Review-tier languages were acceptable in
@@ -1172,15 +1033,14 @@ practice.}
 
 \subsection{Limitations of System Design}\label{sec:lim-system}
 
-\paragraph{One translation service.} All multilingual quality depends on one commercial service.
-Sindhi is returned in the wrong script and is unusable; six languages (Bodo, Kashmiri, Konkani,
-Manipuri, Santali, Sanskrit) fall short on judged fluency; and the service returns different
-translations of the same sentence on different calls, most often for low-resource languages.
+\paragraph{One translation service.} All multilingual quality depends on one commercial service,
+which returns Sindhi in the wrong script and translates the same sentence differently on different
+calls, most often for low-resource languages.
 
 \paragraph{Silent degradation.} By design, a translation failure in a live session passes the
 original text through. The benchmark harness detects and retries such failures, but the live module
-at the time of the benchmark had neither retries nor a timeout long enough for load: a 5-second
-default dropped roughly one crossing in sixty in an earlier run. A participant whose answer passes
+at the time of the benchmark did not retry, and its default timeout dropped roughly one crossing in
+sixty under load in an earlier run. A participant whose answer passes
 through untranslated sends non-English text to an English judge, which can degrade feedback and, in
 the fine-tuned portal, lengthen the session.
 
@@ -1193,24 +1053,27 @@ the verb. The translation service chooses that form without knowing the particip
 the example of Figure~\ref{fig:example} it addresses the teacher in the feminine; we did not
 measure how often this happens across languages or turns.
 
-\paragraph{English-only storage.} Storing only English keeps research data independent of language,
-but the participant's original wording is lost. Neither the fidelity of the inbound translation nor
-the participant's own phrasing can be recovered from the stored record.
+\paragraph{English-only storage.} The participant's original wording is not kept, so neither the
+fidelity of the inbound translation nor the participant's own phrasing can be recovered
+(Section~\ref{sec:disc-storage}).
 
-\paragraph{Voice input is unevaluated.} Both speech backends transcribe live recordings end to end,
-but we did not measure word error rate in any language. The coverage statements in
-Section~\ref{sec:voice} are the providers'. Transcription errors compound with translation errors
-before the learner sees the answer.
+\paragraph{Speech input is unevaluated.} We did not measure recognition accuracy in any language;
+the coverage statements in Section~\ref{sec:voice} are the providers'. Transcription errors would
+compound with translation errors before the learner sees the answer.
 
 \paragraph{Corpus gap.} One of the five Computer Programming textbooks could not be parsed and is
 absent from the RAG tool's retrieval index.
 
 \subsection{Limitations of the Benchmark}\label{sec:lim-benchmark}
 
-\paragraph{Two systems, not two techniques.} The RAG learner is GPT-4o; the fine-tuned learners are
+\paragraph{An architectural comparison.} The RAG learner is GPT-4o; the fine-tuned learners are
 7--9B-parameter models, and the two also differ in prompt, context and self-evaluation. A RAG
 advantage cannot be credited to retrieval, and a fine-tuned advantage cannot be credited to
 fine-tuning.
+
+\paragraph{Language effects are not isolated.} Every judged fluency score combines inbound
+translation, the learner, outbound translation and the judge, so the agreement between systems is
+consistent with, but does not prove, a dominant role for the translation layer.
 
 \paragraph{An LLM judge.} Fidelity, fluency and depth are one model's labels. The judge agrees with
 itself, but no native reader has confirmed any language's scores; LLM judges are known to score high
@@ -1221,14 +1084,12 @@ we report is smaller than the judge's disagreement with itself.
 teacher's sentence. The translation back into English, which is what the learner and judge
 actually read, is checked for passthrough and script leaks but not for meaning. In the second turn
 of the lesson in Figure~\ref{fig:example}, the teacher said that round-robin stops any one process
-from starving the others. In the fine-tuned run the Hindi translation scored 5 for fidelity, yet the
-English that came back said that no process can pre-empt another ``unless it has caught a CPU
-burst''. In the RAG run the service worded the Hindi differently, and the English that came back said
-that no process can pre-empt another ``while holding the CPU''. The same sentence was distorted in
-two different ways, and neither distortion registered in any score.
+from starving the others. The English that came back said, in the fine-tuned run, that no process can
+pre-empt another ``unless it has caught a CPU burst'' (its Hindi scored 5 for fidelity) and, in the
+RAG run, ``while holding the CPU''. Neither distortion registered in any score.
 
-\paragraph{Depth measures phrasing.} The depth dimension decides the overall verdict and is
-confounded with the RAG learner's uniform question template (Section~\ref{sec:res-depth}).
+\paragraph{Depth measures phrasing.} The largest difference in the RAG learner's favour, question
+depth, is confounded with its uniform question template (Section~\ref{sec:res-depth}).
 
 \paragraph{Scripted, machine-translated teachers.} Teacher input is three reviewed English sentences
 per lesson, machine-translated into each language. Real participants write longer, less tidy text
@@ -1247,31 +1108,30 @@ session.
 \section{Conclusion and Future Work}\label{sec:conclusion}
 %% =======================================================================================
 
-We extended two independent learning-by-teaching tutors, one with fine-tuned small-model learners
-and one with a retrieval-augmented GPT-4o learner, to all 22 scheduled Indian languages by drawing a
-single translation boundary around each. Only what the participant writes and reads is translated;
-inference, evaluation and stored research data remain English, and dictated speech joins the same
-path as typed text. Across 1,575 boundary crossings per system, no text passed untranslated and no
-Indian-language script reached the English side.
+An English-only learning-by-teaching tutor can be made multilingual without rebuilding it. We drew a
+single translation boundary around two independent Teach2Learn implementations, one with fine-tuned
+small-model learners and one with a retrieval-augmented GPT-4o learner. Only what the participant
+writes and reads is translated; inference, evaluation and stored research data remain English, and
+dictated speech joins the same path as typed text. Across 1,575 boundary crossings per system, no text
+passed untranslated and no Indian-language script reached the English side.
 
-Sharing the boundary made the two systems comparable on identical input for the first time. They
-agreed on the quality tier of every language, which places multilingual quality in the translation
-layer rather than the learner: 15 languages are ready, six need native review, and Sindhi cannot be
-supported with the current service. With language held constant, the retrieval-augmented learner
-wrote slightly more fluent messages, while the fine-tuned learner followed the teacher more closely
-and never repeated a question. The composite lead that question depth gives RAG rests on a measure
-that largely reflects phrasing, and a pre-registered attempt to stop RAG's repeats failed.
-\trackb{One or two sentences on what the user study adds.}
+Sharing the boundary made the two architectures comparable on identical input. They agreed on the
+quality tier of all 22 languages and their per-language fluency was closely correlated, suggesting
+that the translation layer is a dominant determinant of multilingual quality: 15 languages are ready,
+six need native review, and Sindhi cannot be supported with the current service. With language held
+constant, the two learners failed in different ways. The retrieval-augmented learner wrote slightly
+more fluent messages but repeated a question in a third of its conversations; the fine-tuned learners
+followed the teacher more closely and never repeated one. Two pre-registered explanations for the
+repeats were rejected. \trackb{One or two sentences on what the user study adds.}
 
 \subsection{Future Work}
 
 \begin{itemize}
-\item Test whether repeated retrieved passages cause the RAG learner's repeated questions, by logging
-retrieved passage identifiers per turn.
-\item Revise the RAG student prompt so that it probes rather than assumes the explanation was
-sufficient, and re-run the benchmark.
+\item Test generation-side explanations for the RAG learner's repeats by revising its student prompt
+(removing the instruction to assume the explanation was sufficient, and discouraging reuse of earlier
+questions), then re-running the benchmark.
 \item Compare the translation pipeline with a natively multilingual learner on the same benchmark.
-\item Measure transcription accuracy per language for both speech backends.
+\item Measure transcription accuracy per language for both speech services.
 \item Measure inbound translation fidelity, and add a second translation service as a control.
 \item Translate the portal's interface, choose grammatical gender from the participant's preference,
 and restore Sindhi once a service returns it in Perso-Arabic script.
@@ -1410,7 +1270,10 @@ Teacher's Answer: {teacher's English answer}
 
 \section{Lesson Bank}\label{app:lessons}
 
-Version 1, reviewed 2026-09-08. $^{*}$Carried over verbatim from the pilot.
+Version 1, reviewed 2026-09-08. $^{*}$Carried over verbatim from an earlier
+single-lesson-per-subject pilot, so that cells can be compared with it. One of these, on heaps,
+describes the root as the smallest element, which holds for a min-heap only, and uses the bank's only
+raw arithmetic (\texttt{2i+1}, \texttt{2i+2}); it was kept unchanged to preserve that comparison.
 $^{\ddagger}$Used in Sweep B. All 24 lessons are used in Sweep A.
 
 \footnotesize
@@ -1519,9 +1382,107 @@ Sindhi & Devanagari$^{*}$ & \texttt{sd} & 1.0/2.0 & 1.0/1.8 & 1.0/1.7 & 1.0/2.0 
 \end{tabular*}
 \end{table}
 
+Figure~\ref{fig:heatmap} shows the fluency matrices as a heatmap.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig3-heatmap-fluency.pdf}
+\caption{Judged fluency by language and subject for both systems (1--5; darker is more fluent).
+Rows are ordered by mean fluency across both systems. Subject also selects the fine-tuned
+model.}\label{fig:heatmap}
+\end{figure}
+
+\section{Composite Score and Weighting Sensitivity}\label{app:composite}
+
+The pre-registered analysis combined the six dimensions of Table~\ref{tab:dimensions} into a weighted
+0--100 composite. We report it here rather than in the main text because its weighting is necessarily
+normative: the verdict depends on how much each dimension is judged to matter. With the pre-registered
+weights (fluency 36, question depth 20, lexical variety 12, non-repetition 12, robustness 12,
+reliability 8) the RAG learner scores 81.4 [78.8, 83.9] and the fine-tuned learners 75.0 [72.6, 77.3],
+a gap of $+6.5$ [$+3.6$, $+9.6$]. That gap rests on question depth: without it, the five remaining
+dimensions give 79.3 against 78.6, a gap of $+0.7$ [$-2.2$, $+3.3$], which is a tie.
+Table~\ref{tab:weights} recomputes the composite under other weightings, including both superseded
+versions. RAG leads under every weighting that includes depth except one that prioritises
+conversation over translation; without depth the systems tie. The first, pre-declared version had
+a single variety dimension of weight 30, fixed before any transcripts were read; it rewarded a learner
+for varying the first six words of questions it then repeated verbatim, so it was split evenly into
+lexical variety and non-repetition. Question depth was then added under its pre-registration.
+
+\begin{table}[h]
+\caption{Composite under alternative weightings (fluency, depth, lexical variety, non-repetition,
+robustness, reliability).}\label{tab:weights}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}llrrll}
+\toprule
+Weighting & Weights & FT & RAG & RAG$-$FT [95\% CI] & Leader \\
+\midrule
+This paper & 36/20/12/12/12/8 & 75.0 & 81.4 & $+6.5$ [$+3.6$, $+9.6$] & RAG \\
+Equal & 16/20/16/16/16/16 & 76.0 & 81.5 & $+5.5$ [$+2.1$, $+9.1$] & RAG \\
+Multilingual first & 48/20/8/8/12/4 & 74.3 & 81.5 & $+7.2$ [$+4.6$, $+10.0$] & RAG \\
+Conversation first & 20/20/8/32/12/8 & 80.2 & 78.7 & $-1.5$ [$-6.6$, $+3.4$] & Tie \\
+Without depth (revision 1) & 45/---/15/15/15/10 & 78.6 & 79.3 & $+0.7$ [$-2.2$, $+3.3$] & Tie \\
+Pre-declared (superseded) & 45/---/30$^{a}$/---/15/10 & 71.6 & 80.9 & $+9.3$ [$+5.9$, $+12.7$] & RAG \\
+\botrule
+\end{tabular*}
+\footnotesize{$^{a}$Single ``variety'' dimension measured by opener entropy alone.}
+\end{table}
+
+\section{Model Run on the Fine-Tuned Side}\label{app:models}
+
+Running all five deployed models on the same \texttt{os} and \texttt{cp} lessons separates model from
+subject. Qwen~2.5 7B was the only model stable across both subjects: the share of follow-ups beginning
+with its most common opening was 33\% and 30\%, its mean Bloom level 1.00 and 0.98, and it reached the
+Apply level 17 and 14 times against 0--9 for the others, while also generating fastest (2.7\,s per
+generation). Qwen3 8B collapsed to four distinct openings on \texttt{cp}, beginning 85\% of follow-ups
+with the same phrase, against 22\% on \texttt{os}; the \texttt{cp} figure reproduced in an independent
+run a day apart (83\%). The \texttt{cp} lessons reduced opener variety for every model, so Qwen3 is
+the extreme of a general effect. Granite 3.3 8B on \texttt{os}, run twice a day apart, gave 9\% both
+times, which bounds run-to-run noise. No subject currently routes to Qwen~2.5.
+
+\section{Teacher-History Experiment: All Measures}\label{app:experiment}
+
+Table~\ref{tab:experiment} compares the committed RAG run with the teacher-history arm, paired by lesson. No measure moved.
+
+\begin{table}[h]
+\caption{Teacher-history experiment, paired by lesson (committed RAG run vs.\ the new arm).}\label{tab:experiment}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lrrrl}
+\toprule
+Measure & RAG & + history & Change & 95\% CI \\
+\midrule
+Conversations repeating a question (primary) & 23/72 & 24/72 & $+1.4$ pts & [$-10.8$, $+14.2$] \\
+Looks back to an earlier sentence & 30\% & 31\% & $+1.3$ pts & [$-9.7$, $+12.7$] \\
+Answers the current sentence & 44\% & 41\% & $-3.4$ pts & [$-12.2$, $+4.4$] \\
+Follow-ups that are questions & 78\% & 82\% & $+3.7$ pts & [$-2.7$, $+11.2$] \\
+Questions rated deep & 90\% & 92\% & $+1.6$ pts & [$-2.0$, $+5.5$] \\
+Lexical variety (entropy, rarefied to 169) & 0.78 & 0.80 & $+0.011$ & [$-0.028$, $+0.056$] \\
+\botrule
+\end{tabular*}
+\end{table}
+
+\section{Differences Recorded but Not Scored}\label{app:notscored}
+
+These differences follow from how each system was built or prompted; scoring them would compare design choices rather than learners.
+
+\begin{table}[h]
+\caption{Differences recorded but not scored.}\label{tab:notscored}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}p{0.34\textwidth}rrp{0.36\textwidth}}
+\toprule
+Observation & FT & RAG & Why not scored \\
+\midrule
+Follow-ups that are questions (English) & 100\% & 78\% & RAG prompt permits a reflection; adapter is trained to ask \\
+Language turns answered with a reflection & 0/525 & 21/525 & Same prompt difference \\
+Words per follow-up & 20.3 & 16.9 & Set by each system's instructions \\
+Distinct follow-up strings & 99\% & 78\% & A fixed lead-in with a new ending counts as distinct \\
+Runs flagged by the harness's opener check & 36/72 & 53/72 & RAG's reflections all begin alike \\
+\botrule
+\end{tabular*}
+\end{table}
+
 \section{Pre-Registration Text}\label{app:prereg}
 
-Both entries are reproduced from the project's pre-registration file, written before the data
+All three entries are reproduced from the project's pre-registration file, written before the data
 they judge existed. Only file paths and script names have been removed.
 
 \paragraph{RAG teacher-history experiment. Written 2026-09-14T18:31:32Z.}
@@ -1558,6 +1519,84 @@ depth level is reported next to the result. If it falls below 70\%, depth is rep
 20. The five existing dimensions keep their relative weights, scaled by 0.8: fluency 36, lexical
 variety 12, non-repetition 12, robustness 12, reliability 8. Verdict rule unchanged: the 95\% interval
 of the difference must exclude zero. The previous five-dimension scorecard stays on the page.
+
+\paragraph{Retrieval overlap and repeated questions. Written 2026-09-19T05:32:53Z, before any
+retrieval was logged.} \emph{Question.} The pre-registered teacher-history experiment failed: RAG
+repeated a question in 23 of 72 English conversations before the change and 24 of 72 after. The
+remaining hypothesis is that retrieval causes the repeats. The student prompt tells the model to ask
+about any gap between the teacher and the retrieved passages, so if two turns of a lesson retrieve the
+same passages, the later turn may ask the same gap question again.
+\emph{Data.} No new questions are generated. For each of the 24 lessons, each of its three teacher
+sentences is passed to the retrieval step ($k=4$) against that subject's committed vectorstore,
+exactly as the English sweep did, using the same embedding model. A passage is identified by its
+source file, page and a hash of its text. Questions come from the committed RAG and RAG + teacher
+history English runs. Retrieval depends only on the teacher sentence, so all repeats of a lesson, in
+both arms, share its passages.
+\emph{Unit, exposure, outcome.} Unit: a lesson and a pair of its turns, (1,2), (1,3), (2,3), giving
+$24 \times 3 = 72$ units. Exposure: Jaccard overlap between the two turns' sets of four passage IDs.
+Outcome: of the 6 conversations for that lesson (3 per arm), the share in which the later turn's
+question sentence equals the earlier turn's, after the same normalisation the scorecard uses.
+Conversations where either turn has no question sentence count as not repeating.
+\emph{Primary test.} Repeat rate among units with overlap $> 0$, minus repeat rate among units with
+overlap $= 0$. 95\% interval from a 5,000-draw bootstrap that resamples lessons (all three pairs of a
+lesson move together), seed 20260914. If either group has fewer than 5 units, the primary test is
+instead the Spearman correlation between overlap and repeat rate across the 72 units, with the same
+lesson bootstrap.
+\emph{Prediction and failure rule.} Prediction: units whose turns share retrieved passages repeat more
+often. The hypothesis fails if the 95\% interval includes zero.
+\emph{Reported whatever they show.} Spearman correlation between overlap and repeat rate; each arm
+separately; the share of units with identical passage sets; the distribution of overlap values.
+
+\section{Implementation Details}\label{app:implementation}
+
+\paragraph{Translation module.} Both systems import one module, \texttt{translation.py}, verified
+byte-identical with \texttt{cmp} before the comparison runs. It calls \texttt{sarvam-translate:v1},
+which accepts 2,000 input characters, matching the portal's 2,000-character answer limit; an
+alternative model with a 1,000-character limit would have dropped long answers back to untranslated
+text. Longer text is split on sentence boundaries, and results are cached in process by (text,
+source, target). Language codes are an explicit table rather than derived, because the service spells
+Odia \texttt{od-IN}, not the ISO \texttt{or-IN}. A unit test locks the language picker and the code
+table to the same key set, because a language present in the picker but missing a code would
+otherwise fail as a silent passthrough. A pattern check rejects responses that contain fragments of
+the service's API schema. The live module's default timeout was 5 seconds and it did not retry; the
+benchmark harness made up to three attempts per crossing with backoff.
+
+\paragraph{Interface.} In the RAG tool, which renders through Chainlit, the language is picked with
+the same action-button mechanism as the subject, and interface messages the tool sends are translated.
+The fine-tuned portal translates conversation and feedback but not its buttons, headings or survey.
+
+\paragraph{Speech input.} The portal adds a microphone button that records with the browser's
+\texttt{MediaRecorder}, re-encodes the clip to WAV in the browser, and uploads it to a session-scoped
+endpoint with a 15\,MB limit; it places the returned text in the answer box for the participant to
+review. The RAG tool uses Chainlit's built-in audio capture, wraps the streamed PCM chunks into a
+24\,kHz WAV file on the server, and submits the text as the participant's turn. A shared
+\texttt{transcription.py} module forwards the audio to Sarvam's Saaras v3 (default) or to Whisper
+large-v3 via OpenRouter and discards it. Unlike translation, a transcription failure surfaces as an
+error rather than passing anything through. The WAV re-encode exists because the default service
+rejected the \texttt{audio/webm;codecs=opus} container that Chrome records by default. Whisper's
+published language list omits Bodo, Dogri, Kashmiri, Konkani, Maithili, Manipuri, Odia and Santali.
+
+\paragraph{Retrieval corpus.} Textbooks named in the course handouts were split into 1,000-character
+chunks with 200-character overlap, embedded with \texttt{text-embedding-3-small}, and stored per
+subject in Chroma (Table~\ref{tab:corpus}).
+
+\begin{table}[h]
+\caption{Retrieval corpus of the RAG tool. One of five \texttt{cp} sources (Forouzan and Gilberg)
+failed to parse and is absent.}\label{tab:corpus}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}llrr}
+\toprule
+Subject & Sources & Pages & Chunks \\
+\midrule
+\texttt{cp} & Hanly and Koffman, plus three reference books & 2,289 & 7,530 \\
+\texttt{dsa} & Cormen et al.; Goodrich, Tamassia and Mount & 2,033 & 5,605 \\
+\texttt{oop\_java} & Schildt; Horstmann & 1,788 & 5,148 \\
+\texttt{os} & Silberschatz and Galvin & 983 & 3,281 \\
+\midrule
+Total & & 7,093 & 21,564 \\
+\botrule
+\end{tabular*}
+\end{table}
 
 \section{Supported Languages}\label{app:languages}
 
