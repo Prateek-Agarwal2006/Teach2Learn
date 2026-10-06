@@ -191,8 +191,18 @@ async def start():
             Select(
                 id="Model",
                 label="Select Model",
-                values=["openai/gpt-4o", "anthropic/claude-3.7-sonnet",
-                        "google/gemini-2.5-pro"],
+                values=[
+                    "openai/gpt-4o", "anthropic/claude-3.7-sonnet",
+                    "google/gemini-2.5-pro",
+                    # Same base models as the finetuned side's adapters (exact OpenRouter
+                    # matches only, verified live) -- lets a session be run ungrounded on
+                    # the identical base model a finetuned adapter was built on, for a
+                    # direct RAG-vs-finetuned comparison.
+                    "qwen/qwen3-8b",              # base of the finetuned "qwen3" adapter
+                    "qwen/qwen-2.5-7b-instruct",  # base of the finetuned "qwen2.5" adapter
+                    "meta-llama/llama-3.1-8b-instruct",  # base of the finetuned "llama31" adapter
+                    "ibm-granite/granite-4.2-8b",        # base of the finetuned "granite42" adapter
+                ],
                 initial_index=0
             )
         ]
