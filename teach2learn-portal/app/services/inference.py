@@ -29,6 +29,10 @@ class ModelProfile:
     device: int | str | None = None
     endpoint: str | None = None
     adapter_name: str | None = None
+    # Override for a base model whose weights were downloaded into a non-default HF
+    # cache (e.g. because the default cache's disk was full at download time) rather
+    # than wherever HF_HOME/local_files_only would otherwise look.
+    cache_dir: str | None = None
 
 
 @dataclass(frozen=True)
@@ -49,6 +53,20 @@ DEFAULT_PROFILES: dict[str, ModelProfile] = {
     "mistral": ModelProfile("mistralai/Mistral-7B-Instruct-v0.3"),
     "granite": ModelProfile("ibm-granite/granite-3.3-8b-instruct"),
     "qwen2.5": ModelProfile("Qwen/Qwen2.5-7B-Instruct"),
+    # Second batch, fine-tuned to extend the RAG-vs-finetuned comparison to models that
+    # are also directly selectable (ungrounded, via OpenRouter) on the RAG side -- see
+    # finetune-new-models/ on the GPU host. Granite 4.2 (not 3.3) and Llama 3.1 because
+    # those are the versions actually live on OpenRouter. (A third slot, Ministral, was
+    # dropped: every current Ministral-3-generation snapshot is vision-multimodal and
+    # incompatible with this text-only LoRA pipeline.)
+    "granite42": ModelProfile("ibm-granite/granite-4.2-8b"),
+    # The default HF cache's disk filled up mid-download during training, so this one's
+    # weights only ever landed in finetune-new-models/.hf_cache -- point this profile
+    # straight at that cache rather than the shared default.
+    "llama31": ModelProfile(
+        "meta-llama/Llama-3.1-8B-Instruct",
+        cache_dir="/data/scratch/sanyam_jain_2022/finetune-new-models/.hf_cache/hub",
+    ),
 }
 
 DEFAULT_ADAPTER_ROOT = "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b"
@@ -58,8 +76,21 @@ MODEL_OUTPUT_DIRS = {
     "mistral": "outputs_mistral7b_lora_no_quant",
     "granite": "outputs_granite33_8b_lora_no_quant",
     "qwen2.5": "outputs_qwen25_7b_lora_no_quant",
+    # Empty: these two's adapter root (below) already points straight at the directory
+    # that directly contains each subject's final_adapter/, with nothing to join.
+    "granite42": "",
+    "llama31": "",
 }
 SUBJECT_DATASET_DIRS = {"cp": "CP_dataset", "dsa": "DSA_dataset", "oop_java": "oops_dataset", "os": "OS_dataset"}
+
+# Per-profile override of the shared adapter_root below -- these two live in their own
+# training directory (finetune-new-models/), separate from Sanyam's own mistral_finetune/
+# tree, which this deployment only ever reads from, never writes into.
+NEW_MODEL_ADAPTER_ROOT = "/data/scratch/sanyam_jain_2022/finetune-new-models/outputs"
+MODEL_ADAPTER_ROOTS = {
+    "granite42": f"{NEW_MODEL_ADAPTER_ROOT}/granite42",
+    "llama31": f"{NEW_MODEL_ADAPTER_ROOT}/llama31",
+}
 
 DEFAULT_SUBJECT_MODELS = {
     "cp": "qwen3",
@@ -120,6 +151,8 @@ class InferenceConfig:
                 profile.trust_remote_code,
                 profile.device,
                 profile.endpoint,
+                profile.adapter_name,
+                profile.cache_dir,
             )
 
         raw_devices = os.getenv("INFERENCE_PROFILE_DEVICES", "").strip()
@@ -136,6 +169,8 @@ class InferenceConfig:
                     profile.trust_remote_code,
                     device,
                     profile.endpoint,
+                    profile.adapter_name,
+                    profile.cache_dir,
                 )
 
         raw_endpoints = os.getenv("INFERENCE_VLLM_ENDPOINTS", "").strip()
@@ -150,6 +185,8 @@ class InferenceConfig:
                     profile.trust_remote_code,
                     profile.device,
                     str(endpoint).rstrip("/"),
+                    profile.adapter_name,
+                    profile.cache_dir,
                 )
 
         return cls(
@@ -366,6 +403,7 @@ class TransformersBackend:
             profile.base_model,
             trust_remote_code=profile.trust_remote_code,
             local_files_only=self.config.local_files_only,
+            cache_dir=profile.cache_dir,
         )
         device_map: Any = self.config.device_map
         if profile.device is not None:
@@ -376,6 +414,7 @@ class TransformersBackend:
             dtype=dtype,
             trust_remote_code=profile.trust_remote_code,
             local_files_only=self.config.local_files_only,
+            cache_dir=profile.cache_dir,
         )
         model.eval()
         return self.LoadedModel(tokenizer, model, profile.base_model)
@@ -509,8 +548,9 @@ class InferenceService:
         if not profile.adapter and profile_name in MODEL_OUTPUT_DIRS:
             from pathlib import Path
 
+            adapter_root = MODEL_ADAPTER_ROOTS.get(profile_name, self.config.adapter_root)
             try:
-                adapter = Path(self.config.adapter_root) / MODEL_OUTPUT_DIRS[profile_name] / SUBJECT_DATASET_DIRS[subject_key] / "final_adapter"
+                adapter = Path(adapter_root) / MODEL_OUTPUT_DIRS[profile_name] / SUBJECT_DATASET_DIRS[subject_key] / "final_adapter"
             except KeyError as exc:
                 raise ValueError(f"No adapter mapping for model {profile_name!r} and subject {subject!r}") from exc
             profile = ModelProfile(
@@ -520,6 +560,7 @@ class InferenceService:
                 profile.device,
                 profile.endpoint,
                 f"{profile_name}_{subject_key}",
+                profile.cache_dir,
             )
         return profile_name, profile
 
