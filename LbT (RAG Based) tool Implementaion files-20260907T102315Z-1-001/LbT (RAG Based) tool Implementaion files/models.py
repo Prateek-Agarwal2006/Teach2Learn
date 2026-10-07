@@ -1,6 +1,6 @@
 import os
-from typing import Dict, List, Optional, Literal
-from pydantic import BaseModel, confloat
+from typing import List, Optional, Literal
+from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -30,45 +30,27 @@ class TeacherResponse(BaseModel):
 class StudentResponse(BaseModel):
     # Follow-up question, can be null if fully understood
     message: Optional[str]
-    rating: Literal["understood", "needs work", "confused"]
+    rating: Literal["understood", "confused"]
     reflection: str  # Student’s meta-understanding: e.g. "I didn’t understand sorting properly."
     missing_points: List[str] = []  # Gaps in knowledge
 
 
 # -------------------------------
-# Evaluator
+# Turn evaluator -- mirrors teach2learn-portal's <evaluation> block field-for-field
+# (Level/Score/Strength/Improvement), so app/services/completion.py's decide_completion
+# can be ported verbatim and operate on these dicts with zero adaptation.
 # -------------------------------
-class EvaluatorResponse(BaseModel):
-    rating: str  # "excellent" | "good" | "partial" | "needs work" | "incorrect"
-    missing_points: Optional[List[str]] = []
-    incorrect_points: Optional[List[str]] = []
-    feedback: Optional[str] = None
-    referenced_points: Optional[List[str]] = []
+class TurnEvaluationResponse(BaseModel):
+    level: str  # Remember | Understand | Apply | Analyze | Evaluate | Create
+    score: str  # Low | Medium | High
+    strength: str
+    improvement: str
 
 
 # -------------------------------
-# Scorer
+# Final feedback -- mirrors teach2learn-portal's <final_feedback> block
 # -------------------------------
-class ScorerResponse(BaseModel):
-    overall_score: confloat(ge=0.0, le=1.0)
-    # Subscores (0.0 to 1.0)
-    teacher_clarity: confloat(ge=0.0, le=1.0)
-    teacher_completeness: confloat(ge=0.0, le=1.0)
-    student_understanding: confloat(ge=0.0, le=1.0)
-    student_engagement: confloat(ge=0.0, le=1.0)
-    # Comments are required, even if empty
-    comments: List[str]
-
-
-# -------------------------------
-# Final Score
-# -------------------------------
-class FinalScorerResponse(BaseModel):
-    overall_score: confloat(ge=0.0, le=1.0)
-    # Aggregated subscores (session-wide, 0.0–1.0)
-    teacher_clarity: confloat(ge=0.0, le=1.0)
-    teacher_completeness: confloat(ge=0.0, le=1.0)
-    student_understanding: confloat(ge=0.0, le=1.0)
-    student_engagement: confloat(ge=0.0, le=1.0)
-    # Structured feedback
-    comments: Dict[str, List[str]]
+class FinalFeedbackResponse(BaseModel):
+    strengths: List[str]
+    improvements: List[str]
+    summary: str

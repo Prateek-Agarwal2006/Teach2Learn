@@ -11,11 +11,13 @@ similarity_search on the teacher's (translated-to-English) explanation each turn
 Nothing is written to Mongo: this calls student_chain.invoke() directly rather than going
 through main.py's handle_teacher_turn(), so no create_session/save_student/etc. runs.
 
-Two native evaluations exist on the two systems (the portal adapter's inline
-Level/Score, this tool's separate evaluator_chain/scorer_chain) and they are not
-comparable to each other -- see RAG_TEST_PLAN.md. This harness does not attempt to
-produce a Bloom-level or Score figure for the RAG side; report_sweep.py's evaluation
-columns will correctly show "-" for these runs rather than a fabricated comparison.
+evaluator_chain.py's Level/Score schema now mirrors the finetuned portal's inline
+<evaluation> block field-for-field (see completion.py), so the two systems' per-turn
+evaluations ARE directly comparable where this harness does invoke the evaluator -- it
+currently doesn't (this harness only exercises student_chain.invoke(), not
+evaluator_chain.invoke(), so report_sweep.py's evaluation columns still correctly show
+"-" for these runs; add an evaluator_chain.invoke() call here if that figure is wanted
+from this harness too).
 
 Usage (from this project's root, with the .env already sourced):
 
@@ -58,8 +60,12 @@ _root = Path(__file__).resolve().parents[1] if "__file__" in globals() else Path
 sys.path.insert(0, str(_root))
 
 from models import StudentResponse  # noqa: E402
-from qa_generator import generate_qa_for_subtopic, load_catalog  # noqa: E402
-from student_chain import build_student_chain  # noqa: E402
+from qa_generator import load_catalog  # noqa: E402
+from student_chain import (  # noqa: E402
+    build_student_chain,
+    generate_opening_question,
+    outbound_text as _shared_outbound_text,
+)
 from translation import SUPPORTED_LANGUAGES, TranslationService  # noqa: E402
 
 # Fixed decoding params from TEST_BED.md, applied here rather than in models.py's
@@ -178,12 +184,10 @@ def _student_response(raw: Any) -> StudentResponse:
 
 
 def _outbound_text(student_model: StudentResponse) -> tuple[str, str]:
-    """What the participant reads back. The student sometimes has no follow-up
-    (rating="understood", message=None) -- unlike a fine-tuned adapter that always
-    asks something -- so fall back to the always-populated reflection text."""
-    if student_model.message:
-        return student_model.message, "message"
-    return student_model.reflection, "reflection"
+    """Thin wrapper around student_chain.outbound_text() that also reports which field
+    was used, for this harness's own turn-by-turn logging."""
+    kind = "message" if student_model.message else "reflection"
+    return _shared_outbound_text(student_model), kind
 
 
 # --------------------------------------------------------------------------------
@@ -470,12 +474,9 @@ async def main() -> None:
         for lesson in lessons:
             student_chain, vs = chains[lesson.subject]
             if lesson.id not in opening_cache:
-                log(f"generating QA pool for {lesson.id} ({lesson.subtopic!r})...")
-                qa_pool = generate_qa_for_subtopic(llm, vs, lesson.subtopic)
-                if not qa_pool:
-                    log(f"  WARNING: empty QA pool for {lesson.id}, skipping")
-                    continue
-                opening_cache[lesson.id] = qa_pool[0].question
+                log(f"generating opening question for {lesson.id} ({lesson.subtopic!r})...")
+                opening_student = generate_opening_question(student_chain, vs, lesson.subtopic)
+                opening_cache[lesson.id] = _shared_outbound_text(opening_student)
             opening_en = opening_cache[lesson.id]
 
             for repeat_index in range(args.repeat):

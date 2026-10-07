@@ -1,59 +1,78 @@
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import LLMChain
 from langchain.output_parsers import PydanticOutputParser
-from models import EvaluatorResponse 
+from models import TurnEvaluationResponse, FinalFeedbackResponse
 
-evaluator_prompt= """
-You are an expert evaluator of student responses. 
-Your task is to qualitatively assess the student’s answer and provide constructive feedback.
+# Independent, ungrounded per-turn judge -- mirrors teach2learn-portal's
+# TURN_EVALUATOR_PROMPT exactly in intent: judges only the supplied AI question and
+# teacher answer, no retrieval, no ground-truth answer key. Never sees {context}.
+evaluator_prompt = """
+You are an independent turn evaluator in a fresh chat. Evaluate only the supplied
+learner question and teacher answer -- you have no other context.
 
-Inputs:
-- Pre-determined Ground Truth:
-{expected_explanation}
-- Teacher’s explanation:
-{teacher_explanation}
-- Student's initial question:
-{student_question}
-- Student's follow-up question based on the teacher's reponse, will be null if the student received accurate response
-{student_followup_question}
-- Student’s response:
-{student_response}
+Selected subtopic:
+{subtopic}
+
+AI learner's previous question (or reflection, if it had no question):
+{last_ai_en}
+
+Human teacher's answer:
+{teacher_explanation_en}
 
 Instructions:
-1. Assign a qualitative rating for the student’s response using ONLY one of:
-   "excellent" | "good" | "partial" | "needs work" | "incorrect"
-
-2. Identify key points the student missed. Include them in "missing_points".
-
-3. Identify any factual errors or misconceptions. Include them in "incorrect_points".
-
-4. Provide concise feedback to help the student improve in "feedback".
-
-5. Optionally, include references from the context or QA pool in "referenced_points".
+1. Assign a Level using ONLY one of: Remember, Understand, Apply, Analyze, Evaluate, Create.
+2. Assign a Score using ONLY one of: Low, Medium, High.
+3. Give one specific, constructive Strength.
+4. Give one specific, constructive Improvement.
+Do not ask a follow-up question. Be grounded only in the supplied answer.
 
 Respond ONLY in valid JSON, matching the following schema:
 
 {{
-  "rating": "excellent|good|partial|needs work|incorrect",
-  "missing_points": ["..."],
-  "incorrect_points": ["..."],
-  "feedback": "...",
-  "referenced_points": ["..."]
+  "level": "Remember|Understand|Apply|Analyze|Evaluate|Create",
+  "score": "Low|Medium|High",
+  "strength": "...",
+  "improvement": "..."
 }}
 """
 
 
 def build_evaluator_chain(llm):
-    parser = PydanticOutputParser(pydantic_object=EvaluatorResponse)
+    parser = PydanticOutputParser(pydantic_object=TurnEvaluationResponse)
     prompt = ChatPromptTemplate.from_template(
-       evaluator_prompt
+        evaluator_prompt
     ).partial(format_instructions=parser.get_format_instructions())
 
-    chain = LLMChain(
-        llm=llm,
-        prompt=prompt,
-        output_parser=parser,
-        verbose=True
-    )
+    return LLMChain(llm=llm, prompt=prompt, output_parser=parser)
 
-    return chain
+
+# Independent, ungrounded session-final judge -- mirrors FINAL_EVALUATOR_PROMPT. Reviews
+# only the visible English conversation, never retrieval context, and addresses the
+# teacher as "you". Built from the same fixed judge model as build_evaluator_chain, kept
+# independent of whichever model the participant is being taught by.
+final_feedback_prompt = """
+You are an independent final teaching evaluator in a fresh chat. Review only the
+supplied visible conversation. Produce constructive participant-facing feedback
+grounded in what the teacher actually said. Address the teacher as "you". Do not invent
+student reactions, grades, personal details, or facts absent from the conversation.
+
+Visible conversation:
+{transcript}
+
+Respond ONLY in valid JSON, matching the following schema:
+
+{{
+  "strengths": ["...", "..."],
+  "improvements": ["...", "..."],
+  "summary": "..."
+}}
+"""
+
+
+def build_final_feedback_chain(llm):
+    parser = PydanticOutputParser(pydantic_object=FinalFeedbackResponse)
+    prompt = ChatPromptTemplate.from_template(
+        final_feedback_prompt
+    ).partial(format_instructions=parser.get_format_instructions())
+
+    return LLMChain(llm=llm, prompt=prompt, output_parser=parser)

@@ -42,33 +42,59 @@ Respond ONLY in valid JSON that matches this schema:
 """
 
 
-def build_student_chain(llm, topic: str, catalog: dict):
-    """Return (LLM chain, vectorstore) for a given topic using catalog path."""
-    # Embeddings
+def build_vectorstore(topic: str, catalog: dict):
+    """Return the Chroma vectorstore for a given topic -- split out from chain-building
+    since retrieval depends only on catalog/topic, never on the teaching LLM, so callers
+    can cache this across a teaching-model switch instead of reopening the same Chroma
+    persist_directory on every settings update."""
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-
-    # Get vectorstore path from catalog
     topic_info = catalog.get(topic)
     if not topic_info:
         raise ValueError(f"Topic '{topic}' not found in catalog")
-
     vs_path = topic_info["vectorstore_path"]
+    return Chroma(persist_directory=vs_path, embedding_function=embeddings)
 
-    # Load Chroma for this topic
-    vs = Chroma(
-        persist_directory=vs_path,
-        embedding_function=embeddings
-    )
 
-    # Parser
+def build_student_chain_only(llm):
+    """The LLM chain half of build_student_chain, decoupled from vectorstore setup."""
     parser = PydanticOutputParser(pydantic_object=StudentResponse)
-
-    # Prompt with parser format instructions
     prompt = ChatPromptTemplate.from_template(student_prompt).partial(
         format_instructions=parser.get_format_instructions()
     )
+    return LLMChain(llm=llm, prompt=prompt, output_parser=parser)
 
-    # Chain
-    chain = LLMChain(llm=llm, prompt=prompt, output_parser=parser)
 
+def build_student_chain(llm, topic: str, catalog: dict):
+    """Return (LLM chain, vectorstore) for a given topic using catalog path."""
+    vs = build_vectorstore(topic, catalog)
+    chain = build_student_chain_only(llm)
     return chain, vs
+
+
+_OPENING_SENTINEL = (
+    "[SYSTEM TRIGGER]: The lesson is starting. The teacher has not said anything yet "
+    "-- introduce yourself briefly and ask your first question about the subtopic."
+)
+
+
+def generate_opening_question(chain, vs, subtopic: str) -> StudentResponse:
+    """Dynamically generate the session's opening question, grounded on the subtopic
+    itself (there's no teacher explanation yet to search retrieval on). Replaces the old
+    pre-baked qa_pool[0] -- every outbound student turn, opening included, now comes from
+    one live call to the same chain instead of a fixed Bloom's-taxonomy pool."""
+    context_docs = vs.similarity_search(subtopic, k=4)
+    context = "\n\n".join(doc.page_content for doc in context_docs)
+    response = chain.invoke({
+        "teacher_explanation": _OPENING_SENTINEL,
+        "student_memory": [],
+        "context": context,
+    })
+    result = response["text"]
+    return result if isinstance(result, StudentResponse) else StudentResponse.parse_raw(result)
+
+
+def outbound_text(student_model: StudentResponse) -> str:
+    """What the participant reads back. The student sometimes has no follow-up
+    (rating="understood", message=None) -- unlike a fine-tuned adapter that always
+    asks something -- so fall back to the always-populated reflection text."""
+    return student_model.message or student_model.reflection

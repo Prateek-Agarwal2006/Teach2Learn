@@ -1,3 +1,4 @@
+import asyncio
 import os
 import re
 from datetime import datetime
@@ -5,10 +6,16 @@ import uuid
 import chainlit as cl
 from chainlit.input_widget import Select
 from dotenv import load_dotenv
-from student_chain import build_student_chain
-from evaluator_chain import build_evaluator_chain
-from scorer_chain import build_scorer_chain, build_final_scorer_chain
-from models import StudentResponse, TeacherResponse, EvaluatorResponse, ScorerResponse, FinalScorerResponse, get_llm
+from student_chain import (
+    build_vectorstore,
+    build_student_chain_only,
+    generate_opening_question,
+    outbound_text,
+)
+from evaluator_chain import build_evaluator_chain, build_final_feedback_chain
+from completion import decide_completion, completion_message
+from teaching_feedback import build_deterministic_feedback
+from models import StudentResponse, TeacherResponse, TurnEvaluationResponse, FinalFeedbackResponse, get_llm
 from langchain.memory import ConversationBufferMemory
 from typing import Optional
 from pathlib import Path
@@ -20,14 +27,17 @@ from memory import (
         save_student,
         save_teacher,
         save_evaluator,
-        save_scorer,
         fetch_session_interaction_ids,
         fetch_student_memory,
-        fetch_session_scores
+        fetch_session_evaluations,
+        fetch_session_turns,
+        save_final_feedback,
 )
-from qa_generator import generate_qa_for_subtopic, generate_subtopics, load_catalog
 from translation import SUPPORTED_LANGUAGES, normalize_language, get_translation_service
 from transcription import get_transcription_service
+
+GENDERS = ["Male", "Female"]
+FINAL_FEEDBACK_MODEL = os.getenv("FINAL_FEEDBACK_MODEL", "openai/gpt-5.6-luna")
 
 
 load_dotenv()
@@ -71,38 +81,42 @@ async def _localize(text: str, lang: str, speaker_gender: str | None = None) -> 
     return f"{prefix} {translated}" if prefix else translated
 
 
-def format_final_score(comments: dict) -> str:
+def format_final_score(result: dict) -> str:
     md = f"""
 # 📝 Final Remarks
 ## 💡 Strengths
 """
-    for s in comments.get("strengths", []):
+    for s in result.get("strengths", []):
         md += f"- {s}\n"
 
     md += "\n## 🔧 Improvements\n"
-    for i in comments.get("improvements", []):
+    for i in result.get("improvements", []):
         md += f"- {i}\n"
 
     md += "\n## 🏁 Summary\n"
-    for s in comments.get("summary", []):
-        md += f"- {s}\n"
+    md += f"- {result.get('summary', '')}\n"
 
     return md.strip()
 
 
-async def present_final_score(result: dict, lang: str = "en"):
+async def present_final_score(result: dict, lang: str, teacher_gender: str | None):
     """Send the final evaluation in a nice markdown format to Chainlit UI, translated
-    into the participant's teaching language. The scorer/evaluator agents themselves
-    never see anything but English; only this presentation layer is translated."""
-    comments = result.comments
+    into the participant's teaching language. The judge chains themselves never see
+    anything but English; only this presentation layer is translated.
+
+    This feedback addresses the teacher directly as "you" -- unlike the AI persona's own
+    lines (always gendered "Female" to match its established identity), the correct
+    grammatical gender here is the *teacher's*, which is why it's asked up front at
+    start() rather than assumed."""
     if lang != "en":
         translator = get_translation_service()
-        comments = {
-            "strengths": await translator.all_from_english(comments.get("strengths", []), lang),
-            "improvements": await translator.all_from_english(comments.get("improvements", []), lang),
-            "summary": await translator.all_from_english(comments.get("summary", []), lang),
+        result = {
+            **result,
+            "strengths": await translator.all_from_english(result.get("strengths", []), lang, speaker_gender=teacher_gender),
+            "improvements": await translator.all_from_english(result.get("improvements", []), lang, speaker_gender=teacher_gender),
+            "summary": await translator.from_english(result.get("summary", ""), lang, speaker_gender=teacher_gender),
         }
-    md_output = format_final_score(comments)
+    md_output = format_final_score(result)
     await cl.Message(content=md_output).send()
 
 
@@ -129,21 +143,18 @@ def oauth_callback(
 
 @cl.on_settings_update
 async def setup_agent(settings):
+    # Only the student-facing teaching model is reconfigurable mid-session. `vs`
+    # depends only on catalog/topic (never the LLM) so it's left alone rather than
+    # reopening the same Chroma persist_directory on every model switch; the judge
+    # chains (evaluator_chain/final_feedback_chain) are intentionally never rebuilt
+    # here either -- they must stay on the fixed judge model regardless of which
+    # model the participant is being taught by, or the judge itself becomes a
+    # confound in the model comparison.
     current_model = settings["Model"]
     print("Updated Model to: ", current_model)
     llm = get_llm(current_model)
     cl.user_session.set("llm", llm)
-    user_topic = cl.user_session.get("topic")
-    catalog = cl.user_session.get("catalog")
-    student_chain, vs = build_student_chain(llm, user_topic, catalog)
-    evaluator_chain = build_evaluator_chain(llm)
-    scorer_chain = build_scorer_chain(llm)
-    final_scorer_chain = build_final_scorer_chain(llm)
-    cl.user_session.set("student_chain", student_chain)
-    cl.user_session.set("vs", vs)
-    cl.user_session.set("evaluator_chain", evaluator_chain)
-    cl.user_session.set("scorer_chain", scorer_chain)
-    cl.user_session.set("final_scorer_chain", final_scorer_chain)
+    cl.user_session.set("student_chain", build_student_chain_only(llm))
 
 
 # ------------------- ON CHAT RESUME --------------- #
@@ -169,8 +180,8 @@ async def start():
     await cl.Message(content=f"Welcome, {user.display_name or user.identifier}!").send()
 
     # Teaching language is picked once, up front, like subject/subtopic below —
-    # unlike Model it is not reconfigurable mid-session via ChatSettings, since the
-    # QA pool's ground-truth answers and every stored record are fixed to English.
+    # unlike Model it is not reconfigurable mid-session via ChatSettings, since every
+    # stored record is fixed to English.
     lang_actions = [
         cl.Action(name=code, payload={"value": code}, label=name)
         for code, name in SUPPORTED_LANGUAGES.items()
@@ -182,9 +193,32 @@ async def start():
     lang = normalize_language(lang_res.get("payload", {}).get("value") if lang_res else None)
     cl.user_session.set("lang", lang)
 
-    session_id = create_session(user.identifier, lang)
+    # Asked explicitly rather than assumed: the final feedback addresses the teacher
+    # directly as "you", and several of the supported languages (e.g. Hindi) grammatically
+    # need the addressee's gender to conjugate that correctly. The AI persona's own lines
+    # stay hardcoded "Female" (its established identity) -- this is unrelated and is
+    # specifically about who is typing, not who the AI is.
+    gender_actions = [
+        cl.Action(name=gender, payload={"value": gender}, label=gender)
+        for gender in GENDERS
+    ]
+    gender_res = await cl.AskActionMessage(
+        content="🧑 For correct grammar in your feedback, how should we address you?",
+        actions=gender_actions
+    ).send()
+    teacher_gender = gender_res.get("payload", {}).get("value") if gender_res else None
+    cl.user_session.set("teacher_gender", teacher_gender)
+
+    session_id = create_session(user.identifier, lang, teacher_gender)
     cl.user_session.set("session_id", session_id)
     cl.user_session.set("session_memory", ConversationBufferMemory(return_messages=True))
+
+    # Judge chains (per-turn evaluator + session-final feedback) are built once from a
+    # fixed model, independent of whichever model the participant ends up being taught
+    # by below -- see setup_agent's docstring for why they're never rebuilt afterward.
+    judge_llm = get_llm(FINAL_FEEDBACK_MODEL)
+    cl.user_session.set("evaluator_chain", build_evaluator_chain(judge_llm))
+    cl.user_session.set("final_feedback_chain", build_final_feedback_chain(judge_llm))
 
     settings = await cl.ChatSettings(
         [
@@ -240,19 +274,13 @@ async def start():
 
     llm = cl.user_session.get("llm")
 
-    # Step 2: Build chains + vectorstore for chosen topic
-    student_chain, vs = build_student_chain(llm, user_topic, catalog)
-    evaluator_chain = build_evaluator_chain(llm)
-    scorer_chain = build_scorer_chain(llm)
-    final_scorer_chain = build_final_scorer_chain(llm)
+    # Step 2: Build the student chain + vectorstore for the chosen topic
+    vs = build_vectorstore(user_topic, catalog)
+    student_chain = build_student_chain_only(llm)
     cl.user_session.set("student_chain", student_chain)
     cl.user_session.set("vs", vs)
-    cl.user_session.set("evaluator_chain", evaluator_chain)
-    cl.user_session.set("scorer_chain", scorer_chain)
-    cl.user_session.set("final_scorer_chain", final_scorer_chain)
 
-    # Step 3: Generate subtopics (ONE API call)
-    # subtopics = generate_subtopics(llm, vs)  # returns list of 10 standard subtopics
+    # Step 3: Subtopics come straight from the catalog
     subtopics = catalog[user_topic]["topics"]
     cl.user_session.set("subtopics", subtopics)
 
@@ -271,39 +299,40 @@ async def start():
         await cl.Message(content=await _localize(f"⚠️ '{chosen_subtopic}' is not a valid subtopic. Restart and try again.", lang)).send()
         return
 
-    # Step 5: Generate student doubts/questions for the chosen subtopic (ONE API call)
-    # 3 questions x 2 follow-ups each = 6 teacher turns per session (see below).
-    qa_pool = generate_qa_for_subtopic(llm, vs, chosen_subtopic, n=3)  # returns list of QAPair
-
-    # Step 6: Store in session
-    cl.user_session.set("qa_pool", qa_pool)
-    cl.user_session.set("qa_index", 0)
+    # Step 5: Session state. turn/visible_transcript_en are new -- turn drives
+    # decide_completion(), visible_transcript_en is an English-only record (separate
+    # from Chainlit's own session_memory, which stores translated display text for
+    # on_chat_resume only) that feeds the judge chains.
     cl.user_session.set("topic", user_topic)
     cl.user_session.set("subtopic", chosen_subtopic)
-    cl.user_session.set("followup_count", 0)
+    cl.user_session.set("turn", 0)
+    cl.user_session.set("visible_transcript_en", [])
     session_memory = cl.user_session.get("session_memory")
 
-    # Step 7: Kick off conversation
-    if qa_pool:
-        first_q = qa_pool[0].question
-        content_en = (
-            f"👩‍🎓 Student: Great! Let’s start with **{chosen_subtopic}**. "
-            f"Here’s my first question:\n\n{first_q}"
-        )
-        message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
-        await message.send()
-        session_memory.chat_memory.add_ai_message(message.content)
-    else:
-        content_en = f"👩‍🎓 Student: I don’t have any questions for {chosen_subtopic} yet."
-        message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
-        await message.send()
-        session_memory.chat_memory.add_ai_message(message.content)
+    # Step 6: Kick off conversation with a dynamically generated opening question --
+    # replaces the old pre-baked qa_pool entirely. Mirrors the finetuned side: this
+    # bootstrap is never persisted as a turn (no save_teacher/save_student/save_evaluator
+    # call, no "user" line in visible_transcript_en), and `turn` stays at 0 until the
+    # first real teacher answer.
+    opening_student = generate_opening_question(student_chain, vs, chosen_subtopic)
+    opening_en = outbound_text(opening_student)
+    content_en = (
+        f"👩‍🎓 Student: Great! Let’s start with **{chosen_subtopic}**. "
+        f"Here’s my first question:\n\n{opening_en}"
+    )
+    message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
+    await message.send()
+    session_memory.chat_memory.add_ai_message(message.content)
+    cl.user_session.set("visible_transcript_en", [{"role": "assistant", "content": opening_en}])
 
 
 
 # ------------------- MAIN LOOP ------------------- #
 async def handle_teacher_turn(teacher_explanation: str):
-    """Handle one teacher turn: student response, evaluation, and scoring.
+    """Handle one teacher turn: grounded student response, ungrounded judge evaluation,
+    adaptive completion -- mirrors teach2learn-portal's mechanics exactly except for the
+    one deliberate difference (the student stays retrieval-grounded via `vs`; the judges
+    never are).
 
     Shared by both typed messages (on_message) and dictated ones (on_audio_end) —
     a transcribed explanation goes through exactly the same pipeline as a typed one.
@@ -312,13 +341,10 @@ async def handle_teacher_turn(teacher_explanation: str):
     session_id = cl.user_session.get("session_id")
     session_memory = cl.user_session.get("session_memory")
     lang = cl.user_session.get("lang", "en")
+    teacher_gender = cl.user_session.get("teacher_gender")
     if not cl_user:
         await cl.Message(content=await _localize("❌ User not authenticated.", lang)).send()
         return
-
-    model_choice = cl.user_session.get("model", "gemini-1.5-flash")
-
-    print(model_choice)
 
     # Extract normalized fields
     user_id = cl_user.identifier
@@ -332,126 +358,122 @@ async def handle_teacher_turn(teacher_explanation: str):
     student_chain = cl.user_session.get("student_chain")
     vs = cl.user_session.get("vs")
     evaluator_chain = cl.user_session.get("evaluator_chain")
-    scorer_chain = cl.user_session.get("scorer_chain")
-    qa_pool = cl.user_session.get("qa_pool", [])
-    qa_index = cl.user_session.get("qa_index", 0)
-    followup_count = cl.user_session.get("followup_count", 0)
-    # Fetch all previous interactions of this session
+    subtopic = cl.user_session.get("subtopic")
+    turn = cl.user_session.get("turn", 0)
+    visible_transcript_en = cl.user_session.get("visible_transcript_en", [])
     session_interaction_ids = fetch_session_interaction_ids(session_id)
 
     # Create new interaction entry
     interaction_id = create_interaction(session_id)
 
-    # 1️⃣ Teacher provides explanation. The student/evaluator/scorer agents and every
-    # stored record only ever see English; translate here, once, at the boundary.
+    # 1️⃣ Teacher provides explanation. The student/judge chains and every stored record
+    # only ever see English; translate here, once, at the boundary.
     translator = get_translation_service()
     teacher_explanation_en = await translator.to_english(teacher_explanation, lang)
     teacher_model = TeacherResponse(message=teacher_explanation_en)
     save_teacher(interaction_id, teacher_model)
     session_memory.chat_memory.add_user_message(teacher_explanation_en)
 
-    # Expected answer from QA pool
-    expected_answer = qa_pool[qa_index].a if qa_index < len(qa_pool) else ""
+    last_ai_en = next(
+        (item["content"] for item in reversed(visible_transcript_en) if item["role"] == "assistant"),
+        "",
+    )
+    visible_transcript_en = [*visible_transcript_en, {"role": "user", "content": teacher_explanation_en}]
+
     student_memory = fetch_student_memory(session_interaction_ids)
-    # 2️⃣ Student generates response, grounded in the retrieved course material for
-    # what the teacher just said — previously vs was returned by build_student_chain
-    # and never used again, so the student judged every explanation ungrounded.
+
+    # 2️⃣ Student (grounded) and judge (ungrounded) run concurrently -- mirrors the
+    # finetuned side's concurrent question/evaluator tasks. Neither chain offers an
+    # async .invoke, so each runs in its own thread rather than blocking the other.
     context_docs = vs.similarity_search(teacher_explanation_en, k=4)
     context = "\n\n".join(doc.page_content for doc in context_docs)
-    student_llm_response = student_chain.invoke({
-        "teacher_explanation": teacher_explanation_en,
-        "student_memory": student_memory,
-        "context": context,
-    })
 
-    if isinstance(student_llm_response['text'], StudentResponse):
-        student_model = student_llm_response['text']
-    else:
-        student_model = StudentResponse.parse_raw(student_llm_response['text'])
+    student_llm_response, evaluator_result = await asyncio.gather(
+        asyncio.to_thread(
+            student_chain.invoke,
+            {
+                "teacher_explanation": teacher_explanation_en,
+                "student_memory": student_memory,
+                "context": context,
+            },
+        ),
+        asyncio.to_thread(
+            evaluator_chain.invoke,
+            {
+                "subtopic": subtopic,
+                "last_ai_en": last_ai_en,
+                "teacher_explanation_en": teacher_explanation_en,
+            },
+        ),
+        return_exceptions=True,
+    )
 
+    if isinstance(student_llm_response, BaseException):
+        raise student_llm_response
+
+    student_text = student_llm_response["text"]
+    student_model = student_text if isinstance(student_text, StudentResponse) else StudentResponse.parse_raw(student_text)
     save_student(interaction_id, student_model)
 
-    # 3️⃣ Evaluator assesses
-    evaluator_llm_response = evaluator_chain.invoke({
-        "expected_explanation": expected_answer,
-        "teacher_explanation": teacher_explanation_en,
-        "student_question": qa_pool[qa_index].question,
-        "student_followup_question": student_model.message,
-        "student_response": student_model.json()
-    })
-
-    if isinstance(evaluator_llm_response['text'], EvaluatorResponse):
-        evaluator_model = evaluator_llm_response['text']
+    # 3️⃣ Evaluator. No local-model fallback exists on this side (a single LLM access
+    # point via OpenRouter, unlike the finetuned side's fork-branch fallback) -- on
+    # failure, degrade to turn_evaluation=None and keep the session going.
+    turn_evaluation = None
+    if not isinstance(evaluator_result, BaseException):
+        evaluator_text = evaluator_result["text"]
+        turn_evaluation = evaluator_text if isinstance(evaluator_text, TurnEvaluationResponse) else TurnEvaluationResponse.parse_raw(evaluator_text)
+        turn += 1
+        save_evaluator(interaction_id, turn_evaluation, turn, last_ai_en, teacher_explanation_en)
     else:
-        evaluator_model = EvaluatorResponse.parse_raw(
-            evaluator_llm_response['text'])
+        turn += 1
 
-    save_evaluator(interaction_id, evaluator_model)
+    outbound = outbound_text(student_model)
+    visible_transcript_en = [*visible_transcript_en, {"role": "assistant", "content": outbound}]
+    cl.user_session.set("visible_transcript_en", visible_transcript_en)
+    cl.user_session.set("turn", turn)
 
-    # 4️⃣ Scorer computes metrics
-    scorer_llm_response = scorer_chain.invoke({
-        "teacher_explanation": teacher_explanation_en,
-        "student_question": qa_pool[qa_index].question,
-        "student_followup_question": student_model.message,
-        "student_response": student_model.json(),
-        "evaluator_comments": evaluator_model.json()
-    })
+    # 4️⃣ Adaptive completion -- same decide_completion() as the finetuned side.
+    evaluations = fetch_session_evaluations(session_id)
+    decision = decide_completion(evaluations, turn)
 
-    if isinstance(scorer_llm_response['text'], ScorerResponse):
-        scorer_model = scorer_llm_response['text']
-    else:
-        scorer_model = ScorerResponse.parse_raw(scorer_llm_response)
-
-    save_scorer(interaction_id, scorer_model)
-
-    # 5️⃣ Continue conversation
-    # 2 follow-ups per question x 3 questions = 6 teacher turns per session, matching
-    # the finetuned portal's session length (was 3x5=15, which read as "never ends").
-    if student_model.message and followup_count < 2:
-        followup_count += 1
-        student_message = (
-            await translator.from_english(student_model.message, lang, speaker_gender="Female")
-            if lang != "en"
-            else student_model.message
-        )
-        message = cl.Message(content=f"👩‍🎓 Student: {student_message}")
+    if not decision.complete:
+        outbound_localized = await _localize(f"👩‍🎓 Student: {outbound}", lang, speaker_gender="Female")
+        message = cl.Message(content=outbound_localized)
         await message.send()
         session_memory.chat_memory.add_ai_message(message.content)
-    else:
-        if qa_index >= len(qa_pool)-1:
-            message = cl.Message(
-                content=await _localize(
-                    "👩‍🎓 Student: Thank you for clarifying all my questions!", lang, speaker_gender="Female"
-                )
-            )
-            stop_input()
-            final_scorer_chain = cl.user_session.get("final_scorer_chain")
-            interaction_scores = fetch_session_scores(session_id)
-            print(interaction_scores)
-            final_scorer_response = final_scorer_chain.invoke({
-                "interaction_scores": interaction_scores
-            })
-            if isinstance(final_scorer_response['text'], FinalScorerResponse):
-                final_scorer_model = final_scorer_response['text']
-            else:
-                final_scorer_model = FinalScorerResponse.parse_raw(final_scorer_response)
-            await present_final_score(final_scorer_model, lang)
-            stop_input()
-        else:
-            followup_count = 0
-            message = cl.Message(
-                content=await _localize("👩‍🎓 Student: I have another question!", lang, speaker_gender="Female")
-            )
-            await message.send()
-            session_memory.chat_memory.add_ai_message(message.content)
-            qa_index += 1
-            cl.user_session.set("qa_index", qa_index)
-            if qa_index < len(qa_pool):
-                next_q = qa_pool[qa_index].question
-                if lang != "en":
-                    next_q = await translator.from_english(next_q, lang, speaker_gender="Female")
-                await cl.Message(content=f"👩‍🎓 Student: {next_q}").send()
-    cl.user_session.set("followup_count", followup_count)
+        return
+
+    # 5️⃣ Session complete.
+    message = cl.Message(content=await _localize(completion_message(subtopic), lang, speaker_gender="Female"))
+    await message.send()
+    session_memory.chat_memory.add_ai_message(message.content)
+    stop_input()
+
+    fallback = build_deterministic_feedback(fetch_session_turns(session_id))
+    final_feedback_chain = cl.user_session.get("final_feedback_chain")
+    transcript_text = "\n".join(
+        f"{'Human teacher' if item['role'] == 'user' else 'AI learner'}: {item['content']}"
+        for item in visible_transcript_en
+    )
+    try:
+        final_response = final_feedback_chain.invoke({"transcript": transcript_text})
+        final_text = final_response["text"]
+        final_model = final_text if isinstance(final_text, FinalFeedbackResponse) else FinalFeedbackResponse.parse_raw(final_text)
+        result = {
+            "strengths": final_model.strengths[:2] or fallback["strengths"],
+            "improvements": final_model.improvements[:2] or fallback["improvements"],
+            "summary": final_model.summary or fallback["summary"],
+            "final_level": fallback["final_level"],
+            "assessment_count": fallback["assessment_count"],
+            "generation": "independent_final_evaluator",
+        }
+    except Exception as exc:
+        print(f"final_feedback_failed: {exc}")
+        result = fallback
+
+    save_final_feedback(session_id, result)
+    await present_final_score(result, lang, teacher_gender)
+    stop_input()
 
 
 @cl.on_message
