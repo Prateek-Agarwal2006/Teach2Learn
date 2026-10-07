@@ -263,6 +263,14 @@ def language_for(session: dict) -> str:
     return normalize_language(session.get("metadata", {}).get("lang"))
 
 
+def teacher_gender_for(session: dict) -> str | None:
+    """Return the participant-chosen gender stored in session metadata, used only to
+    grammatically address the teacher correctly in their own final feedback -- never
+    to be confused with the AI persona's own hardcoded "Female" speaker_gender."""
+    gender = session.get("metadata", {}).get("teacher_gender")
+    return gender if gender in {"Male", "Female"} else None
+
+
 async def localized_messages(messages: list[dict[str, Any]], lang: str) -> list[dict[str, Any]]:
     """Render stored English transcript text in the participant's language.
 
@@ -287,15 +295,22 @@ async def localized_messages(messages: list[dict[str, Any]], lang: str) -> list[
     return [{**item, "content": text} for item, text in zip(messages, contents)]
 
 
-async def localized_feedback(feedback: dict[str, Any] | None, lang: str) -> dict[str, Any] | None:
-    """Translate the participant-facing feedback fields only."""
+async def localized_feedback(
+    feedback: dict[str, Any] | None, lang: str, teacher_gender: str | None = None
+) -> dict[str, Any] | None:
+    """Translate the participant-facing feedback fields only.
+
+    This feedback addresses the teacher directly as "you", so -- unlike localized_messages,
+    which deliberately never guesses the teacher's gender -- a real gender hint belongs
+    here. It's the participant's own stated gender (collected at session start), not a
+    guess, so it doesn't fall under that same restriction."""
     if lang == "en" or not feedback:
         return feedback
     translator = get_translation_service()
     strengths, improvements, summary = await asyncio.gather(
-        translator.all_from_english([str(item) for item in feedback.get("strengths", [])], lang),
-        translator.all_from_english([str(item) for item in feedback.get("improvements", [])], lang),
-        translator.from_english(str(feedback.get("summary", "")), lang),
+        translator.all_from_english([str(item) for item in feedback.get("strengths", [])], lang, speaker_gender=teacher_gender),
+        translator.all_from_english([str(item) for item in feedback.get("improvements", [])], lang, speaker_gender=teacher_gender),
+        translator.from_english(str(feedback.get("summary", "")), lang, speaker_gender=teacher_gender),
     )
     return {**feedback, "strengths": strengths, "improvements": improvements, "summary": summary}
 
@@ -711,6 +726,7 @@ async def start_study(
     topic: str = Form(...),
     subtopic: str = Form(...),
     lang: str = Form(default="en"),
+    teacher_gender: str = Form(default=""),
 ):
     participant = participant_for(request)
     if not participant:
@@ -750,6 +766,7 @@ async def start_study(
             "turn": 0,
             "study_variant": "hci",
             "lang": normalize_language(lang),
+            "teacher_gender": teacher_gender if teacher_gender in {"Male", "Female"} else None,
             "survey_instrument": INSTRUMENT_ID if settings.student_questionnaire_enabled else None,
         },
         opening_message={"role": "assistant", "content": opening, "turn": 0},
@@ -1001,7 +1018,9 @@ async def complete(request: Request, session_id: str):
         return RedirectResponse(f"{BASE_PATH}/sessions/{session_id}/thanks", status_code=303)
     result = await final_feedback_result(session)
     context = complete_page_context(session, result)
-    context["teaching_feedback"] = await localized_feedback(context["teaching_feedback"], language_for(session))
+    context["teaching_feedback"] = await localized_feedback(
+        context["teaching_feedback"], language_for(session), teacher_gender_for(session)
+    )
     return render(request, "complete.html", **context)
 
 
@@ -1027,7 +1046,9 @@ async def submit_survey(
             survey_error=str(exc),
             form_values={key: str(value) for key, value in form.items()},
         )
-        context["teaching_feedback"] = await localized_feedback(context["teaching_feedback"], language_for(session))
+        context["teaching_feedback"] = await localized_feedback(
+            context["teaching_feedback"], language_for(session), teacher_gender_for(session)
+        )
         response = render(request, "complete.html", **context)
         response.status_code = 422
         return response
@@ -1065,7 +1086,7 @@ async def history_detail(request: Request, session_id: str):
         "history_detail.html",
         session=session_view(session),
         messages=await localized_messages(transcripts.read(session_id), lang),
-        teaching_feedback=await localized_feedback(feedback, lang),
+        teaching_feedback=await localized_feedback(feedback, lang, teacher_gender_for(session)),
     )
 
 
