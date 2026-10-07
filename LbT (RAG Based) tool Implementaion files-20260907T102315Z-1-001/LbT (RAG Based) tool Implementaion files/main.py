@@ -433,7 +433,15 @@ async def handle_teacher_turn(teacher_explanation: str):
     cl.user_session.set("turn", turn)
 
     # 4️⃣ Adaptive completion -- same decide_completion() as the finetuned side.
+    # fetch_session_evaluations() naturally omits this turn entirely when the evaluator
+    # failed (nothing was saved for it), which would otherwise leave evaluations[-1]
+    # silently pointing at a STALE prior turn instead of signaling "this turn is
+    # unscored". Append an explicit None so decide_completion sees exactly what the
+    # finetuned side's decide_completion([*prior_evaluations, turn_evaluation], turn)
+    # sees -- a real gap, never mistaken for an old good score.
     evaluations = fetch_session_evaluations(session_id)
+    if turn_evaluation is None:
+        evaluations = [*evaluations, None]
     decision = decide_completion(evaluations, turn)
 
     if not decision.complete:
