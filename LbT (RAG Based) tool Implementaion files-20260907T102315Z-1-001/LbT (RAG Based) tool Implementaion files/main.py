@@ -35,6 +35,7 @@ from memory import (
 )
 from translation import SUPPORTED_LANGUAGES, normalize_language, get_translation_service
 from transcription import get_transcription_service
+from topics import TOPICS
 
 GENDERS = ["Male", "Female"]
 FINAL_FEEDBACK_MODEL = os.getenv("FINAL_FEEDBACK_MODEL", "openai/gpt-5.6-luna")
@@ -263,8 +264,13 @@ async def start():
 
     cl.user_session.set("catalog", catalog)
 
-    # Step 1: Show main topics
-    actions = [cl.Action(name=t, payload={"value": t}, label=t) for t in catalog.keys()]
+    # Step 1: Show main subjects. Labeled with TOPICS's friendly name (e.g. "Computer
+    # Programming") rather than the raw catalog key -- matches the finetuned portal's
+    # subject picker, which never showed the bare "cp"/"dsa"/etc. key to begin with.
+    actions = [
+        cl.Action(name=t, payload={"value": t}, label=TOPICS.get(t, {}).get("name", t))
+        for t in catalog.keys()
+    ]
     actions_res = await cl.AskActionMessage(
         content=await _localize("📚 Here are the available subjects. Please choose one:", lang),
         actions=actions
@@ -286,14 +292,32 @@ async def start():
     cl.user_session.set("student_chain", student_chain)
     cl.user_session.set("vs", vs)
 
-    # Step 3: Subtopics come straight from the catalog
-    subtopics = catalog[user_topic]["topics"]
-    cl.user_session.set("subtopics", subtopics)
+    # Step 3: Show topics within the chosen subject (mirrors the finetuned portal's
+    # 2-level subject -> topic -> subtopic hierarchy exactly, sourced from the same
+    # TOPICS data -- see topics.py's module docstring).
+    subject_topics = TOPICS[user_topic]["topics"]
+    topic_actions = [
+        cl.Action(name=tid, payload={"value": tid}, label=t["name"])
+        for tid, t in subject_topics.items()
+    ]
+    topic_res = await cl.AskActionMessage(
+        content=await _localize(f"📂 Here are the topics for **{TOPICS[user_topic]['name']}**. Please choose one:", lang),
+        actions=topic_actions
+    ).send()
 
-    # Step 4: Show subtopics to user and let them choose
+    chosen_topic_id = ""
+    if topic_res and topic_res.get("payload").get("value"):
+        chosen_topic_id = topic_res.get("payload").get("value")
+
+    if chosen_topic_id not in subject_topics:
+        await cl.Message(content=await _localize(f"⚠️ '{chosen_topic_id}' is not a valid topic. Restart and try again.", lang)).send()
+        return
+
+    # Step 4: Show the subtopics within the chosen topic and let them choose
+    subtopics = subject_topics[chosen_topic_id]["subtopics"]
     subtopic_actions = [cl.Action(name=s, payload={"value": s}, label=s) for s in subtopics]
     subtopic_res = await cl.AskActionMessage(
-        content=await _localize(f"📖 Here are the topics for **{user_topic}**. Please choose one:", lang),
+        content=await _localize(f"📖 Here are the subtopics for **{subject_topics[chosen_topic_id]['name']}**. Please choose one:", lang),
         actions=subtopic_actions
     ).send()
 
