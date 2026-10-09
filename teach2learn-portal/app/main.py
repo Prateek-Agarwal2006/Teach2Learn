@@ -264,20 +264,27 @@ def language_for(session: dict) -> str:
 
 
 def teacher_gender_for(session: dict) -> str | None:
-    """Return the participant-chosen gender stored in session metadata, used only to
-    grammatically address the teacher correctly in their own final feedback -- never
-    to be confused with the AI persona's own hardcoded "Female" speaker_gender."""
+    """Return the participant-chosen gender stored in session metadata -- used to
+    grammatically address the teacher correctly both in their final feedback and in
+    the AI's own mid-conversation dialogue, which is almost always a question
+    addressed to them ("Can *you* give me an example?")."""
     gender = session.get("metadata", {}).get("teacher_gender")
     return gender if gender in {"Male", "Female"} else None
 
 
-async def localized_messages(messages: list[dict[str, Any]], lang: str) -> list[dict[str, Any]]:
+async def localized_messages(
+    messages: list[dict[str, Any]], lang: str, teacher_gender: str | None = None
+) -> list[dict[str, Any]]:
     """Render stored English transcript text in the participant's language.
 
-    Only the AI student's own turns get a speaker_gender hint (matching its
-    established 👩‍🎓 persona) -- the teacher's own turns are re-translated here too
-    when history is redisplayed, and guessing a gender for the teacher's own words
-    would be putting words in their mouth, not the AI's.
+    Only the AI student's own turns get a speaker_gender hint -- the teacher's own
+    turns are re-translated here too when history is redisplayed, and guessing a
+    gender for the teacher's own words would be putting words in their mouth.
+
+    That hint is the teacher's own stated gender, not a fixed persona gender: the
+    AI's dialogue is almost always a question addressed to the teacher ("Can *you*
+    give me an example?"), so the gender-sensitive clause in these sentences is
+    usually about the teacher being addressed, not the AI itself.
     """
     if lang == "en":
         return messages
@@ -287,7 +294,7 @@ async def localized_messages(messages: list[dict[str, Any]], lang: str) -> list[
             translator.from_english(
                 str(item.get("content", "")),
                 lang,
-                speaker_gender="Female" if item.get("role") == "assistant" else None,
+                speaker_gender=teacher_gender if item.get("role") == "assistant" else None,
             )
             for item in messages
         )
@@ -789,7 +796,7 @@ async def session_page(request: Request, session_id: str):
         request,
         "chat.html",
         session=view,
-        messages=await localized_messages(transcripts.read(session_id), view["lang"]),
+        messages=await localized_messages(transcripts.read(session_id), view["lang"], teacher_gender_for(session)),
         turn=view["turn"],
         voice_input_enabled=get_transcription_service().is_enabled(),
     )
@@ -857,6 +864,13 @@ async def chat_socket(websocket: WebSocket, session_id: str):
                 continue
             content = str(payload.get("message", "")).strip()[:2000]
             user_lang = language_for(session)
+            # The AI's own dialogue almost always takes the grammatical form of a
+            # question addressed to the teacher ("Can *you* give me an example?"), so
+            # the gender-sensitive clause in these sentences is usually about the
+            # teacher, not the AI itself -- passing the AI's own fixed identity here
+            # was misgendering the teacher on nearly every turn. Use the teacher's own
+            # stated gender instead.
+            ai_speaker_gender = teacher_gender_for(session)
             translator = get_translation_service()
             turn = int(session["metadata"].get("turn", 0)) + 1
             try:
@@ -915,7 +929,7 @@ async def chat_socket(websocket: WebSocket, session_id: str):
                         {
                             "status": "evaluating",
                             "content": await translator.from_english(
-                                generation.content, user_lang, speaker_gender="Female"
+                                generation.content, user_lang, speaker_gender=ai_speaker_gender
                             ),
                             "turn": turn,
                             "done": False,
@@ -994,7 +1008,7 @@ async def chat_socket(websocket: WebSocket, session_id: str):
                 {
                     "content": None
                     if preview_sent
-                    else await translator.from_english(public_content, user_lang, speaker_gender="Female"),
+                    else await translator.from_english(public_content, user_lang, speaker_gender=ai_speaker_gender),
                     "turn": turn,
                     "done": True,
                     "complete": decision.complete,
@@ -1085,7 +1099,7 @@ async def history_detail(request: Request, session_id: str):
         request,
         "history_detail.html",
         session=session_view(session),
-        messages=await localized_messages(transcripts.read(session_id), lang),
+        messages=await localized_messages(transcripts.read(session_id), lang, teacher_gender_for(session)),
         teaching_feedback=await localized_feedback(feedback, lang, teacher_gender_for(session)),
     )
 
