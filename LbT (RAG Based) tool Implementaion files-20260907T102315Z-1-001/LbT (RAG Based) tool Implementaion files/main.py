@@ -65,8 +65,12 @@ async def _localize(text: str, lang: str, speaker_gender: str | None = None) -> 
     round trip (simple single-codepoint emoji like ⚠️/📚 do), so this keeps
     every message's prefix visually consistent regardless of that quirk.
 
-    speaker_gender is only meaningful for the AI student's own lines (matching its
-    established persona) -- pass it there, never for text addressed to the teacher.
+    speaker_gender is only meaningful for the AI student's own lines, and should be
+    the *teacher's* stated gender, not a fixed persona gender: the AI's dialogue is
+    almost always a question addressed to the teacher ("Can *you* give me an
+    example?"), so the gender-sensitive clause in these sentences is usually about
+    the teacher being addressed. Never pass it for text addressed to the teacher in
+    a context where it would represent a guess rather than their own stated value.
     """
     prefix = ""
     match = _EMOJI_PREFIX_RE.match(text)
@@ -104,10 +108,10 @@ async def present_final_score(result: dict, lang: str, teacher_gender: str | Non
     into the participant's teaching language. The judge chains themselves never see
     anything but English; only this presentation layer is translated.
 
-    This feedback addresses the teacher directly as "you" -- unlike the AI persona's own
-    lines (always gendered "Female" to match its established identity), the correct
-    grammatical gender here is the *teacher's*, which is why it's asked up front at
-    start() rather than assumed."""
+    This feedback addresses the teacher directly as "you", so the correct grammatical
+    gender here is the teacher's own, which is why it's asked up front at start()
+    rather than assumed -- same reasoning as the AI's own mid-conversation dialogue,
+    which also addresses the teacher far more often than it speaks about itself."""
     if lang != "en":
         translator = get_translation_service()
         result = {
@@ -193,11 +197,13 @@ async def start():
     lang = normalize_language(lang_res.get("payload", {}).get("value") if lang_res else None)
     cl.user_session.set("lang", lang)
 
-    # Asked explicitly rather than assumed: the final feedback addresses the teacher
-    # directly as "you", and several of the supported languages (e.g. Hindi) grammatically
-    # need the addressee's gender to conjugate that correctly. The AI persona's own lines
-    # stay hardcoded "Female" (its established identity) -- this is unrelated and is
-    # specifically about who is typing, not who the AI is.
+    # Asked explicitly rather than assumed: the final feedback and the AI's own
+    # dialogue both need this. The AI's lines are almost always a question addressed
+    # to the teacher ("Can *you* give me an example?"), so the gender-sensitive
+    # clause in those sentences is usually about the teacher being addressed, not a
+    # fixed "AI persona gender" -- a hardcoded "Female" here was misgendering the
+    # teacher on nearly every turn regardless of what they'd select, confirmed via
+    # direct Sarvam translation checks (e.g. "aap...sakti hain" vs "sakte hain").
     gender_actions = [
         cl.Action(name=gender, payload={"value": gender}, label=gender)
         for gender in GENDERS
@@ -320,7 +326,7 @@ async def start():
         f"👩‍🎓 Student: Great! Let’s start with **{chosen_subtopic}**. "
         f"Here’s my first question:\n\n{opening_en}"
     )
-    message = cl.Message(content=await _localize(content_en, lang, speaker_gender="Female"))
+    message = cl.Message(content=await _localize(content_en, lang, speaker_gender=teacher_gender))
     await message.send()
     session_memory.chat_memory.add_ai_message(message.content)
     cl.user_session.set("visible_transcript_en", [{"role": "assistant", "content": opening_en}])
@@ -445,14 +451,14 @@ async def handle_teacher_turn(teacher_explanation: str):
     decision = decide_completion(evaluations, turn)
 
     if not decision.complete:
-        outbound_localized = await _localize(f"👩‍🎓 Student: {outbound}", lang, speaker_gender="Female")
+        outbound_localized = await _localize(f"👩‍🎓 Student: {outbound}", lang, speaker_gender=teacher_gender)
         message = cl.Message(content=outbound_localized)
         await message.send()
         session_memory.chat_memory.add_ai_message(message.content)
         return
 
     # 5️⃣ Session complete.
-    message = cl.Message(content=await _localize(completion_message(subtopic), lang, speaker_gender="Female"))
+    message = cl.Message(content=await _localize(completion_message(subtopic), lang, speaker_gender=teacher_gender))
     await message.send()
     session_memory.chat_memory.add_ai_message(message.content)
     stop_input()
