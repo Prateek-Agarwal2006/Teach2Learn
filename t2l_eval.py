@@ -575,8 +575,11 @@ def measure(session: dict) -> dict[str, float]:
     if any(not f for f, _ in labelled):
         out["challenge_when_clean"] = statistics.mean(c for f, c in labelled if not f)
     if session["condition"] != "scripted":
-        out["turns"] = float(len(turns))
-        out["completed"] = float(bool(session["completion"]) and session["completion"]["reason"] == "knowledge_threshold")
+        # A session cut short by an unusable reply made no completion decision; reliability
+        # already charges for it.
+        if kinds[-1] != "invalid":
+            out["turns"] = float(len(turns))
+            out["completed"] = float(bool(session["completion"]) and session["completion"]["reason"] == "knowledge_threshold")
         out["teacher_words"] = statistics.mean(len(t["teacher"].split()) for t in turns)
     targeted = [t["flaw_targeted"] for t in turns if t.get("flaw_targeted") is not None]
     if targeted:
@@ -701,6 +704,123 @@ def contrasts(measured: list[tuple[dict, dict]]) -> list[tuple[dict, dict]]:
     return out
 
 
+# The final score. Each dimension's weight, then its metrics, which count equally within it.
+# Every metric goes onto a fixed 0..1 scale, never rescaled to the learners in the run:
+# "up" is a rate where higher is better, "down" is 1 - rate, "fewer" is (1 - x) / 2 for a
+# contrast in -1..1 that should be negative. Agreed 2026-10-14, before any fine-tuned results were scored.
+WEIGHTS = {
+    "reliability": (0.10, {"valid": "up", "invalid_turns": "down", "opening_is_question": "up"}),
+    "questioning": (0.25, {"productive": "up", "deep_question": "up", "why_how": "up", "builds_on_earlier": "up",
+                           "no_question": "down", "repeats": "down", "self_repeat": "down"}),
+    "novice_role": (0.15, {"stays_novice": "up", "echo": "down", "distinct_2": "up"}),
+    # False alarms weigh on their own: inside flaw catching, a learner that challenges
+    # every turn would score well.
+    "flaw_catching": (0.20, {"challenge_when_flawed": "up", "flaw_targeted": "up", "flaw_caught": "up", "detection_speed": "up"}),
+    "no_false_alarms": (0.15, {"challenge_when_clean": "down"}),
+    "responds_to_teaching": (0.15, {"good_completed": "up", "vague_minus_good_completed": "fewer",
+                                    "omit_minus_good_completed": "fewer", "error_minus_good_completed": "fewer"}),
+}
+UNSCORED = {
+    "learner_words, length_ratio, turns": "no direction is better",
+    "teacher_words, key_points_covered": "measure the simulated teacher",
+    "learner_seconds": "measures hardware: an API from a laptop against a local GPU",
+    "elicited_score, elicited_level, grade_trend, *_minus_good_elicited_score": "grade the teacher's answers",
+    "*_minus_good_turns": "the same reaction as the completion contrasts",
+    "net_flaw_detection": "both of its parts are scored",
+    "detection_delay": "scored as detection_speed, which also counts flaws never caught",
+    "feedback_names_flaw": "written by the one shared judge, not by either system",
+}
+SCALE = {"up": lambda x: x, "down": lambda x: 1 - x, "fewer": lambda x: (1 - x) / 2}
+
+
+def learner_cells(measured: list[tuple[dict, dict]], derived: list[tuple[dict, dict]], max_turns: int = 6) -> dict:
+    """learner -> lesson -> metric: session values pooled over teacher types, completion
+    under the accurate teacher only, plus that lesson's teaching contrasts."""
+    pooled = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for s, v in measured:
+        cell = pooled[f"{s['system']} · {s['model']}"][s["lesson_id"]]
+        for m, x in v.items():
+            cell[m].append(x)
+        if "flaw_caught" in v:
+            # A flaw never caught counts as the slowest catch, not as a missing value.
+            cell["detection_speed"].append(1 - v["detection_delay"] / (max_turns - 1) if v["flaw_caught"] else 0.0)
+        if s["condition"] == "good" and "completed" in v:
+            cell["good_completed"].append(v["completed"])
+    cells = {who: {lesson: {m: statistics.mean(x) for m, x in ms.items()} for lesson, ms in lessons.items()} for who, lessons in pooled.items()}
+    for s, v in derived:
+        cells.setdefault(f"{s['system']} · {s['model']}", {}).setdefault(s["lesson_id"], {}).update(v)
+    return cells
+
+
+def final_score(lessons: dict, sample: list[str], weights: dict) -> tuple[float, dict[str, float]]:
+    """0-100 for one learner over the sampled lessons. A metric is averaged over the lessons
+    that have it; a dimension or metric with no values drops out and the rest are reweighted."""
+    dims = {}
+    for dim, (_, metrics) in weights.items():
+        got = []
+        for m, kind in metrics.items():
+            xs = [lessons[i][m] for i in sample if m in lessons.get(i, {})]
+            if xs:
+                got.append(min(1.0, max(0.0, SCALE[kind](statistics.mean(xs)))))
+        if got:
+            dims[dim] = 100 * statistics.mean(got)
+    total = sum(weights[d][0] for d in dims)
+    return (sum(weights[d][0] * x for d, x in dims.items()) / total if total else float("nan")), dims
+
+
+def composite(cells: dict, draws: int = 1000) -> None:
+    print("\n### Final score: weights\n\n| dimension | weight | metrics (scale) |\n|---|---:|---|")
+    for dim, (w, metrics) in WEIGHTS.items():
+        print(f"| {dim} | {w:.0%} | " + ", ".join(f"{m} ({k})" for m, k in metrics.items()) + " |")
+    print("\nNot scored, reported only: " + "; ".join(f"{m} ({why})" for m, why in UNSCORED.items()))
+    learners = sorted(cells)
+    lessons = sorted({i for c in cells.values() for i in c})
+    scored = {m for _, ms in WEIGHTS.values() for m in ms}
+    have = {who: {m for c in cells[who].values() for m in c} & scored for who in learners}
+    for who in learners:
+        if missing := set.union(*have.values()) - have[who]:
+            print(f"\n**Warning:** {who} has no {', '.join(sorted(missing))}; its score reweights the rest.")
+    equal = {d: (1 / len(WEIGHTS), ms) for d, (_, ms) in WEIGHTS.items()}
+    drop = {d: {k: v for k, v in WEIGHTS.items() if k != d} for d in WEIGHTS}
+    # The same lesson draws for every learner, so the comparisons stay paired.
+    rng = random.Random(0)
+    boot = defaultdict(list)
+    for _ in range(draws):
+        sample = rng.choices(lessons, k=len(lessons))
+        got = {who: final_score(cells[who], sample, WEIGHTS)[0] for who in learners}
+        best = max(got, key=got.get)
+        for who, x in got.items():
+            boot[who].append(x)
+            boot[who + " first"].append(float(who == best))
+    def ci(xs: list[float]) -> tuple[float, float]:
+        # A draw holding none of a learner's lessons has no score.
+        xs = sorted(x for x in xs if x == x)
+        return (xs[int(len(xs) * 0.025)], xs[int(len(xs) * 0.975)]) if xs else (float("nan"), float("nan"))
+    rank = lambda weights: {who: r for r, who in enumerate(sorted(learners, key=lambda w: -final_score(cells[w], lessons, weights)[0]), 1)}  # noqa: E731
+    main, flat, without = rank(WEIGHTS), rank(equal), {d: rank(w) for d, w in drop.items()}
+    print("\n### Final score, 0-100, by learner\n\n95% CI from resampling the lessons; rank under equal dimension weights; "
+          "rank with each dimension left out\n")
+    print("| learner | score [95% CI] | P(first) | " + " | ".join(WEIGHTS) + " | rank | equal-weight rank | ranks leaving one out |")
+    print("|---|---|---:|" + "---:|" * len(WEIGHTS) + "---:|---:|---|")
+    for who in sorted(learners, key=main.get):
+        total, dims = final_score(cells[who], lessons, WEIGHTS)
+        lo, hi = ci(boot[who])
+        print(f"| {who} | {total:.1f} [{lo:.1f}, {hi:.1f}] | {statistics.mean(boot[who + ' first']):.2f} | "
+              + " | ".join(f"{dims[d]:.1f}" if d in dims else "-" for d in WEIGHTS)
+              + f" | {main[who]} | {flat[who]} | " + " ".join(str(without[d][who]) for d in WEIGHTS) + " |")
+    gaps = [(f"{a} vs {b}", f"ft · {a}", f"rag · {b}") for a, b in PAIRS.items() if f"ft · {a}" in cells and f"rag · {b}" in cells]
+    if gaps:
+        print("\n### Final score: RAG minus fine-tuned, same base model\n\n| pair | gap [95% CI] |\n|---|---|")
+        for name, ft, rag in gaps:
+            diffs = [r - f for r, f in zip(boot[rag], boot[ft])]
+            lo, hi = ci(diffs)
+            print(f"| {name} | {final_score(cells[rag], lessons, WEIGHTS)[0] - final_score(cells[ft], lessons, WEIGHTS)[0]:+.1f} [{lo:+.1f}, {hi:+.1f}] |")
+        diffs = [statistics.mean(boot[r][k] - boot[f][k] for _, f, r in gaps) for k in range(draws)]
+        lo, hi = ci(diffs)
+        point = statistics.mean(final_score(cells[r], lessons, WEIGHTS)[0] - final_score(cells[f], lessons, WEIGHTS)[0] for _, f, r in gaps)
+        print(f"| mean of the {len(gaps)} pairs | {point:+.1f} [{lo:+.1f}, {hi:+.1f}] |")
+
+
 def comparisons_for(rows: list[tuple[dict, dict]]) -> list[tuple[str, list, list]]:
     side = lambda system, model=None: [(s["lesson_id"], v) for s, v in rows if s["system"] == system and model in (None, s["model"])]  # noqa: E731
     deployed = [(s["lesson_id"], v) for s, v in rows if s["system"] == "ft" and DEPLOYED.get(s["subject"]) == s["model"]]
@@ -735,6 +855,7 @@ def score(paths: list[str], force: bool = False) -> None:
         models = sorted({f"{s['system']} · {s['model']}" for s, _ in derived})
         table("Teaching contrasts, by model", {k: [v for s, v in derived if f"{s['system']} · {s['model']}" == k] for k in models}, names)
         gap_table("Teaching contrasts: RAG minus fine-tuned", comparisons_for(derived), names)
+    composite(learner_cells(measured, derived))
     phrasing(sessions)
     by_cell = defaultdict(list)
     for s in sessions:
@@ -814,6 +935,15 @@ def selfcheck() -> None:
     assert "learner_seconds" in got and 0 < got["echo"] <= 1 and 0 < got["distinct_2"] <= 1, got
     derived = contrasts([(sim, got), ({**sim, "condition": "good"}, got)])
     assert derived[0][1]["error_minus_good_turns"] == 0.0, derived
+    # Final score: a learner perfect on every scored metric gets 100, its opposite 0, and
+    # a flaw caught at the first chance counts as the fastest catch.
+    best = {m: 1.0 if k == "up" else 0.0 for _, ms in WEIGHTS.values() for m, k in ms.items()}
+    best.update({m: -1.0 for m, k in best.items() if WEIGHTS["responds_to_teaching"][1].get(m) == "fewer"})
+    worst = {m: (1.0 if x == 0.0 else 0.0) if x >= 0 else 1.0 for m, x in best.items()}
+    assert final_score({"l": best}, ["l"], WEIGHTS)[0] == 100 and final_score({"l": worst}, ["l"], WEIGHTS)[0] == 0
+    assert "completed" not in measure({**broken, "condition": "error"}) and "turns" not in measure({**broken, "condition": "error"})
+    cells = learner_cells([(sim, got), ({**sim, "condition": "good"}, got)], derived)
+    assert cells["ft · m"]["dsa/x"]["detection_speed"] == 1.0 and cells["ft · m"]["dsa/x"]["good_completed"] == 1.0, cells
     assert wilcoxon_p(list(range(1, 11))) < 0.01 and wilcoxon_p([-1, 1] * 5) == 1.0
     assert holm({"a": 0.01, "b": 0.04}) == {"a": 0.02, "b": 0.04}
     # A learner that breaks at turn 2 keeps turn 1 and is charged one invalid turn.
