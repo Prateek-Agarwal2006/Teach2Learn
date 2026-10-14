@@ -176,7 +176,7 @@ def test_health_is_minimal_and_catalog_requires_authentication():
         )
         set_participant_session(client, participant["id"])
         catalog = client.get("/api/catalog").json()
-        assert len(catalog["models"]) == 7
+        assert len(catalog["models"]) == 4
         assert set(catalog["subjects"]) == {"cp", "dsa", "oop_java", "os"}
 
 
