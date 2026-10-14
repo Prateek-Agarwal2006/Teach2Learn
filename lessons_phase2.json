@@ -4,8 +4,7 @@
   "Phase 2 lesson bank: English-only comparison of the fine-tuned and RAG systems.",
   "The first 24 lessons are copied unchanged from lessons.json (version 1, reviewed 2026-09-08).",
   "The other 24 add one subtopic from topics version 1 did not cover. They were drafted with an AI assistant on 2026-10-14",
-  "and stay reviewed: false until someone who knows the material has read and accepted each script;",
-  "t2l_eval.py refuses to run unreviewed lessons unless --allow-unreviewed is passed.",
+  "and read and accepted by snehDesai10 on 2026-10-14. Any script edited after that date must go back to reviewed: false.",
   "With a simulated teacher, a script is not read out: it is the list of points the teacher model knows and answers from."
  ],
  "lessons": [
@@ -306,7 +305,7 @@
    "subject": "cp",
    "topic_id": "foundations",
    "subtopic": "Compilation, testing, and debugging",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A C compiler translates the whole source file into machine code before the program runs, which is why syntax errors are reported before any line of the program has executed.",
     "A program that compiles cleanly can still be wrong, because the compiler only checks that the code is legal C, not that it does what the programmer intended.",
@@ -318,7 +317,7 @@
    "subject": "cp",
    "topic_id": "functions",
    "subtopic": "Parameters and return values",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "C passes arguments to a function by value, so the function receives its own copy and changing a parameter inside the function does not change the caller's variable.",
     "A function can hand back only one value through its return statement, which is why functions that must produce several results take pointers to the caller's variables instead.",
@@ -330,7 +329,7 @@
    "subject": "cp",
    "topic_id": "functions",
    "subtopic": "Scope and storage classes",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A variable declared inside a function is local to that function, so other functions cannot see it and it disappears when the function returns.",
     "Marking a local variable static keeps its value between calls, because it is stored for the whole run of the program instead of being created afresh on each call.",
@@ -342,7 +341,7 @@
    "subject": "cp",
    "topic_id": "arrays-strings",
    "subtopic": "Characters and strings",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A string in C is an array of characters that ends with the null character '\\0', which is how functions like strlen know where the text stops.",
     "Because the array must also hold that terminating null, storing a five-letter word needs room for six characters.",
@@ -354,7 +353,7 @@
    "subject": "cp",
    "topic_id": "structured",
    "subtopic": "Recursion",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A recursive function solves a problem by calling itself on a smaller version of the same problem until it reaches a base case it can answer directly.",
     "Without a base case that is always reached, the calls never stop and the program eventually crashes when the call stack runs out of space.",
@@ -366,7 +365,7 @@
    "subject": "cp",
    "topic_id": "files-structures",
    "subtopic": "Linked lists",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A linked list stores each element in a separate node that holds the data and a pointer to the next node, so the elements do not need to sit next to each other in memory.",
     "Inserting at the front of a linked list takes constant time, because only the new node's pointer and the head pointer change and no other element has to move.",
@@ -378,7 +377,7 @@
    "subject": "dsa",
    "topic_id": "maps",
    "subtopic": "Hash functions",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A hash function turns a key into an index of the table, which lets a map find a key's slot directly instead of searching through every entry.",
     "A good hash function spreads keys evenly over the table, because when many keys land in the same slot lookups slow down towards a linear search.",
@@ -390,7 +389,7 @@
    "subject": "dsa",
    "topic_id": "search",
    "subtopic": "Binary search trees",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "In a binary search tree every key in a node's left subtree is smaller than the node's key and every key in its right subtree is larger, so a search can discard one subtree at every step.",
     "Searching, inserting and deleting take time proportional to the height of the tree, which is about log n when the tree is balanced.",
@@ -402,7 +401,7 @@
    "subject": "dsa",
    "topic_id": "design",
    "subtopic": "Divide and conquer",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Divide and conquer splits a problem into smaller independent subproblems, solves each one recursively, and combines their answers into the answer for the whole problem.",
     "Merge sort is the classic example, because it sorts each half of the array separately and then merges the two sorted halves in linear time.",
@@ -414,7 +413,7 @@
    "subject": "dsa",
    "topic_id": "graphs",
    "subtopic": "DFS and BFS",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Breadth-first search visits all the vertices one edge away from the start before any that are two edges away, because it keeps the vertices waiting to be visited in a queue.",
     "Depth-first search follows one path as far as it can before backing up, which comes from using a stack or recursion instead of a queue.",
@@ -426,7 +425,7 @@
    "subject": "dsa",
    "topic_id": "graph-optimization",
    "subtopic": "Shortest paths",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Dijkstra's algorithm finds the shortest paths from one source by repeatedly settling the unvisited vertex with the smallest known distance.",
     "It only works when no edge weight is negative, because it assumes that once a vertex is settled no later path can reach it more cheaply.",
@@ -438,7 +437,7 @@
    "subject": "dsa",
    "topic_id": "text-numeric",
    "subtopic": "Tries and string processing",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A trie stores a set of strings as a tree in which each edge is labelled with a character, so words that share a prefix share the path for that prefix.",
     "Looking up a word in a trie takes time proportional to the length of the word, no matter how many words the trie holds.",
@@ -450,7 +449,7 @@
    "subject": "oop_java",
    "topic_id": "java-foundations",
    "subtopic": "JVM and language basics",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "The Java compiler turns source code into bytecode rather than machine code, and the Java Virtual Machine runs that bytecode, which is why the same class file runs on any system with a JVM.",
     "Every Java program starts from a public static void main(String[] args) method, because that is the entry point the JVM looks for when it launches a class.",
@@ -462,7 +461,7 @@
    "subject": "oop_java",
    "topic_id": "oop-design",
    "subtopic": "Abstract classes and interfaces",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "An abstract class cannot be instantiated, because it is a partial design that subclasses complete by implementing its abstract methods.",
     "An interface lists methods that every implementing class promises to provide, which lets unrelated classes be used through the same type.",
@@ -474,7 +473,7 @@
    "subject": "oop_java",
    "topic_id": "packages-exceptions",
    "subtopic": "Exception handling",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "When an exception is thrown, Java stops the normal flow and looks back through the chain of method calls for a catch block that matches the exception's type.",
     "Checked exceptions such as IOException must be either caught or declared with throws, because the compiler insists that callers know these failures can happen.",
@@ -486,7 +485,7 @@
    "subject": "oop_java",
    "topic_id": "language-features",
    "subtopic": "Generics and lambdas",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Generics let a class like ArrayList<String> declare the type of element it holds, so the compiler catches an attempt to add the wrong type before the program runs.",
     "Generic type information is erased after compilation, which is why a program cannot create an array of a type parameter with new T[10].",
@@ -498,7 +497,7 @@
    "subject": "oop_java",
    "topic_id": "collections",
    "subtopic": "Lists, sets, and maps",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A List keeps elements in the order they were added and allows duplicates, while a Set refuses to store the same element twice.",
     "A HashSet decides whether two objects are duplicates using their equals and hashCode methods, so a class that overrides one must override the other consistently.",
@@ -510,7 +509,7 @@
    "subject": "oop_java",
    "topic_id": "io",
    "subtopic": "Streams and serialization",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Java I/O is built on streams, where byte streams like InputStream read raw bytes and readers and writers handle characters and their encoding.",
     "Wrapping a stream in a BufferedReader or BufferedInputStream speeds up reading, because data is fetched in large blocks instead of one byte at a time.",
@@ -522,7 +521,7 @@
    "subject": "os",
    "topic_id": "foundations",
    "subtopic": "System calls",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A system call is how a user program asks the operating system kernel to do something it is not allowed to do itself, such as reading a file or creating a process.",
     "Making a system call switches the processor from user mode to kernel mode, so the kernel can check the request before touching hardware or another process's memory.",
@@ -534,7 +533,7 @@
    "subject": "os",
    "topic_id": "synchronization",
    "subtopic": "Semaphores and monitors",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A semaphore is an integer counter with two atomic operations, wait and signal, where wait blocks the caller while the counter is zero.",
     "A binary semaphore that starts at one can protect a critical section, because only one process can get past wait before the next signal.",
@@ -546,7 +545,7 @@
    "subject": "os",
    "topic_id": "deadlocks",
    "subtopic": "Deadlock conditions",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A deadlock happens when each process in a group holds a resource and waits for one held by another process in the group, so none of them can ever continue.",
     "Four conditions must all hold at once for a deadlock: mutual exclusion, hold and wait, no preemption, and circular wait.",
@@ -558,7 +557,7 @@
    "subject": "os",
    "topic_id": "memory",
    "subtopic": "Paging and segmentation",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "Paging splits a process's memory into fixed-size pages and physical memory into frames of the same size, so any page can be placed in any free frame.",
     "A page table maps each page number to a frame number, which lets the process see contiguous addresses even though its frames are scattered.",
@@ -570,7 +569,7 @@
    "subject": "os",
    "topic_id": "file-systems",
    "subtopic": "Recovery and journaling",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "A crash in the middle of a file-system update can leave its structures inconsistent, for example a block marked as used that no file points to.",
     "A journaling file system first writes a description of each update to a log, so after a crash it can replay or discard incomplete operations instead of checking the whole disk.",
@@ -582,12 +581,14 @@
    "subject": "os",
    "topic_id": "storage-io",
    "subtopic": "Disk scheduling",
-   "reviewed": false,
+   "reviewed": true,
    "script": [
     "On a hard disk most of the time for a request goes into moving the head to the right track, so the order in which requests are served matters a lot for performance.",
     "Shortest-seek-time-first serves the request nearest the current head position, which reduces head movement but can starve requests that are far away.",
     "The SCAN or elevator algorithm sweeps the head from one end of the disk to the other serving requests on the way, which bounds how long any request waits."
    ]
   }
- ]
+ ],
+ "reviewed_by": "snehDesai10",
+ "reviewed_on": "2026-10-14"
 }
