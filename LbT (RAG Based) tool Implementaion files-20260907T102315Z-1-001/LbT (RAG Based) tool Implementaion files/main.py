@@ -15,7 +15,7 @@ from student_chain import (
 from evaluator_chain import build_evaluator_chain, build_final_feedback_chain
 from completion import decide_completion, completion_message
 from teaching_feedback import build_deterministic_feedback
-from models import StudentResponse, TeacherResponse, TurnEvaluationResponse, FinalFeedbackResponse, get_llm
+from models import StudentResponse, TeacherResponse, TurnEvaluationResponse, FinalFeedbackResponse, get_llm, get_student_llm
 from langchain.memory import ConversationBufferMemory
 from typing import Optional
 from pathlib import Path
@@ -157,7 +157,7 @@ async def setup_agent(settings):
     # confound in the model comparison.
     current_model = settings["Model"]
     print("Updated Model to: ", current_model)
-    llm = get_llm(current_model)
+    llm = get_student_llm(current_model)
     cl.user_session.set("llm", llm)
     cl.user_session.set("student_chain", build_student_chain_only(llm))
 
@@ -248,7 +248,7 @@ async def start():
             )
         ]
     ).send()
-    cl.user_session.set("llm", get_llm(settings["Model"]))
+    cl.user_session.set("llm", get_student_llm(settings["Model"]))
 
     # Load catalog
     if not CATALOG_PATH.exists():

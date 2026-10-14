@@ -56,3 +56,11 @@ def test_student_response_rating_is_tightened_to_two_values():
     StudentResponse(message="What about X?", rating="confused", reflection="Still unsure.", missing_points=[])
     with pytest.raises(Exception):
         StudentResponse(message=None, rating="needs work", reflection="Got it.", missing_points=[])
+
+
+def test_student_samples_like_the_finetuned_portal_and_judge_does_not():
+    from models import get_llm, get_student_llm
+
+    student = get_student_llm("any/model")
+    assert (student.temperature, student.top_p) == (0.2, 0.9)
+    assert get_llm("any/model").top_p is None
