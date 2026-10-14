@@ -55,6 +55,7 @@ from typing import Any
 PACKED_LESSONS = None
 HERE = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 LESSONS = "lessons_phase2.json"
+NETWORK_ERROR = re.compile(r"Connect|ReadTimeout|RemoteProtocol|ReadError|NetworkError|Temporary failure in name resolution")
 RAG_DIR = "LbT (RAG Based) tool Implementaion files-20260907T102315Z-1-001/LbT (RAG Based) tool Implementaion files"
 JUDGE_MODEL = os.getenv("T2L_JUDGE_MODEL", "openai/gpt-5.6-luna")
 # Adapters and the OpenRouter models built on the same base: the only pairs that speak to
@@ -467,11 +468,21 @@ async def run(args: argparse.Namespace) -> None:
                                 session = {**key, "system": learner.name, "subject": lesson["subject"], "turns": [], "completion": None, "error": f"unavailable: {why}"}
                             else:
                                 session = await run_session(learner, ctx, key, lesson)
+                                # A dropped network fails every session in seconds; wait for it
+                                # instead of burning through the rest of the run as errors.
+                                for wait in (60, 120, 300, 600, 900):
+                                    if not NETWORK_ERROR.search(session["error"] or ""):
+                                        break
+                                    log(f"network error, retrying in {wait}s: {session['error'][:80]}")
+                                    await asyncio.sleep(wait)
+                                    session = await run_session(learner, ctx, key, lesson)
                             output["sessions"].append(session)
                             log(f"{model} {lesson['id']} {condition} {lang} #{repeat}: "
                                 f"{len(session['turns'])} turns, {session['completion'] or session['error'] or 'open'}")
                             if args.out:
-                                Path(args.out).write_text(json.dumps(output, ensure_ascii=False, indent=1))
+                                # Write then rename, so a kill mid-write cannot corrupt the results.
+                                Path(args.out + ".tmp").write_text(json.dumps(output, ensure_ascii=False, indent=1))
+                                os.replace(args.out + ".tmp", args.out)
     if not args.out:
         print(json.dumps(output, ensure_ascii=False, indent=1))
 
