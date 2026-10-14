@@ -1,0 +1,593 @@
+{
+ "version": 2,
+ "notes": [
+  "Phase 2 lesson bank: English-only comparison of the fine-tuned and RAG systems.",
+  "The first 24 lessons are copied unchanged from lessons.json (version 1, reviewed 2026-09-08).",
+  "The other 24 add one subtopic from topics version 1 did not cover. They were drafted with an AI assistant on 2026-10-14",
+  "and stay reviewed: false until someone who knows the material has read and accepted each script;",
+  "t2l_eval.py refuses to run unreviewed lessons unless --allow-unreviewed is passed.",
+  "With a simulated teacher, a script is not read out: it is the list of points the teacher model knows and answers from."
+ ],
+ "lessons": [
+  {
+   "id": "cp/c-basics/types-variables-constants",
+   "subject": "cp",
+   "topic_id": "c-basics",
+   "subtopic": "Types, variables, and constants",
+   "reviewed": true,
+   "script": [
+    "Every variable in C has a type fixed at compile time, because the compiler has to know how many bytes to reserve and how to interpret the bits it finds there.",
+    "An int and a float of the same width store numbers in completely different layouts, so assigning one to the other converts the value rather than reusing the bits.",
+    "Declaring a value const tells the compiler it will never be assigned again, which lets it reject a whole class of mistakes before the program is ever run."
+   ]
+  },
+  {
+   "id": "cp/c-basics/operators-and-expressions",
+   "subject": "cp",
+   "topic_id": "c-basics",
+   "subtopic": "Operators and expressions",
+   "reviewed": true,
+   "script": [
+    "Operator precedence decides how an expression without brackets is grouped, so a star binds more tightly than a plus and the multiplication happens first.",
+    "Integer division in C throws away the remainder instead of rounding, which is why seven divided by two is three and not three point five.",
+    "The logical and operator stops evaluating as soon as its left side is false, so the right side can safely depend on the check that came before it."
+   ]
+  },
+  {
+   "id": "cp/control-flow/conditions-and-switch",
+   "subject": "cp",
+   "topic_id": "control-flow",
+   "subtopic": "Conditions and switch statements",
+   "reviewed": true,
+   "script": [
+    "An if statement picks one branch by evaluating a condition, and in C any non-zero value counts as true rather than only a dedicated boolean.",
+    "A switch compares one value against several constant labels, which reads more clearly than a long chain of else-if tests on the same variable.",
+    "Each case falls through into the next unless it ends with a break, so a missing break silently runs the code for every label below it."
+   ]
+  },
+  {
+   "id": "cp/control-flow/loops-and-sentinel-values",
+   "subject": "cp",
+   "topic_id": "control-flow",
+   "subtopic": "Loops and sentinel values",
+   "reviewed": true,
+   "script": [
+    "A for loop is the right choice when the number of repetitions is known in advance, because the counter, the test, and the update all sit in one header.",
+    "A while loop suits the case where the program keeps reading until some condition changes, since the number of iterations is not known before it starts.",
+    "A sentinel is a reserved value that marks the end of the input, so the loop can stop on the data itself instead of being told the count beforehand."
+   ]
+  },
+  {
+   "id": "cp/pointers/addresses-and-pointers",
+   "subject": "cp",
+   "topic_id": "pointers",
+   "subtopic": "Addresses and pointers",
+   "reviewed": true,
+   "script": [
+    "A pointer is a variable whose value is the address of another variable, so it tells you where something lives rather than what it is.",
+    "The ampersand operator takes the address of a variable and the star operator goes back the other way to read the value stored at an address.",
+    "Passing an address into a function lets that function change the caller's variable, because C otherwise copies every argument and the original stays untouched."
+   ]
+  },
+  {
+   "id": "cp/pointers/dynamic-memory-allocation",
+   "subject": "cp",
+   "topic_id": "pointers",
+   "subtopic": "Dynamic memory allocation",
+   "reviewed": true,
+   "carried_from": "LANGUAGE_TEST_RESULTS.md",
+   "script": [
+    "malloc reserves a block of memory on the heap while the program is running and returns a pointer to its first byte, because the size is not known at compile time.",
+    "Every successful malloc must be matched by exactly one free, otherwise the block stays reserved for the whole life of the program and the process leaks memory.",
+    "Using a pointer after its block has been freed is undefined behaviour, so it is good practice to set the pointer to NULL immediately after freeing it."
+   ]
+  },
+  {
+   "id": "dsa/analysis/asymptotic-notation",
+   "subject": "dsa",
+   "topic_id": "analysis",
+   "subtopic": "Asymptotic notation",
+   "reviewed": true,
+   "script": [
+    "Big-O describes how the running time grows as the input grows, which lets two algorithms be compared without measuring them on any particular machine.",
+    "Constant factors and lower-order terms are dropped, so three n squared plus five n is simply order n squared once the input is large enough.",
+    "Big-O is an upper bound rather than an exact cost, which is why an algorithm that is order n squared in the worst case can still be fast on typical inputs."
+   ]
+  },
+  {
+   "id": "dsa/analysis/recurrences",
+   "subject": "dsa",
+   "topic_id": "analysis",
+   "subtopic": "Recurrences",
+   "reviewed": true,
+   "script": [
+    "A recurrence expresses the cost of a recursive algorithm in terms of the cost of the smaller calls it makes, plus the work done to combine them.",
+    "Merge sort gives the recurrence T of n equals two T of n over two plus n, because it splits the array in half and then merges in linear time.",
+    "Solving that recurrence gives n log n, since the splitting produces log n levels and every level does a total of n work."
+   ]
+  },
+  {
+   "id": "dsa/linear/stacks",
+   "subject": "dsa",
+   "topic_id": "linear",
+   "subtopic": "Stacks",
+   "reviewed": true,
+   "script": [
+    "A stack only allows access at one end, so the last item pushed is always the first item popped and nothing in the middle can be reached directly.",
+    "That restriction is what makes it the natural structure for undo history and for the call stack, where the most recent call must finish first.",
+    "Both push and pop touch only the top element, so each costs constant time no matter how many items the stack is holding."
+   ]
+  },
+  {
+   "id": "dsa/linear/queues-and-deques",
+   "subject": "dsa",
+   "topic_id": "linear",
+   "subtopic": "Queues and deques",
+   "reviewed": true,
+   "script": [
+    "A queue adds at one end and removes at the other, so items leave in the order they arrived and no item can overtake the ones ahead of it.",
+    "Implementing a queue as a circular array avoids shifting every element after each removal, because the front and back indices wrap around instead.",
+    "A deque relaxes the rule and allows insertion and removal at both ends, which makes it a superset of both the stack and the queue."
+   ]
+  },
+  {
+   "id": "dsa/trees-heaps/tree-terminology-and-traversals",
+   "subject": "dsa",
+   "topic_id": "trees-heaps",
+   "subtopic": "Tree terminology and traversals",
+   "reviewed": true,
+   "script": [
+    "A tree is a set of nodes where every node except the root has exactly one parent, so there is precisely one path from the root to any node.",
+    "The height of a tree is the length of the longest root-to-leaf path, and it bounds the cost of any operation that walks down from the root.",
+    "An in-order traversal of a binary search tree visits the keys in sorted order, because it fully explores the left subtree before touching the node itself."
+   ]
+  },
+  {
+   "id": "dsa/trees-heaps/heaps",
+   "subject": "dsa",
+   "topic_id": "trees-heaps",
+   "subtopic": "Heaps",
+   "reviewed": true,
+   "carried_from": "LANGUAGE_TEST_RESULTS.md",
+   "script": [
+    "A binary heap is a complete binary tree where every parent is ordered against its children, so the smallest element is always sitting at the root.",
+    "Because the tree is complete, the heap can be stored in a plain array, where the children of index i live at 2i+1 and 2i+2 and no pointers are needed.",
+    "Inserting or removing an element only walks one path between a leaf and the root, so both operations cost logarithmic time in the number of elements."
+   ]
+  },
+  {
+   "id": "oop_java/classes/constructors",
+   "subject": "oop_java",
+   "topic_id": "classes",
+   "subtopic": "Constructors",
+   "reviewed": true,
+   "script": [
+    "A constructor runs once when an object is created, and its job is to leave the new object in a state where every method can safely be called.",
+    "Java supplies a no-argument constructor only when the class declares none, so writing any constructor at all removes that default.",
+    "Overloaded constructors let the same class be built from different inputs, and one can call another with this so the shared setup is written only once."
+   ]
+  },
+  {
+   "id": "oop_java/classes/access-control-and-object-identity",
+   "subject": "oop_java",
+   "topic_id": "classes",
+   "subtopic": "Access control and object identity",
+   "reviewed": true,
+   "script": [
+    "Declaring a field private stops code outside the class from touching it directly, so the class keeps control over every change to its own state.",
+    "The double-equals operator compares references rather than contents, so two distinct objects holding identical values are still not equal by that test.",
+    "Overriding equals means overriding hashCode as well, because collections like HashMap decide which bucket to search using the hash before they compare at all."
+   ]
+  },
+  {
+   "id": "oop_java/oop-design/inheritance",
+   "subject": "oop_java",
+   "topic_id": "oop-design",
+   "subtopic": "Inheritance",
+   "reviewed": true,
+   "script": [
+    "Inheritance lets a subclass reuse the fields and methods of its superclass, so shared behaviour is written once and specialised only where it differs.",
+    "A subclass constructor always runs its superclass constructor first, because the inherited part of the object has to be initialised before the new part.",
+    "Java allows only one superclass per class, which avoids the ambiguity that arises when the same method is inherited along two different paths."
+   ]
+  },
+  {
+   "id": "oop_java/oop-design/polymorphism",
+   "subject": "oop_java",
+   "topic_id": "oop-design",
+   "subtopic": "Polymorphism",
+   "reviewed": true,
+   "script": [
+    "A superclass reference can point at any subclass object, so one variable can hold different concrete types over the life of the program.",
+    "Which overriding method runs is decided at run time from the object's actual class, not at compile time from the type of the reference.",
+    "That is what lets a single loop over a list of shapes call draw on each one without knowing or caring which shape it is holding."
+   ]
+  },
+  {
+   "id": "oop_java/concurrency/threads",
+   "subject": "oop_java",
+   "topic_id": "concurrency",
+   "subtopic": "Threads",
+   "reviewed": true,
+   "script": [
+    "A thread is a separate flow of execution inside the same process, so all threads share the heap while each keeps its own stack.",
+    "Calling start hands the work to the scheduler and returns immediately, whereas calling run directly just executes the body on the current thread.",
+    "The order in which two independent threads make progress is not guaranteed, so a program that only works under one interleaving is already broken."
+   ]
+  },
+  {
+   "id": "oop_java/concurrency/synchronization-and-locks",
+   "subject": "oop_java",
+   "topic_id": "concurrency",
+   "subtopic": "Synchronization and locks",
+   "reviewed": true,
+   "carried_from": "LANGUAGE_TEST_RESULTS.md",
+   "script": [
+    "When two threads update the same field at once one update can be lost, because reading, changing, and writing back is not a single indivisible step.",
+    "A synchronized block lets only one thread hold the object's monitor at a time, so every other thread waits until that block finishes.",
+    "Acquiring two locks in different orders in different threads can deadlock, so the usual rule is to always take locks in one fixed global order."
+   ]
+  },
+  {
+   "id": "os/processes/process-lifecycle",
+   "subject": "os",
+   "topic_id": "processes",
+   "subtopic": "Process lifecycle",
+   "reviewed": true,
+   "script": [
+    "A process moves between the ready, running, and blocked states, and only the running state is actually holding a CPU at that moment.",
+    "A process that asks for input goes from running to blocked rather than staying on the CPU, because otherwise it would waste the processor doing nothing.",
+    "The operating system keeps a control block for each process holding its registers and program counter, which is what makes it possible to resume it later."
+   ]
+  },
+  {
+   "id": "os/processes/interprocess-communication",
+   "subject": "os",
+   "topic_id": "processes",
+   "subtopic": "Interprocess communication",
+   "reviewed": true,
+   "script": [
+    "Separate processes have separate address spaces, so one cannot simply read the other's variables and the operating system has to provide a channel.",
+    "A pipe carries a stream of bytes from one process to another, and the reader blocks when the pipe is empty rather than seeing partial data.",
+    "Message passing is easier to reason about than shared memory because the kernel handles the synchronisation, though it costs a copy on every exchange."
+   ]
+  },
+  {
+   "id": "os/threads-scheduling/multithreading",
+   "subject": "os",
+   "topic_id": "threads-scheduling",
+   "subtopic": "Multithreading",
+   "reviewed": true,
+   "script": [
+    "Threads within one process share the same address space, so switching between them is cheaper than switching between two separate processes.",
+    "That sharing is also the danger, because two threads writing the same variable can interleave in ways neither of them was written to expect.",
+    "A program that spends most of its time waiting on input and output can gain from threads even on a single core, since one thread runs while another waits."
+   ]
+  },
+  {
+   "id": "os/threads-scheduling/cpu-scheduling",
+   "subject": "os",
+   "topic_id": "threads-scheduling",
+   "subtopic": "CPU scheduling",
+   "reviewed": true,
+   "carried_from": "LANGUAGE_TEST_RESULTS.md",
+   "script": [
+    "The scheduler decides which ready process runs next on the CPU, because there are usually more runnable processes than cores.",
+    "Round-robin gives each process a fixed time quantum in turn, so no single process can starve the others while it holds the CPU.",
+    "A very small quantum wastes time on context switches, while a very large one makes the scheduler behave like plain first-come first-served."
+   ]
+  },
+  {
+   "id": "os/virtual-memory/demand-paging",
+   "subject": "os",
+   "topic_id": "virtual-memory",
+   "subtopic": "Demand paging",
+   "reviewed": true,
+   "script": [
+    "Demand paging loads a page into memory only when it is first touched, so a program can start running before all of it has been read from disk.",
+    "Touching a page that is not resident raises a page fault, and the operating system fetches it and restarts the instruction that faulted.",
+    "This lets the total size of running programs exceed physical memory, because only the pages actually being used need to be resident at any moment."
+   ]
+  },
+  {
+   "id": "os/virtual-memory/page-replacement",
+   "subject": "os",
+   "topic_id": "virtual-memory",
+   "subtopic": "Page replacement",
+   "reviewed": true,
+   "script": [
+    "When memory is full and a new page is needed, the operating system has to choose an existing page to evict to make room for it.",
+    "Least-recently-used approximates the ideal choice by assuming a page untouched for a long time is unlikely to be needed soon.",
+    "Evicting a page that has been modified costs an extra write back to disk, which is why a clean page is usually the cheaper victim."
+   ]
+  },
+  {
+   "id": "cp/foundations/compilation-testing-debugging",
+   "subject": "cp",
+   "topic_id": "foundations",
+   "subtopic": "Compilation, testing, and debugging",
+   "reviewed": false,
+   "script": [
+    "A C compiler translates the whole source file into machine code before the program runs, which is why syntax errors are reported before any line of the program has executed.",
+    "A program that compiles cleanly can still be wrong, because the compiler only checks that the code is legal C, not that it does what the programmer intended.",
+    "Testing with small inputs whose correct output is already known is the quickest way to find logic errors, since any difference points straight at the part of the program that misbehaves."
+   ]
+  },
+  {
+   "id": "cp/functions/parameters-and-return-values",
+   "subject": "cp",
+   "topic_id": "functions",
+   "subtopic": "Parameters and return values",
+   "reviewed": false,
+   "script": [
+    "C passes arguments to a function by value, so the function receives its own copy and changing a parameter inside the function does not change the caller's variable.",
+    "A function can hand back only one value through its return statement, which is why functions that must produce several results take pointers to the caller's variables instead.",
+    "Declaring a prototype before a function is called lets the compiler check that every call passes the right number and types of arguments."
+   ]
+  },
+  {
+   "id": "cp/functions/scope-and-storage-classes",
+   "subject": "cp",
+   "topic_id": "functions",
+   "subtopic": "Scope and storage classes",
+   "reviewed": false,
+   "script": [
+    "A variable declared inside a function is local to that function, so other functions cannot see it and it disappears when the function returns.",
+    "Marking a local variable static keeps its value between calls, because it is stored for the whole run of the program instead of being created afresh on each call.",
+    "Global variables can be read and changed from any function, which is convenient but makes bugs hard to trace because any part of the program might have modified them."
+   ]
+  },
+  {
+   "id": "cp/arrays-strings/characters-and-strings",
+   "subject": "cp",
+   "topic_id": "arrays-strings",
+   "subtopic": "Characters and strings",
+   "reviewed": false,
+   "script": [
+    "A string in C is an array of characters that ends with the null character '\\0', which is how functions like strlen know where the text stops.",
+    "Because the array must also hold that terminating null, storing a five-letter word needs room for six characters.",
+    "Two strings cannot be compared with ==, since that compares the addresses of the arrays, so strcmp has to be used to compare their contents character by character."
+   ]
+  },
+  {
+   "id": "cp/structured/recursion",
+   "subject": "cp",
+   "topic_id": "structured",
+   "subtopic": "Recursion",
+   "reviewed": false,
+   "script": [
+    "A recursive function solves a problem by calling itself on a smaller version of the same problem until it reaches a base case it can answer directly.",
+    "Without a base case that is always reached, the calls never stop and the program eventually crashes when the call stack runs out of space.",
+    "Each recursive call gets its own copy of the local variables on the stack, which is why factorial(n) can multiply n by factorial(n - 1) without the values interfering."
+   ]
+  },
+  {
+   "id": "cp/files-structures/linked-lists",
+   "subject": "cp",
+   "topic_id": "files-structures",
+   "subtopic": "Linked lists",
+   "reviewed": false,
+   "script": [
+    "A linked list stores each element in a separate node that holds the data and a pointer to the next node, so the elements do not need to sit next to each other in memory.",
+    "Inserting at the front of a linked list takes constant time, because only the new node's pointer and the head pointer change and no other element has to move.",
+    "Reaching the tenth element means following nine pointers from the head, so unlike an array a linked list cannot jump straight to a given position."
+   ]
+  },
+  {
+   "id": "dsa/maps/hash-functions",
+   "subject": "dsa",
+   "topic_id": "maps",
+   "subtopic": "Hash functions",
+   "reviewed": false,
+   "script": [
+    "A hash function turns a key into an index of the table, which lets a map find a key's slot directly instead of searching through every entry.",
+    "A good hash function spreads keys evenly over the table, because when many keys land in the same slot lookups slow down towards a linear search.",
+    "The same key must always produce the same hash value, otherwise a key stored earlier could never be found again."
+   ]
+  },
+  {
+   "id": "dsa/search/binary-search-trees",
+   "subject": "dsa",
+   "topic_id": "search",
+   "subtopic": "Binary search trees",
+   "reviewed": false,
+   "script": [
+    "In a binary search tree every key in a node's left subtree is smaller than the node's key and every key in its right subtree is larger, so a search can discard one subtree at every step.",
+    "Searching, inserting and deleting take time proportional to the height of the tree, which is about log n when the tree is balanced.",
+    "Inserting keys that are already sorted makes every new node a right child, so the tree degenerates into a chain of height n and searches become linear."
+   ]
+  },
+  {
+   "id": "dsa/design/divide-and-conquer",
+   "subject": "dsa",
+   "topic_id": "design",
+   "subtopic": "Divide and conquer",
+   "reviewed": false,
+   "script": [
+    "Divide and conquer splits a problem into smaller independent subproblems, solves each one recursively, and combines their answers into the answer for the whole problem.",
+    "Merge sort is the classic example, because it sorts each half of the array separately and then merges the two sorted halves in linear time.",
+    "Since merge sort halves the input about log n times and does linear work at each level, its running time is O(n log n)."
+   ]
+  },
+  {
+   "id": "dsa/graphs/dfs-and-bfs",
+   "subject": "dsa",
+   "topic_id": "graphs",
+   "subtopic": "DFS and BFS",
+   "reviewed": false,
+   "script": [
+    "Breadth-first search visits all the vertices one edge away from the start before any that are two edges away, because it keeps the vertices waiting to be visited in a queue.",
+    "Depth-first search follows one path as far as it can before backing up, which comes from using a stack or recursion instead of a queue.",
+    "Both searches must mark the vertices they have already visited, otherwise a cycle in the graph would make them loop forever."
+   ]
+  },
+  {
+   "id": "dsa/graph-optimization/shortest-paths",
+   "subject": "dsa",
+   "topic_id": "graph-optimization",
+   "subtopic": "Shortest paths",
+   "reviewed": false,
+   "script": [
+    "Dijkstra's algorithm finds the shortest paths from one source by repeatedly settling the unvisited vertex with the smallest known distance.",
+    "It only works when no edge weight is negative, because it assumes that once a vertex is settled no later path can reach it more cheaply.",
+    "In an unweighted graph a plain breadth-first search already gives shortest paths, since it reaches vertices in order of how many edges away they are."
+   ]
+  },
+  {
+   "id": "dsa/text-numeric/tries-and-string-processing",
+   "subject": "dsa",
+   "topic_id": "text-numeric",
+   "subtopic": "Tries and string processing",
+   "reviewed": false,
+   "script": [
+    "A trie stores a set of strings as a tree in which each edge is labelled with a character, so words that share a prefix share the path for that prefix.",
+    "Looking up a word in a trie takes time proportional to the length of the word, no matter how many words the trie holds.",
+    "This makes tries well suited to autocomplete, because all the words that start with a given prefix sit in the subtree below that prefix's node."
+   ]
+  },
+  {
+   "id": "oop_java/java-foundations/jvm-and-language-basics",
+   "subject": "oop_java",
+   "topic_id": "java-foundations",
+   "subtopic": "JVM and language basics",
+   "reviewed": false,
+   "script": [
+    "The Java compiler turns source code into bytecode rather than machine code, and the Java Virtual Machine runs that bytecode, which is why the same class file runs on any system with a JVM.",
+    "Every Java program starts from a public static void main(String[] args) method, because that is the entry point the JVM looks for when it launches a class.",
+    "The JVM frees objects automatically through garbage collection once nothing refers to them any more, so Java programmers never call free as they would in C."
+   ]
+  },
+  {
+   "id": "oop_java/oop-design/abstract-classes-and-interfaces",
+   "subject": "oop_java",
+   "topic_id": "oop-design",
+   "subtopic": "Abstract classes and interfaces",
+   "reviewed": false,
+   "script": [
+    "An abstract class cannot be instantiated, because it is a partial design that subclasses complete by implementing its abstract methods.",
+    "An interface lists methods that every implementing class promises to provide, which lets unrelated classes be used through the same type.",
+    "A Java class can extend only one class but can implement many interfaces, which is how Java offers some benefits of multiple inheritance without its ambiguities."
+   ]
+  },
+  {
+   "id": "oop_java/packages-exceptions/exception-handling",
+   "subject": "oop_java",
+   "topic_id": "packages-exceptions",
+   "subtopic": "Exception handling",
+   "reviewed": false,
+   "script": [
+    "When an exception is thrown, Java stops the normal flow and looks back through the chain of method calls for a catch block that matches the exception's type.",
+    "Checked exceptions such as IOException must be either caught or declared with throws, because the compiler insists that callers know these failures can happen.",
+    "Code in a finally block runs whether or not an exception occurred, which makes it the right place to release resources like open files."
+   ]
+  },
+  {
+   "id": "oop_java/language-features/generics-and-lambdas",
+   "subject": "oop_java",
+   "topic_id": "language-features",
+   "subtopic": "Generics and lambdas",
+   "reviewed": false,
+   "script": [
+    "Generics let a class like ArrayList<String> declare the type of element it holds, so the compiler catches an attempt to add the wrong type before the program runs.",
+    "Generic type information is erased after compilation, which is why a program cannot create an array of a type parameter with new T[10].",
+    "A lambda expression is a short way to implement an interface that has a single abstract method, such as passing a comparison rule to a sort."
+   ]
+  },
+  {
+   "id": "oop_java/collections/lists-sets-and-maps",
+   "subject": "oop_java",
+   "topic_id": "collections",
+   "subtopic": "Lists, sets, and maps",
+   "reviewed": false,
+   "script": [
+    "A List keeps elements in the order they were added and allows duplicates, while a Set refuses to store the same element twice.",
+    "A HashSet decides whether two objects are duplicates using their equals and hashCode methods, so a class that overrides one must override the other consistently.",
+    "A Map stores key-value pairs, and putting a second value under an existing key replaces the old value rather than adding a new entry."
+   ]
+  },
+  {
+   "id": "oop_java/io/streams-and-serialization",
+   "subject": "oop_java",
+   "topic_id": "io",
+   "subtopic": "Streams and serialization",
+   "reviewed": false,
+   "script": [
+    "Java I/O is built on streams, where byte streams like InputStream read raw bytes and readers and writers handle characters and their encoding.",
+    "Wrapping a stream in a BufferedReader or BufferedInputStream speeds up reading, because data is fetched in large blocks instead of one byte at a time.",
+    "Serialization turns an object into a sequence of bytes so it can be saved or sent, and Java only allows this for classes that implement Serializable."
+   ]
+  },
+  {
+   "id": "os/foundations/system-calls",
+   "subject": "os",
+   "topic_id": "foundations",
+   "subtopic": "System calls",
+   "reviewed": false,
+   "script": [
+    "A system call is how a user program asks the operating system kernel to do something it is not allowed to do itself, such as reading a file or creating a process.",
+    "Making a system call switches the processor from user mode to kernel mode, so the kernel can check the request before touching hardware or another process's memory.",
+    "Library functions like printf are not system calls themselves, but they eventually call ones like write to get the actual work done."
+   ]
+  },
+  {
+   "id": "os/synchronization/semaphores-and-monitors",
+   "subject": "os",
+   "topic_id": "synchronization",
+   "subtopic": "Semaphores and monitors",
+   "reviewed": false,
+   "script": [
+    "A semaphore is an integer counter with two atomic operations, wait and signal, where wait blocks the caller while the counter is zero.",
+    "A binary semaphore that starts at one can protect a critical section, because only one process can get past wait before the next signal.",
+    "A monitor packages shared data with the procedures that use it and lets only one thread run inside it at a time, which removes the risk of a forgotten wait or signal."
+   ]
+  },
+  {
+   "id": "os/deadlocks/deadlock-conditions",
+   "subject": "os",
+   "topic_id": "deadlocks",
+   "subtopic": "Deadlock conditions",
+   "reviewed": false,
+   "script": [
+    "A deadlock happens when each process in a group holds a resource and waits for one held by another process in the group, so none of them can ever continue.",
+    "Four conditions must all hold at once for a deadlock: mutual exclusion, hold and wait, no preemption, and circular wait.",
+    "Because all four are required, preventing any single one, for example by always acquiring locks in the same order, rules deadlock out."
+   ]
+  },
+  {
+   "id": "os/memory/paging-and-segmentation",
+   "subject": "os",
+   "topic_id": "memory",
+   "subtopic": "Paging and segmentation",
+   "reviewed": false,
+   "script": [
+    "Paging splits a process's memory into fixed-size pages and physical memory into frames of the same size, so any page can be placed in any free frame.",
+    "A page table maps each page number to a frame number, which lets the process see contiguous addresses even though its frames are scattered.",
+    "Segmentation instead divides memory into variable-sized pieces that match logical parts of the program such as code, stack and data, which can leave unusable gaps between segments."
+   ]
+  },
+  {
+   "id": "os/file-systems/recovery-and-journaling",
+   "subject": "os",
+   "topic_id": "file-systems",
+   "subtopic": "Recovery and journaling",
+   "reviewed": false,
+   "script": [
+    "A crash in the middle of a file-system update can leave its structures inconsistent, for example a block marked as used that no file points to.",
+    "A journaling file system first writes a description of each update to a log, so after a crash it can replay or discard incomplete operations instead of checking the whole disk.",
+    "Many journaling systems log only metadata changes and not file contents, which keeps the file system consistent but can still lose the most recently written data."
+   ]
+  },
+  {
+   "id": "os/storage-io/disk-scheduling",
+   "subject": "os",
+   "topic_id": "storage-io",
+   "subtopic": "Disk scheduling",
+   "reviewed": false,
+   "script": [
+    "On a hard disk most of the time for a request goes into moving the head to the right track, so the order in which requests are served matters a lot for performance.",
+    "Shortest-seek-time-first serves the request nearest the current head position, which reduces head movement but can starve requests that are far away.",
+    "The SCAN or elevator algorithm sweeps the head from one end of the disk to the other serving requests on the way, which bounds how long any request waits."
+   ]
+  }
+ ]
+}
