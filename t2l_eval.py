@@ -66,7 +66,7 @@ PAIRS = {
     "llama31": "meta-llama/llama-3.1-8b-instruct",
     "granite42": "ibm-granite/granite-4.2-8b",
 }
-# The portal's DEFAULT_SUBJECT_MODELS: what a participant gets today, against RAG's default gpt-4o.
+# The portal's DEFAULT_SUBJECT_MODELS: what a participant gets today, against RAG's default gpt-6.1-sol.
 DEPLOYED = {"cp": "qwen3", "dsa": "gemma2", "oop_java": "mistral", "os": "granite"}
 # Neither a learner on either side nor the judge.
 TEACHER_MODEL = os.getenv("T2L_TEACHER_MODEL", "anthropic/claude-sonnet-5.5")
@@ -824,7 +824,7 @@ def composite(cells: dict, draws: int = 1000) -> None:
 def comparisons_for(rows: list[tuple[dict, dict]]) -> list[tuple[str, list, list]]:
     side = lambda system, model=None: [(s["lesson_id"], v) for s, v in rows if s["system"] == system and model in (None, s["model"])]  # noqa: E731
     deployed = [(s["lesson_id"], v) for s, v in rows if s["system"] == "ft" and DEPLOYED.get(s["subject"]) == s["model"]]
-    return [("every model", side("ft"), side("rag")), ("as deployed", deployed, side("rag", "openai/gpt-4o")),
+    return [("every model", side("ft"), side("rag")), ("as deployed", deployed, side("rag", "openai/gpt-6.1-sol")),
             *[(f"{a} vs {b}", side("ft", a), side("rag", b)) for a, b in PAIRS.items()]]
 
 
