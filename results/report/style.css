@@ -1,0 +1,37 @@
+/* Print report: serif reading text, Inter for labels and figures. */
+:root { --ink: #1d2327; --muted: #5d6870; --rule: #d9dee2; --panel: #f3f5f6; --accent: #1f6f86; }
+@page { size: A4; margin: 16mm 15mm 16mm; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: var(--ink); font: 10.5pt/1.5 "Bitstream Charter", "C059", Georgia, serif; }
+h1, h2, h3, .eyebrow, .note, table, .legend, .chart text { font-family: "Inter", "Liberation Sans", Arial, sans-serif; }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 10pt; margin-bottom: 14pt; }
+.eyebrow { margin: 0; font-size: 8pt; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { margin: 4pt 0 2pt; font-size: 24pt; font-weight: 600; letter-spacing: -.01em; }
+.sub { margin: 0; color: var(--muted); }
+h2 { font-size: 13pt; font-weight: 600; margin: 16pt 0 4pt; }
+h3 { font-size: 10pt; font-weight: 600; margin: 10pt 0 2pt; }
+section { break-inside: auto; }
+.break { break-before: page; }
+.break > h2:first-child { margin-top: 0; }
+.summary { background: var(--panel); border-left: 3px solid var(--accent); padding: 4pt 14pt 8pt; }
+.summary h2 { margin-top: 8pt; }
+ul { margin: 4pt 0; padding-left: 14pt; display: grid; gap: 3pt; }
+.note { color: var(--muted); font-size: 8.5pt; margin: 0 0 6pt; line-height: 1.45; }
+table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin: 4pt 0 8pt; font-variant-numeric: tabular-nums; break-inside: avoid; }
+th { text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--ink); padding: 3pt 5pt; vertical-align: bottom; }
+td { border-bottom: 1px solid var(--rule); padding: 3pt 5pt; vertical-align: top; }
+td:first-child, table.num td { white-space: nowrap; }
+table.kv td:first-child, table.metrics td:first-child { white-space: normal; }
+table.num td:not(:first-child), table.num th:not(:first-child) { text-align: right; }
+table.kv td:first-child { width: 18%; font-weight: 600; }
+table.metrics td b { display: block; padding-top: 4pt; color: var(--accent); }
+.legend { display: flex; gap: 14pt; font-size: 8.5pt; color: var(--muted); margin: 2pt 0 4pt; }
+.legend i { display: inline-block; width: 8pt; height: 8pt; border-radius: 2pt; margin-right: 4pt; vertical-align: -1pt; }
+.chart { display: block; margin: 2pt 0 8pt; break-inside: avoid; }
+.chart .grid { stroke: #e6e9ec; stroke-width: 1; }
+.chart .axis { stroke: #9aa4ab; stroke-width: 1; }
+.chart .tick { font-size: 9px; fill: var(--muted); }
+.chart .lab { font-size: 11px; fill: var(--ink); }
+.chart .val { font-size: 9.5px; fill: var(--muted); }
+b { font-weight: 600; }
+h2, h3, .legend { break-after: avoid; }
