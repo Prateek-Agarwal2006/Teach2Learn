@@ -234,7 +234,8 @@ async def start():
                 label="Select Model",
                 values=[
                     # Frontier options. OpenRouter has withdrawn claude-3.7-sonnet and qwen3-8b.
-                    "openai/gpt-6.1-sol", "google/gemini-4-argon",
+                    # claude-sonnet-5 is the direct same-tier successor (confirmed live).
+                    "openai/gpt-6.1-sol", "google/gemini-4-argon", "anthropic/claude-sonnet-5",
                     # Same base models as the finetuned side's adapters (exact OpenRouter
                     # matches only, verified live) -- lets a session be run ungrounded on
                     # the identical base model a finetuned adapter was built on, for a
