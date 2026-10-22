@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Session history</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; line-height: 1.5; }
+  header { margin-bottom: 28px; }
+  header a.new { float: right; padding: 8px 16px; border-radius: 8px; background: #2563eb; color: #fff; text-decoration: none; font-size: 14px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.sub { color: #6b7280; margin: 0; }
+  ul.list { list-style: none; margin: 24px 0 0; padding: 0; }
+  ul.list li { border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 10px; }
+  ul.list a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; text-decoration: none; color: inherit; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; color: #2563eb; background: #eff6ff; border-radius: 6px; padding: 2px 8px; margin-bottom: 4px; }
+  .title { display: block; font-weight: 600; }
+  .meta { color: #6b7280; font-size: 13px; }
+  .right { text-align: right; white-space: nowrap; font-size: 13px; color: #6b7280; }
+  .status { display: inline-block; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .status-done { background: #dcfce7; color: #166534; }
+  .status-progress { background: #fef9c3; color: #854d0e; }
+  .empty { border: 1px dashed #d1d5db; border-radius: 10px; padding: 40px 20px; text-align: center; color: #6b7280; margin-top: 24px; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0b0f17; color: #e5e7eb; }
+    ul.list li { border-color: #1f2937; }
+    .tag { background: #1e293b; color: #60a5fa; }
+    .meta, .right, p.sub, .empty { color: #9ca3af; }
+    .empty { border-color: #374151; }
+    .status-done { background: #14532d; color: #bbf7d0; }
+    .status-progress { background: #713f12; color: #fde68a; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="new" href="{{ root }}/">New session</a>
+  <h1>Session history</h1>
+  <p class="sub">Review a previous teaching conversation.</p>
+</header>
+{% if sessions %}
+<ul class="list">
+  {% for item in sessions %}
+  <li>
+    <a href="{{ root }}/history/{{ item._id }}">
+      <span>
+        <span class="tag">{{ item.subject|default('unlabeled', true)|replace('_', ' ')|upper }}</span>
+        <span class="title">{{ item.subtopic|default(item.topic, true)|default('(untitled session)', true) }}</span><br>
+        <span class="meta">{{ item.topic|default('', true) }}{% if item.topic and item.model %} · {% endif %}{{ item.model|default('', true) }}</span>
+      </span>
+      <span class="right">
+        <span class="status {{ 'status-done' if item.completed else 'status-progress' }}">{{ 'Completed' if item.completed else 'In progress' }}</span><br>
+        <time datetime="{{ item.timestamp }}">{{ item.timestamp.strftime('%d %b %Y, %H:%M') if item.timestamp else '' }}</time>
+      </span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty">
+  <p>No sessions yet. Once you finish teaching a topic, it'll show up here.</p>
+</div>
+{% endif %}
+</body>
+</html>

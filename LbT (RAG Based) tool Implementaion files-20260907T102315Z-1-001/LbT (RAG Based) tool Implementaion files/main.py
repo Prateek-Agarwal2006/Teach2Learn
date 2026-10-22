@@ -32,13 +32,84 @@ from memory import (
         fetch_session_evaluations,
         fetch_session_turns,
         save_final_feedback,
+        update_session_topic,
+        get_session,
+        list_user_sessions,
+        get_final_feedback,
 )
 from translation import SUPPORTED_LANGUAGES, normalize_language, get_translation_service
 from transcription import get_transcription_service
 from topics import TOPICS
 
+from chainlit.server import app as _fastapi_app
+from chainlit.auth import get_current_user
+from chainlit.user import User, PersistedUser
+from chainlit.config import config as cl_config
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
 GENDERS = ["Male", "Female"]
 FINAL_FEEDBACK_MODEL = os.getenv("FINAL_FEEDBACK_MODEL", "openai/gpt-5.6-luna")
+
+# -------------------------------
+# History -- plain authenticated routes on Chainlit's own FastAPI app, not
+# Chainlit's native data layer/thread-resume (that would need a schema adapter
+# from this project's session/interaction/teacher/student/evaluator Mongo
+# collections onto Chainlit's ThreadDict/StepDict shape). get_current_user
+# reads the same access_token cookie/JWT the existing Google OAuth login
+# already sets -- no separate auth mechanism needed. Routes must carry
+# config.run.root_path themselves (only set when started with --root-path,
+# e.g. production's /rag_multilingual) since they bypass Chainlit's own
+# APIRouter(prefix=root_path) entirely.
+# -------------------------------
+_templates = Jinja2Templates(directory="templates")
+_ROOT = cl_config.run.root_path
+_history_router = APIRouter()
+
+
+@_history_router.get(f"{_ROOT}/history", response_class=HTMLResponse)
+async def history_page(request: Request, current_user: Optional[User | PersistedUser] = Depends(get_current_user)):
+    if not current_user:
+        raise HTTPException(401, "Unauthorized")
+    sessions = list_user_sessions(current_user.identifier)
+    for s in sessions:
+        s["completed"] = get_final_feedback(s["_id"]) is not None
+    return _templates.TemplateResponse(request, "history.html", {"sessions": sessions, "root": _ROOT})
+
+
+@_history_router.get(f"{_ROOT}/history/{{session_id}}", response_class=HTMLResponse)
+async def history_detail_page(
+    request: Request,
+    session_id: str,
+    current_user: Optional[User | PersistedUser] = Depends(get_current_user),
+):
+    session = get_session(session_id)
+    if not current_user or not session or session.get("user_id") != current_user.identifier:
+        raise HTTPException(404, "Not found")
+    turns = fetch_session_evaluations(session_id)
+    feedback = get_final_feedback(session_id)
+    return _templates.TemplateResponse(
+        request, "history_detail.html", {"session": session, "turns": turns, "feedback": feedback, "root": _ROOT}
+    )
+
+
+# Chainlit's own routes (health, auth, the SPA catch-all, ...) don't live as flat
+# entries on app.router.routes -- app.include_router(router) (chainlit/server.py)
+# wraps them in a private fastapi.routing._IncludedRouter, whose real route list is
+# nested at .include_context.included_router.routes, ending with the SPA catch-all
+# (`GET {root_path}/{full_path:path}`, chainlit/server.py). A plain @app.get(...)
+# registers as a sibling top-level entry and is never reached -- empirically verified
+# live: the catch-all served its SPA shell for every request before this splice was
+# added. Inserting directly into that same nested list, just before the catch-all,
+# is what actually makes these routes reachable; this reaches into a private
+# (underscore-prefixed) FastAPI/Chainlit internal, so a Chainlit/FastAPI upgrade could
+# require re-verifying this still finds the catch-all at the same place.
+_included = next(r for r in reversed(_fastapi_app.router.routes) if type(r).__name__ == "_IncludedRouter")
+_chainlit_routes = _included.include_context.included_router.routes
+_catch_all_idx = next(i for i, r in enumerate(_chainlit_routes) if getattr(r, "path", None) == f"{_ROOT}/{{full_path:path}}")
+for _offset, _route in enumerate(_history_router.routes):
+    _chainlit_routes.insert(_catch_all_idx + _offset, _route)
 
 
 load_dotenv()
@@ -341,6 +412,11 @@ async def start():
     # on_chat_resume only) that feeds the judge chains.
     cl.user_session.set("topic", user_topic)
     cl.user_session.set("subtopic", chosen_subtopic)
+    update_session_topic(
+        session_id, user_topic, chosen_topic_id,
+        subject_topics[chosen_topic_id]["name"],
+        chosen_subtopic, settings["Model"],
+    )
     cl.user_session.set("turn", 0)
     cl.user_session.set("visible_transcript_en", [])
     session_memory = cl.user_session.get("session_memory")

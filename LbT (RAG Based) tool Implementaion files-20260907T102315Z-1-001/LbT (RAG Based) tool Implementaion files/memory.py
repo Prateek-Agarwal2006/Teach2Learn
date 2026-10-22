@@ -40,6 +40,34 @@ def create_session(user_id: str, lang: str = "en", teacher_gender: str | None = 
     return session_id
 
 
+def update_session_topic(session_id: str, subject: str, topic_id: str, topic_name: str, subtopic: str, model: str):
+    """Subject/topic/subtopic/model are only known after a few more AskActionMessage
+    steps in start(), well after create_session() already ran -- this fills them in
+    on the same session document so /history has something to show per session."""
+    session_collection.update_one(
+        {"_id": session_id},
+        {"$set": {
+            "subject": subject,
+            "topic_id": topic_id,
+            "topic": topic_name,
+            "subtopic": subtopic,
+            "model": model,
+        }},
+    )
+
+
+def get_session(session_id: str):
+    return session_collection.find_one({"_id": session_id})
+
+
+def list_user_sessions(user_id: str):
+    return list(session_collection.find({"user_id": user_id}).sort("timestamp", -1))
+
+
+def get_final_feedback(session_id: str):
+    return final_feedback_collection.find_one({"_id": session_id})
+
+
 def create_interaction(session_id: str) -> str:
     """Create a new interaction entry for a user."""
     interaction_id = str(uuid.uuid4())

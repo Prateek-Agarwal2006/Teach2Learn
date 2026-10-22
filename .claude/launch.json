@@ -18,6 +18,15 @@
         "cd teach2learn-portal && mkdir -p /tmp/t2l-subpath-test && T2L_BASE_PATH=/finetuned_multilingual T2L_DEV_LOGIN_ENABLED=true APP_ENV=development INFERENCE_BACKEND=fake T2L_DATA_DIR=/tmp/t2l-subpath-test T2L_DATABASE_PATH=/tmp/t2l-subpath-test/portal.sqlite3 T2L_TRANSCRIPT_DIR=/tmp/t2l-subpath-test/transcripts SECRET_KEY=local-development-change-me exec .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8099"
       ],
       "port": 8099
+    },
+    {
+      "name": "rag-tool-history-test",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd 'LbT (RAG Based) tool Implementaion files-20260907T102315Z-1-001/LbT (RAG Based) tool Implementaion files' && set -a && source .env && set +a && OAUTH_GOOGLE_CLIENT_ID=dummy-local-test-client-id OAUTH_GOOGLE_CLIENT_SECRET=dummy-local-test-client-secret exec .venv/bin/chainlit run main.py --host 127.0.0.1 --port 8022"
+      ],
+      "port": 8022
     }
   ]
 }
