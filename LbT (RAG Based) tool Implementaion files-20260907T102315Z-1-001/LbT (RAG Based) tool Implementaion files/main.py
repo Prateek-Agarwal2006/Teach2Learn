@@ -253,7 +253,14 @@ async def on_chat_resume(thread):
 async def start():
     """Initialize session, show topics, generate subtopics, and prepare Q&A."""
     user = cl.user_session.get("user")
-    await cl.Message(content=f"Welcome, {user.display_name or user.identifier}!").send()
+    # cl.Action has no URL/link variant (dataclass fields: name/payload/label/tooltip/
+    # icon, action.py -- purely a Python-callback button), and there's no persistent
+    # header/toolbar extension point without a custom frontend build, so a markdown
+    # link in the welcome message is the lowest-friction way to surface History from
+    # the main chat UI itself rather than only a typed-in URL.
+    await cl.Message(
+        content=f"Welcome, {user.display_name or user.identifier}! [View your past sessions]({_ROOT}/history)"
+    ).send()
 
     # Teaching language is picked once, up front, like subject/subtopic below —
     # unlike Model it is not reconfigurable mid-session via ChatSettings, since every
