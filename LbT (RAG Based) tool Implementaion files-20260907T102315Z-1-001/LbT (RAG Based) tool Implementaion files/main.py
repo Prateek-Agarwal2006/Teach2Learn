@@ -239,6 +239,12 @@ async def start():
                     # matches only, verified live) -- lets a session be run ungrounded on
                     # the identical base model a finetuned adapter was built on, for a
                     # direct RAG-vs-finetuned comparison.
+                    # qwen3-8b (the original match) was withdrawn by OpenRouter 9 Oct 2026 with
+                    # no same-generation 8B-class text-only successor available, so the finetuned
+                    # "qwen3" adapter was retrained from scratch on Qwen3-14B instead -- this is
+                    # that adapter's actual base model now, confirmed via the from-scratch LoRA
+                    # run, not an approximation.
+                    "qwen/qwen3-14b",             # base of the finetuned "qwen3" adapter
                     "qwen/qwen-2.5-7b-instruct",  # base of the finetuned "qwen2.5" adapter
                     "meta-llama/llama-3.1-8b-instruct",  # base of the finetuned "llama31" adapter
                     "ibm-granite/granite-4.2-8b",        # base of the finetuned "granite42" adapter

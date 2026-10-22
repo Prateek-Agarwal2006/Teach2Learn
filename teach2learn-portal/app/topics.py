@@ -6,7 +6,7 @@ import re
 
 
 MODELS = [
-    {"id": "qwen3", "name": "Qwen3 8B"},
+    {"id": "qwen3", "name": "Qwen3 14B"},
     {"id": "qwen2.5", "name": "Qwen 2.5 7B"},
     {"id": "granite42", "name": "Granite 4.2 8B"},
     {"id": "llama31", "name": "Llama 3.1 8B"},

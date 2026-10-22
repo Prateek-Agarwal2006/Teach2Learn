@@ -24,6 +24,17 @@ STUDENT_TEMPERATURE = 0.2
 STUDENT_TOP_P = 0.9
 
 
+# qwen3-14b's thinking mode is optional, not mandatory (confirmed live: it returns real
+# content either way, unlike qwen/qwen3.7-plus, which this project considered and rejected
+# for exactly this reason -- that one spends its whole token budget on hidden reasoning by
+# default and explicitly refuses to have reasoning disabled). Turning it off here still
+# cuts hidden-reasoning token cost, matching the portal's own inference-time convention of
+# enable_thinking=False for any Qwen base model (app/services/inference.py).
+_STUDENT_EXTRA_BODY = {
+    "qwen/qwen3-14b": {"chat_template_kwargs": {"enable_thinking": False}},
+}
+
+
 def get_student_llm(model_name: str):
     return ChatOpenAI(
         base_url="https://openrouter.ai/api/v1",
@@ -31,6 +42,7 @@ def get_student_llm(model_name: str):
         model=model_name,
         temperature=STUDENT_TEMPERATURE,
         top_p=STUDENT_TOP_P,
+        extra_body=_STUDENT_EXTRA_BODY.get(model_name),
     )
 
 # -------------------------------

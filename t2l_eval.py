@@ -60,8 +60,11 @@ RAG_DIR = "LbT (RAG Based) tool Implementaion files-20260907T102315Z-1-001/LbT (
 JUDGE_MODEL = os.getenv("T2L_JUDGE_MODEL", "openai/gpt-5.6-luna")
 # Adapters and the OpenRouter models built on the same base: the only pairs that speak to
 # fine-tuning vs retrieval rather than to model size.
-# No qwen3 pair: OpenRouter withdrew qwen/qwen3-8b on 9 Oct 2026, so the RAG side cannot run it.
+# qwen3 was retrained from scratch on Qwen3-14B after OpenRouter withdrew qwen/qwen3-8b on
+# 9 Oct 2026 with no same-generation 8B-class text-only successor available -- this is the
+# adapter's actual base model now, not an approximation.
 PAIRS = {
+    "qwen3": "qwen/qwen3-14b",
     "qwen2.5": "qwen/qwen-2.5-7b-instruct",
     "llama31": "meta-llama/llama-3.1-8b-instruct",
     "granite42": "ibm-granite/granite-4.2-8b",

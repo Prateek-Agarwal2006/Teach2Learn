@@ -48,7 +48,16 @@ class GenerationResult:
 DEFAULT_PROFILES: dict[str, ModelProfile] = {
     # These are identifiers, not eager dependencies. Deployments normally override
     # the adapter paths (and may override the base models) with INFERENCE_PROFILES.
-    "qwen3": ModelProfile("Qwen/Qwen3-8B"),
+    # OpenRouter withdrew qwen/qwen3-8b on 9 Oct 2026, breaking the RAG side's matched
+    # comparison slot; no same-generation 8B-class text-only replacement exists there,
+    # so this adapter was retrained from scratch on Qwen3-14B (one size tier up, still
+    # the same generation, still text-only) to restore the pair. Weights landed in
+    # finetune-new-models/.hf_cache (not the default cache, which was already nearly
+    # full) during training, so cache_dir must point there, same reason as llama31 below.
+    "qwen3": ModelProfile(
+        "Qwen/Qwen3-14B",
+        cache_dir="/data/scratch/sanyam_jain_2022/finetune-new-models/.hf_cache/hub",
+    ),
     "gemma2": ModelProfile("google/gemma-2-9b-it"),
     "mistral": ModelProfile("mistralai/Mistral-7B-Instruct-v0.3"),
     "granite": ModelProfile("ibm-granite/granite-3.3-8b-instruct"),
@@ -71,15 +80,15 @@ DEFAULT_PROFILES: dict[str, ModelProfile] = {
 
 DEFAULT_ADAPTER_ROOT = "/data/scratch/sanyam_jain_2022/mistral_finetune/gemma2_s9b"
 MODEL_OUTPUT_DIRS = {
-    "qwen3": "outputs_qwen3_8b_lora_no_quant",
     "gemma2": "outputs_gemma2_9b_it_lora_no_quant",
     "mistral": "outputs_mistral7b_lora_no_quant",
     "granite": "outputs_granite33_8b_lora_no_quant",
     "qwen2.5": "outputs_qwen25_7b_lora_no_quant",
-    # Empty: these two's adapter root (below) already points straight at the directory
+    # Empty: these three's adapter root (below) already points straight at the directory
     # that directly contains each subject's final_adapter/, with nothing to join.
     "granite42": "",
     "llama31": "",
+    "qwen3": "",
 }
 SUBJECT_DATASET_DIRS = {"cp": "CP_dataset", "dsa": "DSA_dataset", "oop_java": "oops_dataset", "os": "OS_dataset"}
 
@@ -90,6 +99,7 @@ NEW_MODEL_ADAPTER_ROOT = "/data/scratch/sanyam_jain_2022/finetune-new-models/out
 MODEL_ADAPTER_ROOTS = {
     "granite42": f"{NEW_MODEL_ADAPTER_ROOT}/granite42",
     "llama31": f"{NEW_MODEL_ADAPTER_ROOT}/llama31",
+    "qwen3": f"{NEW_MODEL_ADAPTER_ROOT}/qwen3_14b",
 }
 
 DEFAULT_SUBJECT_MODELS = {
