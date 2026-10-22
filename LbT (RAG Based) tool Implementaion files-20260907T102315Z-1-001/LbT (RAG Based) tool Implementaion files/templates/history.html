@@ -45,8 +45,8 @@
   <li>
     <a href="{{ root }}/history/{{ item._id }}">
       <span>
-        <span class="tag">{{ item.subject|default('unlabeled', true)|replace('_', ' ')|upper }}</span>
-        <span class="title">{{ item.subtopic|default(item.topic, true)|default('(untitled session)', true) }}</span><br>
+        {% if item.subject %}<span class="tag">{{ item.subject|replace('_', ' ')|upper }}</span><br>{% endif %}
+        <span class="title">{{ item.subtopic|default(item.topic, true)|default('Session from ' + (item.timestamp.strftime('%d %b %Y') if item.timestamp else 'before topic tracking'), true) }}</span><br>
         <span class="meta">{{ item.topic|default('', true) }}{% if item.topic and item.model %} · {% endif %}{{ item.model|default('', true) }}</span>
       </span>
       <span class="right">

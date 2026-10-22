@@ -38,8 +38,8 @@
 <body>
 <a class="back" href="{{ root }}/history">&larr; All sessions</a>
 <header>
-  <span class="tag">{{ session.subject|default('unlabeled', true)|replace('_', ' ')|upper }}</span>
-  <h1>{{ session.subtopic|default(session.topic, true)|default('(untitled session)', true) }}</h1>
+  {% if session.subject %}<span class="tag">{{ session.subject|replace('_', ' ')|upper }}</span>{% endif %}
+  <h1>{{ session.subtopic|default(session.topic, true)|default('Session from ' + (session.timestamp.strftime('%d %b %Y') if session.timestamp else 'before topic tracking'), true) }}</h1>
   <p class="sub">{{ session.topic|default('', true) }}{% if session.topic and session.model %} · {% endif %}{{ session.model|default('', true) }}{% if session.timestamp %} · {{ session.timestamp.strftime('%d %b %Y, %H:%M') }}{% endif %}{% if turns %} · {{ turns|length }} turn{{ '' if turns|length == 1 else 's' }}{% endif %}</p>
 </header>
 {% if feedback %}

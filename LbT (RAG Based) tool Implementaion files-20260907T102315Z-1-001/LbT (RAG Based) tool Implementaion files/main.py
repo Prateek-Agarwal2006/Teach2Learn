@@ -89,6 +89,35 @@ async def history_detail_page(
         raise HTTPException(404, "Not found")
     turns = fetch_session_evaluations(session_id)
     feedback = get_final_feedback(session_id)
+
+    # Every field stored here is English (ai_question_en/teacher_answer_en, judge-written
+    # strength/improvement/summary) -- the live chat translates on the way out instead of
+    # storing pre-translated text, so history has to translate on the way back in too, same
+    # as _localize/present_final_score do for the live session. teacher_answer_en gets no
+    # speaker_gender hint: it's the teacher's own words, not a line addressed to them.
+    lang = normalize_language(session.get("lang", "en"))
+    teacher_gender = session.get("teacher_gender")
+    if lang != "en":
+        translator = get_translation_service()
+
+        async def _translate_turn(t):
+            ai_q, teacher_a, strength, improvement = await asyncio.gather(
+                translator.from_english(t.get("ai_question_en", ""), lang, speaker_gender=teacher_gender),
+                translator.from_english(t.get("teacher_answer_en", ""), lang),
+                translator.from_english(t.get("strength", ""), lang, speaker_gender=teacher_gender),
+                translator.from_english(t.get("improvement", ""), lang, speaker_gender=teacher_gender),
+            )
+            return {**t, "ai_question_en": ai_q, "teacher_answer_en": teacher_a, "strength": strength, "improvement": improvement}
+
+        turns = list(await asyncio.gather(*(_translate_turn(t) for t in turns)))
+        if feedback:
+            strengths, improvements, summary = await asyncio.gather(
+                translator.all_from_english(feedback.get("strengths", []), lang, speaker_gender=teacher_gender),
+                translator.all_from_english(feedback.get("improvements", []), lang, speaker_gender=teacher_gender),
+                translator.from_english(feedback.get("summary", ""), lang, speaker_gender=teacher_gender),
+            )
+            feedback = {**feedback, "strengths": strengths, "improvements": improvements, "summary": summary}
+
     return _templates.TemplateResponse(
         request, "history_detail.html", {"session": session, "turns": turns, "feedback": feedback, "root": _ROOT}
     )
