@@ -1,7 +1,8 @@
 import asyncio
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 import uuid
 import chainlit as cl
 from chainlit.input_widget import Select
@@ -66,6 +67,17 @@ FINAL_FEEDBACK_MODEL = os.getenv("FINAL_FEEDBACK_MODEL", "openai/gpt-5.6-luna")
 _templates = Jinja2Templates(directory="templates")
 _ROOT = cl_config.run.root_path
 _history_router = APIRouter()
+_IST = ZoneInfo("Asia/Kolkata")
+
+
+def _as_ist(ts):
+    """memory.py stores datetime.utcnow() -- naive, and pymongo reads it back naive
+    too -- so a bare strftime in the template would silently display UTC labeled as
+    if it were the viewer's own clock, off by 5:30 for every participant (this whole
+    app is BITS-Pilani-only, so IST is the one real timezone that matters here)."""
+    if ts is None:
+        return None
+    return ts.replace(tzinfo=timezone.utc).astimezone(_IST)
 
 
 @_history_router.get(f"{_ROOT}/history", response_class=HTMLResponse)
@@ -75,6 +87,7 @@ async def history_page(request: Request, current_user: Optional[User | Persisted
     sessions = list_user_sessions(current_user.identifier)
     for s in sessions:
         s["completed"] = get_final_feedback(s["_id"]) is not None
+        s["timestamp"] = _as_ist(s.get("timestamp"))
     return _templates.TemplateResponse(request, "history.html", {"sessions": sessions, "root": _ROOT})
 
 
@@ -87,6 +100,7 @@ async def history_detail_page(
     session = get_session(session_id)
     if not current_user or not session or session.get("user_id") != current_user.identifier:
         raise HTTPException(404, "Not found")
+    session["timestamp"] = _as_ist(session.get("timestamp"))
     turns = fetch_session_evaluations(session_id)
     feedback = get_final_feedback(session_id)
 
@@ -260,6 +274,13 @@ async def setup_agent(settings):
     llm = get_student_llm(current_model)
     cl.user_session.set("llm", llm)
     cl.user_session.set("student_chain", build_student_chain_only(llm))
+    # Tracked separately from the ChatSettings object itself: cl.ChatSettings.send()
+    # (chainlit/chat_settings.py) returns each widget's *initial* value immediately --
+    # it does not wait for the user to touch the panel -- so the `settings` variable
+    # captured right after start()'s .send() call is always the hardcoded default,
+    # never whatever the user actually picks. This is the one place that record is
+    # updated to the real selection, for update_session_topic() to read from.
+    cl.user_session.set("model", current_model)
 
 
 # ------------------- ON CHAT RESUME --------------- #
@@ -362,6 +383,10 @@ async def start():
         ]
     ).send()
     cl.user_session.set("llm", get_student_llm(settings["Model"]))
+    # Fallback for update_session_topic() below, in case the user never opens the
+    # settings panel at all before teaching starts -- setup_agent() overwrites this
+    # with the real selection the moment they do.
+    cl.user_session.set("model", settings["Model"])
 
     # Load catalog
     if not CATALOG_PATH.exists():
@@ -451,7 +476,7 @@ async def start():
     update_session_topic(
         session_id, user_topic, chosen_topic_id,
         subject_topics[chosen_topic_id]["name"],
-        chosen_subtopic, settings["Model"],
+        chosen_subtopic, cl.user_session.get("model", settings["Model"]),
     )
     cl.user_session.set("turn", 0)
     cl.user_session.set("visible_transcript_en", [])
