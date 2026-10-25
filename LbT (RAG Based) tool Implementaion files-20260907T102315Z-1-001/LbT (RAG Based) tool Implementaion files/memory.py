@@ -56,6 +56,19 @@ def update_session_topic(session_id: str, subject: str, topic_id: str, topic_nam
     )
 
 
+def update_session_model(session_id: str, model: str):
+    """The Chat Settings button is disabled for the whole language/gender/subject/
+    topic/subtopic picker flow (confirmed live: button.disabled is true the entire
+    time an AskActionMessage is pending) -- a teacher physically cannot change the
+    model before update_session_topic() already ran with whatever the untouched
+    default was. The only real opportunity to pick a non-default model is after the
+    picker flow ends, via the same on_settings_update event this app already treats
+    as a legitimate mid-session model switch -- so that event needs to update Mongo
+    too, not just cl.user_session, or the recorded model is stuck at the default
+    forever regardless of what's actually taught with."""
+    session_collection.update_one({"_id": session_id}, {"$set": {"model": model}})
+
+
 def get_session(session_id: str):
     return session_collection.find_one({"_id": session_id})
 

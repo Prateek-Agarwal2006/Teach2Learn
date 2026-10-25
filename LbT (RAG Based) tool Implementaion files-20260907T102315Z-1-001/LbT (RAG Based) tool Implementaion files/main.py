@@ -34,6 +34,7 @@ from memory import (
         fetch_session_turns,
         save_final_feedback,
         update_session_topic,
+        update_session_model,
         get_session,
         list_user_sessions,
         get_final_feedback,
@@ -281,6 +282,15 @@ async def setup_agent(settings):
     # never whatever the user actually picks. This is the one place that record is
     # updated to the real selection, for update_session_topic() to read from.
     cl.user_session.set("model", current_model)
+    # The settings panel is disabled for the entire language/gender/subject/topic/
+    # subtopic picker flow (confirmed live), so update_session_topic() always sees the
+    # untouched default by the time it runs -- the only way a teacher ever reaches
+    # this handler with a different model is by changing it afterward, which this app
+    # already treats as a legitimate mid-session switch. Mongo needs to reflect that
+    # live, not just cl.user_session, or History keeps showing the stale default no
+    # matter what model teaching actually happens with.
+    if session_id := cl.user_session.get("session_id"):
+        update_session_model(session_id, current_model)
 
 
 # ------------------- ON CHAT RESUME --------------- #
