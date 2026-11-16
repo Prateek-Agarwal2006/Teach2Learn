@@ -5,11 +5,17 @@ from __future__ import annotations
 import re
 
 
+# `group` is the heading the study page's picker files each model under, in MODELS order
+# (a group's models must be listed together). Every learner here is a LoRA adapter on an
+# open-weight base model served locally, so there is no frontier group on this side --
+# frontier models are API-only and can't be fine-tuned here; the RAG tool's picker is where
+# they appear. The RAG tool groups the same way (MODEL_GROUPS in its main.py: "Frontier" /
+# "Open-weight"); it only has a dropdown label to carry the group, hence the shorter names there.
 MODELS = [
-    {"id": "qwen3", "name": "Qwen3 14B"},
-    {"id": "qwen2.5", "name": "Qwen 2.5 7B"},
-    {"id": "granite42", "name": "Granite 4.2 8B"},
-    {"id": "llama31", "name": "Llama 3.1 8B"},
+    {"id": "qwen3", "name": "Qwen3 14B", "group": "Open-weight models"},
+    {"id": "qwen2.5", "name": "Qwen 2.5 7B", "group": "Open-weight models"},
+    {"id": "granite42", "name": "Granite 4.2 8B", "group": "Open-weight models"},
+    {"id": "llama31", "name": "Llama 3.1 8B", "group": "Open-weight models"},
 ]
 
 

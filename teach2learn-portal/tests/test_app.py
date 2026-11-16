@@ -1,5 +1,6 @@
 import uuid
 import asyncio
+import re
 from base64 import b64encode
 import json
 
@@ -178,6 +179,32 @@ def test_health_is_minimal_and_catalog_requires_authentication():
         catalog = client.get("/api/catalog").json()
         assert len(catalog["models"]) == 4
         assert set(catalog["subjects"]) == {"cp", "dsa", "oop_java", "os"}
+
+
+def test_study_page_groups_the_model_picker():
+    from app.topics import MODELS
+
+    assert all(m.get("group") for m in MODELS)
+    participant = database.get_or_create_participant(
+        f"picker-{uuid.uuid4().hex[:10]}",
+        "Picker Tester",
+        {
+            "auth_provider": "google",
+            "email": "picker@pilani.bits-pilani.ac.in",
+            "hosted_domain": "pilani.bits-pilani.ac.in",
+        },
+    )
+    with TestClient(app) as client:
+        set_participant_session(client, participant["id"])
+        html = client.get("/study").text
+
+    picker = re.search(r'<select id="model".*?</select>', html, re.S).group(0)
+    groups = re.findall(r'<optgroup label="([^"]+)">(.*?)</optgroup>', picker, re.S)
+    assert [label for label, _ in groups] == ["Open-weight models"]
+    # Grouping must not change what is submitted: same ids, same order as MODELS.
+    assert re.findall(r'<option value="([^"]*)"', groups[0][1]) == [m["id"] for m in MODELS]
+    # The "Select an AI learner" placeholder stays above every group, still the empty default.
+    assert '<option value="">Select an AI learner</option>' in picker.split("<optgroup")[0]
 
 
 def test_admin_can_browse_all_users_and_turns_without_losing_normal_access():

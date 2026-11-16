@@ -35,7 +35,17 @@
         <label for="model"><span class="field-number">4</span> AI learner</label>
         <select id="model" name="model" required data-select="model">
           <option value="">Select an AI learner</option>
-          {% for item in models %}<option value="{{ item.id|default(item.value, true) }}">{{ item.name|default(item.label, true) }}</option>{% endfor %}
+          {# Grouped in MODELS order (not |groupby, which sorts the headings alphabetically). #}
+          {% set ns = namespace(group=none) %}
+          {% for item in models %}
+            {% if item.group and item.group != ns.group %}
+              {% if ns.group %}</optgroup>{% endif %}
+              <optgroup label="{{ item.group }}">
+              {% set ns.group = item.group %}
+            {% endif %}
+            <option value="{{ item.id|default(item.value, true) }}">{{ item.name|default(item.label, true) }}</option>
+          {% endfor %}
+          {% if ns.group %}</optgroup>{% endif %}
         </select>
         <p class="field-hint">Different learners may ask different questions.</p>
       </div>

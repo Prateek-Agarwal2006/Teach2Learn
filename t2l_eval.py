@@ -102,6 +102,15 @@ def log(*args: Any) -> None:
     print(*args, file=sys.stderr, flush=True)
 
 
+def rag_models(main_py: Path) -> list[str]:
+    """The RAG tool's picker models in picker order, read from its MODEL_GROUPS literal for
+    the same reason as portal_prompts: importing main.py needs chainlit and its OAuth env."""
+    for node in ast.parse(main_py.read_text()).body:
+        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "MODEL_GROUPS" for t in node.targets):
+            return [model for models in ast.literal_eval(node.value).values() for model in models.values()]
+    raise ValueError(f"no MODEL_GROUPS literal in {main_py}")
+
+
 def portal_prompts(main_py: Path) -> dict[str, str]:
     """The live portal's prompts, read from source: importing app.main would open the
     production database and build the OAuth client."""
@@ -249,7 +258,7 @@ class Rag:
         # The tool's README: retrieval embeds through the same OpenRouter key.
         os.environ.setdefault("OPENAI_API_KEY", os.getenv("OPENROUTER_API_KEY", ""))
         os.environ.setdefault("OPENAI_BASE_URL", "https://openrouter.ai/api/v1")
-        self.models = [m for m in re.findall(r'"([\w.-]+/[\w.:-]+)"', (root / "main.py").read_text().split("values=[")[1].split("]")[0])]
+        self.models = rag_models(root / "main.py")
         self.prompts = portal_prompts(Path(args.portal_main))
         self.decoding = {"backend": "openrouter", "temperature": args.temperature, "top_p": args.top_p, "extra_body": args.rag_extra_body}
         # Opened from a throwaway copy: Chroma rewrites its files on open, and the
@@ -885,6 +894,10 @@ def selfcheck() -> None:
     from app.services.inference import parse_inline_evaluation
 
     prompts = portal_prompts(HERE / "teach2learn-portal" / "app" / "main.py")
+    # PAIRS names the RAG model each adapter is matched against; one the picker doesn't offer
+    # would be a comparison no participant can actually run.
+    picker = rag_models(HERE / RAG_DIR / "main.py")
+    assert picker and set(PAIRS.values()) <= set(picker), (PAIRS, picker)
     assert {"STUDENT_PROMPT", "FORK_SYSTEM_PROMPT", "QUESTION_BRANCH", "TURN_EVALUATOR_PROMPT", "FINAL_EVALUATOR_PROMPT", "OPENING"} <= set(prompts)
 
     class Stub:

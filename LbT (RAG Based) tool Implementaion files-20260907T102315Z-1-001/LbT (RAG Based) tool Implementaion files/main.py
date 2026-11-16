@@ -54,6 +54,42 @@ from fastapi.templating import Jinja2Templates
 GENDERS = ["Male", "Female"]
 FINAL_FEEDBACK_MODEL = os.getenv("FINAL_FEEDBACK_MODEL", "openai/gpt-5.6-luna")
 
+# The student-model picker, grouped: group -> {label shown to the participant: OpenRouter id}.
+# Chainlit's Select has no group headers (it only takes `values` or an `items` label->value
+# map), so the group rides in each label ("Frontier · GPT-6.1 Sol") while the submitted value
+# stays the bare OpenRouter id -- everything downstream (setup_agent, get_student_llm,
+# update_session_model, History) keeps receiving the same ids it always did.
+# Must stay a plain literal dict: t2l_eval.py ast-parses this constant out of this file to
+# discover the RAG side's models (it can't import main.py -- no chainlit/OAuth env there).
+# The first model of the first group is the default selection.
+MODEL_GROUPS = {
+    # OpenRouter has withdrawn claude-3.7-sonnet and qwen3-8b.
+    # claude-sonnet-5 is the direct same-tier successor (confirmed live).
+    "Frontier": {
+        "GPT-6.1 Sol": "openai/gpt-6.1-sol",
+        "Gemini 4 Argon": "google/gemini-4-argon",
+        "Claude Sonnet 5": "anthropic/claude-sonnet-5",
+    },
+    # Same base models as the finetuned side's adapters (exact OpenRouter matches only,
+    # verified live) -- lets a session be run ungrounded on the identical base model a
+    # finetuned adapter was built on, for a direct RAG-vs-finetuned comparison.
+    # qwen3-8b (the original match) was withdrawn by OpenRouter 9 Oct 2026 with no
+    # same-generation 8B-class text-only successor available, so the finetuned "qwen3"
+    # adapter was retrained from scratch on Qwen3-14B instead -- this is that adapter's
+    # actual base model now, confirmed via the from-scratch LoRA run, not an approximation.
+    "Open-weight": {
+        "Qwen3 14B": "qwen/qwen3-14b",                    # base of the finetuned "qwen3" adapter
+        "Qwen 2.5 7B": "qwen/qwen-2.5-7b-instruct",       # base of the finetuned "qwen2.5" adapter
+        "Llama 3.1 8B": "meta-llama/llama-3.1-8b-instruct",  # base of the finetuned "llama31" adapter
+        "Granite 4.2 8B": "ibm-granite/granite-4.2-8b",   # base of the finetuned "granite42" adapter
+    },
+}
+MODEL_ITEMS = {
+    f"{group} · {label}": model_id
+    for group, models in MODEL_GROUPS.items()
+    for label, model_id in models.items()
+}
+
 # -------------------------------
 # History -- plain authenticated routes on Chainlit's own FastAPI app, not
 # Chainlit's native data layer/thread-resume (that would need a schema adapter
@@ -370,25 +406,8 @@ async def start():
             Select(
                 id="Model",
                 label="Select Model",
-                values=[
-                    # Frontier options. OpenRouter has withdrawn claude-3.7-sonnet and qwen3-8b.
-                    # claude-sonnet-5 is the direct same-tier successor (confirmed live).
-                    "openai/gpt-6.1-sol", "google/gemini-4-argon", "anthropic/claude-sonnet-5",
-                    # Same base models as the finetuned side's adapters (exact OpenRouter
-                    # matches only, verified live) -- lets a session be run ungrounded on
-                    # the identical base model a finetuned adapter was built on, for a
-                    # direct RAG-vs-finetuned comparison.
-                    # qwen3-8b (the original match) was withdrawn by OpenRouter 9 Oct 2026 with
-                    # no same-generation 8B-class text-only successor available, so the finetuned
-                    # "qwen3" adapter was retrained from scratch on Qwen3-14B instead -- this is
-                    # that adapter's actual base model now, confirmed via the from-scratch LoRA
-                    # run, not an approximation.
-                    "qwen/qwen3-14b",             # base of the finetuned "qwen3" adapter
-                    "qwen/qwen-2.5-7b-instruct",  # base of the finetuned "qwen2.5" adapter
-                    "meta-llama/llama-3.1-8b-instruct",  # base of the finetuned "llama31" adapter
-                    "ibm-granite/granite-4.2-8b",        # base of the finetuned "granite42" adapter
-                ],
-                initial_index=0
+                items=MODEL_ITEMS,
+                initial_value=next(iter(MODEL_ITEMS.values())),
             )
         ]
     ).send()
