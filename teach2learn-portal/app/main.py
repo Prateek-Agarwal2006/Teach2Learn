@@ -93,8 +93,12 @@ if BASE_PATH and not BASE_PATH.startswith("/"):
     BASE_PATH = f"/{BASE_PATH}"
 MAX_REQUEST_BYTES = max(1024, int(os.getenv("MAX_REQUEST_BYTES", str(256 * 1024))))
 # Voice recordings are audio, not JSON/form bodies, so they get their own much
-# larger ceiling; ~2 minutes of compressed webm/opus comfortably fits in 15 MB.
+# larger ceiling. The browser sends 16 kHz mono WAV (~1.9 MB a minute), so 15 MB is ~8 minutes;
+# the relay's nginx caps this path at 16m, so raising this also means raising that.
 MAX_AUDIO_BYTES = max(MAX_REQUEST_BYTES, int(os.getenv("MAX_AUDIO_BYTES", str(15 * 1024 * 1024))))
+# Five minutes of dictation is up to ~5,100 characters in the languages measured (Hindi is the
+# densest); the cap leaves room for faster speakers rather than silently cutting a long answer.
+MAX_MESSAGE_CHARS = max(100, int(os.getenv("MAX_MESSAGE_CHARS", "8000")))
 APP_NAME = os.getenv("APP_NAME", "EquitableT2L").strip() or "EquitableT2L"
 ADMIN_EMAILS = tuple(
     item.strip().lower()
@@ -799,6 +803,7 @@ async def session_page(request: Request, session_id: str):
         messages=await localized_messages(transcripts.read(session_id), view["lang"], teacher_gender_for(session)),
         turn=view["turn"],
         voice_input_enabled=get_transcription_service().is_enabled(),
+        max_message_chars=MAX_MESSAGE_CHARS,
     )
 
 
@@ -862,7 +867,7 @@ async def chat_socket(websocket: WebSocket, session_id: str):
             if not session or session["status"] != "active":
                 await websocket.send_json({"error": "This session is already complete."})
                 continue
-            content = str(payload.get("message", "")).strip()[:2000]
+            content = str(payload.get("message", "")).strip()[:MAX_MESSAGE_CHARS]
             user_lang = language_for(session)
             # The AI's own dialogue almost always takes the grammatical form of a
             # question addressed to the teacher ("Can *you* give me an example?"), so

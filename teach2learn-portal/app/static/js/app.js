@@ -258,6 +258,11 @@
       event.preventDefault();
       const value = input.value.trim();
       if (!value || pending || finished || turn >= MAX_TURNS) return;
+      if (messageLimit > 0 && value.length > messageLimit) {
+        // The server would cut the rest off silently, so stop here and say so.
+        showError(`That is over the ${messageLimit.toLocaleString()}-character limit. Shorten it and send again.`);
+        return;
+      }
 
       const active = openSocket();
       if (active.readyState !== WebSocket.OPEN) {
@@ -287,13 +292,14 @@
       }
     });
 
+    const messageLimit = input.maxLength;
     const autosize = () => {
       input.style.height = 'auto';
       input.style.height = `${Math.min(input.scrollHeight, 160)}px`;
       if (characterCount) {
         const length = input.value.length;
-        characterCount.textContent = `${length.toLocaleString()} / 2,000`;
-        characterCount.dataset.nearLimit = String(length >= 1800);
+        characterCount.textContent = `${length.toLocaleString()} / ${messageLimit.toLocaleString()}`;
+        characterCount.dataset.nearLimit = String(length >= messageLimit * 0.9);
       }
     };
     input.addEventListener('input', () => {
@@ -331,23 +337,61 @@
         /* Transcription providers disagree on which recorded container/codec
            they accept (Sarvam rejects the webm/opus MediaRecorder produces).
            WAV is the one format every provider takes, so re-encode to it
-           client-side rather than gambling on codec support server-side. */
+           client-side rather than gambling on codec support server-side.
+           Speech models work at 16 kHz mono anyway, so send exactly that: the
+           browser's native 48 kHz stereo is ~58 MB for five minutes, this is ~9.6 MB. */
+        const SPEECH_SAMPLE_RATE = 16000;
+        /* Plain averaging: the fallback where the browser can't resample offline. It lets some
+           energy above 8 kHz fold back in, so it is not the first choice. */
+        const averageDown = (channelData, sampleRate) => {
+          const channels = channelData.length;
+          const frames = channelData[0].length;
+          const ratio = Math.max(1, sampleRate / SPEECH_SAMPLE_RATE);
+          const samples = new Float32Array(Math.floor(frames / ratio));
+          for (let out = 0; out < samples.length; out++) {
+            // Average every source sample under this output sample (edges weighted by overlap).
+            const from = out * ratio;
+            const to = from + ratio;
+            const last = Math.min(frames, Math.ceil(to));
+            let sum = 0;
+            let weight = 0;
+            for (let i = Math.floor(from); i < last; i++) {
+              const overlap = Math.min(i + 1, to) - Math.max(i, from);
+              let mixed = 0;
+              for (let channel = 0; channel < channels; channel++) mixed += channelData[channel][i];
+              sum += (mixed / channels) * overlap;
+              weight += overlap;
+            }
+            samples[out] = weight ? sum / weight : 0;
+          }
+          return { samples, sampleRate: ratio === 1 ? sampleRate : SPEECH_SAMPLE_RATE };
+        };
+
+        const toSpeechSamples = async (buffer) => {
+          const OfflineCtx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+          if (OfflineCtx && buffer.sampleRate > SPEECH_SAMPLE_RATE) {
+            try {
+              // The browser's own resampler filters properly and mixes stereo down to mono.
+              const offline = new OfflineCtx(1, Math.ceil(buffer.duration * SPEECH_SAMPLE_RATE), SPEECH_SAMPLE_RATE);
+              const source = offline.createBufferSource();
+              source.buffer = buffer;
+              source.connect(offline.destination);
+              source.start();
+              const rendered = await offline.startRendering();
+              return { samples: rendered.getChannelData(0), sampleRate: SPEECH_SAMPLE_RATE };
+            } catch (_) { /* e.g. older Safari rejects a 16 kHz offline context */ }
+          }
+          const channelData = Array.from({ length: buffer.numberOfChannels }, (_, channel) => buffer.getChannelData(channel));
+          return averageDown(channelData, buffer.sampleRate);
+        };
+
         const audioBlobToWav = async (blob) => {
           const AudioCtx = window.AudioContext || window.webkitAudioContext;
           const context = new AudioCtx();
           try {
             const buffer = await context.decodeAudioData(await blob.arrayBuffer());
-            const channels = buffer.numberOfChannels;
-            const sampleRate = buffer.sampleRate;
-            const frameCount = buffer.length;
-            const interleaved = new Float32Array(frameCount * channels);
-            for (let channel = 0; channel < channels; channel++) {
-              const data = buffer.getChannelData(channel);
-              for (let i = 0; i < frameCount; i++) interleaved[i * channels + channel] = data[i];
-            }
-            const bytesPerSample = 2;
-            const blockAlign = channels * bytesPerSample;
-            const dataSize = interleaved.length * bytesPerSample;
+            const { samples, sampleRate } = await toSpeechSamples(buffer);
+            const dataSize = samples.length * 2;
             const view = new DataView(new ArrayBuffer(44 + dataSize));
             const writeString = (offset, text) => {
               for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
@@ -358,16 +402,16 @@
             writeString(12, 'fmt ');
             view.setUint32(16, 16, true);
             view.setUint16(20, 1, true);
-            view.setUint16(22, channels, true);
+            view.setUint16(22, 1, true);
             view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * blockAlign, true);
-            view.setUint16(32, blockAlign, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
             view.setUint16(34, 16, true);
             writeString(36, 'data');
             view.setUint32(40, dataSize, true);
             let offset = 44;
-            for (let i = 0; i < interleaved.length; i++, offset += 2) {
-              const sample = Math.max(-1, Math.min(1, interleaved[i]));
+            for (let i = 0; i < samples.length; i++, offset += 2) {
+              const sample = Math.max(-1, Math.min(1, samples[i]));
               view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
             }
             return new Blob([view], { type: 'audio/wav' });

@@ -43,7 +43,7 @@
     <p class="chat-error" data-chat-error role="alert" hidden></p>
     <div class="composer-row">
       <label class="sr-only" for="message">Your explanation</label>
-      <textarea id="message" name="message" rows="1" maxlength="2000" required placeholder="Explain {{ session.subtopic|default(session.topic) }} in your own words…" data-chat-input></textarea>
+      <textarea id="message" name="message" rows="1" maxlength="{{ max_message_chars }}" required placeholder="Explain {{ session.subtopic|default(session.topic) }} in your own words…" data-chat-input></textarea>
       {% if voice_input_enabled %}
       <button class="mic-button" type="button" data-mic-button aria-pressed="false" title="Dictate your explanation">
         <span class="mic-icon" aria-hidden="true"></span>
@@ -55,7 +55,7 @@
     <p class="composer-hint">
       <span class="hint-keyboard">Enter to send · Shift + Enter for a new line{% if voice_input_enabled %} · Mic to dictate{% endif %}</span>
       <span class="hint-touch">Tap Send when your explanation is ready.</span>
-      <span class="character-count" data-character-count>0 / 2,000</span>
+      <span class="character-count" data-character-count>0 / {{ "{:,}".format(max_message_chars) }}</span>
     </p>
     {% if voice_input_enabled %}<p class="mic-status" data-mic-status role="status" aria-live="polite" hidden></p>{% endif %}
   </form>

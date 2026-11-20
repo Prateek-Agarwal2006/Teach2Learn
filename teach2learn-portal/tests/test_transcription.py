@@ -12,7 +12,7 @@ import pytest
 from fastapi.testclient import TestClient
 from itsdangerous import TimestampSigner
 
-from app.main import app, database
+from app.main import MAX_AUDIO_BYTES, MAX_MESSAGE_CHARS, app, database, transcripts
 from app.services import transcription
 from app.services.transcription import MAX_CLIP_SECONDS, TranscriptionService, TranscriptionUnavailableError, split_wav
 
@@ -296,6 +296,62 @@ def test_sarvam_empty_piece_does_not_fail_the_recording_but_all_empty_does(monke
     with pytest.raises(ValueError, match="no text"):
         asyncio.run(service.transcribe(audio, "recording.wav", "audio/wav", "or"))
     asyncio.run(service.close())
+
+
+def test_split_wav_handles_a_five_minute_recording():
+    audio = speech_like_wav(300, rate=16000)
+    clips = split_wav(audio)
+    infos = [wav_info(clip) for clip in clips]
+    assert len(clips) >= 12 and all(frames / rate <= MAX_CLIP_SECONDS for _, rate, frames, _ in infos)
+    assert sum(frames for _, _, frames, _ in infos) == wav_info(audio)[2]
+
+
+def test_five_minute_recording_fits_the_upload_limit(monkeypatch):
+    """The browser sends 16 kHz mono 16-bit WAV (what speech models use), ~9.6 MB for 300 s."""
+    monkeypatch.setenv("T2L_TRANSCRIPTION_BACKEND", "echo")
+    buffer = io.BytesIO()
+    with wave.open(buffer, "wb") as out:
+        out.setnchannels(1)
+        out.setsampwidth(2)
+        out.setframerate(16000)
+        out.writeframes(bytes(2 * 16000 * 300))
+    recording = buffer.getvalue()
+    assert 9_000_000 < len(recording) < MAX_AUDIO_BYTES
+    with TestClient(app) as client:
+        set_participant_session(client, make_participant()["id"])
+        session_id = start_session(client)
+        response = client.post(
+            "/api/transcribe",
+            data={"session_id": session_id},
+            files={"audio": ("recording.wav", recording, "audio/wav")},
+        )
+        assert response.status_code == 200
+        assert f"{len(recording)} bytes" in response.json()["text"]
+
+
+def test_chat_page_shows_the_configured_message_limit():
+    with TestClient(app) as client:
+        set_participant_session(client, make_participant()["id"])
+        page = client.get(f"/sessions/{start_session(client)}")
+        assert f'maxlength="{MAX_MESSAGE_CHARS}"' in page.text
+        assert f"0 / {MAX_MESSAGE_CHARS:,}" in page.text
+
+
+def test_a_five_minute_dictation_is_not_cut_off_at_2000_characters():
+    # 300 s of speech is ~5,000 characters; the old 2,000-character cap silently dropped the rest.
+    dictation = ("A pointer stores the address of another variable. " * 110).strip()
+    assert 2000 < len(dictation) <= MAX_MESSAGE_CHARS
+    with TestClient(app) as client:
+        set_participant_session(client, make_participant()["id"])
+        session_id = start_session(client)
+        with client.websocket_connect(f"/ws/chat/{session_id}") as socket:
+            socket.send_json({"message": dictation})
+            reply = socket.receive_json()
+            if reply.get("status") == "evaluating":  # interim status; the saved turn follows it
+                reply = socket.receive_json()
+            assert reply["turn"] == 1
+        teacher_turns = [item["content"] for item in transcripts.read(session_id) if item["role"] == "user"]
+        assert teacher_turns[-1] == dictation
 
 
 def test_endpoint_requires_an_owned_active_session():
